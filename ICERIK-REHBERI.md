@@ -41,6 +41,15 @@ Bilişim Defteri'ne ders yazarken uyulacak kurallar. Amaç: her dersin **kazanı
 | Bulmaca | 6–8 kelime, kelimeler derste geçmiş olmalı. Boşluklu kelime yok |
 | Ders akışı | Toplam 80 dakika (40+40) |
 
+### Slayt görselleri (isteğe bağlı)
+
+- Canva ya da PowerPoint'ten **1600×900 piksel PNG** olarak dışa aktarılır, `content/img/<ders-id>/` klasörüne konur.
+- Görsel içinde yazı varsa 10–11 yaşın okuyabileceği büyüklükte olmalı.
+- Telif hakkı olan görsel kullanılmaz; ekip kendi ürettiği ya da telifsiz görselleri kullanır.
+- `alt` metni zorunludur: görseli göremeyen/yükleyemeyen biri için anlamlı bir açıklama. Doğrulayıcı eksikse hata verir.
+- Dosya boyutu tercihen **300 KB altında** olmalı (eski bilgisayarlar ve USB bellekten çalıştırma için). Doğrulayıcı büyükse uyarır.
+- İki kullanım şekli: tam görsel slayt (`img`) ve metin + yan görsel slayt (`side`). Örnekler `_SABLON.js` içinde.
+
 ## 5. Ölçme ve değerlendirme
 
 - Programda önerilen araçlardan birini seçin: kontrol listesi, dereceli puanlama anahtarı, gözlem formu, Frayer modeli, öz ve akran değerlendirme.
@@ -61,4 +70,5 @@ Bilişim Defteri'ne ders yazarken uyulacak kurallar. Amaç: her dersin **kazanı
 - [ ] Bulmacada kelime atlanmıyor (sayfada tüm ipuçları görünüyor)
 - [ ] Çalışma kâğıdı yazdırma önizlemesinde düzgün
 - [ ] Kazanım Haritası'nda ders doğru yerde görünüyor
+- [ ] Slayt görseli varsa `alt` metni var, `content/img/<ders-id>/` içinde ve 300 KB altında
 - [ ] Ekipten başka bir kişi dersi okudu ve onayladı

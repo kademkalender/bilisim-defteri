@@ -18,6 +18,10 @@ BD.lesson({
   // Slaytlar. b: hangi süreç bileşenine hizmet ettiği. Son slayt end: true (yazdırmada atlanır).
   // Kullanılabilecek alanlar: emoji, h (başlık), p (paragraf), list (madde listesi),
   // cols ([{h, p}] iki ya da dört kutu), tree (eş aralıklı metin: klasör ağacı, akış)
+  // Görsel (isteğe bağlı, Canva/PowerPoint'ten 1600x900 PNG — bkz. ICERIK-REHBERI.md):
+  //   Tam görsel slayt: { img: "01.png", alt: "Ekran okuyucu için açıklama", b: "a" }
+  //   Metin + yan görsel: mevcut alanlarla birlikte { side: "02.png", alt: "..." }
+  //   Görseller content/img/<ders-id>/ klasöründe durur. alt zorunludur, doğrulayıcı kontrol eder.
   slides: [
     { type: "title", pill: "5. Sınıf · 1. Hafta", h: "Ders Başlığı", p: "Dersin ana sorusu" },
     { emoji: "💡", h: "Kavram", p: "Kısa ve 10-11 yaşına uygun açıklama.", b: "a" },

@@ -92,6 +92,24 @@ function checkLesson(f, L) {
     if (!quizB[k]) err(f, "süreç bileşeni \"" + k + "\" için test sorusu (b alanı) yok");
   });
 
+  // HATA/UYARI: slayt görselleri (img/side) — alt metni zorunlu, dosya var mı, boyut
+  (L.slides || []).forEach(function (s, i) {
+    var file = s.img || s.side;
+    if (!file) return;
+    if (!s.alt || !String(s.alt).trim()) {
+      err(f, "slayt " + (i + 1) + ": img/side kullanılıyor ama alt metni yok");
+    }
+    var imgPath = path.join(ROOT, "content/img", L.id, file);
+    if (!fs.existsSync(imgPath)) {
+      err(f, "slayt " + (i + 1) + ": görsel dosyası bulunamadı (content/img/" + L.id + "/" + file + ")");
+    } else {
+      var size = fs.statSync(imgPath).size;
+      if (size > 300 * 1024) {
+        warn(f, "slayt " + (i + 1) + ": görsel \"" + file + "\" " + Math.round(size / 1024) + " KB (önerilen ≤300 KB)");
+      }
+    }
+  });
+
   // HATA: activities.lab/tahta/kagit dolu mu + b kapsamı + kagit.sheet
   // UYARI: adım sayısı 5-9, lab'da program/menü adımlarında pardus/windows
   var A = L.activities || {};

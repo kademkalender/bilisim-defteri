@@ -11,7 +11,7 @@ BD.lesson({
 
   slides: [
     { type: "title", pill: "5. Sınıf · 7. Hafta", h: "Dosya ve Klasör Yönetimi", p: "Bilgisayarımızı nasıl düzenli tutarız?" },
-    { h: "Bu masaüstünde ödevini bulabilir misin?", tree: "📄 yeni1.odt      📄 asdf.png     📄 ödev son.odt\n📄 yeni2.odt      📄 şarkı.mp3    📄 ödev son SON.odt\n📄 resim.jpg     📄 kopya.odt    📄 belge (3).odt", p: "Dosyalar karışık olunca aradığımızı bulmak zorlaşır." },
+    { img: "ornek-01.png", alt: "Masaüstünde karışık duran, türlerine göre gruplanmamış, üst üste dağılmış dosyalar (geçici örnek görsel)." },
     { emoji: "📄", h: "Dosya nedir?", p: "Bilgisayarda kaydettiğimiz her bilgi bir dosyadır: bir resim, bir şarkı, bir yazı.", b: "a" },
     { emoji: "📁", h: "Klasör nedir?", p: "Klasör, dosyaları düzenli saklamak için kullandığımız bir raftır. Bir klasörün içinde başka klasörler de olabilir.", b: "a" },
     { h: "Dosya uzantıları", p: "Dosya adında noktadan sonra gelen kısma uzantı denir. Uzantı dosyanın türünü gösterir.", cols: [
@@ -21,7 +21,7 @@ BD.lesson({
       { h: "Sıkıştırılmış", p: ".zip" }
     ], b: "a" },
     { h: "Temel işlemler", list: ["Oluştur: yeni klasör aç", "Yeniden adlandır: adını değiştir (F2)", "Kopyala: aynısından bir tane daha yap", "Taşı: yerini değiştir", "Sil: Çöp Kutusu'na gönder", "Ara: adını yazarak bul"], b: "a" },
-    { h: "Düzenli bir klasör örneği", tree: "📁 5A_Ayse\n ├─ 📁 Resimler\n │   └─ 📄 5A_Ayse_Resim1.png\n ├─ 📁 Yazilar\n │   └─ 📄 5A_Ayse_Odev1.odt\n └─ 📁 Sesler", p: "İpucu: Kısa ve anlaşılır isim ver. Boşluk yerine _ kullanabilirsin.", b: "b" },
+    { h: "Düzenli bir klasör örneği", p: "İpucu: Kısa ve anlaşılır isim ver. Boşluk yerine _ kullanabilirsin.", side: "ornek-02.png", alt: "Düzenli bir klasör ağacı: üstte 5A_Ayse ana klasörü, altında Resimler, Yazilar ve Sesler adında üç alt klasör (geçici örnek görsel).", b: "b" },
     { emoji: "🎒", h: "Sıkıştırma nedir?", p: "Kıyafetleri çantaya katlayarak koyarsak daha az yer kaplar. Sıkıştırma da dosyaların kapladığı alanı küçültür ve birçok dosyayı tek bir .zip dosyasında toplar.", b: "c" },
     { h: "Ne zaman sıkıştırmalıyız?", cols: [
       { h: "Sıkıştır 👍", p: "Çok sayıda dosyayı tek seferde göndereceksen, yer azaldıysa, eski dosyaları saklayacaksan." },

@@ -173,6 +173,22 @@ section.block > * + *{margin-top:14px}
 .slide .cols b{color:var(--marker);display:block}
 .slide .bil{position:absolute;left:2.5%;bottom:3%;font-family:var(--mono);font-size:.8em;opacity:.6}
 .slide .num{position:absolute;right:2.5%;bottom:3%;font-weight:800;font-size:1.1em;opacity:.55}
+
+/* Slayt görselleri: tam görsel ve metin + yan görsel */
+.slide.slide-img{padding:0;align-items:center}
+.slide-img-wrap{flex:1;width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.slide-img-wrap img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.slide.slide-img .num,.slide.slide-img .bil{background:rgba(15,27,77,.7);padding:.15em .5em;border-radius:6px}
+.slide.on.slide-split{display:grid;grid-template-columns:3fr 2fr;gap:1.2em;align-items:center}
+.slide.slide-split > * + *{margin-top:0}
+.slide-text{display:flex;flex-direction:column;min-width:0}
+.slide-text > * + *{margin-top:.7em}
+.slide-side-img{width:100%;height:100%;max-height:90%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.slide-side-img img{max-width:100%;max-height:100%;object-fit:contain;display:block;border-radius:10px}
+.img-fallback{display:none;align-items:center;justify-content:center;text-align:center;font-size:.85em;border-radius:10px;padding:.8em;width:100%;height:100%}
+.stage .img-fallback{background:rgba(255,255,255,.12);color:#fff;border:1.5px dashed rgba(255,255,255,.45)}
+.slide-img-wrap.err img,.slide-side-img.err img{display:none}
+.slide-img-wrap.err .img-fallback,.slide-side-img.err .img-fallback{display:flex}
 .deck-bar{display:flex;align-items:center;gap:10px;padding:10px 12px;flex-wrap:wrap;background:var(--surface)}
 .deck-bar button{border:0;background:var(--paper);color:var(--ink);padding:8px 14px;border-radius:10px;font-weight:800}
 .deck-bar button:hover{background:var(--rule)}
@@ -326,6 +342,11 @@ select{font:inherit;padding:6px 10px;border-radius:10px;border:2px solid var(--r
 .sheet .print-cw .c{border:1.5px solid #000}
 .sheet .print-cw .c small{position:absolute;top:0;left:2px;font-size:9px}
 .sheet .foot{margin-top:24px;font-size:.8rem;color:#555;text-align:center}
+.sheet .print-img-wrap{max-width:220px;margin:6px 0}
+.sheet .print-slide-img{width:100%;height:auto;max-height:160px;object-fit:contain;display:block;border-radius:6px}
+.sheet .img-fallback{display:none;background:#e4e4e4;color:#333;border:1.5px dashed #999;height:120px}
+.sheet .print-img-wrap.err .print-slide-img{display:none}
+.sheet .print-img-wrap.err .img-fallback{display:flex}
 .print-bar{max-width:800px;margin:0 auto 14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 
 @media print{
@@ -341,6 +362,8 @@ select{font:inherit;padding:6px 10px;border-radius:10px;border:2px solid var(--r
   .cw{grid-template-columns:1fr}
   .cw-board{--cell:34px}
   .slide .cols{grid-template-columns:1fr}
+  .slide.on.slide-split{grid-template-columns:1fr;grid-template-rows:auto auto}
+  .slide-side-img{max-height:45%}
 }
 @media (max-width:560px){
   .week{grid-template-columns:60px 1fr}

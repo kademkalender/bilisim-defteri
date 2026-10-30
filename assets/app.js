@@ -91,16 +91,31 @@
   }
 
   /* ---------- Ders sayfası ---------- */
-  function slideHtml(s, i) {
+  var imgSrc = function (id, file) { return "content/img/" + id + "/" + file; };
+  var imgBlock = function (id, file, alt, imgClass) {
+    return '<img' + (imgClass ? ' class="' + imgClass + '"' : "") + ' src="' + imgSrc(id, file) + '" alt="' + esc(alt) + '" data-imgfallback>' +
+      '<div class="img-fallback" role="img" aria-label="' + esc(alt) + '">' + esc(alt) + '</div>';
+  };
+  function slideHtml(id, s, i) {
     var num = '<span class="num">' + (i + 1) + '</span>' + (s.b ? '<span class="bil">süreç bileşeni ' + esc(s.b) + '</span>' : "");
     if (s.type === "title") return '<div class="slide title-slide' + (i === 0 ? " on" : "") + '"><span class="pill">' + esc(s.pill) + '</span><h3>' + esc(s.h) + '</h3><p>' + esc(s.p) + '</p>' + num + '</div>';
-    return '<div class="slide' + (i === 0 ? " on" : "") + '">' +
-      (s.emoji ? '<div class="big-emoji" aria-hidden="true">' + s.emoji + '</div>' : "") +
+    if (s.img) return '<div class="slide slide-img' + (i === 0 ? " on" : "") + '"><div class="slide-img-wrap">' + imgBlock(id, s.img, s.alt) + '</div>' + num + '</div>';
+    var body = (s.emoji ? '<div class="big-emoji" aria-hidden="true">' + s.emoji + '</div>' : "") +
       '<h3>' + esc(s.h) + '</h3>' +
       (s.p ? '<p>' + esc(s.p) + '</p>' : "") +
       (s.list ? '<ul>' + s.list.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' : "") +
       (s.cols ? '<div class="cols">' + s.cols.map(function (c) { return '<div><b>' + esc(c.h) + '</b>' + esc(c.p) + '</div>'; }).join("") + '</div>' : "") +
-      (s.tree ? '<div class="tree">' + esc(s.tree) + '</div>' : "") + num + '</div>';
+      (s.tree ? '<div class="tree">' + esc(s.tree) + '</div>' : "");
+    if (s.side) return '<div class="slide slide-split' + (i === 0 ? " on" : "") + '"><div class="slide-text">' + body + '</div><div class="slide-side-img">' + imgBlock(id, s.side, s.alt) + '</div>' + num + '</div>';
+    return '<div class="slide' + (i === 0 ? " on" : "") + '">' + body + num + '</div>';
+  }
+  function bindSlideImages(root) {
+    $$("img[data-imgfallback]", root).forEach(function (img) {
+      img.addEventListener("error", function () {
+        var wrap = img.closest(".slide-img-wrap, .slide-side-img, .print-img-wrap");
+        if (wrap) wrap.classList.add("err");
+      });
+    });
   }
 
   function stepHtml(st, i, done, key) {
@@ -173,7 +188,7 @@
       '</div>' +
 
       '<section class="block" id="b-slayt"><div class="block-h"><div class="n">1</div><div><h2>Slaytı takip et</h2><p>Öğretmenin hangi slaytta olduğunu söyleyecek.</p></div></div>' +
-        '<div class="deck" id="deck"><div class="stage" tabindex="0" aria-label="Ders slaytları">' + L.slides.map(slideHtml).join("") + '</div>' +
+        '<div class="deck" id="deck"><div class="stage" tabindex="0" aria-label="Ders slaytları">' + L.slides.map(function (s, i) { return slideHtml(id, s, i); }).join("") + '</div>' +
         '<div class="deck-bar"><button type="button" id="prev">← Önceki</button><span class="count" id="count">1 / ' + L.slides.length + '</span><button type="button" id="next">Sonraki →</button>' +
         '<div class="dots" id="dots">' + L.slides.map(function (_, i) { return '<button type="button" aria-label="' + (i + 1) + '. slayt" class="' + (i === 0 ? "on" : "") + '" data-i="' + i + '"></button>'; }).join("") + '</div>' +
         '<button type="button" id="fs">⛶ Tam ekran</button></div></div>' +
@@ -221,6 +236,7 @@
 
     // Slaytlar
     var deck = $("#deck"), stage = $(".stage", deck), slides = $$(".slide", deck), dots = $$("#dots button"), cur = 0;
+    bindSlideImages(deck);
     var fit = function () { stage.style.fontSize = Math.max(9, stage.clientWidth / 46) + "px"; };
     fit(); window.addEventListener("resize", fit);
     var go = function (i) {
@@ -461,13 +477,13 @@
   }
 
   /* ---------- Yazdırılabilir çalışma kâğıdı ---------- */
-  var printOpts = store.get("printOpts", { konu: true, defter: true, etkinlik: true, test: true, bulmaca: true, cevap: false });
+  var printOpts = store.get("printOpts", { konu: true, defter: true, etkinlik: true, test: true, bulmaca: true, cevap: false, gorsel: false });
   function viewPrint(id) {
     var L = BD.lessons[id]; if (!L) return viewNotFound();
     var oc = outcome(L.outcome), K = BD.envs.kagit, A = L.activities.kagit;
     var box = function (k, label) { return '<label><input type="checkbox" data-po="' + k + '"' + (printOpts[k] ? " checked" : "") + '> ' + label + '</label>'; };
     var h = '<div class="print-bar no-print"><a class="btn" href="#ders-' + id + '">← Derse dön</a><button type="button" class="btn primary" id="doPrint">🖨️ Yazdır</button>' +
-      box("konu", "Konu özeti") + box("defter", "Deftere yaz") + box("etkinlik", "Etkinlik") + box("test", "Test") + box("bulmaca", "Bulmaca") + box("cevap", "Cevap anahtarı") +
+      box("konu", "Konu özeti") + box("defter", "Deftere yaz") + box("etkinlik", "Etkinlik") + box("test", "Test") + box("bulmaca", "Bulmaca") + box("cevap", "Cevap anahtarı") + box("gorsel", "Slayt görselleri") +
       '<span class="hint" id="printMsg"></span></div>';
     h += '<div class="sheet">';
     h += '<div class="row" style="justify-content:space-between"><b>Bilişim Teknolojileri ve Yazılım · ' + L.grade + '. Sınıf · ' + L.week + '. Hafta</b><span>' + L.outcome + '</span></div>';
@@ -475,10 +491,12 @@
     h += '<p style="margin:0;font-size:.9rem"><b>Öğrenme çıktısı:</b> ' + L.outcome + ' ' + esc(oc ? oc.title : "") + '</p>';
     if (printOpts.konu) {
       h += '<h2>Konu özeti</h2>' + L.slides.filter(function (s) { return s.type !== "title" && !s.end; }).map(function (s) {
-        return '<div class="keep" style="margin-bottom:8px"><b>' + esc(s.h) + '</b>' + (s.p ? ' ' + esc(s.p) : "") +
+        return '<div class="keep" style="margin-bottom:8px"><b>' + esc(s.h || s.alt || "") + '</b>' + (s.p ? ' ' + esc(s.p) : "") +
           (s.list ? '<ul>' + s.list.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' : "") +
           (s.cols ? '<ul>' + s.cols.map(function (c) { return '<li><b>' + esc(c.h) + ':</b> ' + esc(c.p) + '</li>'; }).join("") + '</ul>' : "") +
-          (s.tree ? '<pre style="margin:4px 0;font-family:var(--mono);font-size:.85rem">' + esc(s.tree) + '</pre>' : "") + '</div>';
+          (s.tree ? '<pre style="margin:4px 0;font-family:var(--mono);font-size:.85rem">' + esc(s.tree) + '</pre>' : "") +
+          (printOpts.gorsel && (s.img || s.side) ? '<div class="print-img-wrap">' + imgBlock(L.id, s.img || s.side, s.alt, "print-slide-img") + '</div>' : "") +
+          '</div>';
       }).join("");
       if (L.infoCards) h += '<div class="keep"><b>Bilgi kartları</b><ul>' + L.infoCards.map(function (c) { return '<li><b>' + esc(c.h) + ':</b> ' + esc(c.p) + '</li>'; }).join("") + '</ul></div>';
     }
@@ -513,6 +531,7 @@
     return h;
   }
   function bindPrint(id) {
+    bindSlideImages($(".sheet"));
     $("#doPrint").onclick = function () { try { window.print(); } catch (e) {} setTimeout(function () { $("#printMsg").textContent = "Yazdırma penceresi açılmadıysa: Ctrl + P"; }, 600); };
     $$("[data-po]").forEach(function (c) { c.onchange = function () { printOpts[c.getAttribute("data-po")] = c.checked; store.set("printOpts", printOpts); render(true); }; });
   }
