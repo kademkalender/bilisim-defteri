@@ -34,6 +34,12 @@ Ayrıntılar: `README.md` (yapı), `ICERIK-REHBERI.md` (ders yazma kuralları). 
 - Büyük-küçük harf dönüşümlerinde `toLocaleUpperCase("tr")` ve `toLocaleLowerCase("tr")` kullan (İ/ı sorunu).
 - Kod yorumları Türkçe olabilir. Değişken adları İngilizce ya da Türkçe karakter içermeyen Türkçe olabilir.
 
+## Git güvenliği
+
+- Şu komutları benden açıkça izin almadan ASLA çalıştırma: `git reset --hard`, `git checkout -- <dosya>`, `git restore`, `git clean`, `git stash drop`, `git push --force`, `git rebase`, `git branch -D`, `rm -rf`.
+- Bir şeyi test etmek için geçici değişiklik gerekiyorsa önce commit at ya da işi `/tmp` altındaki geçici bir kopyada yap.
+- Commit edilmemiş değişiklik varken riskli bir işlem yapman gerekiyorsa önce bana sor.
+
 ## Bir değişiklikten sonra
 
 - `index.html` dosyasını tarayıcıda `file://` ile aç ve konsolda hata olmadığını kontrol et.
