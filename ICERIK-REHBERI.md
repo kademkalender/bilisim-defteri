@@ -49,7 +49,7 @@ Bilişim Defteri'ne ders yazarken uyulacak kurallar. Amaç: her dersin **kazanı
 ## 6. Hassas konular
 
 - Ekran süresi, bağımlılık, kişisel veri gibi konularda öğrenciyi kendi bilgisini paylaşmaya zorlamayın.
-- Gerçek kişi, marka ya da uygulama adı yerine genel ifadeler kullanın ("sesli asistan", "görüntülü görüşme uygulaması").
+- Ticari marka ve uygulama adları yerine genel ifadeler kullanın ("sesli asistan", "görüntülü görüşme uygulaması"). Bilim ve teknoloji tarihindeki kişiler anılabilir.
 - Görsel ve metinleri başka sitelerden kopyalamayın. Her içerik ekip tarafından üretilir.
 
 ## 7. Yayınlamadan önce kontrol listesi

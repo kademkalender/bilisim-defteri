@@ -8,6 +8,7 @@
    KURAL: Bu dosyaya yalnızca programdan birebir alınan bilgiler yazılır.
    Her ders bir öğrenme çıktısına (code) ve onun süreç bileşenlerine (a, b, c...) bağlanır.
    Öğrenme çıktısı girilmemiş temalar sitede "Kazanımlar eklenecek" olarak görünür.
+   hours: yalnızca programdan doğrulanmışsa yazılır, bilinmiyorsa boş bırakılır.
    ===================================================================== */
 window.BD = window.BD || { lessons: {} };
 BD.lesson = function (o) { BD.lessons[o.id] = o; };
