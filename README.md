@@ -83,6 +83,23 @@ bilisim-defteri/
 3. `index.html` içindeki "Dersler" bölümüne `<script src="content/lessons/DOSYA.js"></script>` satırını ekleyin.
 4. `content/plan.js` içinde ilgili haftanın `lesson` alanına ders id'sini yazın.
 5. Siteyi açıp üç sınıf ortamını da deneyin ve çalışma kâğıdını yazdırma önizlemesinde kontrol edin.
+6. `node tools/dogrula.js` komutunu çalıştırıp hata çıkmadığından emin olun.
+
+---
+
+## İçeriği doğrulama
+
+```
+node tools/dogrula.js
+```
+
+`content/program.js`, `content/plan.js` ve `content/lessons/` içindeki ders dosyalarını tarayıcıdaki gibi sırayla yükler (npm paketi kullanmaz, sitenin parçası değildir) ve `ICERIK-REHBERI.md` kurallarına göre kontrol eder.
+
+**HATA (kırmızı, çıkış kodu 1):** outcome kodu `program.js`'te yok, bir süreç bileşeni için slayt/defter/test eksik, `lab`/`tahta`/`kagit` etkinliklerinden biri boş ya da covers'ı kapsamıyor, `kagit` etkinliğinde `sheet` yok, test cevap indeksi geçersiz, bulmacaya yerleşmeyen kelime var, `plan.js`'teki bir ders id'si yok ya da `index.html`'e eklenmemiş, dosya adı ders id'siyle uyuşmuyor.
+
+**UYARI (sarı):** `lab` etkinliğinde program/menü açma geçen bir adımda Pardus/Windows yönergesi yok, ders akışı toplamı 80 dk değil, slayt/defter/adım/test/bulmaca sayıları `ICERIK-REHBERI.md` §4'teki önerilen aralığın dışında.
+
+`_SABLON.js` taranmaz.
 
 ---
 
