@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bilişim Defteri</title>
+<meta name="description" content="5. ve 6. sınıf Bilişim Teknolojileri ve Yazılım dersi için Maarif Modeli öğrenme çıktılarına bağlı, internetsiz de çalışan ders defteri.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="#home"><span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>Bilişim Defteri</a>
+    <div class="search" role="search">
+      <label for="q" class="sr">Ders ara</label>
+      <input id="q" type="search" placeholder="🔍 Ders ya da kazanım ara…" autocomplete="off">
+      <div class="results" id="results"></div>
+    </div>
+    <nav aria-label="Ana menü">
+      <a class="chip-btn" href="#sinif-5">5. Sınıf</a>
+      <a class="chip-btn" href="#sinif-6">6. Sınıf</a>
+      <a class="chip-btn" href="#kazanimlar">Kazanımlar</a>
+      <a class="chip-btn" href="#ogretmen">Öğretmen Masası</a>
+      <button class="chip-btn" id="bigText" aria-pressed="false" title="Etkileşimli tahta ve projeksiyon için yazıyı büyüt">A+</button>
+    </nav>
+  </div>
+</header>
+<main id="app" aria-live="polite"><noscript>Bu sitenin çalışması için tarayıcıda JavaScript açık olmalı.</noscript></main>
+<footer>Bilişim Defteri · YTÜ BÖTE stajyerleri · Öğrenme çıktıları MEB Türkiye Yüzyılı Maarif Modeli Bilişim Teknolojileri ve Yazılım programından alınmıştır</footer>
+
+<!-- 1) Program ve plan -->
+<script src="content/program.js"></script>
+<script src="content/plan.js"></script>
+<!-- 2) Dersler: yeni ders eklerken buraya bir satır ekleyin -->
+<script src="content/lessons/5-1-5-bilgisayar-sistemleri.js"></script>
+<script src="content/lessons/5-1-6-dosya-klasor.js"></script>
+<script src="content/lessons/6-1-1-yenilikci-bt.js"></script>
+<!-- 3) Uygulama -->
+<script src="assets/crossword.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
