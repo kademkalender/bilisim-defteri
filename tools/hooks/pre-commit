@@ -1,0 +1,20 @@
+#!/bin/sh
+# Bilişim Defteri — commit öncesi içerik doğrulama
+# Elle çalıştırmayın: tools/kur.sh (Pardus/Linux/macOS) ya da tools/kur.bat (Windows) ile kurulur.
+
+ROOT="$(git rev-parse --show-toplevel)" || exit 1
+cd "$ROOT" || exit 1
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "UYARI: node bulunamadı, içerik doğrulama (tools/dogrula.js) atlandı." >&2
+  exit 0
+fi
+
+node tools/dogrula.js
+status=$?
+if [ "$status" -ne 0 ]; then
+  echo "" >&2
+  echo "Commit durduruldu: node tools/dogrula.js HATA buldu. Düzeltip tekrar deneyin." >&2
+  exit 1
+fi
+exit 0

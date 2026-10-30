@@ -12,6 +12,8 @@ Kurulum yok. `index.html` dosyasına çift tıklayın, site tarayıcıda açıl�
 
 Okula götürmek için klasörün tamamını USB belleğe kopyalayın ve okul bilgisayarında `index.html` dosyasını açın.
 
+**Ekibe katılınca bir kez** `tools/kur.sh` (Pardus/Linux/macOS) ya da `tools/kur.bat` (Windows) çalıştırın. Bundan sonra her commit öncesi `node tools/dogrula.js` otomatik çalışır, hata varsa commit durur.
+
 ---
 
 ## Temel ilkeler

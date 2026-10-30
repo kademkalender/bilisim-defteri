@@ -1,0 +1,2 @@
+tools/hooks/pre-commit text eol=lf
+tools/kur.sh text eol=lf
