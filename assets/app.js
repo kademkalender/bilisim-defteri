@@ -20,8 +20,6 @@
   var saveSettings = function () { store.set("settings", S); };
   var norm = function (s) { return String(s).toLocaleLowerCase("tr").replace(/ı/g, "i").normalize("NFD").replace(/[̀-ͯ]/g, ""); };
 
-  BD.lesson = BD.lesson || function (o) { BD.lessons[o.id] = o; };
-
   // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>. lessonId yoksa tüm dersler.
   // Ayarlar (settings, big, printOpts) bu öneklerle başlamadığı için hiç dokunulmaz.
   function clearProgress(lessonId) {
@@ -47,6 +45,7 @@
     }
     return null;
   }
+  function lessonById(id) { return Object.prototype.hasOwnProperty.call(BD.lessons, id) ? BD.lessons[id] : null; }
   function theme(g, no) { return BD.program[g].themes[no - 1]; }
   function planWeek(g, w) { return (BD.plan[g] || []).filter(function (x) { return x.w === w; })[0] || null; }
   function lessonsFor(code) { return Object.keys(BD.lessons).map(function (k) { return BD.lessons[k]; }).filter(function (l) { return l.outcome === code; }); }
@@ -174,7 +173,7 @@
   }
 
   function viewLesson(id) {
-    var L = BD.lessons[id];
+    var L = lessonById(id);
     if (!L) return viewNotFound();
     var oc = outcome(L.outcome), T = theme(L.grade, L.theme);
     var nbDone = store.get("nb:" + id, []);
@@ -255,7 +254,7 @@
     var deck = $("#deck"), stage = $(".stage", deck), slides = $$(".slide", deck), dots = $$("#dots button"), cur = 0;
     bindSlideImages(deck);
     var fit = function () { stage.style.fontSize = Math.max(9, stage.clientWidth / 46) + "px"; };
-    fit(); window.addEventListener("resize", fit);
+    fit(); window.onresize = fit;
     var go = function (i) {
       cur = Math.max(0, Math.min(slides.length - 1, i));
       slides.forEach(function (s, k) { s.classList.toggle("on", k === cur); });
@@ -272,7 +271,7 @@
       setTimeout(fit, 60);
     };
     $("#fs").onclick = function () { setFs(!deck.classList.contains("fs")); };
-    document.addEventListener("fullscreenchange", function () { if (!document.fullscreenElement && deck.classList.contains("fs")) setFs(false); });
+    document.onfullscreenchange = function () { if (!document.fullscreenElement && deck.classList.contains("fs")) setFs(false); };
     deck.addEventListener("keydown", function (e) {
       if (e.target.tagName === "BUTTON") return; // Boşluk/Enter düğmenin kendi işini yapsın
       if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); go(cur + 1); }
@@ -513,8 +512,8 @@
   /* ---------- Yazdırılabilir çalışma kâğıdı ---------- */
   var printOpts = store.get("printOpts", { konu: true, defter: true, etkinlik: true, test: true, bulmaca: true, cevap: false, gorsel: false });
   function viewPrint(id) {
-    var L = BD.lessons[id]; if (!L) return viewNotFound();
-    var oc = outcome(L.outcome), K = BD.envs.kagit, A = L.activities.kagit;
+    var L = lessonById(id); if (!L) return viewNotFound();
+    var oc = outcome(L.outcome), A = L.activities.kagit;
     var box = function (k, label) { return '<label><input type="checkbox" data-po="' + k + '"' + (printOpts[k] ? " checked" : "") + '> ' + label + '</label>'; };
     var h = '<div class="print-bar no-print"><a class="btn" href="#ders-' + id + '">← Derse dön</a><button type="button" class="btn primary" id="doPrint">🖨️ Yazdır</button>' +
       box("konu", "Konu özeti") + box("defter", "Deftere yaz") + box("etkinlik", "Etkinlik") + box("test", "Test") + box("bulmaca", "Bulmaca") + box("cevap", "Cevap anahtarı") + box("gorsel", "Slayt görselleri") +
@@ -548,8 +547,9 @@
       });
     }
     if (printOpts.test) h += '<h2>Kendimi değerlendiriyorum</h2>' + L.quiz.map(function (q, i) { return '<div class="q-print keep"><b>' + (i + 1) + '. ' + esc(q.q) + '</b><br>' + q.o.map(function (o, oi) { return '<span>' + String.fromCharCode(65 + oi) + ') ' + esc(o) + '</span>'; }).join("") + '</div>'; }).join("");
-    if (printOpts.bulmaca && L.crossword) {
-      var X = window.buildCrossword(L.crossword), nums = {}, grid = "";
+    var X = L.crossword && L.crossword.length ? window.buildCrossword(L.crossword) : null;
+    if (printOpts.bulmaca && X) {
+      var nums = {}, grid = "";
       X.words.forEach(function (w) { nums[w.r + "," + w.c] = w.n; });
       for (var r = 0; r < X.rows; r++) for (var c = 0; c < X.cols; c++) { var k = r + "," + c; grid += X.cells[k] ? '<div class="c">' + (nums[k] ? '<small>' + nums[k] + '</small>' : "") + '</div>' : "<div></div>"; }
       var cl = function (d) { return X.words.filter(function (w) { return w.dir === d; }).sort(function (a, b) { return a.n - b.n; }).map(function (w) { return '<li>' + w.n + '. ' + esc(w.clue) + ' (' + w.a.length + ')</li>'; }).join(""); };
@@ -558,7 +558,7 @@
     }
     if (printOpts.cevap) {
       h += '<h2>Cevap anahtarı (öğretmen için)</h2><p style="margin:0">' + L.quiz.map(function (q, i) { return (i + 1) + ") " + String.fromCharCode(65 + q.a); }).join(" · ") + '</p>';
-      if (L.crossword) { var X2 = window.buildCrossword(L.crossword); h += '<p style="margin:6px 0 0">Bulmaca: ' + X2.words.slice().sort(function (a, b) { return a.n - b.n || (a.dir > b.dir ? 1 : -1); }).map(function (w) { return w.n + (w.dir === "a" ? "→" : "↓") + " " + w.a; }).join(", ") + '</p>'; }
+      if (X) { h += '<p style="margin:6px 0 0">Bulmaca: ' + X.words.slice().sort(function (a, b) { return a.n - b.n || (a.dir > b.dir ? 1 : -1); }).map(function (w) { return w.n + (w.dir === "a" ? "→" : "↓") + " " + w.a; }).join(", ") + '</p>'; }
       if (L.sort) h += '<p style="margin:6px 0 0">Sınıflandırma: ' + L.sort.cats.map(function (c, ci) { return '<b>' + esc(c) + ':</b> ' + L.sort.items.filter(function (x) { return x.c === ci; }).map(function (x) { return esc(x.t); }).join(", "); }).join(" · ") + '</p>';
     }
     h += '<div class="foot">Bilişim Defteri · MEB Türkiye Yüzyılı Maarif Modeli BTY programına göre hazırlanmıştır.</div></div>';
@@ -594,8 +594,8 @@
     var h = (location.hash || "#home").slice(1), app = $("#app"), m;
     if (h === "home" || h === "") app.innerHTML = viewHome();
     else if ((m = h.match(/^sinif-(5|6)$/))) app.innerHTML = viewGrade(m[1]);
-    else if ((m = h.match(/^ders-(.+)$/))) { app.innerHTML = viewLesson(m[1]); if (BD.lessons[m[1]]) bindLesson(m[1]); }
-    else if ((m = h.match(/^yazdir-(.+)$/))) { app.innerHTML = viewPrint(m[1]); if (BD.lessons[m[1]]) bindPrint(m[1]); }
+    else if ((m = h.match(/^ders-(.+)$/))) { app.innerHTML = viewLesson(m[1]); if (lessonById(m[1])) bindLesson(m[1]); }
+    else if ((m = h.match(/^yazdir-(.+)$/))) { app.innerHTML = viewPrint(m[1]); if (lessonById(m[1])) bindPrint(m[1]); }
     else if (h === "kazanimlar") app.innerHTML = viewMap();
     else if (h === "ogretmen") { app.innerHTML = viewTeacher(); bindTeacher(); }
     else app.innerHTML = viewNotFound();
