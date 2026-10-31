@@ -98,7 +98,7 @@ node tools/dogrula.js
 
 `content/program.js`, `content/plan.js` ve `content/lessons/` içindeki ders dosyalarını tarayıcıdaki gibi sırayla yükler (npm paketi kullanmaz, sitenin parçası değildir) ve `ICERIK-REHBERI.md` kurallarına göre kontrol eder.
 
-**HATA (kırmızı, çıkış kodu 1):** outcome kodu `program.js`'te yok, bir süreç bileşeni için slayt/defter/test eksik, `lab`/`tahta`/`kagit` etkinliklerinden biri boş ya da covers'ı kapsamıyor, `kagit` etkinliğinde `sheet` yok, test cevap indeksi geçersiz, bulmacaya yerleşmeyen kelime var, `plan.js`'teki bir ders id'si yok ya da `index.html`'e eklenmemiş, dosya adı ders id'siyle uyuşmuyor.
+**HATA (kırmızı, çıkış kodu 1):** outcome kodu `program.js`'te yok, bir süreç bileşeni için slayt/defter/test eksik, `lab`/`tahta`/`kagit` etkinliklerinden biri boş ya da covers'ı kapsamıyor, `kagit` etkinliğinde `sheet` yok, test cevap indeksi geçersiz, sınıflandırma kartları karıştırılınca orijinal sırada kalıyor, bulmaca kelimesi temizlenince harf kaybediyor (boşluk, tire, tanınmayan harf), bulmacaya yerleşmeyen kelime var, ızgarada ipucusuz bir harf dizisi oluşmuş, `plan.js`'teki bir ders id'si yok ya da `index.html`'e eklenmemiş, dosya adı ders id'siyle uyuşmuyor.
 
 **UYARI (sarı):** `lab` etkinliğinde program/menü açma geçen bir adımda Pardus/Windows yönergesi yok, ders akışı toplamı 80 dk değil, slayt/defter/adım/test/bulmaca sayıları `ICERIK-REHBERI.md` §4'teki önerilen aralığın dışında.
 

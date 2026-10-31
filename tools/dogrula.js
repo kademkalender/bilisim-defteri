@@ -2,7 +2,7 @@
 /* =====================================================================
    Bilişim Defteri — içerik doğrulama betiği
    Sitenin parçası değildir, npm paketi kullanmaz. Node'un yerleşik
-   vm modülüyle program.js, plan.js, crossword.js ve content/lessons/
+   vm modülüyle program.js, plan.js, crossword.js, shuffle.js ve content/lessons/
    altındaki ders dosyalarını tarayıcıdaki gibi sırayla yükler ve
    ICERIK-REHBERI.md kurallarına göre kontrol eder.
 
@@ -35,6 +35,7 @@ function loadFile(relPath) {
 loadFile("content/program.js");
 loadFile("content/plan.js");
 loadFile("assets/crossword.js");
+loadFile("assets/shuffle.js");
 
 var lessonsDir = path.join(ROOT, "content/lessons");
 var lessonFiles = fs.readdirSync(lessonsDir).filter(function (f) {
@@ -145,12 +146,42 @@ function checkLesson(f, L) {
     }
   });
 
-  // HATA: bulmacada yerleşmeyen kelime var mı
+  // HATA: sınıflandırma kartları karışmıyorsa oyun cevabı kendisi gösterir
+  if (L.sort && L.sort.items && L.sort.items.length) {
+    var order = sandbox.shuffleOrder(L.sort.items.length, L.id);
+    if (order.every(function (v, i) { return v === i; })) {
+      err(f, "sınıflandırma kartları karıştırılınca orijinal sırada kalıyor (kart sayısını ya da sırasını değiştirin)");
+    }
+  }
+
   if (L.crossword && L.crossword.length) {
+    // HATA: temizlenince harf kaybeden kelime (boşluk, tire, tanınmayan harf)
+    L.crossword.forEach(function (e) {
+      var raw = String(e.a).normalize("NFC"), clean = sandbox.cwClean(raw);
+      if (clean.length !== raw.length) {
+        err(f, "bulmaca kelimesi \"" + e.a + "\" bulmacaya \"" + clean + "\" olarak giriyor (boşluk, tire ya da tanınmayan harf var)");
+      }
+    });
+
+    // HATA: bulmacada yerleşmeyen kelime var mı
     var built = sandbox.buildCrossword(L.crossword);
     if (built.skipped && built.skipped.length) {
       err(f, "bulmacaya yerleşmeyen kelime(ler): " + built.skipped.map(function (w) { return w.a; }).join(", "));
     }
+
+    // HATA: ızgaradaki 2+ harflik her dizi yerleştirilmiş bir kelime olmalı (ipucusuz harf dizisi olmasın)
+    var placedKeys = built.words.map(function (w) { return w.dir + ":" + w.r + "," + w.c + ":" + w.a; });
+    ["a", "d"].forEach(function (dir) {
+      var dr = dir === "d" ? 1 : 0, dc = dir === "a" ? 1 : 0;
+      for (var r = 0; r < built.rows; r++) for (var c = 0; c < built.cols; c++) {
+        if (!built.cells[r + "," + c] || built.cells[(r - dr) + "," + (c - dc)]) continue;
+        var run = "", rr = r, cc = c;
+        while (built.cells[rr + "," + cc]) { run += built.cells[rr + "," + cc]; rr += dr; cc += dc; }
+        if (run.length > 1 && placedKeys.indexOf(dir + ":" + r + "," + c + ":" + run) < 0) {
+          err(f, "bulmaca ızgarasında ipucusuz harf dizisi: " + run + " (" + (dir === "a" ? "soldan sağa" : "yukarıdan aşağıya") + ", satır " + (r + 1) + " sütun " + (c + 1) + ")");
+        }
+      }
+    });
   }
 
   // UYARI: ICERIK-REHBERI.md §4 ölçüleri
