@@ -125,6 +125,7 @@ node tools/dogrula.js
 - [ ] Rehber öğretmenin yıllık planına göre hafta düzeni
 - [ ] Slaytlara görsel ekleme desteği (Canva / PowerPoint'ten PNG)
 - [ ] Yönetim paneli (Supabase): ders formu, slayt yükleme, bulmaca önizleme. Panel içeriği yine bu `.js` biçiminde dışa aktarabilmeli, böylece internetsiz kullanım bozulmaz.
+- [ ] Kayıtlı "Yaptım" ve defter işaretleri adım sırasına göre tutuluyor. Ders içeriğinde adım ya da madde eklenip silinince işaretler kayabilir. Adımlara sabit kimlik vermek ya da içerik değişince kayıtları sıfırlamak gerekebilir.
 - [ ] Gerçek sınıfta kullanılabilirlik testi (öğrenci gözlemi + öğretmen görüşmesi)
 
 ---

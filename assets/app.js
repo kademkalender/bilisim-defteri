@@ -22,6 +22,22 @@
 
   BD.lesson = BD.lesson || function (o) { BD.lessons[o.id] = o; };
 
+  // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>. lessonId yoksa tüm dersler.
+  // Ayarlar (settings, big, printOpts) bu öneklerle başlamadığı için hiç dokunulmaz.
+  function clearProgress(lessonId) {
+    var keys = [];
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i) || "", m = /^bd:(act|nb|cw):(.+)$/.exec(k);
+        if (!m) continue;
+        var id = m[1] === "act" ? m[2].replace(/:[^:]*$/, "") : m[2];
+        if (!lessonId || id === lessonId) keys.push(k);
+      }
+      keys.forEach(function (k) { localStorage.removeItem(k); });
+    } catch (e) {}
+    return keys.length;
+  }
+
   function outcome(code) {
     var g = code.split(".")[1];
     var th = (BD.program[g] || { themes: [] }).themes;
@@ -223,6 +239,7 @@
         '<h4>Ölçme ve değerlendirme: ' + esc(L.assessment.tool) + '</h4><ul>' + L.assessment.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' +
         '<h4>Notlar</h4><ul>' + L.teacherNotes.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' +
         '<p><a class="btn" href="#yazdir-' + id + '">🖨️ Çalışma kâğıdı ve cevap anahtarı</a></p>' +
+        '<p class="row"><button type="button" class="btn" id="resetLesson">🧹 Bu dersin ilerlemesini sıfırla</button><span class="hint" id="resetMsg" role="status"></span></p>' +
       '</details>' +
       '<div class="pager"><a class="btn" href="#sinif-' + L.grade + '">← ' + L.grade + '. Sınıf dersleri</a><a class="btn" href="#home">Ana sayfa</a></div>';
   }
@@ -292,6 +309,14 @@
     });
 
     if (L.crossword && L.crossword.length) bindCrossword(L);
+
+    $("#resetLesson").onclick = function () {
+      var n = clearProgress(id), y = window.scrollY;
+      render(true); window.scrollTo(0, y);
+      $(".teach").open = true;
+      $("#resetMsg").textContent = n + " kayıt silindi.";
+      $("#resetLesson").focus();
+    };
   }
 
   function bindActivity(L) {
@@ -460,6 +485,10 @@
         '<div class="setting"><h3>🏫 Sınıf ortamı</h3><div class="opt-group">' + Object.keys(BD.envs).map(function (k) { return optBtn("env", k, BD.envs[k].icon + " " + BD.envs[k].name, BD.envs[k].desc); }).join("") + '</div></div>' +
         '<div class="setting"><h3>🐧 Bilgisayarlardaki işletim sistemi</h3><div class="opt-group">' + optBtn("os", "pardus", "Pardus", "MEB okullarında ve etkileşimli tahtalarda (ETAP) yaygın") + optBtn("os", "windows", "Windows", "Etkinlik yönergeleri Windows menülerine göre yazılır") + '</div></div>' +
         '<div class="setting"><h3>🌐 İnternet bağlantısı</h3><div class="opt-group">' + optBtn("internet", "true", "İnternet var", "İsteğe bağlı çevrim içi araştırma önerileri gösterilir") + optBtn("internet", "false", "İnternet yok / çok yavaş", "Sadece site içindeki bilgi kartları kullanılır") + '</div></div>' +
+        '<div class="setting"><h3>🧹 Öğrenci ilerlemesi</h3><p class="hint" style="margin:0">Bu bilgisayarda kayıtlı "Yaptım" işaretleri, defter kutuları ve bulmaca harfleri. Bilgisayarı başka bir sınıf kullanacaksa silin. Ayarlarınız silinmez.</p>' +
+          '<div class="row"><button type="button" class="btn" id="clrAsk">Bu bilgisayardaki öğrenci ilerlemesini sil</button><span class="hint" id="clrMsg" role="status"></span></div>' +
+          '<div class="confirm-box" id="clrBox" hidden><p style="margin:0 0 8px"><b>Emin misiniz?</b> Bu bilgisayardaki bütün derslerin öğrenci ilerlemesi silinecek. Bu işlem geri alınamaz.</p>' +
+          '<div class="row"><button type="button" class="btn primary" id="clrYes">Evet, sil</button><button type="button" class="btn" id="clrNo">Vazgeç</button></div></div></div>' +
       '</div>' +
       '<section><h2 style="margin-bottom:10px">🖨️ Çalışma kâğıtları</h2><p class="hint" style="margin:0 0 10px">Her ders için yazdırılabilir sayfa: konu özeti, deftere yaz, bilgisayarsız etkinlik, test, boş bulmaca ve isteğe bağlı cevap anahtarı.</p><div class="grid-auto">' +
         lessonList.map(function (l) { return '<a class="card" style="text-decoration:none;color:inherit" href="#yazdir-' + l.id + '">' + gTag(l.grade) + ' <span class="tag code">' + l.outcome + '</span><div style="margin-top:6px"><b>' + esc(l.title) + '</b></div><div class="hint">' + l.week + '. hafta</div></a>'; }).join("") +
@@ -467,6 +496,10 @@
       '<section><h2 style="margin-bottom:10px">📚 Diğer</h2><div class="grid-auto"><a class="card" style="text-decoration:none;color:inherit" href="#kazanimlar"><b>🎯 Kazanım Haritası</b><div class="hint">Hangi süreç bileşeni hangi derste işleniyor</div></a></div></section>';
   }
   function bindTeacher() {
+    var box = $("#clrBox"), ask = $("#clrAsk"), clrMsg = $("#clrMsg");
+    ask.onclick = function () { box.hidden = false; clrMsg.textContent = ""; $("#clrNo").focus(); };
+    $("#clrNo").onclick = function () { box.hidden = true; ask.focus(); };
+    $("#clrYes").onclick = function () { var n = clearProgress(); box.hidden = true; clrMsg.textContent = n + " kayıt silindi."; ask.focus(); };
     $("#weekSel").onchange = function (e) { S.week = +e.target.value; saveSettings(); };
     $$("[data-set]").forEach(function (b) {
       b.onclick = function () {

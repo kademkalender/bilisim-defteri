@@ -318,6 +318,7 @@ details.teach h4{margin:14px 0 6px}
 .setting{display:grid;gap:8px}
 .setting + .setting{margin-top:16px}
 .setting h3{font-size:1.05rem}
+.confirm-box{padding:12px;border:2px solid var(--bad);border-radius:12px;background:var(--bad-soft)}
 .opt-group{display:flex;gap:8px;flex-wrap:wrap}
 .opt-group button{text-align:left;border:2px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:12px;padding:10px 14px;font-weight:700;max-width:280px}
 .opt-group button small{display:block;font-weight:400;color:var(--muted);font-size:.84rem}
