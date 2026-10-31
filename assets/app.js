@@ -273,7 +273,7 @@
     $("#fs").onclick = function () { setFs(!deck.classList.contains("fs")); };
     document.onfullscreenchange = function () { if (!document.fullscreenElement && deck.classList.contains("fs")) setFs(false); };
     deck.addEventListener("keydown", function (e) {
-      if (e.target.tagName === "BUTTON") return; // Boşluk/Enter düğmenin kendi işini yapsın
+      if (e.key === " " && e.target.tagName === "BUTTON") return; // Boşluk düğmenin kendisine bassın; oklar ve Esc çalışmaya devam etsin
       if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); go(cur + 1); }
       if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); go(cur - 1); }
       if (e.key === "Escape" && deck.classList.contains("fs")) setFs(false);
