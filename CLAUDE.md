@@ -34,6 +34,22 @@ Ayrıntılar: `README.md` (yapı), `ICERIK-REHBERI.md` (ders yazma kuralları). 
 - Büyük-küçük harf dönüşümlerinde `toLocaleUpperCase("tr")` ve `toLocaleLowerCase("tr")` kullan (İ/ı sorunu).
 - Kod yorumları Türkçe olabilir. Değişken adları İngilizce ya da Türkçe karakter içermeyen Türkçe olabilir.
 
+## Ponytail ile çalışma
+
+- Ponytail'in "az kod" ilkesi bu projede de geçerli. Ama şu özellikler bilinçli gereksinimdir, fazlalık sayılmaz ve kesilmez:
+  - üç sınıf ortamı (`lab`, `tahta`, `kagit`)
+  - Pardus ve Windows yönergeleri
+  - yazdırılabilir çalışma kâğıdı
+  - internetsiz çalışma
+  - Chrome 80 uyumu
+  - kazanım haritası
+  - bulmaca oluşturucunun çoklu denemesi
+  - erişilebilirlik (alt metin, klavye, büyük yazı modu)
+  - `tools/dogrula.js` kontrolleri
+- Testler sadece Node'un yerleşik `node:test` modülüyle `tools/` altına yazılır. npm paketi eklenmez.
+- `shortcut:` yorumları Türkçe yazılabilir.
+- Bir Ponytail önerisi bu dosyadaki değişmez kurallarla çakışırsa bu dosya kazanır.
+
 ## Git güvenliği
 
 - Şu komutları benden açıkça izin almadan ASLA çalıştırma: `git reset --hard`, `git checkout -- <dosya>`, `git restore`, `git clean`, `git stash drop`, `git push --force`, `git rebase`, `git branch -D`, `rm -rf`.
