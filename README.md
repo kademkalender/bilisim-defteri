@@ -37,7 +37,7 @@ Bu ilkelere göre:
 - **İnternet gerekmez.** Tüm içerik sitenin içindedir. Dış font, dış kütüphane, video bağlantısı yoktur. Araştırma etkinlikleri için dersin içinde **bilgi kartları** vardır.
 - **Bilgisayar gerekmez.** Her dersin bir **yazdırılabilir çalışma kâğıdı** vardır: konu özeti, deftere yaz, bilgisayarsız etkinlik, test, boş bulmaca ve cevap anahtarı. Programdaki "teknolojik altyapı yoksa basılı kaynaklar kullanılabilir" notuna dayanır.
 - **Pardus öncelikli.** MEB okullarındaki bilgisayarlar ve etkileşimli tahtalar (ETAP) çoğunlukla Pardus kullanır. Yönergeler LibreOffice gibi Pardus'ta hazır gelen programlara göre yazılır.
-- **Eski bilgisayarlarda çalışır.** Toplam boyut birkaç yüz KB'dir. Chrome 80+, Firefox 78+ hedeflenir. Yeni CSS özellikleri (color-mix, :has, container query) kullanılmaz.
+- **Eski bilgisayarlarda çalışır.** Toplam boyut birkaç yüz KB'dir. Chrome 84+, Firefox 78+ hedeflenir. Yeni CSS özellikleri (color-mix, :has, container query) kullanılmaz.
 - **Etkileşimli tahtaya uygun.** Dokunmayla oynanan oyunlar (sürükle-bırak yerine dokun-yerleştir), tam ekran slayt ve büyük yazı (A+) modu vardır.
 
 ### 3. Dersteki akışa uygun

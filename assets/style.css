@@ -2,7 +2,7 @@
    Tasarım ilkeleri:
    - Sadece açık tema (laboratuvar, akıllı tahta, projeksiyon)
    - Dış font yok: Pardus ve Windows'ta hazır gelen sistem fontları
-   - Eski tarayıcı dostu: color-mix, :has, container query kullanılmıyor (Chrome 80+, Firefox 78+)
+   - Eski tarayıcı dostu: color-mix, :has, container query kullanılmıyor (Chrome 84+, Firefox 78+)
    Yerleşim: üstte sabit başlık, altında tek sütun içerik. Ders sayfası: Slayt → Deftere Yaz → Etkinlik → Test → Bulmaca */
 :root{
   --paper:#eef2fb;
@@ -154,7 +154,7 @@ section.block > * + *{margin-top:14px}
 /* Slayt */
 .deck{background:var(--surface);border-radius:var(--radius);border:2px solid var(--rule);overflow:hidden}
 .stage{position:relative;background:#0f1b4d;color:#fff;overflow:hidden;padding-top:56.25%}
-.deck.fs{position:fixed;inset:0;z-index:100;border-radius:0;border:0;display:flex;flex-direction:column}
+.deck.fs{position:fixed;top:0;right:0;bottom:0;left:0;z-index:100;border-radius:0;border:0;display:flex;flex-direction:column}
 .deck.fs .stage{flex:1;padding-top:0}
 .slide{position:absolute;top:0;left:0;right:0;bottom:0;padding:5% 7%;display:none;flex-direction:column;justify-content:center}
 .slide.on{display:flex}

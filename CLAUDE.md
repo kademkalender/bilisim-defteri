@@ -9,7 +9,8 @@ Ayrıntılar: `README.md` (yapı), `ICERIK-REHBERI.md` (ders yazma kuralları). 
 1. **İnternetsiz çalışmalı.** Site `index.html` dosyasına çift tıklanarak (`file://`) açılır. Bu yüzden:
    - `fetch`, ES modülleri (`import`/`export`), dış CDN, dış font, dış görsel yok.
    - İçerik `.json` değil, `BD.lesson({...})` çağıran `.js` dosyalarıdır ve `index.html`'e `<script>` ile eklenir.
-2. **Eski tarayıcı.** Hedef Chrome 80+ ve Firefox 78+ (Pardus ve eski laboratuvar bilgisayarları).
+2. **Eski tarayıcı.** Hedef Chrome 84+ ve Firefox 78+ (Pardus ve eski laboratuvar bilgisayarları).
+   - Not: Okul bilgisayarlarındaki tarayıcı sürümü henüz doğrulanmadı. 84'ün altında çıkarsa flex `gap` yerine `margin` kullanılacak.
    - CSS'te `color-mix`, `:has`, container query, `@layer` ve iç içe CSS kullanma.
    - JS'te ES2019 üstü sözdizimi kullanma: `?.`, `??`, `replaceAll`, `at()`, top-level await yok. Mevcut kod `var` ve `function` kullanıyor, bu üsluba uy.
 3. **Kazanıma bağlılık.** `content/program.js` dosyasına sadece MEB programından birebir metin yazılır, uydurma kod ya da ifade eklenmez. Emin değilsen alanı `outcomes: null` bırak ve kullanıcıya sor.
@@ -41,7 +42,7 @@ Ayrıntılar: `README.md` (yapı), `ICERIK-REHBERI.md` (ders yazma kuralları). 
   - Pardus ve Windows yönergeleri
   - yazdırılabilir çalışma kâğıdı
   - internetsiz çalışma
-  - Chrome 80 uyumu
+  - Chrome 84 uyumu
   - kazanım haritası
   - bulmaca oluşturucunun çoklu denemesi
   - erişilebilirlik (alt metin, klavye, büyük yazı modu)
