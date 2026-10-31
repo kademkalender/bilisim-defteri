@@ -72,6 +72,7 @@ bilisim-defteri/
 │     ├─ 5-1-6-dosya-klasor.js
 │     └─ 6-1-1-yenilikci-bt.js
 ├─ README.md
+├─ NOTLAR.md                   Çalışma günlüğü (en yeni kayıt üstte)
 └─ ICERIK-REHBERI.md           Ders yazarken uyulacak kurallar
 ```
 

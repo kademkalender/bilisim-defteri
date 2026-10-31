@@ -4,6 +4,12 @@
 
 Ayrıntılar: `README.md` (yapı), `ICERIK-REHBERI.md` (ders yazma kuralları). Ders içeriğiyle ilgili her işte önce `ICERIK-REHBERI.md` dosyasını oku.
 
+## Çalışma günlüğü
+
+- Her oturumun sonunda `NOTLAR.md`'ye kayıt ekle ve commit at.
+- Yeni oturumun başında `NOTLAR.md`'deki son kayıtları oku.
+- En yeni kayıt en üstte olur. Her kayıtta tarih, kim çalıştı, ne yapıldı (commit'lerle), alınan kararlar ve yarım kalan işler yazılır. Şablon dosyanın başında.
+
 ## Değişmez kurallar
 
 1. **İnternetsiz çalışmalı.** Site `index.html` dosyasına çift tıklanarak (`file://`) açılır. Bu yüzden:
