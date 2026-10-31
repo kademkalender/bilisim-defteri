@@ -310,7 +310,7 @@
 
   function bindSort(L) {
     var s = L.sort, pool = $("#sortPool"), sel = null;
-    var shuffled = s.items.map(function (it, i) { return i; }).sort(function (a, b) { return ((a * 7 + 3) % s.items.length) - ((b * 7 + 3) % s.items.length); });
+    var shuffled = window.shuffleOrder(s.items.length, L.id);
     var reset = function () {
       pool.innerHTML = shuffled.map(function (i) { return '<button type="button" class="chip" data-i="' + i + '">' + esc(s.items[i].t) + '</button>'; }).join("");
       $$(".sort-cat .in").forEach(function (x) { x.innerHTML = ""; });
@@ -385,7 +385,7 @@
       i.addEventListener("mousedown", function (e) { if (cur === k) { e.preventDefault(); var o = wordsAt(k); if (o.length > 1) select(k, o.filter(function (w) { return w !== curWord; })[0]); } });
       i.addEventListener("focus", function () { if (cur !== k) select(k); });
       i.addEventListener("input", function () {
-        var ch = i.value.toLocaleUpperCase("tr").replace(/[^A-ZÇĞİÖŞÜ]/g, "").slice(-1);
+        var ch = window.cwClean(i.value).slice(-1);
         i.value = ch; el.classList.remove("ok", "bad"); persist(); $("#cwMsg").textContent = "";
         if (solved()) msg("🎉 Harika! Bulmacayı tamamen çözdün.", true);
         if (ch) step(1);

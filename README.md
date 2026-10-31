@@ -61,7 +61,8 @@ bilisim-defteri/
 ├─ assets/
 │  ├─ style.css                Tasarım (sadece açık tema)
 │  ├─ app.js                   Sayfalar, oyunlar, test, yazdırma
-│  └─ crossword.js             Bulmaca oluşturucu
+│  ├─ crossword.js             Bulmaca oluşturucu ve harf temizleme (cwClean)
+│  └─ shuffle.js               Sınıflandırma kartları için tekrarlanabilir karıştırma
 ├─ content/
 │  ├─ program.js               Resmi öğrenme çıktıları (MEB'den birebir)
 │  ├─ plan.js                  Haftalık plan + varsayılan ayarlar

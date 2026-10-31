@@ -2,9 +2,16 @@
    Girdi: [{ a: "Kelime", c: "İpucu" }, ...]
    Çıktı: { rows, cols, cells: {"r,c": "HARF"}, words: [{a, clue, r, c, dir: "a"|"d", n}], skipped: [] }
    Kelimeler en uzundan başlayarak, en çok kesişim ve en derli toplu ızgara verecek şekilde yerleştirilir. */
+
+/* Bulmaca harflerini temizler. Hem oluşturucu hem app.js'teki kutu girişi bunu kullanır.
+   Şapkalı harfler düz harfe çevrilir (Â→A, Î→İ, Û→U), Türkçe alfabe dışındaki her şey atılır. */
+window.cwClean = function (s) {
+  return String(s).normalize("NFC").toLocaleUpperCase("tr")
+    .replace(/Â/g, "A").replace(/Î/g, "İ").replace(/Û/g, "U")
+    .replace(/[^A-ZÇĞİÖŞÜ]/g, "");
+};
 window.buildCrossword = function (entries) {
-  var up = function (s) { return s.toLocaleUpperCase("tr").replace(/[^A-ZÇĞİÖŞÜ]/g, ""); };
-  var base = entries.map(function (e) { return { a: up(e.a), clue: e.c }; })
+  var base = entries.map(function (e) { return { a: cwClean(e.a), clue: e.c }; })
     .filter(function (e) { return e.a.length > 1; })
     .sort(function (x, y) { return y.a.length - x.a.length; });
   // Farklı başlangıç kelimeleriyle dene; en az kelime atlayan, sonra en derli toplu ızgarayı seç
