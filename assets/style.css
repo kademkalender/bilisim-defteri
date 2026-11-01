@@ -63,7 +63,7 @@ button{font:inherit;cursor:pointer}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 .sr{position:absolute;left:-9999px}
 /* Renk geçişleri hareket sayılmaz, Azaltılmış ayarda da kalır */
-.btn,.chip-btn,.chip,.card,.role-card,.wk-btn,.opts button,.opt-group button,.deck-bar button,.act-steps button,.steps-nav a,a.week,.cw-clues li{transition:background-color .15s,border-color .15s,color .15s}
+.btn,.chip-btn,.chip,.card,.role-card,.wk-btn,.opts button,.opt-group button,.deck-bar button,.act-steps button,.tab,a.week,.cw-clues li{transition:background-color .15s,border-color .15s,color .15s}
 
 /* ---------- Başlık ---------- */
 .top{position:sticky;top:0;z-index:20;background:var(--surface-brand);color:var(--action-on-primary)}
@@ -180,16 +180,17 @@ a.week:hover{background:var(--surface-subtle)}
 .bil-list .tick.no{background:var(--surface-subtle);color:var(--text-secondary)}
 .env-switch{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
 .env-switch .lbl{font-weight:800;font-size:.92rem}
-.steps-nav{display:flex;gap:var(--space-2);flex-wrap:wrap}
-.steps-nav a{display:flex;align-items:center;gap:var(--space-2);text-decoration:none;color:var(--text-primary);background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-pill);padding:var(--space-2) var(--space-4) var(--space-2) var(--space-2);font-weight:700;font-size:.92rem}
-.steps-nav a span{width:26px;height:26px;border-radius:50%;background:var(--action-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.85rem}
+.tabs{display:flex;gap:var(--space-2);flex-wrap:wrap}
+.tab{display:flex;align-items:center;gap:var(--space-2);min-height:var(--size-control-sm);color:var(--text-primary);background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-pill);padding:var(--space-1) var(--space-4) var(--space-1) var(--space-1);font-weight:700;font-size:.92rem}
+.tab:hover{border-color:var(--action-primary)}
+.tab[aria-selected="true"]{background:var(--action-primary);border-color:var(--action-primary);color:var(--action-on-primary)}
+.tab[aria-selected="true"] span{background:var(--surface-default);color:var(--action-primary)}
+.tab span{width:30px;height:30px;border-radius:50%;background:var(--action-primary-subtle);color:var(--action-primary);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800}
+.tab-next{display:flex;justify-content:flex-end}
 section.block{scroll-margin-top:90px}
 section.block > * + *{margin-top:14px}
 .block-h{display:flex;align-items:center;gap:var(--space-3)}
-.block-h .n{width:40px;height:40px;border-radius:var(--radius-md);background:var(--action-primary);color:#fff;font-weight:800;font-size:1.25rem;display:flex;align-items:center;justify-content:center;flex:none}
 .block-h h2{font-size:1.4rem}
-.block-h h3{font-size:1.15rem}
-.block-h.sub .n{width:32px;height:32px;border-radius:var(--radius-sm);font-size:1rem;background:var(--action-primary-subtle);color:var(--action-primary)}
 .block-h p{margin:2px 0 0;color:var(--text-secondary);font-size:.92rem}
 .hook{background:var(--action-primary-subtle);border-radius:var(--radius-xl);padding:var(--space-4) var(--space-5);font-size:1.05rem}
 .hook b{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);margin-bottom:2px}
@@ -437,8 +438,8 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
   html.anim .unit[open] > summary ~ *{animation:bd-in .2s ease-out}
 
   /* Basma hissi (dokunmatik tahtada da) */
-  html.anim .btn,html.anim .chip-btn,html.anim .chip,html.anim a.card,html.anim .wk-btn,html.anim .opts button,html.anim .opt-group button,html.anim .deck-bar button,html.anim .act-steps button,html.anim .steps-nav a{transition:background-color .15s,border-color .15s,color .15s,transform .15s ease-out}
-  html.anim .btn:active,html.anim .chip-btn:active,html.anim .chip:active,html.anim a.card:active,html.anim .wk-btn:active,html.anim .opts button:active:not(:disabled),html.anim .opt-group button:active,html.anim .deck-bar button:active,html.anim .act-steps button:active,html.anim .steps-nav a:active{transform:scale(.97);transition-duration:.12s}
+  html.anim .btn,html.anim .chip-btn,html.anim .chip,html.anim a.card,html.anim .wk-btn,html.anim .opts button,html.anim .opt-group button,html.anim .deck-bar button,html.anim .act-steps button,html.anim .tab{transition:background-color .15s,border-color .15s,color .15s,transform .15s ease-out}
+  html.anim .btn:active,html.anim .chip-btn:active,html.anim .chip:active,html.anim a.card:active,html.anim .wk-btn:active,html.anim .opts button:active:not(:disabled),html.anim .opt-group button:active,html.anim .deck-bar button:active,html.anim .act-steps button:active,html.anim .tab:active{transform:scale(.97);transition-duration:.12s}
 
   /* Geri bildirim */
   html.anim .nb-list input.pop,html.anim .act-steps li.done.pop:before,html.anim .cw-cell input.pop{animation:bd-pop .18s ease-out}
@@ -457,8 +458,8 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
 }
 /* Üzerine gelince yükselme: sadece fareli cihazlarda (dokunmatikte "yapışık hover" olmasın) */
 @media screen and (prefers-reduced-motion: no-preference) and (hover: hover){
-  html.anim .btn:hover,html.anim .chip-btn:hover,html.anim .chip:hover,html.anim a.card:hover,html.anim .wk-btn:hover,html.anim .opts button:hover:not(:disabled),html.anim .opt-group button:hover,html.anim .deck-bar button:hover,html.anim .act-steps button:hover,html.anim .steps-nav a:hover{transform:translateY(-2px)}
-  html.anim .btn:active,html.anim .chip-btn:active,html.anim .chip:active,html.anim a.card:active,html.anim .wk-btn:active,html.anim .opts button:active:not(:disabled),html.anim .opt-group button:active,html.anim .deck-bar button:active,html.anim .act-steps button:active,html.anim .steps-nav a:active{transform:scale(.97)}
+  html.anim .btn:hover,html.anim .chip-btn:hover,html.anim .chip:hover,html.anim a.card:hover,html.anim .wk-btn:hover,html.anim .opts button:hover:not(:disabled),html.anim .opt-group button:hover,html.anim .deck-bar button:hover,html.anim .act-steps button:hover,html.anim .tab:hover{transform:translateY(-2px)}
+  html.anim .btn:active,html.anim .chip-btn:active,html.anim .chip:active,html.anim a.card:active,html.anim .wk-btn:active,html.anim .opts button:active:not(:disabled),html.anim .opt-group button:active,html.anim .deck-bar button:active,html.anim .act-steps button:active,html.anim .tab:active{transform:scale(.97)}
 }
 @keyframes bd-in{from{opacity:0;transform:translateY(8px)}}
 @keyframes bd-from-r{from{opacity:0;transform:translateX(24px)}}

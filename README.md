@@ -43,16 +43,15 @@ Bu ilkelere göre:
 ### 3. Dersteki akışa uygun
 Öğretmen sunumu tahtada açar, öğrenciler aynı dersi kendi bilgisayarında açar. Site ilk açılışta "Öğrenciyim / Öğretmenim" diye sorar ve seçimi o bilgisayarda hatırlar. Şifre yoktur: bu bir güvenlik değil, düzen ayrımıdır.
 
-**Öğrenci** ders sayfasında iki şey görür:
+Ders sayfası sekmelidir, aynı anda tek bölüm görünür. **Öğrencinin** sekmeleri:
 
 1. **Sunum:** Öğretmenle birlikte takip edilir.
-2. **Çalışma kâğıdı:** Ekranda doldurulur.
-   - **Deftere yaz:** Sadece yazılması gereken 3–5 madde.
-   - **Etkinlik:** Adım adım, bilgisayarın işletim sistemine göre. Altında **destekleme** ve **zenginleştirme**.
-   - **Mini test:** Anında geri bildirim.
-   - **Haftanın bulmacası:** Kelime + ipucu listesinden otomatik oluşan çengel bulmaca.
+2. **Deftere yaz:** Sadece yazılması gereken 3–5 madde.
+3. **Etkinlik:** Adım adım, bilgisayarın işletim sistemine göre. Altında **destekleme** ve **zenginleştirme**.
+4. **Mini test:** Anında geri bildirim.
+5. **Bulmaca:** Kelime + ipucu listesinden otomatik oluşan çengel bulmaca.
 
-**Öğretmen** bunlara ek olarak öğrenme çıktısını, sınıf ortamı seçimini, 80 dakikalık ders akışını, ölçme aracını, notları, yazdırılacak kâğıdı ve cevap anahtarını görür. Kazanım Haritası ve Öğretmen Masası da yalnızca öğretmen görünümündedir.
+**Öğretmen** bunlara ek olarak "Ders akışı" sekmesinde öğrenme çıktısını, 80 dakikalık ders akışını, ölçme aracını, notları, yazdırılacak kâğıdı ve cevap anahtarını görür. Kazanım Haritası ve Öğretmen Masası da yalnızca öğretmen görünümündedir.
 
 Öğretmen derse ana sayfadan hafta numarasıyla ulaşır: sınıfı ve 36 haftadan birini seçer, o haftanın kazanımı ve dersi aynı sayfada açılır. Arama kutusu da hafta numarasını anlar (`7`, `7. hafta`).
 
