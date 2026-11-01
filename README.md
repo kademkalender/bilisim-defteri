@@ -62,6 +62,7 @@ bilisim-defteri/
 ├─ index.html                  Sitenin giriş dosyası
 ├─ assets/
 │  ├─ style.css                Tasarım (sadece açık tema)
+│  ├─ mulish.css               Gömülü yazı tipi (lisans: mulish-OFL.txt)
 │  ├─ app.js                   Sayfalar, oyunlar, test, yazdırma
 │  ├─ crossword.js             Bulmaca oluşturucu ve harf temizleme (cwClean)
 │  └─ shuffle.js               Sınıflandırma kartları için tekrarlanabilir karıştırma
@@ -75,6 +76,7 @@ bilisim-defteri/
 │     └─ 6-1-1-yenilikci-bt.js
 ├─ README.md
 ├─ NOTLAR.md                   Çalışma günlüğü (en yeni kayıt üstte)
+├─ TASARIM-SISTEMI.md          Renk, yazı, ölçü ve bileşen kuralları
 └─ ICERIK-REHBERI.md           Ders yazarken uyulacak kurallar
 ```
 

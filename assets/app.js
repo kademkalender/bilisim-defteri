@@ -24,7 +24,7 @@
   // Sınıfı kaldırıp yeniden ekler ki CSS animasyonu baştan oynasın. Sadece kullanıcı bir şeye basınca çağrılır.
   var flash = function (el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
   // Kutlama: öğenin ortasından 12 parça konfeti, 1 sn sonra silinir. Ekran okuyucudan gizli.
-  var CONFETTI = ["#2f5bea", "#d9571f", "#ffd23f", "#14805a", "#8247d1", "#2b8fc4"];
+  var CONFETTI = ["#1E4FA3", "#B8480A", "#FFD23F", "#157A4C", "#5B3FB5", "#0B7169"];
   var celebrate = function (el) {
     if (!motionOn()) return;
     var c = document.createElement("span"), h = "";
@@ -240,7 +240,7 @@
       }).join("") + '</ul></div>' +
 
       '<div class="env-switch"><span class="lbl">Sınıf ortamı:</span>' + envBtns + '<span class="hint">Seçime göre etkinlik değişir.</span></div>' +
-      (S.env === "kagit" ? '<div class="hook" style="background:var(--accent-soft)"><b>Bilgisayarsız sınıf</b>Bu dersin tamamını çalışma kâğıdıyla yapabilirsiniz. <a href="#yazdir-' + id + '">Çalışma kâğıdını aç →</a></div>' : "") +
+      (S.env === "kagit" ? '<div class="hook" style="background:var(--action-primary-subtle)"><b>Bilgisayarsız sınıf</b>Bu dersin tamamını çalışma kâğıdıyla yapabilirsiniz. <a href="#yazdir-' + id + '">Çalışma kâğıdını aç →</a></div>' : "") +
       '<div class="hook"><b>Derse başlarken</b>' + esc(L.hook) + '</div>' +
 
       '<div class="steps-nav">' +
@@ -512,7 +512,7 @@
       var total = 0, covered = 0, rows = "";
       BD.program[g].themes.forEach(function (t) {
         if (!t.outcomes) { rows += '<tr><td colspan="3"><b>Tema ' + t.no + ':</b> ' + esc(t.name) + ' <span class="hint">· öğrenme çıktıları eklenecek</span></td></tr>'; return; }
-        rows += '<tr><td colspan="3" style="background:var(--paper)"><b>Tema ' + t.no + ':</b> ' + esc(t.name) + (t.hours ? ' <span class="hint">· ' + t.hours + ' ders saati</span>' : "") + '</td></tr>';
+        rows += '<tr><td colspan="3" style="background:var(--surface-subtle)"><b>Tema ' + t.no + ':</b> ' + esc(t.name) + (t.hours ? ' <span class="hint">· ' + t.hours + ' ders saati</span>' : "") + '</td></tr>';
         t.outcomes.forEach(function (o) {
           var ls = lessonsFor(o.code);
           var weeks = (BD.plan[g] || []).filter(function (x) { return x.outcome === o.code; }).map(function (x) { return x.w; });
@@ -589,7 +589,7 @@
         return '<div class="keep" style="margin-bottom:8px"><b>' + esc(s.h || s.alt || "") + '</b>' + (s.p ? ' ' + esc(s.p) : "") +
           (s.list ? '<ul>' + s.list.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' : "") +
           (s.cols ? '<ul>' + s.cols.map(function (c) { return '<li><b>' + esc(c.h) + ':</b> ' + esc(c.p) + '</li>'; }).join("") + '</ul>' : "") +
-          (s.tree ? '<pre style="margin:4px 0;font-family:var(--mono);font-size:.85rem">' + esc(s.tree) + '</pre>' : "") +
+          (s.tree ? '<pre style="margin:4px 0;font-family:var(--font-mono);font-size:.85rem">' + esc(s.tree) + '</pre>' : "") +
           (printOpts.gorsel && (s.img || s.side) ? '<div class="print-img-wrap">' + imgBlock(L.id, s.img || s.side, s.alt, "print-slide-img") + '</div>' : "") +
           '</div>';
       }).join("");
