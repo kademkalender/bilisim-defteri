@@ -385,4 +385,14 @@ select{font:inherit;padding:6px 10px;border-radius:10px;border:2px solid var(--r
    Bu bloğun dışında hareket yok; blok hiç çalışmasa da her şey okunur durur.
    ===================================================================== */
 @media screen and (prefers-reduced-motion: no-preference){
+  /* Sayfa ve slayt geçişleri */
+  html.anim #app.enter > *{animation:bd-in .22s ease-out}
+  html.anim #app.enter > .week-now.hi{animation:bd-in .22s ease-out,bd-nudge .6s ease-in-out .3s}
+  html.anim .slide.in-r{animation:bd-from-r .2s ease-out}
+  html.anim .slide.in-l{animation:bd-from-l .2s ease-out}
+  html.anim .unit[open] > summary ~ *{animation:bd-in .2s ease-out}
 }
+@keyframes bd-in{from{opacity:0;transform:translateY(8px)}}
+@keyframes bd-from-r{from{opacity:0;transform:translateX(24px)}}
+@keyframes bd-from-l{from{opacity:0;transform:translateX(-24px)}}
+@keyframes bd-nudge{50%{transform:scale(1.015)}}

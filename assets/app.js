@@ -57,7 +57,9 @@
   var osLabel = function () { return S.os === "pardus" ? "Pardus" : "Windows"; };
 
   /* ---------- Ana sayfa ---------- */
+  var homeSeen = false; // "Bu hafta" vurgusu sekme başına bir kez
   function viewHome() {
+    var hi = homeSeen ? "" : " hi"; homeSeen = true;
     var now = ["5", "6"].map(function (g) {
       var p = planWeek(g, S.week);
       if (!p) return '<div class="now-item">' + gTag(g) + '<div><b>Bu hafta için plan eklenmedi</b><small>Yıllık plana göre eklenecek</small></div></div>';
@@ -71,7 +73,7 @@
         '<a class="grade-card" href="#sinif-5"><div class="grade-num">5</div><h2>5. Sınıf</h2><p>Bilişim Teknolojileri ve Yazılım</p><span class="grade-go">Derslere git →</span></a>' +
         '<a class="grade-card g6" href="#sinif-6"><div class="grade-num">6</div><h2>6. Sınıf</h2><p>Bilişim Teknolojileri ve Yazılım</p><span class="grade-go">Derslere git →</span></a>' +
       '</div>' +
-      '<section class="week-now" aria-label="Bu haftanın dersleri"><h2>📌 Bu hafta (' + S.week + '. hafta)</h2><div class="grid-auto">' + now + '</div></section>' +
+      '<section class="week-now' + hi + '" aria-label="Bu haftanın dersleri"><h2>📌 Bu hafta (' + S.week + '. hafta)</h2><div class="grid-auto">' + now + '</div></section>' +
       '<div class="env-banner"><span><b>Sınıf ortamı:</b> ' + envLabel() + ' · ' + osLabel() + ' · ' + (S.internet ? "İnternet var" : "İnternet yok") + '</span><span class="hint">Etkinlikler okulunuzun şartlarına göre gösterilir.</span><a class="btn" href="#ogretmen">Değiştir</a></div>' +
       '<div class="grid-auto">' +
         '<a class="card" style="text-decoration:none;color:inherit" href="#kazanimlar"><b>🎯 Kazanım Haritası</b><div class="hint">Hangi öğrenme çıktısı hangi derste işleniyor?</div></a>' +
@@ -259,7 +261,9 @@
     var fit = function () { stage.style.fontSize = Math.max(9, stage.clientWidth / 46) + "px"; };
     fit(); window.onresize = fit;
     var go = function (i) {
-      cur = Math.max(0, Math.min(slides.length - 1, i));
+      var n = Math.max(0, Math.min(slides.length - 1, i));
+      if (n !== cur) { slides[n].classList.remove("in-l", "in-r"); slides[n].classList.add(n > cur ? "in-r" : "in-l"); } // ileri sağdan, geri soldan
+      cur = n;
       slides.forEach(function (s, k) { s.classList.toggle("on", k === cur); });
       dots.forEach(function (d, k) { d.classList.toggle("on", k === cur); });
       $("#count").textContent = (cur + 1) + " / " + slides.length;
@@ -596,6 +600,7 @@
   /* ---------- Yönlendirme ---------- */
   function render(keepScroll) {
     var h = (location.hash || "#home").slice(1), app = $("#app"), m;
+    app.classList.toggle("enter", !keepScroll); // yerinde yenilemede (ortam, yazdırma seçeneği) geçiş yok
     if (h === "home" || h === "") app.innerHTML = viewHome();
     else if ((m = h.match(/^sinif-(5|6)$/))) app.innerHTML = viewGrade(m[1]);
     else if ((m = h.match(/^ders-(.+)$/))) { app.innerHTML = viewLesson(m[1]); if (lessonById(m[1])) bindLesson(m[1]); }
