@@ -27,6 +27,8 @@ Kayıt şablonu:
 - `9cd7b8e` Kalan 18 bulgu ele alındı: test kaydı ve yeniden çözme, sekmede ✓, geri tuşuyla sekme geçmişi, açılır oyun ve destekleme bölümleri, boş haftada en yakın ders, geniş arama, slayt ve bulmacanın küçük ekran düzeni, kâğıtta alt metnin kalkması, ders sıfırlama onayı, role göre metinler.
 - `b893861` Destekleme ve zenginleştirme bölümü ders sayfasından kaldırıldı.
 - `ce2ca92` Gestalt değerlendirmesinin öncelikli 4 düzeltmesi: hafta ızgarası, üst menü, alt çizgili sekmeler, Rol ve A+ ayrımı.
+- `8e8b04d` Ana sayfa hafta listesine çevrildi: öğretmen temalara bölünmüş `7. hafta · Ders adı` satırları, öğrenci 1. ve 2. dönem altında aynı satırlar. Hafta ızgarası ve "Bu hafta" ayarı kalktı, son açılan ders üstte (`bd:last`). `#sinif-N` sınıfı seçip ana sayfayı açıyor.
+- `8fb11e8` `content/program.js` iki sınıfın altı temasıyla MEB ünite sayfalarından birebir dolduruldu (5. sınıf 24 çıktı, 79 bileşen; 6. sınıf 25 çıktı, 88 bileşen). 1. temadaki kısaltılmış ifadeler düzeltildi.
 - Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi. 375 px genişlikte altı sayfada yatay taşma yok. A+ açıkken 375 ve 882 px'te taşma yok. Sekme geçmişi, test kaydı ve yenileme `file://` altında gerçek Chrome'da (CDP) denendi, konsol hatası yok. 375 px'te üç dersin hiçbir slaytı taşmıyor.
 
 **Kararlar**
@@ -39,25 +41,26 @@ Kayıt şablonu:
 - Öğrenci görünümünde `#kazanimlar`, `#ogretmen` ve `#yazdir-<id>` adresleri ana sayfayı açıyor.
 - Test cevapları `bd:quiz:<id>` içinde saklanıyor ve ilerleme silmeye dahil. Sunum sekmesinin ✓'i saklanmıyor, sayfa yenilenince gidiyor, çünkü sunumu öğretmen yönetiyor.
 - Sekme değişimi `history.pushState` ile geçmişe yazılıyor, adres değişmiyor. Yenilemede Sunum'a dönme kuralı korundu.
-- Sınıf değişince seçili haftanın dersi yoksa önce ayarlı hafta, o da yoksa en yakın hazır hafta seçiliyor.
 - Slayt düğmeleri uçlarda `disabled` değil `aria-disabled`: odak kaybolmasın, ok tuşları çalışsın.
 - 760 px altında üst bant sabit değil. Öğretmende yüksekliği 258 px olarak kaldı, ama sayfayla kayıyor.
 - Ders sıfırlama artık onay soruyor (10-31 inceleme bulgusu 2'nin onay kısmı). Düğme yine yalnızca öğretmen görünümünde, şifre yok.
-- Üst menüden 5. ve 6. Sınıf kalktı, çünkü ana sayfadaki sınıf seçiciyle aynı görünüp farklı iş yapıyordu. Sınıf sayfasına ana sayfadaki "tüm temalar" bağlantısından ve dersin yol bilgisinden gidiliyor.
-- Hafta ızgarasında üç durum kaldı, ama en belirgin olan ders hazır hafta. "Plan var" soluk.
+- Üst menüden 5. ve 6. Sınıf kalktı, çünkü ana sayfadaki sınıf seçiciyle aynı görünüp farklı iş yapıyordu. Sınıf sayfası da ana sayfayla birleşti.
 - Ders sekmeleri hap yerine ortak alt çizgide. Rol ve A+ ayar olduğu için ayraçla ayrılıyor, 760 px altında ayraç yok.
 - Alt alta uzun ders sayfası öğrenciyi yorduğu için sekmelere geçildi. Açık sekme bellekte tutuluyor, sayfa yenilenince Sunum'a dönüyor: sonraki sınıf önceki öğrencinin yerinden başlamıyor.
 - "Derse başlarken" kutusu slaytların altına, bilgi kartları Etkinlik sekmesine, ortam seçimi Etkinlik sekmesinin başına taşındı.
 - Öğretmen görüşmesi yapılamadığı için research benchmark ve netnografiyle yürütüldü. Bulgular doğrulanmış kullanıcı araştırması sayılmaz.
 - Asıl problem altyapı değil, öğrenciye ait resmî bilişim ders kitabının olmaması. Altyapı bir kısıt.
 - Öğretmen dersi tarihle değil hafta numarasıyla arıyor. Bu bilginin kaynağı netleşmedi.
-- `S.week` gerçek hafta demek ve yalnızca Öğretmen Masası'ndan değişiyor. Ana sayfada bakılan hafta bellekte (`pickedWeek`), sayfa yenilenince ayara dönüyor.
-- Öğrenci görünümünde "Bu hafta" etiketi yok, çünkü öğretmenin ayarı öğrencinin bilgisayarına ulaşmıyor. Öğrenci ana sayfası varsayılan 7. haftayla açılıyor.
+- Izgara yetmedi, çünkü öğretmen de haftayı kaçırabiliyor: hafta numarası ders adıyla birlikte yazılıyor. Sitede "gerçek hafta" bilgisi tutulmuyor.
+- Öğrenci tema adlarından bir şey anlamadığı için listesi temaya değil döneme bölünüyor. Dönem sınırı `TERM1 = 18` varsayımı. Hazır satır öğretmeninki gibi açılıyor.
+- Program metni elle değil, ünite sayfalarından betikle çekildi. Kaynaktaki yazım yanlışları korundu ("Bilişim suçların türlerini" gibi). Tek istisna: kaynaktaki `BTY6.6.3` kodu `BTY.6.6.3` yazıldı. Tema adlarındaki "Ve" başlık biçimi sayıldı, "ve" yazıldı.
+- 2-6. temaların haftaları uydurulmadı, çünkü hafta başlığı ve kazanım dağılımı programda yok. Bu temalarda öğretmene "haftalık planı henüz eklenmedi" notu ve Kazanım Haritası bağlantısı çıkıyor.
 
 **Yarım kalan işler**
-- [ ] Plan 5. sınıfta 7. haftada, 6. sınıfta 2. haftada bitiyor. Hafta numaraları örnek, yıllık plana göre güncellenmeli.
-- [ ] Gestalt değerlendirmesinin küçük bulguları uygulanmadı: sınıf sayfasında dev sayı ile başlığın tekrarı, Etkinlik kartı içindeki eşit boşluklar, lejanttaki "Hafta dağılımı örnektir." cümlesi.
-- [ ] 375 px'te sekmeler üç satıra sarılıyor, etkin sekmenin çizgisi ortak çizginin üstünde kalıyor. "Plan var" ile "plan yok" haftaları da birbirine yakın görünüyor. İlk kullanımda gözlenmeli.
+- [ ] Plan 5. sınıfta 7. haftada, 6. sınıfta 2. haftada bitiyor. 2-6. temaların haftaları rehber öğretmenin yıllık planına göre eklenecek. Saatler iki sınıfta da 68 ediyor, haftada 2 saatle 34 hafta. 6. sınıf 2. temada 6 haftaya 10 çıktı düşüyor.
+- [ ] Site 36 hafta ve `TERM1 = 18` varsayıyor, program 34 haftalık saat veriyor. Aradaki 2 hafta ve dönem sınırı yıllık planla netleşmeli. 2. dönemin açık gelmesi denenmedi.
+- [ ] Gestalt değerlendirmesinin kalan küçük bulgusu uygulanmadı: Etkinlik kartı içindeki eşit boşluklar.
+- [ ] 375 px'te sekmeler üç satıra sarılıyor, etkin sekmenin çizgisi ortak çizginin üstünde kalıyor. İlk kullanımda gözlenmeli.
 - [ ] Odak, başlık ve slayt sayacı bildirimi gerçek ekran okuyucuyla denenmedi.
 - [ ] Bulmaca tamamen çözülünce sekmeye ✓ gelmesi ve dokunmatikte 40 px slayt noktaları denenmedi.
 - [ ] Önizleme panelinde, geçmişi 50 kayıt sınırına dayanmış sekmede `history.back()` önceki sayfa yüklemesine atladı. Temiz sekmede ve `file://` altında sorun yok. Uzun süreli kullanımda gerçek Chrome'da denenmeli.
