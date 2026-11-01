@@ -101,8 +101,8 @@
       var all = (BD.plan[g] || []).slice().sort(function (a, b) { return a.w - b.w; });
       var lastTerm = last && String(last.grade) === g ? (last.week > TERM1 ? 2 : 1) : 1;
       return [1, 2].map(function (no) {
-        var weeks = all.filter(function (x) { return (x.w > TERM1 ? 2 : 1) === no; }), ready = weeks.filter(function (x) { return x.lesson; }).length;
-        return '<details class="unit"' + (no === lastTerm ? " open" : "") + '><summary><div class="unit-h"><h2>' + no + '. dönem</h2><small>' + (ready ? ready + " ders hazır" : "Yakında") + ' ›</small></div></summary>' +
+        var weeks = all.filter(function (x) { return (x.w > TERM1 ? 2 : 1) === no; });
+        return '<details class="unit"' + (no === lastTerm ? " open" : "") + '><summary><div class="unit-h"><h2>' + no + '. dönem</h2><small aria-hidden="true">›</small></div></summary>' +
           (weeks.length ? '<ul class="weeks">' + weeks.map(weekRow).join("") + '</ul>' : '<div class="unit-note">Bu dönemin dersleri eklendikçe burada görünecek.</div>') + '</details>';
       }).join("");
     }
