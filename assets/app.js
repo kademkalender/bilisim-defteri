@@ -138,12 +138,7 @@
       (last ? '<section class="card resume" aria-label="' + (isStudent() ? "Kaldığın yer" : "Kaldığınız yer") + '"><div><span class="hint">' + (isStudent() ? "Kaldığın yer" : "Kaldığınız yer") + ' · ' + last.grade + '. Sınıf</span><div><b>' + last.week + '. hafta</b> · ' + esc(last.title) + '</div></div><a class="btn primary" href="#ders-' + last.id + '">Devam et →</a></section>' : "") +
       '<div class="row" id="wkGrades" role="group" aria-label="Sınıf seçimi">' + ["5", "6"].map(function (g) { return '<button type="button" class="chip-btn" data-g="' + g + '" aria-pressed="' + (S.grade === g) + '">' + g + '. Sınıf</button>'; }).join("") + '</div>' +
       '<div id="wkList">' + weekList(S.grade) + '</div>' +
-      (isStudent() ? "" : '<div class="env-banner"><span><b>Sınıf ortamı:</b> ' + envLabel() + ' · ' + osLabel() + ' · ' + (S.internet ? "İnternet var" : "İnternet yok") + '</span><span class="hint">Etkinlikler okulunuzun şartlarına göre gösterilir.</span><a class="btn" href="#ogretmen">Değiştir</a></div>' +
-      '<div class="grid-auto">' +
-        '<a class="card" style="text-decoration:none;color:inherit" href="#kazanimlar"><b>🎯 Kazanım Haritası</b><div class="hint">Hangi kazanım hangi derste işleniyor?</div></a>' +
-        '<a class="card" style="text-decoration:none;color:inherit" href="#ogretmen"><b>🖨️ Çalışma Kâğıtları</b><div class="hint">Bilgisayarsız sınıflar için yazdırılabilir dersler</div></a>' +
-        '<a class="card" style="text-decoration:none;color:inherit" href="#ogretmen"><b>🧑‍🏫 Öğretmen Masası</b><div class="hint">Okul şartlarını ayarla</div></a>' +
-      '</div>');
+      (isStudent() ? "" : '<div class="env-banner"><span><b>Sınıf ortamı:</b> ' + envLabel() + ' · ' + osLabel() + ' · ' + (S.internet ? "İnternet var" : "İnternet yok") + '</span><span class="hint">Etkinlikler okulunuzun şartlarına göre gösterilir. Tüm çalışma kâğıtları da Öğretmen Masası\'nda.</span><a class="btn" href="#ogretmen">Öğretmen Masası</a></div>');
   }
   function bindHome() {
     $("#wkGrades").onclick = function (e) {
@@ -197,7 +192,7 @@
     var key = "act:" + L.id + ":" + env;
     var done = store.get(key, []);
     var html = '<div class="card activity">' +
-      '<div class="row"><span class="tag">' + BD.envs[env].icon + ' ' + BD.envs[env].short + '</span>' + (A.b || []).map(function (b) { return '<span class="tag bil t-only">' + L.outcome + '.' + b + '</span>'; }).join("") + '</div>' +
+      '<div class="row"><span class="tag">' + BD.envs[env].icon + ' ' + BD.envs[env].short + '</span>' + (A.b || []).map(function (b) { return '<span class="tag code t-only">' + L.outcome + '.' + b + '</span>'; }).join("") + '</div>' +
       '<h3>' + esc(A.title) + '</h3>' +
       '<div class="goal"><b>🎯 Hedef:</b> ' + esc(A.goal) + '</div>' +
       (A.needs ? '<div class="needs">' + A.needs.map(function (n) { return '<span>🧰 ' + esc(n) + '</span>'; }).join("") + '</div>' : "") +
@@ -214,7 +209,7 @@
 
   function sortHtml(L) {
     var s = L.sort;
-    return '<details class="fold"><summary>🧩 Sınıflandırma oyunu</summary><div id="sort">' + (s.b ? '<span class="tag bil t-only">' + L.outcome + '.' + s.b + '</span>' : "") +
+    return '<details class="fold"><summary>🧩 Sınıflandırma oyunu</summary><div id="sort">' + (s.b ? '<span class="tag code t-only">' + L.outcome + '.' + s.b + '</span>' : "") +
       '<h3 style="margin:8px 0 4px;font-size:1.15rem">' + esc(s.title) + '</h3><p class="hint" style="margin:0 0 10px">' + esc(s.intro) + ' Önce bir karta, sonra doğru kutuya dokun.</p>' +
       '<div class="sort-pool" id="sortPool"></div><div class="sort-cats" style="margin-top:10px">' +
       s.cats.map(function (c, i) { return '<div class="sort-cat" data-c="' + i + '" role="button" tabindex="0" aria-label="' + esc(c) + ' kutusu"><h4>' + esc(c) + '</h4><div class="in"></div></div>'; }).join("") +
@@ -595,7 +590,7 @@
         t.outcomes.forEach(function (o) {
           var ls = lessonsFor(o.code);
           var weeks = (BD.plan[g] || []).filter(function (x) { return planCodes(x).indexOf(o.code) >= 0; }).map(function (x) { return x.w; });
-          rows += '<tr class="oc"><td><code>' + o.code + '</code></td><td>' + esc(o.title) + '</td><td>' + (weeks.length ? weeks.join(", ") + ". hafta" : "-") + '</td></tr>';
+          rows += '<tr class="oc"><td><code>' + o.code + '</code></td><td colspan="2">' + esc(o.title) + (weeks.length ? ' <span class="hint">· ' + weeks.join(", ") + '. hafta</span>' : "") + '</td></tr>';
           o.parts.forEach(function (p) {
             tTotal++;
             var by = ls.filter(function (l) { return l.covers.indexOf(p.k) >= 0; });

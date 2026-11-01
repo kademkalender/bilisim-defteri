@@ -108,7 +108,6 @@ footer{text-align:center;color:var(--text-secondary);font-size:.85rem;padding:0 
 .tag.soon{background:var(--surface-subtle);color:var(--text-secondary)}
 .tag.ready{background:var(--feedback-success-subtle);color:var(--feedback-success)}
 .tag.code{background:var(--action-primary-subtle);color:var(--action-primary);font-family:var(--font-mono)}
-.tag.bil{background:var(--surface-default);color:var(--action-primary);border:1px solid var(--action-primary);font-family:var(--font-mono)}
 .card{background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-xl);padding:var(--space-4) var(--space-5)}
 .hint{font-size:.88rem;color:var(--text-secondary)}
 .section-h h1{font-size:1.9rem}
@@ -160,6 +159,8 @@ main > #wkList{margin-top:var(--space-3)}
 a.week:hover,summary.week:hover{background:var(--surface-subtle)}
 .week .wk{font-weight:800;color:var(--action-primary)}
 .week.soon,.week.soon .wk{color:var(--text-secondary);font-weight:600}
+summary.week.soon,summary.week.soon .wk{color:var(--text-primary)}
+.week .tag.ready,.week .tag.soon{min-width:5.5em;text-align:center}
 summary.week{cursor:pointer;list-style:none}
 summary.week::-webkit-details-marker{display:none}
 .week-hit{background:var(--action-primary-subtle)}
@@ -191,7 +192,9 @@ summary.week::-webkit-details-marker{display:none}
 .tab.done[aria-selected="true"] span{background:var(--feedback-success);color:var(--action-on-primary)}
 .tab-next{display:flex;justify-content:flex-end}
 section.block{scroll-margin-top:90px}
-section.block > * + *{margin-top:14px}
+section.block > * + *{margin-top:var(--space-6)}
+section.block > .block-h + *{margin-top:var(--space-3)}
+section.block > .deck + .hint{margin-top:var(--space-2)}
 .block-h{display:flex;align-items:center;gap:var(--space-3)}
 .block-h h2{font-size:1.4rem}
 .block-h p{margin:2px 0 0;color:var(--text-secondary);font-size:.92rem}
@@ -272,6 +275,7 @@ section.block > * + *{margin-top:14px}
 
 /* Etkinlik */
 .activity > * + *{margin-top:14px}
+.activity > .row + h3,.activity > h3 + .goal{margin-top:var(--space-2)}
 .activity h3{font-size:1.2rem}
 .goal{background:var(--surface-subtle);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4)}
 .needs{display:flex;gap:var(--space-2);flex-wrap:wrap}
@@ -363,6 +367,7 @@ section.block > * + *{margin-top:14px}
 .cov-table th,.cov-table td{text-align:left;padding:var(--space-3) var(--space-3);border-bottom:1px solid var(--border-default);vertical-align:top;font-size:.93rem}
 .cov-table th{background:var(--surface-subtle);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text-secondary)}
 .cov-table tr.oc td{background:var(--action-primary-subtle);font-weight:800}
+.cov-table tr.oc .hint{font-weight:600}
 .cov-bar{height:10px;border-radius:var(--radius-pill);background:var(--surface-subtle);overflow:hidden;margin-top:6px}
 .cov-bar span{display:block;height:100%;background:var(--feedback-success)}
 .stat{font-size:2rem;font-weight:800}
