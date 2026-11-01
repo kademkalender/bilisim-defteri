@@ -24,7 +24,8 @@ Kayıt şablonu:
 - `3c5e41b` Rol ayrımı: site ilk açılışta rol soruyor. Öğrenci sunum ve ekranda doldurulan çalışma kâğıdını görüyor, öğretmen ayrıca ders akışı, ölçme, notlar ve yazdırmayı görüyor.
 - `bb52df6` Ders sayfası sekmeli oldu: aynı anda tek bölüm görünüyor, bölüm sonunda "Sonraki bölüm" düğmesi var.
 - `c8d46eb` Design review (`/outsider-design-review`, 4 yüksek, 11 orta, 7 düşük bulgu) sonrası yüksek önemli 4 bulgu düzeltildi: "Bu hafta" ayrımı, A+ tüm yazıları büyütüyor, sayfa başlığı ve odak değişiyor, "İçeriğe geç" bağlantısı, geri bildirimde ✓ ve ✕ işaretleri.
-- Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi. 375 px genişlikte altı sayfada yatay taşma yok. A+ açıkken 375 ve 882 px'te taşma yok.
+- `9cd7b8e` Kalan 18 bulgu ele alındı: test kaydı ve yeniden çözme, sekmede ✓, geri tuşuyla sekme geçmişi, açılır oyun ve destekleme bölümleri, boş haftada en yakın ders, geniş arama, slayt ve bulmacanın küçük ekran düzeni, kâğıtta alt metnin kalkması, ders sıfırlama onayı, role göre metinler.
+- Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi. 375 px genişlikte altı sayfada yatay taşma yok. A+ açıkken 375 ve 882 px'te taşma yok. Sekme geçmişi, test kaydı ve yenileme `file://` altında gerçek Chrome'da (CDP) denendi, konsol hatası yok. 375 px'te üç dersin hiçbir slaytı taşmıyor.
 
 **Kararlar**
 - Ana renk lacivert `#1E4FA3`, 6. sınıf kiremit `#B8480A`. Üst başlık lacivert dolu bant.
@@ -34,6 +35,12 @@ Kayıt şablonu:
 - Sınıfta öğretmen sunumu tahtada, öğrenciler kendi bilgisayarında açıyor. Rol seçimi `S.role` ile bilgisayarda saklanıyor. Şifre yok, bu güvenlik değil düzen ayrımı: öğrenci rol düğmesinden öğretmen görünümüne geçebilir.
 - Öğrencide ortam hep `lab`, işletim sistemi `navigator.platform` ile seçiliyor, çünkü öğretmenin ayarı öğrencinin bilgisayarına ulaşmıyor.
 - Öğrenci görünümünde `#kazanimlar`, `#ogretmen` ve `#yazdir-<id>` adresleri ana sayfayı açıyor. Destekleme ve zenginleştirme öğrenci görünümünde kaldı.
+- Test cevapları `bd:quiz:<id>` içinde saklanıyor ve ilerleme silmeye dahil. Sunum sekmesinin ✓'i saklanmıyor, sayfa yenilenince gidiyor, çünkü sunumu öğretmen yönetiyor.
+- Sekme değişimi `history.pushState` ile geçmişe yazılıyor, adres değişmiyor. Yenilemede Sunum'a dönme kuralı korundu.
+- Sınıf değişince seçili haftanın dersi yoksa önce ayarlı hafta, o da yoksa en yakın hazır hafta seçiliyor.
+- Slayt düğmeleri uçlarda `disabled` değil `aria-disabled`: odak kaybolmasın, ok tuşları çalışsın.
+- 760 px altında üst bant sabit değil. Öğretmende yüksekliği 258 px olarak kaldı, ama sayfayla kayıyor.
+- Ders sıfırlama artık onay soruyor (10-31 inceleme bulgusu 2'nin onay kısmı). Düğme yine yalnızca öğretmen görünümünde, şifre yok.
 - Alt alta uzun ders sayfası öğrenciyi yorduğu için sekmelere geçildi. Açık sekme bellekte tutuluyor, sayfa yenilenince Sunum'a dönüyor: sonraki sınıf önceki öğrencinin yerinden başlamıyor.
 - "Derse başlarken" kutusu slaytların altına, bilgi kartları Etkinlik sekmesine, ortam seçimi Etkinlik sekmesinin başına taşındı.
 - Öğretmen görüşmesi yapılamadığı için research benchmark ve netnografiyle yürütüldü. Bulgular doğrulanmış kullanıcı araştırması sayılmaz.
@@ -44,15 +51,13 @@ Kayıt şablonu:
 
 **Yarım kalan işler**
 - [ ] Plan 5. sınıfta 7. haftada, 6. sınıfta 2. haftada bitiyor. Hafta numaraları örnek, yıllık plana göre güncellenmeli.
-- [ ] Design review'un 11 orta ve 7 düşük bulgusu uygulanmadı.
-- [ ] Odak ve başlık değişikliği gerçek ekran okuyucuyla denenmedi.
-- [ ] 375 px genişlikte A+ açıkken yapışkan üst bant 210 px yer kaplıyor. Hedef cihazlar bilgisayar ve tahta olduğu için dokunulmadı.
-- [ ] Arama kavramları bulmuyor ("uzantı"), "ağ" da "Sağlık"ı buluyor.
+- [ ] Odak, başlık ve slayt sayacı bildirimi gerçek ekran okuyucuyla denenmedi.
+- [ ] Bulmaca tamamen çözülünce sekmeye ✓ gelmesi ve dokunmatikte 40 px slayt noktaları denenmedi.
+- [ ] Önizleme panelinde, geçmişi 50 kayıt sınırına dayanmış sekmede `history.back()` önceki sayfa yüklemesine atladı. Temiz sekmede ve `file://` altında sorun yok. Uzun süreli kullanımda gerçek Chrome'da denenmeli.
 - [ ] Yeni ana sayfa ve tasarım sistemi Chrome 84 ve Firefox 78'de denenmedi. Gömülü fontun Firefox `file://` altında çalıştığı doğrulanmalı.
 - [ ] Yeni tasarımda gerçek yazdırma önizlemesi ile tahta ve bilgisayarsız ortamların etkinlik görünümü denenmedi.
 - [ ] İşletim sistemi algılama gerçek bir Pardus bilgisayarında denenmedi. Öğretmen sekmelerinde mobil genişlik denenmedi.
-- [ ] Sekmeli ders sayfası `file://` üzerinden denenmedi.
-- [ ] Etkinlik sekmesi hâlâ uzun: bilgi kartları, adımlar, sınıflandırma oyunu, destekleme ve zenginleştirme aynı yerde. İlk kullanımda gözlenmeli.
+- [ ] Etkinlik sekmesi kısaldı ama 375 px'te hâlâ 3.530 px. İlk kullanımda gözlenmeli.
 
 ---
 
