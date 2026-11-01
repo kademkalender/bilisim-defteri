@@ -33,6 +33,7 @@ Kayıt şablonu:
 - `7e7c78d` A+ düğmesi öğrenci görünümünden kalktı.
 - `c819166` Öğrenci dönem başlığından hazır ders sayısı kalktı, yalnızca açma oku var. Öğretmen başlığındaki saat, hafta ve hazır ders sayısı duruyor.
 - `af9a59c` İkinci design review (2 yüksek, 7 orta, 8 düşük bulgu) sonrası kalan 13 bulgu düzeltildi: aramadan seçilen hafta açılıp ekrana geliyor (`#sinif-5-8`), arama sonucu ekran okuyucuya bildiriliyor, tema başlığında hafta aralığı, öğrenciden kod ve tema kalktı, Kazanım Haritası temalara bölündü (1280 px'te 11.898 px'ten 3.186 px'e).
+- `6b46472` İkinci Gestalt taramasının 6 düzeltmesi: hafta satırında kodlar aynı sütunda, öğretmende soluk satır yok, ana sayfanın alt kartları kalktı, haritada hafta kazanımın yanına geçti, tek kod etiketi biçimi, sekme boşlukları (blok arası 24 px).
 - Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi. 375 px genişlikte altı sayfada yatay taşma yok. A+ açıkken 375 ve 882 px'te taşma yok. Sekme geçmişi, test kaydı ve yenileme `file://` altında gerçek Chrome'da (CDP) denendi, konsol hatası yok. 375 px'te üç dersin hiçbir slaytı taşmıyor.
 
 **Kararlar**
@@ -64,12 +65,12 @@ Kayıt şablonu:
 - A+ tahta için, öğrenci kendi bilgisayarından açıyor: düğme yalnızca öğretmende. Öğrenci rolünde büyük yazı kapalı, öğretmene dönünce ayar geri geliyor. Görme güçlüğü olan öğrenci tarayıcının Ctrl + `+` kısayolunu kullanabilir. `CLAUDE.md` büyük yazı modunu gereksinim sayıyor, kullanıcı öğrenci için kaldırılmasını istedi.
 - Ekranlarda ortak ad "Kazanım". Sayfa altındaki kaynak cümlesinde ve `<meta>` açıklamasında MEB'in "öğrenme çıktıları" adı kaldı.
 - Site bilgisayardan açılıyor, telefon hedef değil. Öğrencinin iki tıkla derse girmesi, rol düğmesiyle öğretmen görünümüne geçebilmesi ve hazır olmayan haftaları "Yakında" ile görmesi bilinçli: bu review'da kullanıcı onayladı, bulgu sayılmadı.
+- Ana sayfada Kazanım Haritası, Çalışma Kâğıtları ve Öğretmen Masası kartları yok: hepsi üst menüde ya da hafta satırında var. Öğretmen Masası'ndaki Kazanım Haritası kartı duruyor.
 - Süreç bileşenleri ana sayfada tekrar edilmiyor, Ders planı sekmesinde duruyor. "Derse başlarken" metni yalnızca Sunum sekmesinde kaldı. Öğrenci satırı açılır kaldı, açılınca yalnızca "Derse gir" var.
 
 **Yarım kalan işler**
 - [ ] Hafta adları ve kazanım dağılımı örnek, rehber öğretmenin yıllık planıyla karşılaştırılmalı. 6. sınıf 2. temada 6 haftaya 10 çıktı düşüyor.
 - [ ] Site 36 hafta ve `TERM1 = 18` varsayıyor, program 34 haftalık saat veriyor. Aradaki 2 hafta ve dönem sınırı yıllık planla netleşmeli. 2. dönemin açık gelmesi denenmedi.
-- [ ] Gestalt değerlendirmesinin kalan küçük bulgusu uygulanmadı: Etkinlik kartı içindeki eşit boşluklar.
 - [ ] 375 px'te sekmeler üç satıra sarılıyor, etkin sekmenin çizgisi ortak çizginin üstünde kalıyor. İlk kullanımda gözlenmeli.
 - [ ] Odak, başlık, slayt sayacı ve arama sonucu bildirimi gerçek ekran okuyucuyla denenmedi.
 - [ ] Bulmaca tamamen çözülünce sekmeye ✓ gelmesi ve dokunmatikte 40 px slayt noktaları denenmedi.
