@@ -25,16 +25,17 @@ Kayıt şablonu:
 - `bb52df6` Ders sayfası sekmeli oldu: aynı anda tek bölüm görünüyor, bölüm sonunda "Sonraki bölüm" düğmesi var.
 - `c8d46eb` Design review (`/outsider-design-review`, 4 yüksek, 11 orta, 7 düşük bulgu) sonrası yüksek önemli 4 bulgu düzeltildi: "Bu hafta" ayrımı, A+ tüm yazıları büyütüyor, sayfa başlığı ve odak değişiyor, "İçeriğe geç" bağlantısı, geri bildirimde ✓ ve ✕ işaretleri.
 - `9cd7b8e` Kalan 18 bulgu ele alındı: test kaydı ve yeniden çözme, sekmede ✓, geri tuşuyla sekme geçmişi, açılır oyun ve destekleme bölümleri, boş haftada en yakın ders, geniş arama, slayt ve bulmacanın küçük ekran düzeni, kâğıtta alt metnin kalkması, ders sıfırlama onayı, role göre metinler.
+- `b893861` Destekleme ve zenginleştirme bölümü ders sayfasından kaldırıldı.
 - Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi. 375 px genişlikte altı sayfada yatay taşma yok. A+ açıkken 375 ve 882 px'te taşma yok. Sekme geçmişi, test kaydı ve yenileme `file://` altında gerçek Chrome'da (CDP) denendi, konsol hatası yok. 375 px'te üç dersin hiçbir slaytı taşmıyor.
 
 **Kararlar**
 - Ana renk lacivert `#1E4FA3`, 6. sınıf kiremit `#B8480A`. Üst başlık lacivert dolu bant.
 - Defter hissi kalıyor (çizgili kâğıt, kırmızı kenar), Comic Sans kalktı. Sarı yalnızca vurguda kullanılıyor.
 - Mulish `assets/mulish.css` içine data URI olarak gömüldü, çünkü Firefox `file://` altında ayrı font dosyası yüklemiyor. Site yaklaşık 76 KB büyüdü.
-- Destekleme kartlarına teal `#0B7169`, zenginleştirme kartlarına mor `#5B3FB5` verildi.
+- Destekleme ve zenginleştirme şimdilik gereksiz bulundu, ekrandan kalktı. İçerik ders dosyalarındaki `diff` alanında ve `_SABLON.js` içinde duruyor, geri açmak için metin yazmak gerekmez. Renk değişkenleri (`--support`, `--enrich`) de silindi.
 - Sınıfta öğretmen sunumu tahtada, öğrenciler kendi bilgisayarında açıyor. Rol seçimi `S.role` ile bilgisayarda saklanıyor. Şifre yok, bu güvenlik değil düzen ayrımı: öğrenci rol düğmesinden öğretmen görünümüne geçebilir.
 - Öğrencide ortam hep `lab`, işletim sistemi `navigator.platform` ile seçiliyor, çünkü öğretmenin ayarı öğrencinin bilgisayarına ulaşmıyor.
-- Öğrenci görünümünde `#kazanimlar`, `#ogretmen` ve `#yazdir-<id>` adresleri ana sayfayı açıyor. Destekleme ve zenginleştirme öğrenci görünümünde kaldı.
+- Öğrenci görünümünde `#kazanimlar`, `#ogretmen` ve `#yazdir-<id>` adresleri ana sayfayı açıyor.
 - Test cevapları `bd:quiz:<id>` içinde saklanıyor ve ilerleme silmeye dahil. Sunum sekmesinin ✓'i saklanmıyor, sayfa yenilenince gidiyor, çünkü sunumu öğretmen yönetiyor.
 - Sekme değişimi `history.pushState` ile geçmişe yazılıyor, adres değişmiyor. Yenilemede Sunum'a dönme kuralı korundu.
 - Sınıf değişince seçili haftanın dersi yoksa önce ayarlı hafta, o da yoksa en yakın hazır hafta seçiliyor.
