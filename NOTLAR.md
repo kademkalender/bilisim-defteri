@@ -35,6 +35,7 @@ Kayıt şablonu:
 - `af9a59c` İkinci design review (2 yüksek, 7 orta, 8 düşük bulgu) sonrası kalan 13 bulgu düzeltildi: aramadan seçilen hafta açılıp ekrana geliyor (`#sinif-5-8`), arama sonucu ekran okuyucuya bildiriliyor, tema başlığında hafta aralığı, öğrenciden kod ve tema kalktı, Kazanım Haritası temalara bölündü (1280 px'te 11.898 px'ten 3.186 px'e).
 - `6b46472` İkinci Gestalt taramasının 6 düzeltmesi: hafta satırında kodlar aynı sütunda, öğretmende soluk satır yok, ana sayfanın alt kartları kalktı, haritada hafta kazanımın yanına geçti, tek kod etiketi biçimi, sekme boşlukları (blok arası 24 px).
 - `a634751` Çalışma Kâğıtları ayrı sayfa oldu (`#kagitlar`), üst menüye eklendi. Öğretmen Masası'nda yalnızca ayarlar kaldı.
+- `b49c18c` Öğrenciye "Bu sayfa açılmadı" uyarısı gösterilmiyor.
 - Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi. 375 px genişlikte altı sayfada yatay taşma yok. A+ açıkken 375 ve 882 px'te taşma yok. Sekme geçmişi, test kaydı ve yenileme `file://` altında gerçek Chrome'da (CDP) denendi, konsol hatası yok. 375 px'te üç dersin hiçbir slaytı taşmıyor.
 
 **Kararlar**
@@ -44,7 +45,7 @@ Kayıt şablonu:
 - Destekleme ve zenginleştirme şimdilik gereksiz bulundu, ekrandan kalktı. İçerik ders dosyalarındaki `diff` alanında ve `_SABLON.js` içinde duruyor, geri açmak için metin yazmak gerekmez. Renk değişkenleri (`--support`, `--enrich`) de silindi.
 - Sınıfta öğretmen sunumu tahtada, öğrenciler kendi bilgisayarında açıyor. Rol seçimi `S.role` ile bilgisayarda saklanıyor. Şifre yok, bu güvenlik değil düzen ayrımı: öğrenci rol düğmesinden öğretmen görünümüne geçebilir.
 - Öğrencide ortam hep `lab`, işletim sistemi `navigator.platform` ile seçiliyor, çünkü öğretmenin ayarı öğrencinin bilgisayarına ulaşmıyor.
-- Öğrenci görünümünde `#kazanimlar`, `#ogretmen` ve `#yazdir-<id>` adresleri ana sayfayı açıyor.
+- Öğrenci görünümünde `#kazanimlar`, `#kagitlar`, `#ogretmen` ve `#yazdir-<id>` adresleri uyarı göstermeden ana sayfayı açıyor. Adres çubuğu yazılan adreste kalıyor.
 - Test cevapları `bd:quiz:<id>` içinde saklanıyor ve ilerleme silmeye dahil. Sunum sekmesinin ✓'i saklanmıyor, sayfa yenilenince gidiyor, çünkü sunumu öğretmen yönetiyor.
 - Sekme değişimi `history.pushState` ile geçmişe yazılıyor, adres değişmiyor. Yenilemede Sunum'a dönme kuralı korundu.
 - Slayt düğmeleri uçlarda `disabled` değil `aria-disabled`: odak kaybolmasın, ok tuşları çalışsın.
