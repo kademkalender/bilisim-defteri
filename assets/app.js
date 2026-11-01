@@ -775,13 +775,12 @@
     app.onclick = null; tabBack = null;
     app.classList.toggle("enter", !keepScroll); // yerinde yenilemede (ortam, yazdırma seçeneği) geçiş yok
     // Öğrenci öğretmen sayfalarına adresle gelirse ana sayfayı görür (cevap anahtarı yazdırma sayfasında)
-    var blocked = isStudent() && /^(kazanimlar$|kagitlar$|ogretmen$|yazdir-)/.test(h);
-    if (blocked) h = "home";
+    if (isStudent() && /^(kazanimlar$|kagitlar$|ogretmen$|yazdir-)/.test(h)) h = "home";
     // #sinif-5: dersteki yol bilgisinden gelinir, ana sayfayı o sınıfla açar. #sinif-5-8: aramadan gelinir, 8. haftayı da gösterir
     var showW = 0;
     if ((m = h.match(/^sinif-(5|6)(?:-(\d+))?$/))) { S.grade = m[1]; showW = +m[2] || 0; saveSettings(); h = "home"; try { history.replaceState(null, "", "#home"); } catch (e) {} }
     if (!S.role) { app.innerHTML = viewRole(); bindRole(); }
-    else if (h === "home" || h === "") { app.innerHTML = (blocked ? '<div class="hook" role="status"><b>Bu sayfa açılmadı</b>Aradığın sayfa yalnızca öğretmen görünümünde var. Buradan dersine geçebilirsin.</div>' : "") + viewHome(); bindHome(); }
+    else if (h === "home" || h === "") { app.innerHTML = viewHome(); bindHome(); }
     else if ((m = h.match(/^ders-(.+)$/))) { app.innerHTML = viewLesson(m[1]); if (lessonById(m[1])) bindLesson(m[1]); }
     else if ((m = h.match(/^yazdir-(.+)$/))) { app.innerHTML = viewPrint(m[1]); if (lessonById(m[1])) bindPrint(m[1]); }
     else if (h === "kazanimlar") app.innerHTML = viewMap();
