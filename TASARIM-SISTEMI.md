@@ -55,6 +55,6 @@ Beyaz yazıyla kontrast: lacivert 7,77:1, kiremit 5,29:1.
 - **Seçim düğmesi (`.chip-btn`):** 40 px, `--radius-md`. Seçilince dolu lacivert olur. Üst bantta şeffaf durur, seçilince beyaz olur. Rol ve A+ ayar olduğu için ince ayraçla ayrılır ve kenarlıksızdır. A+ yalnızca öğretmende görünür.
 - **Kart (`.card`):** Beyaz zemin, 1 px `--border-default`, `--radius-xl`.
 - **Etiket (`.tag`):** Açık zemin ve aynı ailenin koyu yazısı.
-- **Hafta satırı (`.week`):** Hafta numarası ve ders adı aynı satırda (`7. hafta · Dosya ve Klasör Yönetimi`). Durum etiketi sabit genişliktedir, kodlar aynı sütunda durur. Öğrencide hazır olmayan satır soluktur ve açılmaz. Öğretmende her satır açılır, bu yüzden yazı soluk değildir; durumu etiket söyler.
+- **Hafta satırı (`.week`):** Hafta numarası ve ders adı aynı satırda (`7. hafta · Dosya ve Klasör Yönetimi`). Durum etiketi sabit genişliktedir, kodlar aynı sütunda durur. Öğrencide hazır olmayan satır soluktur ve açılmaz. Öğretmende her satır açılır, bu yüzden yazı soluk değildir; durumu etiket söyler. Çalışma Kâğıtları sayfasında satır bağlantıdır, doğrudan kâğıdı açar.
 - **Ders sekmesi (`.tab`):** Ortak alt çizgide durur, etkin olanın çizgisi kalın ve lacivert. Numara dairesi kalır, biten bölümde ✓ olur.
 - **Defter (`.notebook`):** Çizgili kâğıt ve kırmızı kenar çizgisi kalır, yazı Mulish'tir. Bölümün kimliği budur, sade karta çevrilmez.

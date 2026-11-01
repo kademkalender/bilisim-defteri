@@ -146,7 +146,7 @@ main > #wkList{margin-top:var(--space-3)}
 .unit > summary{list-style:none;cursor:pointer}
 .unit > summary::-webkit-details-marker{display:none}
 .unit-h{padding:var(--space-4) var(--space-5);display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap}
-.unit[open] .unit-h{border-bottom:1px solid var(--border-default)}
+.unit[open] .unit-h,section.unit .unit-h{border-bottom:1px solid var(--border-default)}
 .unit-h h2,.unit-h h3{font-size:1.15rem;margin:0}
 .chev{margin-left:var(--space-2)}
 .chev:before{content:"▸"}

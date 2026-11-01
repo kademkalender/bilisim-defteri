@@ -1,7 +1,7 @@
 /* =====================================================================
    Bilişim Defteri — uygulama
    - İnternetsiz çalışır: tüm içerik content/ klasöründeki .js dosyalarından gelir (fetch yok).
-   - Sayfalar adres çubuğundaki # ile seçilir: #home, #sinif-5, #ders-<id>, #kazanimlar, #ogretmen, #yazdir-<id>
+   - Sayfalar adres çubuğundaki # ile seçilir: #home, #sinif-5, #ders-<id>, #kazanimlar, #kagitlar, #ogretmen, #yazdir-<id>
    - Ayarlar (rol, sınıf, sınıf ortamı, işletim sistemi, internet) tarayıcıda saklanır.
    - Rol: öğretmen ve öğrenci aynı siteyi farklı görür. Şifre yok, bu bir güvenlik değil düzen ayrımıdır.
    ===================================================================== */
@@ -138,7 +138,7 @@
       (last ? '<section class="card resume" aria-label="' + (isStudent() ? "Kaldığın yer" : "Kaldığınız yer") + '"><div><span class="hint">' + (isStudent() ? "Kaldığın yer" : "Kaldığınız yer") + ' · ' + last.grade + '. Sınıf</span><div><b>' + last.week + '. hafta</b> · ' + esc(last.title) + '</div></div><a class="btn primary" href="#ders-' + last.id + '">Devam et →</a></section>' : "") +
       '<div class="row" id="wkGrades" role="group" aria-label="Sınıf seçimi">' + ["5", "6"].map(function (g) { return '<button type="button" class="chip-btn" data-g="' + g + '" aria-pressed="' + (S.grade === g) + '">' + g + '. Sınıf</button>'; }).join("") + '</div>' +
       '<div id="wkList">' + weekList(S.grade) + '</div>' +
-      (isStudent() ? "" : '<div class="env-banner"><span><b>Sınıf ortamı:</b> ' + envLabel() + ' · ' + osLabel() + ' · ' + (S.internet ? "İnternet var" : "İnternet yok") + '</span><span class="hint">Etkinlikler okulunuzun şartlarına göre gösterilir. Tüm çalışma kâğıtları da Öğretmen Masası\'nda.</span><a class="btn" href="#ogretmen">Öğretmen Masası</a></div>');
+      (isStudent() ? "" : '<div class="env-banner"><span><b>Sınıf ortamı:</b> ' + envLabel() + ' · ' + osLabel() + ' · ' + (S.internet ? "İnternet var" : "İnternet yok") + '</span><span class="hint">Etkinlikler okulunuzun şartlarına göre gösterilir.</span><a class="btn" href="#ogretmen">Değiştir</a></div>');
   }
   function bindHome() {
     $("#wkGrades").onclick = function (e) {
@@ -610,10 +610,22 @@
     return html;
   }
 
+  /* ---------- Çalışma kâğıtları ---------- */
+  function viewSheets() {
+    var lessons = Object.keys(BD.lessons).map(function (k) { return BD.lessons[k]; }).sort(function (a, b) { return a.week - b.week; });
+    return '<nav class="crumbs"><a href="#home">Ana sayfa</a> › Çalışma Kâğıtları</nav>' +
+      '<div class="section-h"><h1>Çalışma Kâğıtları</h1><p>Her ders için yazdırılabilir sayfa: konu özeti, deftere yaz, bilgisayarsız etkinlik, test, boş bulmaca ve isteğe bağlı cevap anahtarı. Yalnızca hazır dersler listelenir.</p></div>' +
+      ["5", "6"].map(function (g) {
+        var rows = lessons.filter(function (l) { return String(l.grade) === g; }).map(function (l) {
+          return '<li><a class="week" href="#yazdir-' + l.id + '"><span><b class="wk">' + l.week + '. hafta</b> · ' + esc(l.title) + '</span><span class="row"><span class="tag code">' + l.outcome + '</span><span aria-hidden="true">→</span></span></a></li>';
+        }).join("");
+        return '<section class="unit"><div class="unit-h"><h2>' + g + '. Sınıf</h2></div>' + (rows ? '<ul class="weeks">' + rows + '</ul>' : '<div class="unit-note">Bu sınıfın hazır dersi henüz yok.</div>') + '</section>';
+      }).join("");
+  }
+
   /* ---------- Öğretmen masası ---------- */
   function viewTeacher() {
     var optBtn = function (key, val, label, small) { return '<button type="button" data-set="' + key + '" data-val="' + val + '" aria-pressed="' + (String(S[key]) === String(val)) + '">' + label + (small ? '<small>' + esc(small) + '</small>' : "") + '</button>'; };
-    var lessonList = Object.keys(BD.lessons).map(function (k) { return BD.lessons[k]; }).sort(function (a, b) { return a.grade - b.grade || a.week - b.week; });
     return '<nav class="crumbs"><a href="#home">Ana sayfa</a> › Öğretmen Masası</nav>' +
       '<div class="section-h"><h1>Öğretmen Masası</h1><p>Okulunuzun şartlarını bir kez ayarlayın. Ders sayfalarındaki etkinlikler ve yönergeler buna göre değişir. Ayarlar bu bilgisayarda saklanır.</p></div>' +
       '<div class="card">' +
@@ -625,11 +637,7 @@
           '<div class="row"><button type="button" class="btn" id="clrAsk">Bu bilgisayardaki öğrenci ilerlemesini sil</button><span class="hint" id="clrMsg" role="status"></span></div>' +
           '<div class="confirm-box" id="clrBox" hidden><p style="margin:0 0 8px"><b>Emin misiniz?</b> Bu bilgisayardaki bütün derslerin öğrenci ilerlemesi silinecek. Bu işlem geri alınamaz.</p>' +
           '<div class="row"><button type="button" class="btn primary" id="clrYes">Evet, sil</button><button type="button" class="btn" id="clrNo">Vazgeç</button></div></div></div>' +
-      '</div>' +
-      '<section><h2 style="margin-bottom:10px">🖨️ Çalışma kâğıtları</h2><p class="hint" style="margin:0 0 10px">Her ders için yazdırılabilir sayfa: konu özeti, deftere yaz, bilgisayarsız etkinlik, test, boş bulmaca ve isteğe bağlı cevap anahtarı.</p><div class="grid-auto">' +
-        lessonList.map(function (l) { return '<a class="card" style="text-decoration:none;color:inherit" href="#yazdir-' + l.id + '">' + gTag(l.grade) + ' <span class="tag code">' + l.outcome + '</span><div style="margin-top:6px"><b>' + esc(l.title) + '</b></div><div class="hint">' + l.week + '. hafta</div></a>'; }).join("") +
-      '</div></section>' +
-      '<section><h2 style="margin-bottom:10px">📚 Diğer</h2><div class="grid-auto"><a class="card" style="text-decoration:none;color:inherit" href="#kazanimlar"><b>🎯 Kazanım Haritası</b><div class="hint">Hangi süreç bileşeni hangi derste işleniyor</div></a></div></section>';
+      '</div>';
   }
   function bindTeacher() {
     var box = $("#clrBox"), ask = $("#clrAsk"), clrMsg = $("#clrMsg");
@@ -725,7 +733,7 @@
     c.toggle("role-yok", !S.role); c.toggle("role-ogrenci", isStudent());
     c.toggle("big", !isStudent() && store.get("big", false)); // A+ tahta için: öğrenci kendi bilgisayarında, düğmesi de yok
     var name = isStudent() ? "Öğrenci" : "Öğretmen";
-    $("#q").placeholder = isStudent() ? "🔍 Ders ya da hafta ara…" : "🔍 Ders, hafta ya da kazanım ara…";
+    $("#q").placeholder = isStudent() ? "🔍 Ders ya da hafta ara…" : "🔍 Ders ya da kazanım ara…";
     $("#roleBtn").textContent = "Rol: " + name;
     $("#roleBtn").setAttribute("aria-label", "Rol: " + name + ". Değiştirmek için bas.");
   }
@@ -767,7 +775,7 @@
     app.onclick = null; tabBack = null;
     app.classList.toggle("enter", !keepScroll); // yerinde yenilemede (ortam, yazdırma seçeneği) geçiş yok
     // Öğrenci öğretmen sayfalarına adresle gelirse ana sayfayı görür (cevap anahtarı yazdırma sayfasında)
-    var blocked = isStudent() && /^(kazanimlar$|ogretmen$|yazdir-)/.test(h);
+    var blocked = isStudent() && /^(kazanimlar$|kagitlar$|ogretmen$|yazdir-)/.test(h);
     if (blocked) h = "home";
     // #sinif-5: dersteki yol bilgisinden gelinir, ana sayfayı o sınıfla açar. #sinif-5-8: aramadan gelinir, 8. haftayı da gösterir
     var showW = 0;
@@ -777,6 +785,7 @@
     else if ((m = h.match(/^ders-(.+)$/))) { app.innerHTML = viewLesson(m[1]); if (lessonById(m[1])) bindLesson(m[1]); }
     else if ((m = h.match(/^yazdir-(.+)$/))) { app.innerHTML = viewPrint(m[1]); if (lessonById(m[1])) bindPrint(m[1]); }
     else if (h === "kazanimlar") app.innerHTML = viewMap();
+    else if (h === "kagitlar") app.innerHTML = viewSheets();
     else if (h === "ogretmen") { app.innerHTML = viewTeacher(); bindTeacher(); }
     else app.innerHTML = viewNotFound();
     $$(".top nav a").forEach(function (a) { if (a.getAttribute("href") === "#" + h) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });

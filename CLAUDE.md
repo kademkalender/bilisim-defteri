@@ -27,7 +27,7 @@ Ayrıntılar: `README.md` (yapı), `ICERIK-REHBERI.md` (ders yazma kuralları). 
 ## Yapı
 
 - `index.html`: Giriş dosyası, tüm script sıralaması burada.
-- `assets/app.js`: Tek bir IIFE. Hash tabanlı yönlendirme: `#home`, `#sinif-5`, `#ders-<id>`, `#yazdir-<id>`, `#kazanimlar`, `#ogretmen`. Görünümler `viewX()` ile HTML döndürür, olaylar `bindX()` ile bağlanır.
+- `assets/app.js`: Tek bir IIFE. Hash tabanlı yönlendirme: `#home`, `#sinif-5`, `#ders-<id>`, `#yazdir-<id>`, `#kazanimlar`, `#kagitlar`, `#ogretmen`. Görünümler `viewX()` ile HTML döndürür, olaylar `bindX()` ile bağlanır.
 - `assets/crossword.js`: `buildCrossword(entries)` fonksiyonu. Kelime + ipucu listesinden ızgara kurar. Harf temizleme tek yerde: `cwClean(s)`.
 - `assets/shuffle.js`: `shuffleOrder(n, dersId)`. Sınıflandırma kartlarını ders id'sine göre hep aynı, karışık sırada verir.
 - `assets/style.css`: Renkler ve ölçüler `:root` içindeki tokenlardan gelir. Kurallar: `TASARIM-SISTEMI.md`.
