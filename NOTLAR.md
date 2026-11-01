@@ -32,6 +32,7 @@ Kayıt şablonu:
 - `eaa95f3` Plan iki sınıfta 34 haftaya tamamlandı. "Ders akışı" sekmesi "Ders planı" oldu ve öğretmende ilk sekme. Hafta satırından süreç bileşenleri ve "Derse başlarken" kalktı. `tools/dogrula.js` hafta sayısını ve haftasız çıktıyı da denetliyor.
 - `7e7c78d` A+ düğmesi öğrenci görünümünden kalktı.
 - `c819166` Öğrenci dönem başlığından hazır ders sayısı kalktı, yalnızca açma oku var. Öğretmen başlığındaki saat, hafta ve hazır ders sayısı duruyor.
+- `af9a59c` İkinci design review (2 yüksek, 7 orta, 8 düşük bulgu) sonrası kalan 13 bulgu düzeltildi: aramadan seçilen hafta açılıp ekrana geliyor (`#sinif-5-8`), arama sonucu ekran okuyucuya bildiriliyor, tema başlığında hafta aralığı, öğrenciden kod ve tema kalktı, Kazanım Haritası temalara bölündü (1280 px'te 11.898 px'ten 3.186 px'e).
 - Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi. 375 px genişlikte altı sayfada yatay taşma yok. A+ açıkken 375 ve 882 px'te taşma yok. Sekme geçmişi, test kaydı ve yenileme `file://` altında gerçek Chrome'da (CDP) denendi, konsol hatası yok. 375 px'te üç dersin hiçbir slaytı taşmıyor.
 
 **Kararlar**
@@ -61,6 +62,8 @@ Kayıt şablonu:
 - Saatin yetmediği haftalarda iki çıktı birlikte işleniyor (`also` alanı). `plan.js`'teki hafta başlıkları `program.js` kuralına tabi değil, kazanım metinleri öyle.
 - Öğretmen derse önce plana bakıyor, sonra sunuma geçiyor. Öğrenci yine Sunum ile başlıyor. Sayfa yenilenince her rol kendi ilk sekmesine dönüyor.
 - A+ tahta için, öğrenci kendi bilgisayarından açıyor: düğme yalnızca öğretmende. Öğrenci rolünde büyük yazı kapalı, öğretmene dönünce ayar geri geliyor. Görme güçlüğü olan öğrenci tarayıcının Ctrl + `+` kısayolunu kullanabilir. `CLAUDE.md` büyük yazı modunu gereksinim sayıyor, kullanıcı öğrenci için kaldırılmasını istedi.
+- Ekranlarda ortak ad "Kazanım". Sayfa altındaki kaynak cümlesinde ve `<meta>` açıklamasında MEB'in "öğrenme çıktıları" adı kaldı.
+- Site bilgisayardan açılıyor, telefon hedef değil. Öğrencinin iki tıkla derse girmesi, rol düğmesiyle öğretmen görünümüne geçebilmesi ve hazır olmayan haftaları "Yakında" ile görmesi bilinçli: bu review'da kullanıcı onayladı, bulgu sayılmadı.
 - Süreç bileşenleri ana sayfada tekrar edilmiyor, Ders planı sekmesinde duruyor. "Derse başlarken" metni yalnızca Sunum sekmesinde kaldı. Öğrenci satırı açılır kaldı, açılınca yalnızca "Derse gir" var.
 
 **Yarım kalan işler**
@@ -68,7 +71,7 @@ Kayıt şablonu:
 - [ ] Site 36 hafta ve `TERM1 = 18` varsayıyor, program 34 haftalık saat veriyor. Aradaki 2 hafta ve dönem sınırı yıllık planla netleşmeli. 2. dönemin açık gelmesi denenmedi.
 - [ ] Gestalt değerlendirmesinin kalan küçük bulgusu uygulanmadı: Etkinlik kartı içindeki eşit boşluklar.
 - [ ] 375 px'te sekmeler üç satıra sarılıyor, etkin sekmenin çizgisi ortak çizginin üstünde kalıyor. İlk kullanımda gözlenmeli.
-- [ ] Odak, başlık ve slayt sayacı bildirimi gerçek ekran okuyucuyla denenmedi.
+- [ ] Odak, başlık, slayt sayacı ve arama sonucu bildirimi gerçek ekran okuyucuyla denenmedi.
 - [ ] Bulmaca tamamen çözülünce sekmeye ✓ gelmesi ve dokunmatikte 40 px slayt noktaları denenmedi.
 - [ ] Önizleme panelinde, geçmişi 50 kayıt sınırına dayanmış sekmede `history.back()` önceki sayfa yüklemesine atladı. Temiz sekmede ve `file://` altında sorun yok. Uzun süreli kullanımda gerçek Chrome'da denenmeli.
 - [ ] Yeni ana sayfa ve tasarım sistemi Chrome 84 ve Firefox 78'de denenmedi. Gömülü fontun Firefox `file://` altında çalıştığı doğrulanmalı.
