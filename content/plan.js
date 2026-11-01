@@ -28,7 +28,8 @@ BD.defaults = {
   week: 7,          // "Bu hafta"
   env: "lab",       // lab | tahta | kagit
   os: "pardus",     // pardus | windows
-  internet: true
+  internet: true,
+  motion: "full"    // full | reduced (yavaş tahtalar için)
 };
 
 BD.envs = {

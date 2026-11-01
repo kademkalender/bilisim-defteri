@@ -18,6 +18,9 @@
   };
   var S = Object.assign({}, BD.defaults, store.get("settings", {}));
   var saveSettings = function () { store.set("settings", S); };
+  // Hareket açık mı: Öğretmen Masası ayarı ve sistemin "hareketi azalt" tercihi. CSS aynı iki koşula ayrıca bakar.
+  var motionOn = function () { return S.motion !== "reduced" && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches); };
+  var applyMotion = function () { document.documentElement.classList.toggle("anim", S.motion !== "reduced"); };
   var norm = function (s) { return String(s).toLocaleLowerCase("tr").replace(/ı/g, "i").normalize("NFD").replace(/[̀-ͯ]/g, ""); };
 
   // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>. lessonId yoksa tüm dersler.
@@ -245,7 +248,7 @@
 
   function bindLesson(id) {
     var L = BD.lessons[id];
-    $$("[data-jump]").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); document.getElementById(a.getAttribute("data-jump")).scrollIntoView({ behavior: "smooth" }); }); });
+    $$("[data-jump]").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); document.getElementById(a.getAttribute("data-jump")).scrollIntoView({ behavior: motionOn() ? "smooth" : "auto" }); }); });
 
     // Ortam değiştirme
     $$("[data-env]").forEach(function (b) { b.onclick = function () { S.env = b.getAttribute("data-env"); saveSettings(); var y = window.scrollY; render(true); window.scrollTo(0, y); }; });
@@ -484,6 +487,7 @@
         '<div class="setting"><h3>🏫 Sınıf ortamı</h3><div class="opt-group">' + Object.keys(BD.envs).map(function (k) { return optBtn("env", k, BD.envs[k].icon + " " + BD.envs[k].name, BD.envs[k].desc); }).join("") + '</div></div>' +
         '<div class="setting"><h3>🐧 Bilgisayarlardaki işletim sistemi</h3><div class="opt-group">' + optBtn("os", "pardus", "Pardus", "MEB okullarında ve etkileşimli tahtalarda (ETAP) yaygın") + optBtn("os", "windows", "Windows", "Etkinlik yönergeleri Windows menülerine göre yazılır") + '</div></div>' +
         '<div class="setting"><h3>🌐 İnternet bağlantısı</h3><div class="opt-group">' + optBtn("internet", "true", "İnternet var", "İsteğe bağlı çevrim içi araştırma önerileri gösterilir") + optBtn("internet", "false", "İnternet yok / çok yavaş", "Sadece site içindeki bilgi kartları kullanılır") + '</div></div>' +
+        '<div class="setting"><h3>🎞️ Animasyonlar</h3><div class="opt-group">' + optBtn("motion", "full", "Açık", "Sayfa geçişleri, düğme hissi ve kutlamalar") + optBtn("motion", "reduced", "Azaltılmış", "Yavaş tahtalar için: hareket yok, sadece renk değişir") + '</div></div>' +
         '<div class="setting"><h3>🧹 Öğrenci ilerlemesi</h3><p class="hint" style="margin:0">Bu bilgisayarda kayıtlı "Yaptım" işaretleri, defter kutuları ve bulmaca harfleri. Bilgisayarı başka bir sınıf kullanacaksa silin. Ayarlarınız silinmez.</p>' +
           '<div class="row"><button type="button" class="btn" id="clrAsk">Bu bilgisayardaki öğrenci ilerlemesini sil</button><span class="hint" id="clrMsg" role="status"></span></div>' +
           '<div class="confirm-box" id="clrBox" hidden><p style="margin:0 0 8px"><b>Emin misiniz?</b> Bu bilgisayardaki bütün derslerin öğrenci ilerlemesi silinecek. Bu işlem geri alınamaz.</p>' +
@@ -503,7 +507,7 @@
     $$("[data-set]").forEach(function (b) {
       b.onclick = function () {
         var k = b.getAttribute("data-set"), v = b.getAttribute("data-val");
-        S[k] = k === "internet" ? v === "true" : v; saveSettings();
+        S[k] = k === "internet" ? v === "true" : v; saveSettings(); applyMotion();
         $$('[data-set="' + k + '"]').forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
       };
     });
@@ -609,6 +613,7 @@
   var setBig = function (on) { document.documentElement.classList.toggle("big", on); bigBtn.setAttribute("aria-pressed", on); store.set("big", on); };
   bigBtn.onclick = function () { setBig(!document.documentElement.classList.contains("big")); };
   setBig(store.get("big", false));
+  applyMotion();
   initSearch();
   render(false);
 })();
