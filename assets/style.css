@@ -148,9 +148,12 @@ main > #wkList{margin-top:var(--space-3)}
 .unit > summary::-webkit-details-marker{display:none}
 .unit-h{padding:var(--space-4) var(--space-5);display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap}
 .unit[open] .unit-h{border-bottom:1px solid var(--border-default)}
-.unit-h h2{font-size:1.15rem}
+.unit-h h2,.unit-h h3{font-size:1.15rem;margin:0}
+.chev{margin-left:var(--space-2)}
+.chev:before{content:"▸"}
+.unit[open] > summary .chev:before{content:"▾"}
 .unit-h small{color:var(--text-secondary);font-weight:700}
-.tn{color:var(--action-primary);margin-right:6px}
+.tn{color:var(--action-primary);margin-right:2px}
 .weeks{list-style:none;margin:0;padding:0}
 .weeks li + li{border-top:1px solid var(--border-default)}
 .week{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-5);text-decoration:none;color:var(--text-primary);font-weight:700}
@@ -159,6 +162,7 @@ a.week:hover,summary.week:hover{background:var(--surface-subtle)}
 .week.soon,.week.soon .wk{color:var(--text-secondary);font-weight:600}
 summary.week{cursor:pointer;list-style:none}
 summary.week::-webkit-details-marker{display:none}
+.week-hit{background:var(--action-primary-subtle)}
 .week-d > summary .wk:before{content:"▸ "}
 .week-d[open] > summary .wk:before{content:"▾ "}
 .week-body{padding:0 var(--space-5) var(--space-4)}
@@ -354,8 +358,8 @@ section.block > * + *{margin-top:14px}
 .pager{display:flex;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap}
 
 /* Kazanım haritası */
-.cov-table{width:100%;border-collapse:collapse;background:var(--surface-default);border-radius:var(--radius-xl);overflow:hidden}
-.cov-wrap{overflow-x:auto;border:1px solid var(--border-default);border-radius:var(--radius-xl)}
+.cov-table{width:100%;border-collapse:collapse;background:var(--surface-default)}
+.cov-wrap{overflow-x:auto}
 .cov-table th,.cov-table td{text-align:left;padding:var(--space-3) var(--space-3);border-bottom:1px solid var(--border-default);vertical-align:top;font-size:.93rem}
 .cov-table th{background:var(--surface-subtle);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text-secondary)}
 .cov-table tr.oc td{background:var(--action-primary-subtle);font-weight:800}
