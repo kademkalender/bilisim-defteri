@@ -22,6 +22,7 @@ Kayıt şablonu:
 - `7baaacb` Ana sayfa hafta numarasıyla ders seçimine çevrildi: sınıf seçimi, 36 haftalık ızgara, seçilen haftanın kartı. Arama kutusu hafta numarasını anlıyor (`7`, `7. hafta`).
 - `b1ae8d9` Tasarım sistemi kuruldu: Senin UI omurgası, lacivert ana renk, gömülü Mulish. Kurallar `TASARIM-SISTEMI.md` dosyasında.
 - `3c5e41b` Rol ayrımı: site ilk açılışta rol soruyor. Öğrenci sunum ve ekranda doldurulan çalışma kâğıdını görüyor, öğretmen ayrıca ders akışı, ölçme, notlar ve yazdırmayı görüyor.
+- `bb52df6` Ders sayfası sekmeli oldu: aynı anda tek bölüm görünüyor, bölüm sonunda "Sonraki bölüm" düğmesi var.
 - Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi. 375 px genişlikte altı sayfada yatay taşma yok.
 
 **Kararlar**
@@ -31,7 +32,9 @@ Kayıt şablonu:
 - Destekleme kartlarına teal `#0B7169`, zenginleştirme kartlarına mor `#5B3FB5` verildi.
 - Sınıfta öğretmen sunumu tahtada, öğrenciler kendi bilgisayarında açıyor. Rol seçimi `S.role` ile bilgisayarda saklanıyor. Şifre yok, bu güvenlik değil düzen ayrımı: öğrenci rol düğmesinden öğretmen görünümüne geçebilir.
 - Öğrencide ortam hep `lab`, işletim sistemi `navigator.platform` ile seçiliyor, çünkü öğretmenin ayarı öğrencinin bilgisayarına ulaşmıyor.
-- Öğrenci görünümünde `#kazanimlar`, `#ogretmen` ve `#yazdir-<id>` adresleri ana sayfayı açıyor. Destekleme ve zenginleştirme öğrenci çalışma kâğıdında kaldı.
+- Öğrenci görünümünde `#kazanimlar`, `#ogretmen` ve `#yazdir-<id>` adresleri ana sayfayı açıyor. Destekleme ve zenginleştirme öğrenci görünümünde kaldı.
+- Alt alta uzun ders sayfası öğrenciyi yorduğu için sekmelere geçildi. Açık sekme bellekte tutuluyor, sayfa yenilenince Sunum'a dönüyor: sonraki sınıf önceki öğrencinin yerinden başlamıyor.
+- "Derse başlarken" kutusu slaytların altına, bilgi kartları Etkinlik sekmesine, ortam seçimi Etkinlik sekmesinin başına taşındı.
 - Öğretmen görüşmesi yapılamadığı için research benchmark ve netnografiyle yürütüldü. Bulgular doğrulanmış kullanıcı araştırması sayılmaz.
 - Asıl problem altyapı değil, öğrenciye ait resmî bilişim ders kitabının olmaması. Altyapı bir kısıt.
 - Öğretmen dersi tarihle değil hafta numarasıyla arıyor. Bu bilginin kaynağı netleşmedi.
@@ -43,7 +46,9 @@ Kayıt şablonu:
 - [ ] Arama kavramları bulmuyor ("uzantı"), "ağ" da "Sağlık"ı buluyor.
 - [ ] Yeni ana sayfa ve tasarım sistemi Chrome 84 ve Firefox 78'de denenmedi. Gömülü fontun Firefox `file://` altında çalıştığı doğrulanmalı.
 - [ ] Yeni tasarımda gerçek yazdırma önizlemesi ile tahta ve bilgisayarsız ortamların etkinlik görünümü denenmedi.
-- [ ] İşletim sistemi algılama gerçek bir Pardus bilgisayarında denenmedi. Rol ayrımından sonra mobil genişlik yeniden denenmedi.
+- [ ] İşletim sistemi algılama gerçek bir Pardus bilgisayarında denenmedi. Öğretmen sekmelerinde mobil genişlik denenmedi.
+- [ ] Sekmeli ders sayfası `file://` üzerinden denenmedi.
+- [ ] Etkinlik sekmesi hâlâ uzun: bilgi kartları, adımlar, sınıflandırma oyunu, destekleme ve zenginleştirme aynı yerde. İlk kullanımda gözlenmeli.
 
 ---
 
