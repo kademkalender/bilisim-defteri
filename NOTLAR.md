@@ -29,6 +29,7 @@ Kayıt şablonu:
 - `ce2ca92` Gestalt değerlendirmesinin öncelikli 4 düzeltmesi: hafta ızgarası, üst menü, alt çizgili sekmeler, Rol ve A+ ayrımı.
 - `8e8b04d` Ana sayfa hafta listesine çevrildi: öğretmen temalara bölünmüş `7. hafta · Ders adı` satırları, öğrenci 1. ve 2. dönem altında aynı satırlar. Hafta ızgarası ve "Bu hafta" ayarı kalktı, son açılan ders üstte (`bd:last`). `#sinif-N` sınıfı seçip ana sayfayı açıyor.
 - `8fb11e8` `content/program.js` iki sınıfın altı temasıyla MEB ünite sayfalarından birebir dolduruldu (5. sınıf 24 çıktı, 79 bileşen; 6. sınıf 25 çıktı, 88 bileşen). 1. temadaki kısaltılmış ifadeler düzeltildi.
+- `eaa95f3` Plan iki sınıfta 34 haftaya tamamlandı. "Ders akışı" sekmesi "Ders planı" oldu ve öğretmende ilk sekme. Hafta satırından süreç bileşenleri ve "Derse başlarken" kalktı. `tools/dogrula.js` hafta sayısını ve haftasız çıktıyı da denetliyor.
 - Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi. 375 px genişlikte altı sayfada yatay taşma yok. A+ açıkken 375 ve 882 px'te taşma yok. Sekme geçmişi, test kaydı ve yenileme `file://` altında gerçek Chrome'da (CDP) denendi, konsol hatası yok. 375 px'te üç dersin hiçbir slaytı taşmıyor.
 
 **Kararlar**
@@ -54,10 +55,13 @@ Kayıt şablonu:
 - Izgara yetmedi, çünkü öğretmen de haftayı kaçırabiliyor: hafta numarası ders adıyla birlikte yazılıyor. Sitede "gerçek hafta" bilgisi tutulmuyor.
 - Öğrenci tema adlarından bir şey anlamadığı için listesi temaya değil döneme bölünüyor. Dönem sınırı `TERM1 = 18` varsayımı. Hazır satır öğretmeninki gibi açılıyor.
 - Program metni elle değil, ünite sayfalarından betikle çekildi. Kaynaktaki yazım yanlışları korundu ("Bilişim suçların türlerini" gibi). Tek istisna: kaynaktaki `BTY6.6.3` kodu `BTY.6.6.3` yazıldı. Tema adlarındaki "Ve" başlık biçimi sayıldı, "ve" yazıldı.
-- 2-6. temaların haftaları uydurulmadı, çünkü hafta başlığı ve kazanım dağılımı programda yok. Bu temalarda öğretmene "haftalık planı henüz eklenmedi" notu ve Kazanım Haritası bağlantısı çıkıyor.
+- Kullanıcı tüm temaların 1. tema gibi hafta satırlarıyla görünmesini istedi. Temanın hafta sayısı ders saatinin yarısı. Hafta adları ve kazanım dağılımı MEB'den gelmiyor, Claude'un örneği.
+- Saatin yetmediği haftalarda iki çıktı birlikte işleniyor (`also` alanı). `plan.js`'teki hafta başlıkları `program.js` kuralına tabi değil, kazanım metinleri öyle.
+- Öğretmen derse önce plana bakıyor, sonra sunuma geçiyor. Öğrenci yine Sunum ile başlıyor. Sayfa yenilenince her rol kendi ilk sekmesine dönüyor.
+- Süreç bileşenleri ana sayfada tekrar edilmiyor, Ders planı sekmesinde duruyor. "Derse başlarken" metni yalnızca Sunum sekmesinde kaldı. Öğrenci satırı açılır kaldı, açılınca yalnızca "Derse gir" var.
 
 **Yarım kalan işler**
-- [ ] Plan 5. sınıfta 7. haftada, 6. sınıfta 2. haftada bitiyor. 2-6. temaların haftaları rehber öğretmenin yıllık planına göre eklenecek. Saatler iki sınıfta da 68 ediyor, haftada 2 saatle 34 hafta. 6. sınıf 2. temada 6 haftaya 10 çıktı düşüyor.
+- [ ] Hafta adları ve kazanım dağılımı örnek, rehber öğretmenin yıllık planıyla karşılaştırılmalı. 6. sınıf 2. temada 6 haftaya 10 çıktı düşüyor.
 - [ ] Site 36 hafta ve `TERM1 = 18` varsayıyor, program 34 haftalık saat veriyor. Aradaki 2 hafta ve dönem sınırı yıllık planla netleşmeli. 2. dönemin açık gelmesi denenmedi.
 - [ ] Gestalt değerlendirmesinin kalan küçük bulgusu uygulanmadı: Etkinlik kartı içindeki eşit boşluklar.
 - [ ] 375 px'te sekmeler üç satıra sarılıyor, etkin sekmenin çizgisi ortak çizginin üstünde kalıyor. İlk kullanımda gözlenmeli.
