@@ -68,29 +68,56 @@
   var osLabel = function () { return S.os === "pardus" ? "Pardus" : "Windows"; };
 
   /* ---------- Ana sayfa ---------- */
-  var homeSeen = false; // "Bu hafta" vurgusu sekme başına bir kez
+  var WEEKS = 36; // yılda 72 ders saati, haftada 2 saat
+  function weekGrid(g) {
+    var h = "";
+    for (var w = 1; w <= WEEKS; w++) {
+      var p = planWeek(g, w), cls = !p ? "" : p.lesson ? " ready" : " plan", state = !p ? "plan henüz girilmedi" : p.lesson ? "ders hazır" : "ders hazır değil";
+      h += '<button type="button" class="wk-btn' + cls + '" data-w="' + w + '" aria-label="' + w + '. hafta, ' + state + '" aria-pressed="' + (w === S.week) + '">' + w + '</button>';
+    }
+    return h;
+  }
+  function weekCard(g, w) {
+    var p = planWeek(g, w);
+    if (!p) return '<h2>' + w + '. hafta</h2><p class="hint">Bu hafta için plan henüz girilmedi.</p>';
+    var oc = outcome(p.outcome), L = p.lesson ? lessonById(p.lesson) : null;
+    var head = '<h2>' + w + '. hafta: ' + esc(p.title) + '</h2><p><span class="tag code">' + p.outcome + '</span> ' + esc(oc ? oc.title : "") + '</p>';
+    if (!L) return head + '<p class="hint">Bu haftanın dersi henüz hazır değil. Süreç bileşenleri:</p><ul class="wk-parts">' + (oc ? oc.parts : []).map(function (x) { return '<li><b>' + x.k + ')</b> ' + esc(x.t) + '</li>'; }).join("") + '</ul>';
+    return head + '<div class="row"><a class="btn primary" href="#ders-' + L.id + '">Derse git →</a><a class="btn" href="#yazdir-' + L.id + '">🖨️ Çalışma kâğıdı</a></div>' +
+      '<details class="wk-flow"><summary>Ders akışı (' + esc(L.duration) + ')</summary>' + flowHtml(L) + '</details>';
+  }
   function viewHome() {
-    var hi = homeSeen ? "" : " hi"; homeSeen = true;
-    var now = ["5", "6"].map(function (g) {
-      var p = planWeek(g, S.week);
-      if (!p) return '<div class="now-item">' + gTag(g) + '<div><b>Bu hafta için plan eklenmedi</b><small>Yıllık plana göre eklenecek</small></div></div>';
-      var inner = gTag(g) + '<div><b>' + esc(p.title) + '</b><small><span class="tag code">' + p.outcome + '</span> ' + (p.lesson ? "Derse git →" : "Yakında hazır olacak") + '</small></div>';
-      return p.lesson ? '<a class="now-item" href="#ders-' + p.lesson + '">' + inner + '</a>' : '<div class="now-item">' + inner + '</div>';
-    }).join("");
     return '' +
-      '<div class="hello"><h1>Merhaba! Hangi sınıftasın?</h1>' +
-      '<p>Sınıfını seç, bu haftanın dersini aç. Slaytı takip et, Deftere Yaz kısmını defterine geçir, sonra etkinliği yap.</p></div>' +
-      '<div class="grades">' +
-        '<a class="grade-card" href="#sinif-5"><div class="grade-num">5</div><h2>5. Sınıf</h2><p>Bilişim Teknolojileri ve Yazılım</p><span class="grade-go">Derslere git →</span></a>' +
-        '<a class="grade-card g6" href="#sinif-6"><div class="grade-num">6</div><h2>6. Sınıf</h2><p>Bilişim Teknolojileri ve Yazılım</p><span class="grade-go">Derslere git →</span></a>' +
-      '</div>' +
-      '<section class="week-now' + hi + '" aria-label="Bu haftanın dersleri"><h2>📌 Bu hafta (' + S.week + '. hafta)</h2><div class="grid-auto">' + now + '</div></section>' +
+      '<div class="hello"><h1>Hangi haftadasınız?</h1>' +
+      '<p>Sınıf ve hafta numarası seçilince o haftanın dersi burada açılır.</p></div>' +
+      '<section class="card wk-picker" aria-label="Sınıf ve hafta seçimi">' +
+        '<div class="row" id="wkGrades">' + ["5", "6"].map(function (g) { return '<button type="button" class="chip-btn" data-g="' + g + '" aria-pressed="' + (S.grade === g) + '">' + g + '. Sınıf</button>'; }).join("") + '</div>' +
+        '<div class="wk-grid" id="wkGrid">' + weekGrid(S.grade) + '</div>' +
+        '<div class="wk-legend"><span><i class="wk-key ready"></i>Ders hazır</span><span><i class="wk-key plan"></i>Plan var, ders hazır değil</span><span><i class="wk-key"></i>Plan henüz girilmedi</span><span>Hafta dağılımı örnektir.</span></div>' +
+        '<div class="wk-card" id="wkCard" aria-live="polite">' + weekCard(S.grade, S.week) + '</div>' +
+      '</section>' +
       '<div class="env-banner"><span><b>Sınıf ortamı:</b> ' + envLabel() + ' · ' + osLabel() + ' · ' + (S.internet ? "İnternet var" : "İnternet yok") + '</span><span class="hint">Etkinlikler okulunuzun şartlarına göre gösterilir.</span><a class="btn" href="#ogretmen">Değiştir</a></div>' +
       '<div class="grid-auto">' +
         '<a class="card" style="text-decoration:none;color:inherit" href="#kazanimlar"><b>🎯 Kazanım Haritası</b><div class="hint">Hangi öğrenme çıktısı hangi derste işleniyor?</div></a>' +
         '<a class="card" style="text-decoration:none;color:inherit" href="#ogretmen"><b>🖨️ Çalışma Kâğıtları</b><div class="hint">Bilgisayarsız sınıflar için yazdırılabilir dersler</div></a>' +
         '<a class="card" style="text-decoration:none;color:inherit" href="#ogretmen"><b>🧑‍🏫 Öğretmen Masası</b><div class="hint">Haftayı ve okul şartlarını ayarla</div></a>' +
       '</div>';
+  }
+  function bindHome() {
+    $("#wkGrades").onclick = function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      S.grade = b.getAttribute("data-g"); saveSettings();
+      $$("button", this).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+      $("#wkGrid").innerHTML = weekGrid(S.grade);
+      $("#wkCard").innerHTML = weekCard(S.grade, S.week);
+    };
+    // Klavye odağı kaybolmasın diye hafta değişince ızgara yeniden kurulmaz.
+    $("#wkGrid").onclick = function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      S.week = +b.getAttribute("data-w"); saveSettings();
+      $$("button", this).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+      $("#wkCard").innerHTML = weekCard(S.grade, S.week);
+    };
   }
 
   /* ---------- Sınıf sayfası ---------- */
@@ -188,6 +215,12 @@
       '</div><div class="row" style="margin-top:10px"><button type="button" class="btn primary" id="sortCheck">Kontrol et</button><button type="button" class="btn" id="sortReset">Baştan başla</button><span class="fb" id="sortMsg"></span></div></div>';
   }
 
+  function flowHtml(L) {
+    return '<ol class="flow">' + L.flow.map(function (f) {
+      return f.part ? '<li><span></span><span class="part">' + esc(f.part) + '</span></li>' : '<li><span class="min">' + f.m + ' dk</span><span><b>' + esc(f.h) + ':</b> ' + esc(f.d) + '</span></li>';
+    }).join("") + '</ol>';
+  }
+
   function viewLesson(id) {
     var L = lessonById(id);
     if (!L) return viewNotFound();
@@ -248,9 +281,7 @@
       (hasCw ? '<section class="block" id="b-bulmaca"><div class="block-h"><div class="n">5</div><div><h2>Haftanın bulmacası</h2><p>Bir kutuya tıkla ve yaz. Aynı kutuya tekrar tıklarsan yön değişir. İpucuna tıklayınca o kelimeye gidersin.</p></div></div><div class="cw" id="cw"></div></section>' : "") +
 
       '<details class="teach"><summary>🧑‍🏫 Öğretmen için: ders akışı, ölçme ve notlar</summary>' +
-        '<h4>Ders akışı (' + esc(L.duration) + ')</h4><ol class="flow">' + L.flow.map(function (f) {
-          return f.part ? '<li><span></span><span class="part">' + esc(f.part) + '</span></li>' : '<li><span class="min">' + f.m + ' dk</span><span><b>' + esc(f.h) + ':</b> ' + esc(f.d) + '</span></li>';
-        }).join("") + '</ol>' +
+        '<h4>Ders akışı (' + esc(L.duration) + ')</h4>' + flowHtml(L) +
         '<h4>Ölçme ve değerlendirme: ' + esc(L.assessment.tool) + '</h4><ul>' + L.assessment.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' +
         '<h4>Notlar</h4><ul>' + L.teacherNotes.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' +
         '<p><a class="btn" href="#yazdir-' + id + '">🖨️ Çalışma kâğıdı ve cevap anahtarı</a></p>' +
@@ -510,7 +541,7 @@
     return '<nav class="crumbs"><a href="#home">Ana sayfa</a> › Öğretmen Masası</nav>' +
       '<div class="section-h"><h1>Öğretmen Masası</h1><p>Okulunuzun şartlarını bir kez ayarlayın. Ders sayfalarındaki etkinlikler ve yönergeler buna göre değişir. Ayarlar bu bilgisayarda saklanır.</p></div>' +
       '<div class="card">' +
-        '<div class="setting"><h3>📌 Bu hafta</h3><div class="row"><select id="weekSel">' + weeks + '</select><span class="hint">Ana sayfadaki "Bu hafta" kutusu buna göre değişir.</span></div></div>' +
+        '<div class="setting"><h3>📌 Bu hafta</h3><div class="row"><select id="weekSel">' + weeks + '</select><span class="hint">Ana sayfada bu hafta seçili gelir.</span></div></div>' +
         '<div class="setting"><h3>🏫 Sınıf ortamı</h3><div class="opt-group">' + Object.keys(BD.envs).map(function (k) { return optBtn("env", k, BD.envs[k].icon + " " + BD.envs[k].name, BD.envs[k].desc); }).join("") + '</div></div>' +
         '<div class="setting"><h3>🐧 Bilgisayarlardaki işletim sistemi</h3><div class="opt-group">' + optBtn("os", "pardus", "Pardus", "MEB okullarında ve etkileşimli tahtalarda (ETAP) yaygın") + optBtn("os", "windows", "Windows", "Etkinlik yönergeleri Windows menülerine göre yazılır") + '</div></div>' +
         '<div class="setting"><h3>🌐 İnternet bağlantısı</h3><div class="opt-group">' + optBtn("internet", "true", "İnternet var", "İsteğe bağlı çevrim içi araştırma önerileri gösterilir") + optBtn("internet", "false", "İnternet yok / çok yavaş", "Sadece site içindeki bilgi kartları kullanılır") + '</div></div>' +
@@ -610,9 +641,11 @@
     ["5", "6"].forEach(function (g) { (BD.plan[g] || []).forEach(function (p) { var o = outcome(p.outcome); items.push({ g: g, t: p.title, w: p.w, code: p.outcome, lesson: p.lesson, hay: norm(p.title + " " + p.outcome + " " + (o ? o.title : "")) }); }); });
     qIn.addEventListener("input", function () {
       var v = norm(qIn.value.trim());
-      if (v.length < 2) { res.classList.remove("show"); return; }
-      var hits = items.filter(function (x) { return x.hay.indexOf(v) >= 0; }).slice(0, 8);
-      res.innerHTML = hits.length ? hits.map(function (x) { return '<a href="' + (x.lesson ? "#ders-" + x.lesson : "#sinif-" + x.g) + '">' + esc(x.t) + '<small>' + x.g + '. Sınıf · ' + x.w + '. Hafta · ' + x.code + ' · ' + (x.lesson ? "Hazır" : "Yakında") + '</small></a>'; }).join("") : "<div>Sonuç bulunamadı.</div>";
+      // "7", "7. hafta", "7.hafta", "hafta 7": hafta numarasıyla arama
+      var wm = /^(?:hafta\s*)?(\d{1,2})(?:\s*\.?\s*(?:hafta)?)?$/.exec(v), wk = wm ? +wm[1] : 0;
+      if (v.length < 2 && !wk) { res.classList.remove("show"); return; }
+      var hits = items.filter(function (x) { return wk ? x.w === wk : x.hay.indexOf(v) >= 0; }).slice(0, 8);
+      res.innerHTML = hits.length ? hits.map(function (x) { return '<a href="' + (x.lesson ? "#ders-" + x.lesson : "#sinif-" + x.g) + '">' + esc(x.t) + '<small>' + x.g + '. Sınıf · ' + x.w + '. Hafta · ' + x.code + ' · ' + (x.lesson ? "Hazır" : "Yakında") + '</small></a>'; }).join("") : wk >= 1 && wk <= WEEKS ? "<div>" + wk + ". hafta için plan henüz girilmedi.</div>" : "<div>Sonuç bulunamadı.</div>";
       res.classList.add("show");
     });
     res.addEventListener("click", function (e) { if (e.target.closest("a")) { res.classList.remove("show"); qIn.value = ""; } });
@@ -624,7 +657,7 @@
   function render(keepScroll) {
     var h = (location.hash || "#home").slice(1), app = $("#app"), m;
     app.classList.toggle("enter", !keepScroll); // yerinde yenilemede (ortam, yazdırma seçeneği) geçiş yok
-    if (h === "home" || h === "") app.innerHTML = viewHome();
+    if (h === "home" || h === "") { app.innerHTML = viewHome(); bindHome(); }
     else if ((m = h.match(/^sinif-(5|6)$/))) app.innerHTML = viewGrade(m[1]);
     else if ((m = h.match(/^ders-(.+)$/))) { app.innerHTML = viewLesson(m[1]); if (lessonById(m[1])) bindLesson(m[1]); }
     else if ((m = h.match(/^yazdir-(.+)$/))) { app.innerHTML = viewPrint(m[1]); if (lessonById(m[1])) bindPrint(m[1]); }

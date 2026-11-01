@@ -51,6 +51,8 @@ Her ders sayfası, öğrencinin dersteki akışını izler:
 
 Öğretmen için açılır panelde: 80 dakikalık ders akışı, ölçme aracı (kontrol listesi), notlar ve çalışma kâğıdı bağlantısı.
 
+Öğretmen derse ana sayfadan hafta numarasıyla ulaşır: sınıfı ve 36 haftadan birini seçer, o haftanın kazanımı ve dersi aynı sayfada açılır. Arama kutusu da hafta numarasını anlar (`7`, `7. hafta`).
+
 ---
 
 ## Klasör yapısı

@@ -25,7 +25,8 @@ BD.plan = {
 
 /* Varsayılan ayarlar (Öğretmen Masası'ndan değiştirilebilir, tarayıcıda saklanır) */
 BD.defaults = {
-  week: 7,          // "Bu hafta"
+  grade: "5",       // Ana sayfada seçili sınıf
+  week: 7,          // Ana sayfada seçili hafta
   env: "lab",       // lab | tahta | kagit
   os: "pardus",     // pardus | windows
   internet: true,
