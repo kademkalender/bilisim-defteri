@@ -25,6 +25,7 @@ BD.plan = {
 
 /* Varsayılan ayarlar (Öğretmen Masası'ndan değiştirilebilir, tarayıcıda saklanır) */
 BD.defaults = {
+  role: null,        // ogrenci | ogretmen; boşsa ilk açılışta sorulur
   grade: "5",       // Ana sayfada seçili sınıf
   week: 7,          // Ana sayfada seçili hafta
   env: "lab",       // lab | tahta | kagit

@@ -41,15 +41,18 @@ Bu ilkelere göre:
 - **Etkileşimli tahtaya uygun.** Dokunmayla oynanan oyunlar (sürükle-bırak yerine dokun-yerleştir), tam ekran slayt ve büyük yazı (A+) modu vardır.
 
 ### 3. Dersteki akışa uygun
-Her ders sayfası, öğrencinin dersteki akışını izler:
+Öğretmen sunumu tahtada açar, öğrenciler aynı dersi kendi bilgisayarında açar. Site ilk açılışta "Öğrenciyim / Öğretmenim" diye sorar ve seçimi o bilgisayarda hatırlar. Şifre yoktur: bu bir güvenlik değil, düzen ayrımıdır.
 
-1. **Slayt:** Öğretmenle birlikte takip edilir.
-2. **Deftere Yaz:** Sadece yazılması gereken 3–5 madde.
-3. **Etkinlik:** Sınıf ortamına göre, adım adım. Altında **destekleme** ve **zenginleştirme**.
-4. **Mini test:** Anında geri bildirim.
-5. **Haftanın bulmacası:** Kelime + ipucu listesinden otomatik oluşan çengel bulmaca.
+**Öğrenci** ders sayfasında iki şey görür:
 
-Öğretmen için açılır panelde: 80 dakikalık ders akışı, ölçme aracı (kontrol listesi), notlar ve çalışma kâğıdı bağlantısı.
+1. **Sunum:** Öğretmenle birlikte takip edilir.
+2. **Çalışma kâğıdı:** Ekranda doldurulur.
+   - **Deftere yaz:** Sadece yazılması gereken 3–5 madde.
+   - **Etkinlik:** Adım adım, bilgisayarın işletim sistemine göre. Altında **destekleme** ve **zenginleştirme**.
+   - **Mini test:** Anında geri bildirim.
+   - **Haftanın bulmacası:** Kelime + ipucu listesinden otomatik oluşan çengel bulmaca.
+
+**Öğretmen** bunlara ek olarak öğrenme çıktısını, sınıf ortamı seçimini, 80 dakikalık ders akışını, ölçme aracını, notları, yazdırılacak kâğıdı ve cevap anahtarını görür. Kazanım Haritası ve Öğretmen Masası da yalnızca öğretmen görünümündedir.
 
 Öğretmen derse ana sayfadan hafta numarasıyla ulaşır: sınıfı ve 36 haftadan birini seçer, o haftanın kazanımı ve dersi aynı sayfada açılır. Arama kutusu da hafta numarasını anlar (`7`, `7. hafta`).
 
