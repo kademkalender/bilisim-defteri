@@ -35,8 +35,6 @@
   --highlight-subtle:#FFF3C4;
   --notebook-line:#D5DBE8;
   --notebook-margin:#E58A8A;
-  --support:#0B7169;
-  --enrich:#5B3FB5;
   --slide-bg:#12306B;
   --slide-bg-light:#1E4FA3;
   /* Yazı tipi */
@@ -310,14 +308,6 @@ section.block > * + *{margin-top:14px}
 .chip.bad{border-color:var(--feedback-error);background:var(--feedback-error-subtle)}
 .chip.ok:before{content:"✓ ";color:var(--feedback-success)}
 .chip.bad:before{content:"✕ ";color:var(--feedback-error)}
-
-/* Farklılaştırma */
-.diff{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--space-4)}
-.diff-card{background:var(--surface-default);border-radius:var(--radius-xl);border:1px solid var(--border-default);border-top:6px solid var(--support);padding:var(--space-4) var(--space-5)}
-.diff-card.zen{border-top-color:var(--enrich)}
-.diff-card h3{font-size:1.1rem;margin:2px 0 6px}
-.diff-card .who{font-size:.85rem;color:var(--text-secondary);font-weight:700}
-.diff-card ul{margin:0;padding-left:1.2em}
 
 /* Test */
 .q{background:var(--surface-default);border-radius:var(--radius-xl);border:1px solid var(--border-default);padding:var(--space-4) var(--space-5)}

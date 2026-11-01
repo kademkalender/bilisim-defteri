@@ -29,8 +29,6 @@ Omurga İstanbul Senin'in Senin UI sisteminden uyarlandı: token katmanları, ö
 | `--feedback-error` / `-subtle` | `#D1242F` / `#FDECEC` | Yanlış, silme onayı |
 | `--grade-6` / `-subtle` | `#B8480A` / `#FDEDE3` | 6. sınıf |
 | `--highlight` / `-subtle` | `#FFD23F` / `#FFF3C4` | Fosforlu kalem vurgusu, Bu hafta |
-| `--support` | `#0B7169` | Destekleme etkinliği |
-| `--enrich` | `#5B3FB5` | Zenginleştirme etkinliği |
 | `--notebook-line` / `--notebook-margin` | `#D5DBE8` / `#E58A8A` | Defter çizgisi ve kenar çizgisi |
 | `--slide-bg` / `--slide-bg-light` | `#12306B` / `#1E4FA3` | Slayt zemini |
 

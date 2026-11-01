@@ -223,7 +223,7 @@
       '<div class="goal"><b>🎯 Hedef:</b> ' + esc(A.goal) + '</div>' +
       (A.needs ? '<div class="needs">' + A.needs.map(function (n) { return '<span>🧰 ' + esc(n) + '</span>'; }).join("") + '</div>' : "") +
       '<ol class="act-steps" data-key="' + key + '" data-total="' + A.steps.length + '">' + A.steps.map(function (st, i) { return stepHtml(st, i, done.indexOf(i) >= 0, key); }).join("") + '</ol>' +
-      '<div class="finish' + (done.length === A.steps.length ? " show" : "") + '">🎉 Tebrikler, etkinliği bitirdin! Aşağıdaki "Destekleme ve zenginleştirme" bölümünü açıp yeni görevlere bakabilirsin.</div>';
+      '<div class="finish' + (done.length === A.steps.length ? " show" : "") + '">🎉 Tebrikler, etkinliği bitirdin!</div>';
     if (A.online) html += S.internet
       ? '<div class="goal"><b>🌐 İnternet varsa:</b> ' + esc(A.online) + '</div>'
       : '<div class="goal"><b>📴 İnternet yok:</b> Bu etkinlik için internete gerek yok. Araştırma için yukarıdaki bilgi kartlarını kullanın.</div>';
@@ -315,8 +315,7 @@
         (T ? '<div class="env-switch"><span class="lbl">Sınıf ortamı:</span>' + envBtns + '<span class="hint">Seçime göre etkinlik değişir.</span></div>' +
           (S.env === "kagit" ? '<div class="hook"><b>Bilgisayarsız sınıf</b>Bu dersin tamamını çalışma kâğıdıyla yapabilirsiniz. <a href="#yazdir-' + id + '">Çalışma kâğıdını aç →</a></div>' : "") : "") +
         (L.infoCards ? '<h3 style="font-size:1.1rem">📇 Bilgi kartları <span class="hint" style="font-weight:400">internet olmadan araştırma için</span></h3><div class="info-cards">' + L.infoCards.map(function (c) { return '<div class="info-card"><h3>' + esc(c.h) + '</h3><p>' + esc(c.p) + '</p></div>'; }).join("") + '</div>' : "") +
-        '<div id="actWrap">' + activityHtml(L) + '</div>' +
-        '<details class="fold"><summary>🤝 Destekleme ve zenginleştirme</summary><div class="diff">' + ["destek", "zengin"].map(function (k) { var c = L.diff[k]; return '<div class="diff-card ' + (k === "zengin" ? "zen" : "") + '"><span class="who">' + esc(c.who) + '</span><h3>' + (k === "destek" ? "🤝 Destekleme" : "🚀 Zenginleştirme") + '</h3><ul>' + c.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul></div>'; }).join("") + '</div></details>') +
+        '<div id="actWrap">' + activityHtml(L) + '</div>') +
 
       panel("test", "Mini test", L.quiz.length + " soru. Ne kadar öğrendiğini kontrol et.",
         '<div id="quiz">' + L.quiz.map(function (q, qi) {
