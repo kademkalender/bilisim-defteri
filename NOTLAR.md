@@ -20,9 +20,14 @@ Kayıt şablonu:
 
 **Ne yapıldı**
 - `7baaacb` Ana sayfa hafta numarasıyla ders seçimine çevrildi: sınıf seçimi, 36 haftalık ızgara, seçilen haftanın kartı. Arama kutusu hafta numarasını anlıyor (`7`, `7. hafta`).
-- Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi.
+- `b1ae8d9` Tasarım sistemi kuruldu: Senin UI omurgası, lacivert ana renk, gömülü Mulish. Kurallar `TASARIM-SISTEMI.md` dosyasında.
+- Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi. 375 px genişlikte altı sayfada yatay taşma yok.
 
 **Kararlar**
+- Ana renk lacivert `#1E4FA3`, 6. sınıf kiremit `#B8480A`. Üst başlık lacivert dolu bant.
+- Defter hissi kalıyor (çizgili kâğıt, kırmızı kenar), Comic Sans kalktı. Sarı yalnızca vurguda kullanılıyor.
+- Mulish `assets/mulish.css` içine data URI olarak gömüldü, çünkü Firefox `file://` altında ayrı font dosyası yüklemiyor. Site yaklaşık 76 KB büyüdü.
+- Destekleme kartlarına teal `#0B7169`, zenginleştirme kartlarına mor `#5B3FB5` verildi.
 - Öğretmen görüşmesi yapılamadığı için research benchmark ve netnografiyle yürütüldü. Bulgular doğrulanmış kullanıcı araştırması sayılmaz.
 - Asıl problem altyapı değil, öğrenciye ait resmî bilişim ders kitabının olmaması. Altyapı bir kısıt.
 - Öğretmen dersi tarihle değil hafta numarasıyla arıyor. Bu bilginin kaynağı netleşmedi.
@@ -32,7 +37,8 @@ Kayıt şablonu:
 - [ ] Plan 5. sınıfta 7. haftada, 6. sınıfta 2. haftada bitiyor. Hafta numaraları örnek, yıllık plana göre güncellenmeli.
 - [ ] Ana sayfadaki hafta seçimi, sınıf sayfasındaki "Bu hafta" etiketini de değiştiriyor. Ayrılıp ayrılmayacağına karar verilmeli.
 - [ ] Arama kavramları bulmuyor ("uzantı"), "ağ" da "Sağlık"ı buluyor.
-- [ ] Yeni ana sayfa Chrome 84 ve Firefox 78'de denenmedi.
+- [ ] Yeni ana sayfa ve tasarım sistemi Chrome 84 ve Firefox 78'de denenmedi. Gömülü fontun Firefox `file://` altında çalıştığı doğrulanmalı.
+- [ ] Yeni tasarımda gerçek yazdırma önizlemesi ile tahta ve bilgisayarsız ortamların etkinlik görünümü denenmedi.
 
 ---
 
