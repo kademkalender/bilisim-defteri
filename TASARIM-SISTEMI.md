@@ -52,7 +52,7 @@ Beyaz yazıyla kontrast: lacivert 7,77:1, kiremit 5,29:1.
 ## Bileşenler
 
 - **Düğme (`.btn`):** 50 px, `--radius-lg`. Varsayılanı beyaz zemin ve lacivert kenarlıktır, `.primary` dolu laciverttir. Bir görünümde tek birincil düğme hedeflenir.
-- **Seçim düğmesi (`.chip-btn`):** 40 px, `--radius-md`. Seçilince dolu lacivert olur. Üst bantta şeffaf durur, seçilince beyaz olur. Rol ve A+ ayar olduğu için ince ayraçla ayrılır ve kenarlıksızdır.
+- **Seçim düğmesi (`.chip-btn`):** 40 px, `--radius-md`. Seçilince dolu lacivert olur. Üst bantta şeffaf durur, seçilince beyaz olur. Rol ve A+ ayar olduğu için ince ayraçla ayrılır ve kenarlıksızdır. A+ yalnızca öğretmende görünür.
 - **Kart (`.card`):** Beyaz zemin, 1 px `--border-default`, `--radius-xl`.
 - **Etiket (`.tag`):** Açık zemin ve aynı ailenin koyu yazısı.
 - **Hafta satırı (`.week`):** Hafta numarası ve ders adı aynı satırda (`7. hafta · Dosya ve Klasör Yönetimi`). Ders hazır değilse yazı soluk. Satır açılır; öğrencide hazır olmayan satır açılmaz.

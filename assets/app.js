@@ -712,6 +712,7 @@
   function applyRole() {
     var c = document.documentElement.classList;
     c.toggle("role-yok", !S.role); c.toggle("role-ogrenci", isStudent());
+    c.toggle("big", !isStudent() && store.get("big", false)); // A+ tahta için: öğrenci kendi bilgisayarında, düğmesi de yok
     var name = isStudent() ? "Öğrenci" : "Öğretmen";
     $("#roleBtn").textContent = "Rol: " + name;
     $("#roleBtn").setAttribute("aria-label", "Rol: " + name + ". Değiştirmek için bas.");

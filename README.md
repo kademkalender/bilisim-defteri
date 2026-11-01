@@ -38,7 +38,7 @@ Bu ilkelere göre:
 - **Bilgisayar gerekmez.** Her dersin bir **yazdırılabilir çalışma kâğıdı** vardır: konu özeti, deftere yaz, bilgisayarsız etkinlik, test, boş bulmaca ve cevap anahtarı. Programdaki "teknolojik altyapı yoksa basılı kaynaklar kullanılabilir" notuna dayanır.
 - **Pardus öncelikli.** MEB okullarındaki bilgisayarlar ve etkileşimli tahtalar (ETAP) çoğunlukla Pardus kullanır. Yönergeler LibreOffice gibi Pardus'ta hazır gelen programlara göre yazılır.
 - **Eski bilgisayarlarda çalışır.** Toplam boyut birkaç yüz KB'dir. Chrome 84+, Firefox 78+ hedeflenir. Yeni CSS özellikleri (color-mix, :has, container query) kullanılmaz.
-- **Etkileşimli tahtaya uygun.** Dokunmayla oynanan oyunlar (sürükle-bırak yerine dokun-yerleştir), tam ekran slayt ve büyük yazı (A+) modu vardır.
+- **Etkileşimli tahtaya uygun.** Dokunmayla oynanan oyunlar (sürükle-bırak yerine dokun-yerleştir), tam ekran slayt ve öğretmen görünümünde büyük yazı (A+) modu vardır.
 
 ### 3. Dersteki akışa uygun
 Öğretmen sunumu tahtada açar, öğrenciler aynı dersi kendi bilgisayarında açar. Site ilk açılışta "Öğrenciyim / Öğretmenim" diye sorar ve seçimi o bilgisayarda hatırlar. Şifre yoktur: bu bir güvenlik değil, düzen ayrımıdır.
