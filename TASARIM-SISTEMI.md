@@ -28,7 +28,7 @@ Omurga İstanbul Senin'in Senin UI sisteminden uyarlandı: token katmanları, ö
 | `--feedback-success` / `-subtle` | `#157A4C` / `#E3F4EB` | Doğru, tamamlandı, hazır |
 | `--feedback-error` / `-subtle` | `#D1242F` / `#FDECEC` | Yanlış, silme onayı |
 | `--grade-6` / `-subtle` | `#B8480A` / `#FDEDE3` | 6. sınıf |
-| `--highlight` / `-subtle` | `#FFD23F` / `#FFF3C4` | Fosforlu kalem vurgusu, Bu hafta |
+| `--highlight` / `-subtle` | `#FFD23F` / `#FFF3C4` | Fosforlu kalem vurgusu |
 | `--notebook-line` / `--notebook-margin` | `#D5DBE8` / `#E58A8A` | Defter çizgisi ve kenar çizgisi |
 | `--slide-bg` / `--slide-bg-light` | `#12306B` / `#1E4FA3` | Slayt zemini |
 
@@ -55,6 +55,6 @@ Beyaz yazıyla kontrast: lacivert 7,77:1, kiremit 5,29:1.
 - **Seçim düğmesi (`.chip-btn`):** 40 px, `--radius-md`. Seçilince dolu lacivert olur. Üst bantta şeffaf durur, seçilince beyaz olur. Rol ve A+ ayar olduğu için ince ayraçla ayrılır ve kenarlıksızdır.
 - **Kart (`.card`):** Beyaz zemin, 1 px `--border-default`, `--radius-xl`.
 - **Etiket (`.tag`):** Açık zemin ve aynı ailenin koyu yazısı.
-- **Hafta düğmesi (`.wk-btn`):** En belirgin olan ders hazır haftadır: açık lacivert, 2 px lacivert kenarlık. Plan varsa gri zemin ve ince kesik kenarlık, plan yoksa gri, seçiliyse dolu lacivert.
+- **Hafta satırı (`.week`):** Hafta numarası ve ders adı aynı satırda (`7. hafta · Dosya ve Klasör Yönetimi`). Ders hazır değilse yazı soluk. Satır açılır; öğrencide hazır olmayan satır açılmaz.
 - **Ders sekmesi (`.tab`):** Ortak alt çizgide durur, etkin olanın çizgisi kalın ve lacivert. Numara dairesi kalır, biten bölümde ✓ olur.
 - **Defter (`.notebook`):** Çizgili kâğıt ve kırmızı kenar çizgisi kalır, yazı Mulish'tir. Bölümün kimliği budur, sade karta çevrilmez.

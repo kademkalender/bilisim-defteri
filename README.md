@@ -55,7 +55,7 @@ Biten bölümün sekmesinde numara yerine ✓ görünür. Tarayıcının geri tu
 
 **Öğretmen** bunlara ek olarak "Ders akışı" sekmesinde öğrenme çıktısını, 80 dakikalık ders akışını, ölçme aracını, notları, yazdırılacak kâğıdı ve cevap anahtarını görür. Kazanım Haritası ve Öğretmen Masası da yalnızca öğretmen görünümündedir.
 
-Öğretmen derse ana sayfadan hafta numarasıyla ulaşır: sınıfı ve 36 haftadan birini seçer, o haftanın kazanımı ve dersi aynı sayfada açılır. Arama kutusu da hafta numarasını anlar (`7`, `7. hafta`).
+Ana sayfada sınıf seçilir, haftalar temalara bölünmüş listede numarası ve ders adıyla görünür (`7. hafta · Dosya ve Klasör Yönetimi`). Öğrenci tema adı görmez, haftalar 1. dönem (1–18) ve 2. dönem (19–36) altında sırayla listelenir; hazır haftaya basınca dersin giriş sorusu ve "Derse gir" açılır. Öğretmen temalara bölünmüş listede satıra basınca kazanım, çalışma kâğıdı ve ders akışı açılır. Listenin üstünde o bilgisayarda son açılan ders "Kaldığın yer" olarak durur. Arama kutusu hafta numarasını da anlar (`7`, `7. hafta`).
 
 ---
 

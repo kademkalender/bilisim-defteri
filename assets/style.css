@@ -66,7 +66,7 @@ button{font:inherit;cursor:pointer}
 .skip:focus{left:var(--space-4);top:var(--space-2)}
 #app h1:focus,#app h2:focus{outline:none}
 /* Renk geçişleri hareket sayılmaz, Azaltılmış ayarda da kalır */
-.btn,.chip-btn,.chip,.card,.role-card,.wk-btn,.opts button,.opt-group button,.deck-bar button,.act-steps button,.tab,a.week,.cw-clues li{transition:background-color .15s,border-color .15s,color .15s}
+.btn,.chip-btn,.chip,.card,.role-card,.opts button,.opt-group button,.deck-bar button,.act-steps button,.tab,a.week,.cw-clues li{transition:background-color .15s,border-color .15s,color .15s}
 
 /* ---------- Başlık ---------- */
 .top{position:sticky;top:0;z-index:20;background:var(--surface-brand);color:var(--action-on-primary)}
@@ -107,7 +107,6 @@ footer{text-align:center;color:var(--text-secondary);font-size:.85rem;padding:0 
 .tag.g6{background:var(--grade-6-subtle);color:var(--grade-6)}
 .tag.soon{background:var(--surface-subtle);color:var(--text-secondary)}
 .tag.ready{background:var(--feedback-success-subtle);color:var(--feedback-success)}
-.tag.now{background:var(--highlight);color:var(--text-primary)}
 .tag.code{background:var(--action-primary-subtle);color:var(--action-primary);font-family:var(--font-mono)}
 .tag.bil{background:var(--surface-default);color:var(--action-primary);border:1px solid var(--action-primary);font-family:var(--font-mono)}
 .card{background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-xl);padding:var(--space-4) var(--space-5)}
@@ -136,31 +135,14 @@ html.role-ogrenci .t-only{display:none}
 /* ---------- Ana sayfa ---------- */
 .hello h1{font-size:2.2rem}
 .hello p{margin:6px 0 0;color:var(--text-secondary);max-width:62ch}
-.grade-num{font-size:4.2rem;font-weight:800;line-height:.95;color:var(--action-primary)}
-.g6 .grade-num,.grade-num.g6{color:var(--grade-6)}
-.wk-top{justify-content:space-between}
-#wkAll{font-weight:700;font-size:.92rem}
-.wk-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--space-2);margin:14px 0 10px}
-.wk-btn{min-height:44px;padding:0;border:1px solid var(--border-default);border-radius:var(--radius-md);background:var(--surface-subtle);color:var(--text-secondary);font:inherit;font-weight:600;cursor:pointer}
-.wk-btn.ready{background:var(--action-primary-subtle);border:2px solid var(--action-primary);color:var(--action-primary);font-weight:800}
-.wk-btn.plan{background:var(--surface-subtle);border:1px dashed var(--border-strong);color:var(--text-secondary)}
-.wk-btn[aria-pressed="true"]{background:var(--action-primary);border:1.5px solid var(--action-primary);color:var(--action-on-primary);font-weight:800}
-.wk-legend{display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-4);font-size:.85rem;color:var(--text-secondary)}
-.wk-legend span{display:inline-flex;align-items:center;gap:var(--space-2)}
-.wk-key{width:16px;height:16px;border-radius:4px;border:1px solid var(--border-default);background:var(--surface-subtle)}
-.wk-key.ready{background:var(--action-primary-subtle);border:2px solid var(--action-primary)}
-.wk-key.plan{background:var(--surface-subtle);border:1px dashed var(--border-strong)}
-.wk-card{margin-top:var(--space-4);padding-top:var(--space-4);border-top:1px solid var(--border-default)}
-.wk-card h2{font-size:1.3rem}
-.wk-card p{margin:8px 0 12px}
+.resume{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+main > #wkList{margin-top:var(--space-3)}
 .wk-parts{margin:0;padding-left:20px}
 .wk-flow{margin-top:14px}
 .wk-flow summary{cursor:pointer;font-weight:700;margin-bottom:6px}
 .env-banner{display:flex;gap:var(--space-3);align-items:center;flex-wrap:wrap;background:var(--surface-default);border:1px dashed var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-3) var(--space-4);font-size:.92rem}
 
-/* ---------- Sınıf sayfası ---------- */
-.grade-head{display:flex;align-items:center;gap:var(--space-4);flex-wrap:wrap}
-.grade-head .grade-num{font-size:3.4rem}
+/* ---------- Hafta listesi ---------- */
 .unit{background:var(--surface-default);border-radius:var(--radius-xl);border:1px solid var(--border-default);overflow:hidden}
 .unit + .unit{margin-top:14px}
 .unit > summary{list-style:none;cursor:pointer}
@@ -172,12 +154,16 @@ html.role-ogrenci .t-only{display:none}
 .tn{color:var(--action-primary);margin-right:6px}
 .weeks{list-style:none;margin:0;padding:0}
 .weeks li + li{border-top:1px solid var(--border-default)}
-.week{display:grid;grid-template-columns:76px 1fr auto;gap:var(--space-3);align-items:center;padding:var(--space-3) var(--space-5);text-decoration:none;color:var(--text-primary)}
-a.week:hover{background:var(--surface-subtle)}
-.week .wk{font-weight:800;color:var(--text-secondary)}
-.week.current{background:var(--highlight-subtle)}
-.week.disabled{color:var(--text-secondary)}
-.week .codes{display:block;margin-top:2px}
+.week{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-5);text-decoration:none;color:var(--text-primary);font-weight:700}
+a.week:hover,summary.week:hover{background:var(--surface-subtle)}
+.week .wk{font-weight:800;color:var(--action-primary)}
+.week.soon,.week.soon .wk{color:var(--text-secondary);font-weight:600}
+summary.week{cursor:pointer;list-style:none}
+summary.week::-webkit-details-marker{display:none}
+.week-d > summary .wk:before{content:"▸ "}
+.week-d[open] > summary .wk:before{content:"▾ "}
+.week-body{padding:0 var(--space-5) var(--space-4)}
+.week-body p{margin:0 0 var(--space-3)}
 .unit-note{padding:var(--space-3) var(--space-5);background:var(--surface-subtle);color:var(--text-secondary);font-size:.9rem}
 
 /* ---------- Ders sayfası ---------- */
@@ -441,9 +427,7 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
   .deck-bar .w,.dots{display:none}
   .deck-bar .count{min-width:56px}
   #fs{white-space:nowrap}
-  .wk-grid{grid-template-columns:repeat(6,1fr)}
-  .week{grid-template-columns:60px 1fr}
-  .week .tag.ready,.week .tag.soon{grid-column:2;justify-self:start}
+  summary.week{flex-wrap:wrap}
   .notebook{padding-left:52px}
   .notebook:before{left:38px}
   .act-steps li{grid-template-columns:40px 1fr}
@@ -469,8 +453,8 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
   html.anim .unit[open] > summary ~ *{animation:bd-in .2s ease-out}
 
   /* Basma hissi (dokunmatik tahtada da) */
-  html.anim .btn,html.anim .chip-btn,html.anim .chip,html.anim a.card,html.anim .wk-btn,html.anim .opts button,html.anim .opt-group button,html.anim .deck-bar button,html.anim .act-steps button,html.anim .tab{transition:background-color .15s,border-color .15s,color .15s,transform .15s ease-out}
-  html.anim .btn:active,html.anim .chip-btn:active,html.anim .chip:active,html.anim a.card:active,html.anim .wk-btn:active,html.anim .opts button:active:not(:disabled),html.anim .opt-group button:active,html.anim .deck-bar button:active,html.anim .act-steps button:active,html.anim .tab:active{transform:scale(.97);transition-duration:.12s}
+  html.anim .btn,html.anim .chip-btn,html.anim .chip,html.anim a.card,html.anim .opts button,html.anim .opt-group button,html.anim .deck-bar button,html.anim .act-steps button,html.anim .tab{transition:background-color .15s,border-color .15s,color .15s,transform .15s ease-out}
+  html.anim .btn:active,html.anim .chip-btn:active,html.anim .chip:active,html.anim a.card:active,html.anim .opts button:active:not(:disabled),html.anim .opt-group button:active,html.anim .deck-bar button:active,html.anim .act-steps button:active,html.anim .tab:active{transform:scale(.97);transition-duration:.12s}
 
   /* Geri bildirim */
   html.anim .nb-list input.pop,html.anim .act-steps li.done.pop:before,html.anim .cw-cell input.pop{animation:bd-pop .18s ease-out}
@@ -489,8 +473,8 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
 }
 /* Üzerine gelince yükselme: sadece fareli cihazlarda (dokunmatikte "yapışık hover" olmasın) */
 @media screen and (prefers-reduced-motion: no-preference) and (hover: hover){
-  html.anim .btn:hover,html.anim .chip-btn:hover,html.anim .chip:hover,html.anim a.card:hover,html.anim .wk-btn:hover,html.anim .opts button:hover:not(:disabled),html.anim .opt-group button:hover,html.anim .deck-bar button:hover,html.anim .act-steps button:hover{transform:translateY(-2px)}
-  html.anim .btn:active,html.anim .chip-btn:active,html.anim .chip:active,html.anim a.card:active,html.anim .wk-btn:active,html.anim .opts button:active:not(:disabled),html.anim .opt-group button:active,html.anim .deck-bar button:active,html.anim .act-steps button:active,html.anim .tab:active{transform:scale(.97)}
+  html.anim .btn:hover,html.anim .chip-btn:hover,html.anim .chip:hover,html.anim a.card:hover,html.anim .opts button:hover:not(:disabled),html.anim .opt-group button:hover,html.anim .deck-bar button:hover,html.anim .act-steps button:hover{transform:translateY(-2px)}
+  html.anim .btn:active,html.anim .chip-btn:active,html.anim .chip:active,html.anim a.card:active,html.anim .opts button:active:not(:disabled),html.anim .opt-group button:active,html.anim .deck-bar button:active,html.anim .act-steps button:active,html.anim .tab:active{transform:scale(.97)}
 }
 @keyframes bd-in{from{opacity:0;transform:translateY(8px)}}
 @keyframes bd-from-r{from{opacity:0;transform:translateX(24px)}}
