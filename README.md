@@ -47,9 +47,11 @@ Ders sayfası sekmelidir, aynı anda tek bölüm görünür. **Öğrencinin** se
 
 1. **Sunum:** Öğretmenle birlikte takip edilir.
 2. **Deftere yaz:** Sadece yazılması gereken 3–5 madde.
-3. **Etkinlik:** Adım adım, bilgisayarın işletim sistemine göre. Altında **destekleme** ve **zenginleştirme**.
-4. **Mini test:** Anında geri bildirim.
+3. **Etkinlik:** Adım adım, bilgisayarın işletim sistemine göre. Sınıflandırma oyunu, **destekleme** ve **zenginleştirme** altta açılır bölümlerde.
+4. **Mini test:** Anında geri bildirim. Cevaplar saklanır, test yeniden çözülebilir.
 5. **Bulmaca:** Kelime + ipucu listesinden otomatik oluşan çengel bulmaca.
+
+Biten bölümün sekmesinde numara yerine ✓ görünür. Tarayıcının geri tuşu önceki sekmeye döner.
 
 **Öğretmen** bunlara ek olarak "Ders akışı" sekmesinde öğrenme çıktısını, 80 dakikalık ders akışını, ölçme aracını, notları, yazdırılacak kâğıdı ve cevap anahtarını görür. Kazanım Haritası ve Öğretmen Masası da yalnızca öğretmen görünümündedir.
 

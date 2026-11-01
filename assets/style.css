@@ -55,6 +55,7 @@
 @media screen{:root.big{font-size:117.65%}}
 
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{margin:0}
 body{background:var(--surface-subtle);color:var(--text-primary);font-family:var(--font-family);font-size:var(--base);line-height:1.55}
 a{color:var(--action-primary)}
@@ -190,6 +191,8 @@ a.week:hover{background:var(--surface-subtle)}
 .tab[aria-selected="true"]{background:var(--action-primary);border-color:var(--action-primary);color:var(--action-on-primary)}
 .tab[aria-selected="true"] span{background:var(--surface-default);color:var(--action-primary)}
 .tab span{width:30px;height:30px;border-radius:50%;background:var(--action-primary-subtle);color:var(--action-primary);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800}
+.tab.done span{background:var(--feedback-success);color:var(--action-on-primary)}
+.tab.done[aria-selected="true"] span{background:var(--surface-default);color:var(--feedback-success)}
 .tab-next{display:flex;justify-content:flex-end}
 section.block{scroll-margin-top:90px}
 section.block > * + *{margin-top:14px}
@@ -240,10 +243,15 @@ section.block > * + *{margin-top:14px}
 .deck-bar{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-3);flex-wrap:wrap;background:var(--surface-default)}
 .deck-bar button{min-height:var(--size-control-sm);border:0;background:var(--surface-subtle);color:var(--text-primary);padding:0 var(--space-4);border-radius:var(--radius-md);font-weight:800}
 .deck-bar button:hover{background:var(--border-default)}
+.deck-bar button[aria-disabled="true"]{opacity:.45;cursor:default}
 .deck-bar .count{font-weight:800;font-size:1.05rem;min-width:70px;text-align:center}
-.dots{display:flex;gap:var(--space-2);flex:1;justify-content:center;flex-wrap:wrap}
-.dots button{width:12px;height:12px;min-height:0;padding:0;border:0;border-radius:50%;background:var(--border-strong)}
-.dots button.on{background:var(--action-primary)}
+/* Nokta 12 px görünür, dokunma alanı 24 px; dokunmatik tahtada 40 px */
+.dots{display:flex;gap:var(--space-1);flex:1;justify-content:center;flex-wrap:wrap}
+.deck-bar .dots button,.deck-bar .dots button:hover{width:24px;height:24px;min-height:0;padding:0;border-radius:50%;background:transparent}
+.dots button:before{content:"";display:block;width:12px;height:12px;margin:auto;border-radius:50%;background:var(--border-strong)}
+.dots button:hover:before{background:var(--text-secondary)}
+.dots button.on:before{background:var(--action-primary)}
+@media (pointer:coarse){.deck-bar .dots button,.deck-bar .dots button:hover{width:40px;height:40px}}
 
 /* Bilgi kartları */
 .info-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--space-3)}
@@ -284,6 +292,11 @@ section.block > * + *{margin-top:14px}
 .act-steps li.done button{border-color:var(--feedback-success);color:var(--feedback-success)}
 .finish{border-radius:var(--radius-md);padding:var(--space-4);background:var(--feedback-success-subtle);color:var(--feedback-success);font-weight:800;display:none}
 .finish.show{display:block}
+
+/* Açılır bölüm */
+.fold{background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-xl)}
+.fold > summary{cursor:pointer;font-weight:800;padding:var(--space-4) var(--space-5);min-height:var(--size-control-md)}
+.fold > summary + *{padding:0 var(--space-5) var(--space-5)}
 
 /* Sınıflandırma oyunu */
 .sort-cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--space-3)}
@@ -412,13 +425,21 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
 }
 
 @media (max-width:760px){
-  .cw{grid-template-columns:1fr}
-  .cw-board{--cell:34px}
+  .top{position:static}
+  .cw{grid-template-columns:1fr;padding:var(--space-3)}
+  /* 60 px: sayfa ve kutu kenar boşlukları */
+  .cw-board{--cell:min(34px,calc((100vw - 60px - (var(--cols) - 1) * 3px) / var(--cols)))}
+  .cw-cell input{font-size:1.05rem}
   .slide .cols{grid-template-columns:1fr}
   .slide.on.slide-split{grid-template-columns:1fr;grid-template-rows:auto auto}
   .slide-side-img{max-height:45%}
 }
 @media (max-width:560px){
+  .stage{padding-top:100%}
+  .deck-bar{gap:var(--space-2);flex-wrap:nowrap;justify-content:space-between}
+  .deck-bar .w,.dots{display:none}
+  .deck-bar .count{min-width:56px}
+  #fs{white-space:nowrap}
   .wk-grid{grid-template-columns:repeat(6,1fr)}
   .week{grid-template-columns:60px 1fr}
   .week .tag.ready,.week .tag.soon{grid-column:2;justify-self:start}

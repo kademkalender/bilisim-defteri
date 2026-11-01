@@ -40,13 +40,13 @@
   };
   var norm = function (s) { return String(s).toLocaleLowerCase("tr").replace(/ı/g, "i").normalize("NFD").replace(/[̀-ͯ]/g, ""); };
 
-  // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>. lessonId yoksa tüm dersler.
+  // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>, quiz:<id>. lessonId yoksa tüm dersler.
   // Ayarlar (settings, big, printOpts) bu öneklerle başlamadığı için hiç dokunulmaz.
   function clearProgress(lessonId) {
     var keys = [];
     try {
       for (var i = 0; i < localStorage.length; i++) {
-        var k = localStorage.key(i) || "", m = /^bd:(act|nb|cw):(.+)$/.exec(k);
+        var k = localStorage.key(i) || "", m = /^bd:(act|nb|cw|quiz):(.+)$/.exec(k);
         if (!m) continue;
         var id = m[1] === "act" ? m[2].replace(/:[^:]*$/, "") : m[2];
         if (!lessonId || id === lessonId) keys.push(k);
@@ -86,16 +86,24 @@
     }
     return h;
   }
+  // w haftasına en yakın hazır ders. Eşitlikte önceki hafta.
+  function nearestReady(g, w) {
+    return (BD.plan[g] || []).filter(function (x) { return x.lesson; }).sort(function (a, b) { return Math.abs(a.w - w) - Math.abs(b.w - w) || a.w - b.w; })[0] || null;
+  }
+  function nearestLink(g, w) {
+    var n = nearestReady(g, w);
+    return n ? '<div class="row"><a class="btn" href="#ders-' + n.lesson + '">En yakın hazır ders: ' + n.w + '. hafta, ' + esc(n.title) + ' →</a></div>' : "";
+  }
   function weekCard(g, w) {
     var p = planWeek(g, w);
     if (isStudent()) {
-      if (!p || !p.lesson) return '<h2>' + w + '. hafta</h2><p class="hint">Bu haftanın dersi henüz hazır değil.</p>';
+      if (!p || !p.lesson) return '<h2>' + w + '. hafta</h2><p class="hint">Bu haftanın dersi henüz hazır değil.</p>' + nearestLink(g, w);
       return '<h2>' + w + '. hafta: ' + esc(p.title) + '</h2><div class="row"><a class="btn primary" href="#ders-' + p.lesson + '">Derse gir →</a></div>';
     }
-    if (!p) return '<h2>' + w + '. hafta</h2><p class="hint">Bu hafta için plan henüz girilmedi.</p>';
+    if (!p) return '<h2>' + w + '. hafta</h2><p class="hint">Bu hafta için plan henüz girilmedi.</p>' + nearestLink(g, w);
     var oc = outcome(p.outcome), L = p.lesson ? lessonById(p.lesson) : null;
     var head = '<h2>' + w + '. hafta: ' + esc(p.title) + '</h2><p><span class="tag code">' + p.outcome + '</span> ' + esc(oc ? oc.title : "") + '</p>';
-    if (!L) return head + '<p class="hint">Bu haftanın dersi henüz hazır değil. Süreç bileşenleri:</p><ul class="wk-parts">' + (oc ? oc.parts : []).map(function (x) { return '<li><b>' + x.k + ')</b> ' + esc(x.t) + '</li>'; }).join("") + '</ul>';
+    if (!L) return head + '<p class="hint">Bu haftanın dersi henüz hazır değil. Süreç bileşenleri:</p><ul class="wk-parts">' + (oc ? oc.parts : []).map(function (x) { return '<li><b>' + x.k + ')</b> ' + esc(x.t) + '</li>'; }).join("") + '</ul>' + nearestLink(g, w);
     return head + '<div class="row"><a class="btn primary" href="#ders-' + L.id + '">Derse git →</a><a class="btn" href="#yazdir-' + L.id + '">🖨️ Çalışma kâğıdı</a></div>' +
       '<details class="wk-flow"><summary>Ders akışı (' + esc(L.duration) + ')</summary>' + flowHtml(L) + '</details>';
   }
@@ -123,6 +131,9 @@
     $("#wkGrades").onclick = function (e) {
       var b = e.target.closest("button"); if (!b) return;
       S.grade = b.getAttribute("data-g"); saveSettings();
+      // Yeni sınıfta bu haftanın dersi yoksa önce ayarlı hafta, o da yoksa en yakın hazır hafta seçilir.
+      var ready = function (w) { var p = planWeek(S.grade, w); return p && p.lesson; }, near = nearestReady(S.grade, homeWeek());
+      if (!ready(homeWeek())) pickedWeek = ready(S.week) ? S.week : near ? near.w : pickedWeek;
       $$("button", this).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
       $("#wkGrid").innerHTML = weekGrid(S.grade);
       $("#wkCard").innerHTML = weekCard(S.grade, homeWeek());
@@ -146,7 +157,7 @@
       var info = (t.hours ? t.hours + " ders saati" : "") + (weeks.length ? " · " + weeks.length + " hafta" : "") + (ready ? " · " + ready + " ders hazır" : "");
       var body;
       if (!t.outcomes) {
-        body = '<div class="unit-note">Bu temanın öğrenme çıktıları ve ders planı eklenecek.</div>';
+        body = '<div class="unit-note">' + (isStudent() ? "Bu temanın dersleri yakında." : "Bu temanın öğrenme çıktıları ve ders planı eklenecek.") + '</div>';
       } else {
         body = '<ul class="weeks">' + weeks.map(function (x) {
           var cur = x.w === curWeek ? " current" : "";
@@ -212,7 +223,7 @@
       '<div class="goal"><b>🎯 Hedef:</b> ' + esc(A.goal) + '</div>' +
       (A.needs ? '<div class="needs">' + A.needs.map(function (n) { return '<span>🧰 ' + esc(n) + '</span>'; }).join("") + '</div>' : "") +
       '<ol class="act-steps" data-key="' + key + '" data-total="' + A.steps.length + '">' + A.steps.map(function (st, i) { return stepHtml(st, i, done.indexOf(i) >= 0, key); }).join("") + '</ol>' +
-      '<div class="finish' + (done.length === A.steps.length ? " show" : "") + '">🎉 Tebrikler, etkinliği bitirdin! Aşağıdaki zenginleştirme görevlerine bakabilirsin.</div>';
+      '<div class="finish' + (done.length === A.steps.length ? " show" : "") + '">🎉 Tebrikler, etkinliği bitirdin! Aşağıdaki "Destekleme ve zenginleştirme" bölümünü açıp yeni görevlere bakabilirsin.</div>';
     if (A.online) html += S.internet
       ? '<div class="goal"><b>🌐 İnternet varsa:</b> ' + esc(A.online) + '</div>'
       : '<div class="goal"><b>📴 İnternet yok:</b> Bu etkinlik için internete gerek yok. Araştırma için yukarıdaki bilgi kartlarını kullanın.</div>';
@@ -224,11 +235,11 @@
 
   function sortHtml(L) {
     var s = L.sort;
-    return '<div class="card" id="sort"><div class="row"><span class="tag">🧩 Sınıflandırma oyunu</span>' + (s.b ? '<span class="tag bil">' + L.outcome + '.' + s.b + '</span>' : "") + '</div>' +
+    return '<details class="fold"><summary>🧩 Sınıflandırma oyunu</summary><div id="sort">' + (s.b ? '<span class="tag bil">' + L.outcome + '.' + s.b + '</span>' : "") +
       '<h3 style="margin:8px 0 4px;font-size:1.15rem">' + esc(s.title) + '</h3><p class="hint" style="margin:0 0 10px">' + esc(s.intro) + ' Önce bir karta, sonra doğru kutuya dokun.</p>' +
       '<div class="sort-pool" id="sortPool"></div><div class="sort-cats" style="margin-top:10px">' +
       s.cats.map(function (c, i) { return '<div class="sort-cat" data-c="' + i + '" role="button" tabindex="0" aria-label="' + esc(c) + ' kutusu"><h4>' + esc(c) + '</h4><div class="in"></div></div>'; }).join("") +
-      '</div><div class="row" style="margin-top:10px"><button type="button" class="btn primary" id="sortCheck">Kontrol et</button><button type="button" class="btn" id="sortReset">Baştan başla</button><span class="fb" id="sortMsg"></span></div></div>';
+      '</div><div class="row" style="margin-top:10px"><button type="button" class="btn primary" id="sortCheck">Kontrol et</button><button type="button" class="btn" id="sortReset">Baştan başla</button><span class="fb" id="sortMsg"></span></div></div></details>';
   }
 
   function flowHtml(L) {
@@ -237,8 +248,16 @@
     }).join("") + '</ol>';
   }
 
+  // Biten bölümün sekmesinde numara yerine ✓ görünür.
+  function setTabDone(key, on) {
+    var t = $("#t-" + key); if (!t) return;
+    t.classList.toggle("done", on);
+    $("span", t).textContent = on ? "✓" : t.getAttribute("data-n");
+    if (on) t.setAttribute("aria-label", t.getAttribute("data-name") + ", tamamlandı"); else t.removeAttribute("aria-label");
+  }
+
   // Açık sekme bellekte durur: ortam değişince yerinde kalır, sayfa yenilenince (sonraki sınıf) Sunum'a döner.
-  var lessonTab = {};
+  var lessonTab = {}, tabBack = null; // tabBack: ekrandaki dersin sekmesini geçmişten değiştirir
   function viewLesson(id) {
     var L = lessonById(id);
     if (!L) return viewNotFound();
@@ -263,12 +282,12 @@
 
       '<div class="tabs" id="tabs" role="tablist" aria-label="Ders bölümleri">' + tabs.map(function (t, i) {
         var on = t[0] === active;
-        return '<button type="button" class="tab" role="tab" id="t-' + t[0] + '" data-tab="' + t[0] + '" aria-controls="b-' + t[0] + '" aria-selected="' + on + '" tabindex="' + (on ? 0 : -1) + '"><span>' + (i + 1) + '</span>' + t[1] + '</button>';
+        return '<button type="button" class="tab" role="tab" id="t-' + t[0] + '" data-tab="' + t[0] + '" data-n="' + (i + 1) + '" data-name="' + t[1] + '" aria-controls="b-' + t[0] + '" aria-selected="' + on + '" tabindex="' + (on ? 0 : -1) + '"><span>' + (i + 1) + '</span>' + t[1] + '</button>';
       }).join("") + '</div>' +
 
       panel("slayt", "Sunum", T ? "Tahtaya yansıtın. Öğrenciler aynı sunumu kendi bilgisayarında açar." : "Öğretmenin hangi slaytta olduğunu söyleyecek.",
         '<div class="deck" id="deck"><div class="stage" tabindex="0" aria-label="Ders slaytları">' + L.slides.map(function (s, i) { return slideHtml(id, s, i); }).join("") + '</div>' +
-        '<div class="deck-bar"><button type="button" id="prev">← Önceki</button><span class="count" id="count">1 / ' + L.slides.length + '</span><button type="button" id="next">Sonraki →</button>' +
+        '<div class="deck-bar"><button type="button" id="prev" aria-label="Önceki slayt">← <span class="w">Önceki</span></button><span class="count" id="count" aria-live="polite">1 / ' + L.slides.length + '</span><button type="button" id="next" aria-label="Sonraki slayt"><span class="w">Sonraki</span> →</button>' +
         '<div class="dots" id="dots">' + L.slides.map(function (_, i) { return '<button type="button" aria-label="' + (i + 1) + '. slayt" class="' + (i === 0 ? "on" : "") + '" data-i="' + i + '"></button>'; }).join("") + '</div>' +
         '<button type="button" id="fs">⛶ Tam ekran</button></div></div>' +
         '<div class="hint">' + (T ? "Slayta tıklayıp ← → ok tuşlarıyla geçebilirsiniz. Tam ekrandan Esc ile çıkılır." : "Slayta tıklayıp ← → ok tuşlarıyla geçebilirsin. Tam ekrandan Esc ile çıkılır.") + '</div>' +
@@ -283,7 +302,9 @@
         '<div class="card teach-card"><h3>Akış (' + esc(L.duration) + ')</h3>' + flowHtml(L) +
         '<h3>Ölçme ve değerlendirme: ' + esc(L.assessment.tool) + '</h3><ul>' + L.assessment.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' +
         '<h3>Notlar</h3><ul>' + L.teacherNotes.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' +
-        '<div class="row"><a class="btn" href="#yazdir-' + id + '">🖨️ Yazdırılacak kâğıt ve cevap anahtarı</a><button type="button" class="btn" id="resetLesson">🧹 Bu dersin ilerlemesini sıfırla</button><span class="hint" id="resetMsg" role="status"></span></div></div>') : "") +
+        '<div class="row"><a class="btn" href="#yazdir-' + id + '">🖨️ Yazdırılacak kâğıt ve cevap anahtarı</a><button type="button" class="btn" id="resetLesson">🧹 Bu dersin ilerlemesini sıfırla</button><span class="hint" id="resetMsg" role="status"></span></div>' +
+        '<div class="confirm-box" id="resetBox" style="margin-top:8px" hidden><p style="margin:0 0 8px"><b>Emin misiniz?</b> Bu bilgisayarda bu dersin öğrenci ilerlemesi silinecek. Bu işlem geri alınamaz.</p>' +
+        '<div class="row"><button type="button" class="btn primary" id="resetYes">Evet, sıfırla</button><button type="button" class="btn" id="resetNo">Vazgeç</button></div></div></div>') : "") +
 
       panel("defter", "Deftere yaz", "Sadece bu maddeleri defterine geçir. Yazdıkça yanındaki kutuyu işaretle.",
         '<div class="notebook"><h3>' + esc(L.title) + '</h3><ul class="nb-list" id="nb">' +
@@ -295,13 +316,13 @@
           (S.env === "kagit" ? '<div class="hook"><b>Bilgisayarsız sınıf</b>Bu dersin tamamını çalışma kâğıdıyla yapabilirsiniz. <a href="#yazdir-' + id + '">Çalışma kâğıdını aç →</a></div>' : "") : "") +
         (L.infoCards ? '<h3 style="font-size:1.1rem">📇 Bilgi kartları <span class="hint" style="font-weight:400">internet olmadan araştırma için</span></h3><div class="info-cards">' + L.infoCards.map(function (c) { return '<div class="info-card"><h3>' + esc(c.h) + '</h3><p>' + esc(c.p) + '</p></div>'; }).join("") + '</div>' : "") +
         '<div id="actWrap">' + activityHtml(L) + '</div>' +
-        '<div class="diff">' + ["destek", "zengin"].map(function (k) { var c = L.diff[k]; return '<div class="diff-card ' + (k === "zengin" ? "zen" : "") + '"><span class="who">' + esc(c.who) + '</span><h3>' + (k === "destek" ? "🤝 Destekleme" : "🚀 Zenginleştirme") + '</h3><ul>' + c.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul></div>'; }).join("") + '</div>') +
+        '<details class="fold"><summary>🤝 Destekleme ve zenginleştirme</summary><div class="diff">' + ["destek", "zengin"].map(function (k) { var c = L.diff[k]; return '<div class="diff-card ' + (k === "zengin" ? "zen" : "") + '"><span class="who">' + esc(c.who) + '</span><h3>' + (k === "destek" ? "🤝 Destekleme" : "🚀 Zenginleştirme") + '</h3><ul>' + c.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul></div>'; }).join("") + '</div></details>') +
 
       panel("test", "Mini test", L.quiz.length + " soru. Ne kadar öğrendiğini kontrol et.",
         '<div id="quiz">' + L.quiz.map(function (q, qi) {
           return '<div class="q" data-q="' + qi + '"><p>' + (qi + 1) + '. ' + esc(q.q) + '</p><div class="opts">' +
             q.o.map(function (o, oi) { return '<button type="button" data-o="' + oi + '">' + String.fromCharCode(65 + oi) + ') ' + esc(o) + '</button>'; }).join("") + '</div><div class="fb"></div></div>';
-        }).join("") + '</div><div class="score" id="score" aria-live="polite"></div>') +
+        }).join("") + '</div><div class="score" id="score" aria-live="polite"></div><div class="row"><button type="button" class="btn" id="quizAgain" hidden>🔁 Testi yeniden çöz</button></div>') +
 
       (hasCw ? panel("bulmaca", "Haftanın bulmacası", "Bir kutuya tıkla ve yaz. Aynı kutuya tekrar tıklarsan yön değişir. İpucuna tıklayınca o kelimeye gidersin.", '<div class="cw" id="cw"></div>') : "") +
 
@@ -316,7 +337,8 @@
     // Slaytlar
     var deck = $("#deck"), stage = $(".stage", deck), slides = $$(".slide", deck), dots = $$("#dots button"), cur = 0;
     bindSlideImages(deck);
-    var fit = function () { stage.style.fontSize = Math.max(9, stage.clientWidth / 46) + "px"; };
+    // Küçük ekranda sahne kareye yakındır (style.css), yazı da oranla büyür.
+    var fit = function () { var w = stage.clientWidth; stage.style.fontSize = (window.innerWidth <= 560 ? Math.max(11, w / 30) : Math.max(9, w / 46)) + "px"; };
     fit(); window.onresize = fit;
     var go = function (i) {
       var n = Math.max(0, Math.min(slides.length - 1, i));
@@ -325,7 +347,12 @@
       slides.forEach(function (s, k) { s.classList.toggle("on", k === cur); });
       dots.forEach(function (d, k) { d.classList.toggle("on", k === cur); });
       $("#count").textContent = (cur + 1) + " / " + slides.length;
+      // disabled değil: uçta düğme odağı kaybetmesin, ok tuşları çalışmaya devam etsin
+      $("#prev").setAttribute("aria-disabled", cur === 0);
+      $("#next").setAttribute("aria-disabled", cur === slides.length - 1);
+      if (cur === slides.length - 1) setTabDone("slayt", true);
     };
+    go(0);
     $("#prev").onclick = function () { go(cur - 1); };
     $("#next").onclick = function () { go(cur + 1); };
     dots.forEach(function (d) { d.onclick = function () { go(+d.getAttribute("data-i")); }; });
@@ -346,7 +373,10 @@
 
     // Sekmeler: aynı anda tek bölüm görünür
     var tabBtns = $$("#tabs .tab");
-    var showTab = function (key, focus) {
+    // Her sekme değişimi geçmişe yazılır, geri tuşu önceki sekmeye döner. Adres değişmez, yenileyince yine Sunum açılır.
+    var setHistory = function (fn, key) { try { history[fn]({ tab: key }, ""); } catch (e) {} };
+    var showTab = function (key, focus, fromHistory) {
+      if (!fromHistory && key !== lessonTab[id]) setHistory("pushState", key);
       lessonTab[id] = key;
       tabBtns.forEach(function (t) {
         var on = t.getAttribute("data-tab") === key;
@@ -355,9 +385,12 @@
         $("#b-" + t.getAttribute("data-tab")).hidden = !on;
       });
       if (key === "slayt") fit(); // gizliyken genişliği sıfırdı
-      var top = $("#tabs").getBoundingClientRect().top - $(".top").offsetHeight - 12;
+      var bar = $(".top"), top = $("#tabs").getBoundingClientRect().top - (getComputedStyle(bar).position === "sticky" ? bar.offsetHeight : 0) - 12;
       if (top < 0) window.scrollBy(0, top);
     };
+    lessonTab[id] = $('#tabs .tab[aria-selected="true"]').getAttribute("data-tab");
+    setHistory("replaceState", lessonTab[id]);
+    tabBack = { id: id, show: function (key) { showTab(key, false, true); } };
     $("#app").onclick = function (e) {
       var b = e.target.closest("[data-tab]");
       if (b) showTab(b.getAttribute("data-tab"), b.classList.contains("tab-next") || !b.classList.contains("tab"));
@@ -370,7 +403,7 @@
 
     // Defter
     var nbKey = "nb:" + id;
-    var nbProg = function () { var n = store.get(nbKey, []).length, t = L.notebook.length, el = $("#nbProg"); el.textContent = n === t ? "✓ Hepsini yazdın (" + n + "/" + t + ")" : "Yazılan: " + n + " / " + t; el.classList.toggle("full", n === t); };
+    var nbProg = function () { var n = store.get(nbKey, []).length, t = L.notebook.length, el = $("#nbProg"); el.textContent = n === t ? "✓ Hepsini yazdın (" + n + "/" + t + ")" : "Yazılan: " + n + " / " + t; el.classList.toggle("full", n === t); setTabDone("defter", n === t); };
     $("#nb").addEventListener("change", function (e) {
       var i = +e.target.getAttribute("data-i"), arr = store.get(nbKey, []).filter(function (x) { return x !== i; });
       if (e.target.checked) arr.push(i);
@@ -381,25 +414,47 @@
 
     bindActivity(L);
 
-    // Test
-    var answered = 0, correct = 0;
+    // Test: cevaplar defter ve etkinlik işaretleri gibi saklanır
+    var quizKey = "quiz:" + id, picks = store.get(quizKey, {});
+    var showAnswer = function (qEl, pick, live) {
+      var q = L.quiz[+qEl.getAttribute("data-q")], btns = $$(".opts button", qEl), b = btns[pick], fb = $(".fb", qEl);
+      btns.forEach(function (x) { x.disabled = true; });
+      btns[q.a].classList.add("right");
+      if (pick === q.a) { fb.textContent = "Doğru! 👏"; fb.className = "fb r"; if (live) flash(b, "hop"); }
+      else { b.classList.add("wrong"); if (live) flash(b, "shake"); fb.textContent = "Olmadı. Doğru cevap ✓ işaretli olan." + (q.why ? " " + q.why : ""); fb.className = "fb w"; }
+    };
+    var quizState = function (live) {
+      var keys = Object.keys(picks), correct = keys.filter(function (k) { return picks[k] === L.quiz[k].a; }).length, all = keys.length === L.quiz.length;
+      $("#score").textContent = all ? "Sonuç: " + L.quiz.length + " soruda " + correct + " doğru " + (correct === L.quiz.length ? "🌟" : "") : "";
+      $("#quizAgain").hidden = !keys.length;
+      setTabDone("test", all);
+      if (live && all && correct === L.quiz.length) celebrate($("#score"));
+    };
     $$(".q").forEach(function (qEl) {
-      var q = L.quiz[+qEl.getAttribute("data-q")];
+      var qi = qEl.getAttribute("data-q");
+      if (picks[qi] != null) showAnswer(qEl, picks[qi], false);
       $(".opts", qEl).addEventListener("click", function (e) {
         var b = e.target.closest("button"); if (!b || b.disabled) return;
-        var pick = +b.getAttribute("data-o"), btns = $$(".opts button", qEl), fb = $(".fb", qEl);
-        btns.forEach(function (x) { x.disabled = true; });
-        btns[q.a].classList.add("right");
-        if (pick === q.a) { correct++; fb.textContent = "Doğru! 👏"; fb.className = "fb r"; flash(b, "hop"); }
-        else { b.classList.add("wrong"); flash(b, "shake"); fb.textContent = "Olmadı. Doğru cevap ✓ işaretli olan." + (q.why ? " " + q.why : ""); fb.className = "fb w"; }
-        answered++;
-        if (answered === L.quiz.length) { $("#score").textContent = "Sonuç: " + L.quiz.length + " soruda " + correct + " doğru " + (correct === L.quiz.length ? "🌟" : ""); if (correct === L.quiz.length) celebrate($("#score")); }
+        picks[qi] = +b.getAttribute("data-o"); store.set(quizKey, picks);
+        showAnswer(qEl, picks[qi], true); quizState(true);
       });
     });
+    $("#quizAgain").onclick = function () {
+      picks = {}; store.set(quizKey, picks);
+      $$(".q").forEach(function (qEl) {
+        $$(".opts button", qEl).forEach(function (x) { x.disabled = false; x.classList.remove("right", "wrong", "hop", "shake"); });
+        var fb = $(".fb", qEl); fb.textContent = ""; fb.className = "fb";
+      });
+      quizState(false);
+      $(".q .opts button").focus();
+    };
+    quizState(false);
 
     if (L.crossword && L.crossword.length) bindCrossword(L);
 
-    if ($("#resetLesson")) $("#resetLesson").onclick = function () {
+    if ($("#resetLesson")) $("#resetLesson").onclick = function () { $("#resetBox").hidden = false; $("#resetMsg").textContent = ""; $("#resetNo").focus(); };
+    if ($("#resetNo")) $("#resetNo").onclick = function () { $("#resetBox").hidden = true; $("#resetLesson").focus(); };
+    if ($("#resetYes")) $("#resetYes").onclick = function () {
       var n = clearProgress(id), y = window.scrollY;
       render(true); window.scrollTo(0, y);
       $("#resetMsg").textContent = n + " kayıt silindi.";
@@ -419,8 +474,10 @@
       if (on) flash(b.parentNode, "pop");
       var all = arr.length === +ol.getAttribute("data-total");
       $(".finish").classList.toggle("show", all);
+      setTabDone("etkinlik", all);
       if (on && all) celebrate($(".finish"));
     });
+    if (ol) setTabDone("etkinlik", store.get(ol.getAttribute("data-key"), []).length === +ol.getAttribute("data-total"));
     if (L.sort && $("#sort")) bindSort(L);
   }
 
@@ -446,7 +503,8 @@
         $$(".chip", cat).forEach(function (ch) { placed++; var good = s.items[+ch.getAttribute("data-i")].c === ci; ch.classList.toggle("ok", good); ch.classList.toggle("bad", !good); if (good) ok++; });
       });
       var m = $("#sortMsg");
-      if (ok === s.items.length) { m.textContent = "🎉 Hepsi doğru!"; m.className = "fb r"; celebrate(m); }
+      if (!placed) { m.textContent = "Önce kartları kutulara yerleştir."; m.className = "fb w"; }
+      else if (ok === s.items.length) { m.textContent = "🎉 Hepsi doğru!"; m.className = "fb r"; celebrate(m); }
       else { m.textContent = ok + " / " + s.items.length + " doğru. " + (placed < s.items.length ? "Yerleştirilmemiş kartlar var. " : "") + "✕ işaretli kartları başka kutuya taşı."; m.className = "fb w"; }
     };
     $("#sortReset").onclick = reset;
@@ -463,7 +521,7 @@
       board += X.cells[k] ? '<div class="cw-cell" data-k="' + k + '">' + (nums[k] ? '<span class="cw-num">' + nums[k] + '</span>' : "") + '<input maxlength="2" aria-label="Satır ' + (r + 1) + ' sütun ' + (c + 1) + '" autocomplete="off" spellcheck="false"></div>' : "<div></div>";
     }
     var list = function (dir) { return X.words.filter(function (w) { return w.dir === dir; }).sort(function (a, b) { return a.n - b.n; }).map(function (w) { return '<li data-w="' + X.words.indexOf(w) + '"><b>' + w.n + '.</b> ' + esc(w.clue) + ' <small>(' + w.a.length + ')</small></li>'; }).join(""); };
-    root.innerHTML = '<div class="cw-board-wrap"><div class="cw-board" style="grid-template-columns:repeat(' + X.cols + ',var(--cell))">' + board + '</div></div>' +
+    root.innerHTML = '<div class="cw-board-wrap"><div class="cw-board" style="--cols:' + X.cols + ';grid-template-columns:repeat(' + X.cols + ',var(--cell))">' + board + '</div></div>' +
       '<div class="cw-clues"><div><h3>➡️ Soldan sağa</h3><ol>' + list("a") + '</ol></div><div><h3>⬇️ Yukarıdan aşağıya</h3><ol>' + list("d") + '</ol></div>' +
       '<div class="row"><button type="button" class="btn primary" id="cwCheck">Kontrol et</button><button type="button" class="btn" id="cwHint">Bir harf göster</button><button type="button" class="btn" id="cwClear">Temizle</button></div><div class="cw-msg" id="cwMsg" aria-live="polite"></div></div>';
 
@@ -502,6 +560,7 @@
       });
       if (all && ready && !wasAll) celebrate(root); // mesaj metni değişince silinmesin diye bulmaca kutusuna
       wasAll = all;
+      setTabDone("bulmaca", all);
       return all;
     }
     $$(".cw-cell", root).forEach(function (el) {
@@ -585,7 +644,7 @@
         '<div class="setting"><h3>🐧 Bilgisayarlardaki işletim sistemi</h3><div class="opt-group">' + optBtn("os", "pardus", "Pardus", "MEB okullarında ve etkileşimli tahtalarda (ETAP) yaygın") + optBtn("os", "windows", "Windows", "Etkinlik yönergeleri Windows menülerine göre yazılır") + '</div></div>' +
         '<div class="setting"><h3>🌐 İnternet bağlantısı</h3><div class="opt-group">' + optBtn("internet", "true", "İnternet var", "İsteğe bağlı çevrim içi araştırma önerileri gösterilir") + optBtn("internet", "false", "İnternet yok / çok yavaş", "Sadece site içindeki bilgi kartları kullanılır") + '</div></div>' +
         '<div class="setting"><h3>🎞️ Animasyonlar</h3><div class="opt-group">' + optBtn("motion", "full", "Açık", "Sayfa geçişleri, düğme hissi ve kutlamalar") + optBtn("motion", "reduced", "Azaltılmış", "Yavaş tahtalar için: hareket yok, sadece renk değişir") + '</div></div>' +
-        '<div class="setting"><h3>🧹 Öğrenci ilerlemesi</h3><p class="hint" style="margin:0">Bu bilgisayarda kayıtlı "Yaptım" işaretleri, defter kutuları ve bulmaca harfleri. Bilgisayarı başka bir sınıf kullanacaksa silin. Ayarlarınız silinmez.</p>' +
+        '<div class="setting"><h3>🧹 Öğrenci ilerlemesi</h3><p class="hint" style="margin:0">Bu bilgisayarda kayıtlı "Yaptım" işaretleri, defter kutuları, test cevapları ve bulmaca harfleri. Bilgisayarı başka bir sınıf kullanacaksa silin. Ayarlarınız silinmez.</p>' +
           '<div class="row"><button type="button" class="btn" id="clrAsk">Bu bilgisayardaki öğrenci ilerlemesini sil</button><span class="hint" id="clrMsg" role="status"></span></div>' +
           '<div class="confirm-box" id="clrBox" hidden><p style="margin:0 0 8px"><b>Emin misiniz?</b> Bu bilgisayardaki bütün derslerin öğrenci ilerlemesi silinecek. Bu işlem geri alınamaz.</p>' +
           '<div class="row"><button type="button" class="btn primary" id="clrYes">Evet, sil</button><button type="button" class="btn" id="clrNo">Vazgeç</button></div></div></div>' +
@@ -624,8 +683,8 @@
     h += '<h1 style="margin-top:8px">' + esc(L.title) + '</h1><div class="who"><div>Ad Soyad:</div><div>Sınıf/Şube:</div><div>No:</div></div>';
     h += '<p style="margin:0;font-size:.9rem"><b>Öğrenme çıktısı:</b> ' + L.outcome + ' ' + esc(oc ? oc.title : "") + '</p>';
     if (printOpts.konu) {
-      h += '<h2>Konu özeti</h2>' + L.slides.filter(function (s) { return s.type !== "title" && !s.end; }).map(function (s) {
-        return '<div class="keep" style="margin-bottom:8px"><b>' + esc(s.h || s.alt || "") + '</b>' + (s.p ? ' ' + esc(s.p) : "") +
+      h += '<h2>Konu özeti</h2>' + L.slides.filter(function (s) { return s.type !== "title" && !s.end && (!s.img || printOpts.gorsel); }).map(function (s) {
+        return '<div class="keep" style="margin-bottom:8px"><b>' + esc(s.h || "") + '</b>' + (s.p ? ' ' + esc(s.p) : "") +
           (s.list ? '<ul>' + s.list.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' : "") +
           (s.cols ? '<ul>' + s.cols.map(function (c) { return '<li><b>' + esc(c.h) + ':</b> ' + esc(c.p) + '</li>'; }).join("") + '</ul>' : "") +
           (s.tree ? '<pre style="margin:4px 0;font-family:var(--font-mono);font-size:.85rem">' + esc(s.tree) + '</pre>' : "") +
@@ -693,19 +752,26 @@
     $("#roleBtn").setAttribute("aria-label", "Rol: " + name + ". Değiştirmek için bas.");
   }
 
-  function viewNotFound() { return '<div class="empty"><h2>Bu sayfa bulunamadı</h2><p>Ana sayfaya dönüp sınıfını seçebilirsin.</p><a class="btn" href="#home">Ana sayfaya dön</a></div>'; }
+  function viewNotFound() { return '<div class="empty"><h2>Bu sayfa bulunamadı</h2><p>' + (isStudent() ? "Ana sayfaya dönüp sınıfını seçebilirsin." : "Ana sayfadan sınıf ve hafta seçebilirsiniz.") + '</p><a class="btn" href="#home">Ana sayfaya dön</a></div>'; }
 
   /* ---------- Arama ---------- */
   function initSearch() {
     var qIn = $("#q"), res = $("#results");
     var items = [];
-    ["5", "6"].forEach(function (g) { (BD.plan[g] || []).forEach(function (p) { var o = outcome(p.outcome); items.push({ g: g, t: p.title, w: p.w, code: p.outcome, lesson: p.lesson, hay: norm(p.title + " " + p.outcome + " " + (o ? o.title : "")) }); }); });
+    // Hazır derslerde defter maddeleri, slayt başlıkları ve bulmaca kelimeleri de aranır.
+    var lessonWords = function (id) {
+      var L = id ? lessonById(id) : null; if (!L) return "";
+      return L.notebook.map(function (n) { return n.t.replace(/<[^>]+>/g, ""); }).concat(L.slides.map(function (s) { return s.h || ""; }), (L.crossword || []).map(function (c) { return c.a + " " + c.c; })).join(" ");
+    };
+    ["5", "6"].forEach(function (g) { (BD.plan[g] || []).forEach(function (p) { var o = outcome(p.outcome); items.push({ g: g, t: p.title, w: p.w, code: p.outcome, lesson: p.lesson, hay: norm(p.title + " " + p.outcome + " " + (o ? o.title : "") + " " + lessonWords(p.lesson)) }); }); });
+    // Kısa sorgu kelime başından eşleşir: "ağ" "Sağlık"ı bulmasın.
+    var matches = function (hay, v) { return v.length > 3 ? hay.indexOf(v) >= 0 : (" " + hay.replace(/[^a-z0-9.]+/g, " ")).indexOf(" " + v) >= 0; };
     qIn.addEventListener("input", function () {
       var v = norm(qIn.value.trim());
       // "7", "7. hafta", "7.hafta", "hafta 7": hafta numarasıyla arama
       var wm = /^(?:hafta\s*)?(\d{1,2})(?:\s*\.?\s*(?:hafta)?)?$/.exec(v), wk = wm ? +wm[1] : 0;
       if (v.length < 2 && !wk) { res.classList.remove("show"); return; }
-      var hits = items.filter(function (x) { return wk ? x.w === wk : x.hay.indexOf(v) >= 0; }).slice(0, 8);
+      var hits = items.filter(function (x) { return wk ? x.w === wk : matches(x.hay, v); }).slice(0, 8);
       res.innerHTML = hits.length ? hits.map(function (x) { return '<a href="' + (x.lesson ? "#ders-" + x.lesson : "#sinif-" + x.g) + '">' + esc(x.t) + '<small>' + x.g + '. Sınıf · ' + x.w + '. Hafta · ' + x.code + ' · ' + (x.lesson ? "Hazır" : "Yakında") + '</small></a>'; }).join("") : wk >= 1 && wk <= WEEKS ? "<div>" + wk + ". hafta için plan henüz girilmedi.</div>" : "<div>Sonuç bulunamadı.</div>";
       res.classList.add("show");
     });
@@ -717,12 +783,13 @@
   /* ---------- Yönlendirme ---------- */
   function render(keepScroll) {
     var h = (location.hash || "#home").slice(1), app = $("#app"), m;
-    app.onclick = null;
+    app.onclick = null; tabBack = null;
     app.classList.toggle("enter", !keepScroll); // yerinde yenilemede (ortam, yazdırma seçeneği) geçiş yok
     // Öğrenci öğretmen sayfalarına adresle gelirse ana sayfayı görür (cevap anahtarı yazdırma sayfasında)
-    if (isStudent() && /^(kazanimlar$|ogretmen$|yazdir-)/.test(h)) h = "home";
+    var blocked = isStudent() && /^(kazanimlar$|ogretmen$|yazdir-)/.test(h);
+    if (blocked) h = "home";
     if (!S.role) { app.innerHTML = viewRole(); bindRole(); }
-    else if (h === "home" || h === "") { app.innerHTML = viewHome(); bindHome(); }
+    else if (h === "home" || h === "") { app.innerHTML = (blocked ? '<div class="hook" role="status"><b>Bu sayfa açılmadı</b>Aradığın sayfa yalnızca öğretmen görünümünde var. Buradan dersine geçebilirsin.</div>' : "") + viewHome(); bindHome(); }
     else if ((m = h.match(/^sinif-(5|6)$/))) app.innerHTML = viewGrade(m[1]);
     else if ((m = h.match(/^ders-(.+)$/))) { app.innerHTML = viewLesson(m[1]); if (lessonById(m[1])) bindLesson(m[1]); }
     else if ((m = h.match(/^yazdir-(.+)$/))) { app.innerHTML = viewPrint(m[1]); if (lessonById(m[1])) bindPrint(m[1]); }
@@ -745,6 +812,12 @@
   }
 
   window.addEventListener("hashchange", function () { render(false); });
+  window.addEventListener("popstate", function (e) {
+    var m = /^#ders-(.+)$/.exec(location.hash); if (!m) return;
+    var key = e.state && e.state.tab || "slayt";
+    lessonTab[m[1]] = key;
+    if (tabBack && tabBack.id === m[1]) tabBack.show(key);
+  });
   var bigBtn = $("#bigText");
   var setBig = function (on) { document.documentElement.classList.toggle("big", on); bigBtn.setAttribute("aria-pressed", on); store.set("big", on); };
   bigBtn.onclick = function () { setBig(!document.documentElement.classList.contains("big")); };
