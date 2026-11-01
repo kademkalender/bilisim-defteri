@@ -30,6 +30,7 @@ Kayıt şablonu:
 - `8e8b04d` Ana sayfa hafta listesine çevrildi: öğretmen temalara bölünmüş `7. hafta · Ders adı` satırları, öğrenci 1. ve 2. dönem altında aynı satırlar. Hafta ızgarası ve "Bu hafta" ayarı kalktı, son açılan ders üstte (`bd:last`). `#sinif-N` sınıfı seçip ana sayfayı açıyor.
 - `8fb11e8` `content/program.js` iki sınıfın altı temasıyla MEB ünite sayfalarından birebir dolduruldu (5. sınıf 24 çıktı, 79 bileşen; 6. sınıf 25 çıktı, 88 bileşen). 1. temadaki kısaltılmış ifadeler düzeltildi.
 - `eaa95f3` Plan iki sınıfta 34 haftaya tamamlandı. "Ders akışı" sekmesi "Ders planı" oldu ve öğretmende ilk sekme. Hafta satırından süreç bileşenleri ve "Derse başlarken" kalktı. `tools/dogrula.js` hafta sayısını ve haftasız çıktıyı da denetliyor.
+- `7e7c78d` A+ düğmesi öğrenci görünümünden kalktı.
 - Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi. 375 px genişlikte altı sayfada yatay taşma yok. A+ açıkken 375 ve 882 px'te taşma yok. Sekme geçmişi, test kaydı ve yenileme `file://` altında gerçek Chrome'da (CDP) denendi, konsol hatası yok. 375 px'te üç dersin hiçbir slaytı taşmıyor.
 
 **Kararlar**
@@ -58,6 +59,7 @@ Kayıt şablonu:
 - Kullanıcı tüm temaların 1. tema gibi hafta satırlarıyla görünmesini istedi. Temanın hafta sayısı ders saatinin yarısı. Hafta adları ve kazanım dağılımı MEB'den gelmiyor, Claude'un örneği.
 - Saatin yetmediği haftalarda iki çıktı birlikte işleniyor (`also` alanı). `plan.js`'teki hafta başlıkları `program.js` kuralına tabi değil, kazanım metinleri öyle.
 - Öğretmen derse önce plana bakıyor, sonra sunuma geçiyor. Öğrenci yine Sunum ile başlıyor. Sayfa yenilenince her rol kendi ilk sekmesine dönüyor.
+- A+ tahta için, öğrenci kendi bilgisayarından açıyor: düğme yalnızca öğretmende. Öğrenci rolünde büyük yazı kapalı, öğretmene dönünce ayar geri geliyor. Görme güçlüğü olan öğrenci tarayıcının Ctrl + `+` kısayolunu kullanabilir. `CLAUDE.md` büyük yazı modunu gereksinim sayıyor, kullanıcı öğrenci için kaldırılmasını istedi.
 - Süreç bileşenleri ana sayfada tekrar edilmiyor, Ders planı sekmesinde duruyor. "Derse başlarken" metni yalnızca Sunum sekmesinde kaldı. Öğrenci satırı açılır kaldı, açılınca yalnızca "Derse gir" var.
 
 **Yarım kalan işler**
