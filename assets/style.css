@@ -215,7 +215,7 @@ section.block > * + *{margin-top:14px}
 .nb-list input{margin-top:12px;width:18px;height:18px;flex:none}
 .nb-list label{cursor:pointer;line-height:1.6;padding:7px 0}
 .nb-list mark{background:linear-gradient(transparent 55%,var(--marker) 55%);color:inherit;padding:0 2px}
-.nb-list li.done label{color:var(--muted)}
+.nb-list li.done label{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(86,95,132,.5)}
 .nb-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;line-height:40px}
 .progress{font-weight:800}
 .progress.full{color:var(--ok)}
@@ -391,8 +391,31 @@ select{font:inherit;padding:6px 10px;border-radius:10px;border:2px solid var(--r
   html.anim .slide.in-r{animation:bd-from-r .2s ease-out}
   html.anim .slide.in-l{animation:bd-from-l .2s ease-out}
   html.anim .unit[open] > summary ~ *{animation:bd-in .2s ease-out}
+
+  /* Basma hissi (dokunmatik tahtada da) */
+  html.anim .btn,html.anim .chip-btn,html.anim .chip,html.anim a.card,html.anim .grade-card,html.anim a.now-item,html.anim .opts button,html.anim .opt-group button,html.anim .deck-bar button,html.anim .act-steps button,html.anim .steps-nav a{transition:background-color .15s,border-color .15s,color .15s,transform .15s ease-out}
+  html.anim .btn:active,html.anim .chip-btn:active,html.anim .chip:active,html.anim a.card:active,html.anim .grade-card:active,html.anim a.now-item:active,html.anim .opts button:active:not(:disabled),html.anim .opt-group button:active,html.anim .deck-bar button:active,html.anim .act-steps button:active,html.anim .steps-nav a:active{transform:scale(.97);transition-duration:.12s}
+
+  /* Geri bildirim */
+  html.anim .nb-list input.pop,html.anim .act-steps li.done.pop:before,html.anim .cw-cell input.pop{animation:bd-pop .18s ease-out}
+  html.anim .progress.full.pop{display:inline-block;animation:bd-grow .2s ease-out}
+  html.anim .opts button.hop{animation:bd-hop .2s ease-out}
+  html.anim .opts button.shake{animation:bd-shake .2s ease-in-out}
+  html.anim .cw-cell.ok.wave{animation:bd-grow .18s ease-out}
+  html.anim .chip.land{animation:bd-land .18s ease-out}
+  html.anim .chip.sel{animation:bd-grow .2s ease-out}
+}
+/* Üzerine gelince yükselme: sadece fareli cihazlarda (dokunmatikte "yapışık hover" olmasın) */
+@media screen and (prefers-reduced-motion: no-preference) and (hover: hover){
+  html.anim .btn:hover,html.anim .chip-btn:hover,html.anim .chip:hover,html.anim a.card:hover,html.anim .grade-card:hover,html.anim a.now-item:hover,html.anim .opts button:hover:not(:disabled),html.anim .opt-group button:hover,html.anim .deck-bar button:hover,html.anim .act-steps button:hover,html.anim .steps-nav a:hover{transform:translateY(-2px)}
+  html.anim .btn:active,html.anim .chip-btn:active,html.anim .chip:active,html.anim a.card:active,html.anim .grade-card:active,html.anim a.now-item:active,html.anim .opts button:active:not(:disabled),html.anim .opt-group button:active,html.anim .deck-bar button:active,html.anim .act-steps button:active,html.anim .steps-nav a:active{transform:scale(.97)}
 }
 @keyframes bd-in{from{opacity:0;transform:translateY(8px)}}
 @keyframes bd-from-r{from{opacity:0;transform:translateX(24px)}}
 @keyframes bd-from-l{from{opacity:0;transform:translateX(-24px)}}
 @keyframes bd-nudge{50%{transform:scale(1.015)}}
+@keyframes bd-pop{50%{transform:scale(1.25)}}
+@keyframes bd-grow{50%{transform:scale(1.1)}}
+@keyframes bd-hop{40%{transform:translateY(-5px)}}
+@keyframes bd-shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+@keyframes bd-land{from{opacity:.4;transform:translateY(-8px) scale(.95)}}

@@ -21,6 +21,8 @@
   // Hareket açık mı: Öğretmen Masası ayarı ve sistemin "hareketi azalt" tercihi. CSS aynı iki koşula ayrıca bakar.
   var motionOn = function () { return S.motion !== "reduced" && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches); };
   var applyMotion = function () { document.documentElement.classList.toggle("anim", S.motion !== "reduced"); };
+  // Sınıfı kaldırıp yeniden ekler ki CSS animasyonu baştan oynasın. Sadece kullanıcı bir şeye basınca çağrılır.
+  var flash = function (el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
   var norm = function (s) { return String(s).toLocaleLowerCase("tr").replace(/ı/g, "i").normalize("NFD").replace(/[̀-ͯ]/g, ""); };
 
   // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>. lessonId yoksa tüm dersler.
@@ -293,6 +295,7 @@
       var i = +e.target.getAttribute("data-i"), arr = store.get(nbKey, []).filter(function (x) { return x !== i; });
       if (e.target.checked) arr.push(i);
       store.set(nbKey, arr); e.target.parentNode.classList.toggle("done", e.target.checked); nbProg();
+      if (e.target.checked) { flash(e.target, "pop"); if (arr.length === L.notebook.length) flash($("#nbProg"), "pop"); }
     });
     nbProg();
 
@@ -307,8 +310,8 @@
         var pick = +b.getAttribute("data-o"), btns = $$(".opts button", qEl), fb = $(".fb", qEl);
         btns.forEach(function (x) { x.disabled = true; });
         btns[q.a].classList.add("right");
-        if (pick === q.a) { correct++; fb.textContent = "Doğru! 👏"; fb.className = "fb r"; }
-        else { b.classList.add("wrong"); fb.textContent = "Olmadı. Doğru cevap yeşil olan." + (q.why ? " " + q.why : ""); fb.className = "fb w"; }
+        if (pick === q.a) { correct++; fb.textContent = "Doğru! 👏"; fb.className = "fb r"; flash(b, "hop"); }
+        else { b.classList.add("wrong"); flash(b, "shake"); fb.textContent = "Olmadı. Doğru cevap yeşil olan." + (q.why ? " " + q.why : ""); fb.className = "fb w"; }
         answered++;
         if (answered === L.quiz.length) $("#score").textContent = "Sonuç: " + L.quiz.length + " soruda " + correct + " doğru " + (correct === L.quiz.length ? "🌟" : "");
       });
@@ -334,6 +337,7 @@
       arr = arr.filter(function (x) { return x !== i; }); if (on) arr.push(i);
       store.set(key, arr);
       b.parentNode.classList.toggle("done", on); b.textContent = on ? "Yaptım ✓" : "Yaptım";
+      if (on) flash(b.parentNode, "pop");
       $(".finish").classList.toggle("show", arr.length === +ol.getAttribute("data-total"));
     });
     if (L.sort && $("#sort")) bindSort(L);
@@ -350,8 +354,8 @@
     var mark = function () { $$(".sort-cat").forEach(function (c) { c.classList.toggle("target", !!sel); }); };
     $("#sort").addEventListener("click", function (e) {
       var chip = e.target.closest(".chip"), cat = e.target.closest(".sort-cat");
-      if (chip) { $$(".chip", $("#sort")).forEach(function (c) { c.classList.remove("sel"); }); if (sel === chip) { sel = null; } else { sel = chip; chip.classList.add("sel"); } chip.classList.remove("ok", "bad"); mark(); e.stopPropagation(); return; }
-      if (cat && sel) { sel.classList.remove("sel"); $(".in", cat).appendChild(sel); sel = null; mark(); }
+      if (chip) { $$(".chip", $("#sort")).forEach(function (c) { c.classList.remove("sel", "land"); }); if (sel === chip) { sel = null; } else { sel = chip; chip.classList.add("sel"); } chip.classList.remove("ok", "bad"); mark(); e.stopPropagation(); return; }
+      if (cat && sel) { sel.classList.remove("sel"); $(".in", cat).appendChild(sel); flash(sel, "land"); sel = null; mark(); }
     });
     $$(".sort-cat").forEach(function (c) { c.addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === " ") && sel) { e.preventDefault(); c.click(); } }); });
     $("#sortCheck").onclick = function () {
@@ -402,11 +406,17 @@
       var i = inp(k); if (document.activeElement !== i) i.focus();
     }
     function step(d) { var cs = cellsOf(curWord), i = cs.indexOf(cur) + d; if (i >= 0 && i < cs.length) select(cs[i], curWord); }
+    var wasSolved = {}, ready = false; // ready: açılıştaki kayıtlı çözümler dalga yapmasın
     function solved() {
       var all = true;
-      X.words.forEach(function (w) {
+      X.words.forEach(function (w, wi) {
         var ok = cellsOf(w).every(function (k, i) { return inp(k).value === w.a[i]; });
-        $('.cw-clues li[data-w="' + X.words.indexOf(w) + '"]', root).classList.toggle("solved", ok);
+        $('.cw-clues li[data-w="' + wi + '"]', root).classList.toggle("solved", ok);
+        if (ok) cellsOf(w).forEach(function (k, i) {
+          var el = cellEl(k); el.classList.add("ok");
+          if (ready && !wasSolved[wi]) { el.style.animationDelay = Math.min(i * 50, 600) + "ms"; flash(el, "wave"); }
+        });
+        wasSolved[wi] = ok;
         if (!ok) all = false;
       });
       return all;
@@ -419,7 +429,7 @@
         var ch = window.cwClean(i.value).slice(-1);
         i.value = ch; el.classList.remove("ok", "bad"); persist(); $("#cwMsg").textContent = "";
         if (solved()) msg("🎉 Harika! Bulmacayı tamamen çözdün.", true);
-        if (ch) step(1);
+        if (ch) { flash(i, "pop"); step(1); }
       });
       i.addEventListener("keydown", function (e) {
         var p = k.split(",").map(Number);
@@ -447,7 +457,7 @@
       if (solved()) msg("🎉 Harika! Bulmacayı tamamen çözdün.", true);
     };
     $("#cwClear").onclick = function () { $$(".cw-cell", root).forEach(function (el) { $("input", el).value = ""; el.classList.remove("ok", "bad"); }); persist(); solved(); $("#cwMsg").textContent = ""; };
-    solved();
+    solved(); ready = true;
   }
 
   /* ---------- Kazanım haritası ---------- */
