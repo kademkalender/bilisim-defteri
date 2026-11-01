@@ -36,6 +36,7 @@ Kayıt şablonu:
 - `6b46472` İkinci Gestalt taramasının 6 düzeltmesi: hafta satırında kodlar aynı sütunda, öğretmende soluk satır yok, ana sayfanın alt kartları kalktı, haritada hafta kazanımın yanına geçti, tek kod etiketi biçimi, sekme boşlukları (blok arası 24 px).
 - `a634751` Çalışma Kâğıtları ayrı sayfa oldu (`#kagitlar`), üst menüye eklendi. Öğretmen Masası'nda yalnızca ayarlar kaldı.
 - `b49c18c` Öğrenciye "Bu sayfa açılmadı" uyarısı gösterilmiyor.
+- `27ef16e` Üst bant düzeltmeleri: öğretmen arama yazısı "Ders, hafta, kod", marka-arama-menü boşluğu 16 px, menüde "Kazanım Haritası", A+ için ekran okuyucu adı "Yazıyı büyüt".
 - Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi. 375 px genişlikte altı sayfada yatay taşma yok. A+ açıkken 375 ve 882 px'te taşma yok. Sekme geçmişi, test kaydı ve yenileme `file://` altında gerçek Chrome'da (CDP) denendi, konsol hatası yok. 375 px'te üç dersin hiçbir slaytı taşmıyor.
 
 **Kararlar**
@@ -45,6 +46,7 @@ Kayıt şablonu:
 - Destekleme ve zenginleştirme şimdilik gereksiz bulundu, ekrandan kalktı. İçerik ders dosyalarındaki `diff` alanında ve `_SABLON.js` içinde duruyor, geri açmak için metin yazmak gerekmez. Renk değişkenleri (`--support`, `--enrich`) de silindi.
 - Sınıfta öğretmen sunumu tahtada, öğrenciler kendi bilgisayarında açıyor. Rol seçimi `S.role` ile bilgisayarda saklanıyor. Şifre yok, bu güvenlik değil düzen ayrımı: öğrenci rol düğmesinden öğretmen görünümüne geçebilir.
 - Öğrencide ortam hep `lab`, işletim sistemi `navigator.platform` ile seçiliyor, çünkü öğretmenin ayarı öğrencinin bilgisayarına ulaşmıyor.
+- Öğretmenin arama yazısı haftayı söylemeli, çünkü öğretmen dersi hafta numarasıyla arıyor. Üst bant yaklaşık 1100 px altında iki satıra iniyor (112 px); okul ekranlarının genişliği doğrulanmadı.
 - Öğrenci görünümünde `#kazanimlar`, `#kagitlar`, `#ogretmen` ve `#yazdir-<id>` adresleri uyarı göstermeden ana sayfayı açıyor. Adres çubuğu yazılan adreste kalıyor.
 - Test cevapları `bd:quiz:<id>` içinde saklanıyor ve ilerleme silmeye dahil. Sunum sekmesinin ✓'i saklanmıyor, sayfa yenilenince gidiyor, çünkü sunumu öğretmen yönetiyor.
 - Sekme değişimi `history.pushState` ile geçmişe yazılıyor, adres değişmiyor. Yenilemede Sunum'a dönme kuralı korundu.
