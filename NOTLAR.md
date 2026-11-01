@@ -23,7 +23,8 @@ Kayıt şablonu:
 - `b1ae8d9` Tasarım sistemi kuruldu: Senin UI omurgası, lacivert ana renk, gömülü Mulish. Kurallar `TASARIM-SISTEMI.md` dosyasında.
 - `3c5e41b` Rol ayrımı: site ilk açılışta rol soruyor. Öğrenci sunum ve ekranda doldurulan çalışma kâğıdını görüyor, öğretmen ayrıca ders akışı, ölçme, notlar ve yazdırmayı görüyor.
 - `bb52df6` Ders sayfası sekmeli oldu: aynı anda tek bölüm görünüyor, bölüm sonunda "Sonraki bölüm" düğmesi var.
-- Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi. 375 px genişlikte altı sayfada yatay taşma yok.
+- `c8d46eb` Design review (`/outsider-design-review`, 4 yüksek, 11 orta, 7 düşük bulgu) sonrası yüksek önemli 4 bulgu düzeltildi: "Bu hafta" ayrımı, A+ tüm yazıları büyütüyor, sayfa başlığı ve odak değişiyor, "İçeriğe geç" bağlantısı, geri bildirimde ✓ ve ✕ işaretleri.
+- Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı headless Chrome ile denendi, konsol hatası yok. Tıklamalı akışlar localhost'ta denendi. 375 px genişlikte altı sayfada yatay taşma yok. A+ açıkken 375 ve 882 px'te taşma yok.
 
 **Kararlar**
 - Ana renk lacivert `#1E4FA3`, 6. sınıf kiremit `#B8480A`. Üst başlık lacivert dolu bant.
@@ -38,11 +39,14 @@ Kayıt şablonu:
 - Öğretmen görüşmesi yapılamadığı için research benchmark ve netnografiyle yürütüldü. Bulgular doğrulanmış kullanıcı araştırması sayılmaz.
 - Asıl problem altyapı değil, öğrenciye ait resmî bilişim ders kitabının olmaması. Altyapı bir kısıt.
 - Öğretmen dersi tarihle değil hafta numarasıyla arıyor. Bu bilginin kaynağı netleşmedi.
-- `S.week` artık son seçilen hafta anlamına geliyor. Ana sayfa ve Öğretmen Masası aynı değeri kullanıyor.
+- `S.week` gerçek hafta demek ve yalnızca Öğretmen Masası'ndan değişiyor. Ana sayfada bakılan hafta bellekte (`pickedWeek`), sayfa yenilenince ayara dönüyor.
+- Öğrenci görünümünde "Bu hafta" etiketi yok, çünkü öğretmenin ayarı öğrencinin bilgisayarına ulaşmıyor. Öğrenci ana sayfası varsayılan 7. haftayla açılıyor.
 
 **Yarım kalan işler**
 - [ ] Plan 5. sınıfta 7. haftada, 6. sınıfta 2. haftada bitiyor. Hafta numaraları örnek, yıllık plana göre güncellenmeli.
-- [ ] Ana sayfadaki hafta seçimi, sınıf sayfasındaki "Bu hafta" etiketini de değiştiriyor. Ayrılıp ayrılmayacağına karar verilmeli.
+- [ ] Design review'un 11 orta ve 7 düşük bulgusu uygulanmadı.
+- [ ] Odak ve başlık değişikliği gerçek ekran okuyucuyla denenmedi.
+- [ ] 375 px genişlikte A+ açıkken yapışkan üst bant 210 px yer kaplıyor. Hedef cihazlar bilgisayar ve tahta olduğu için dokunulmadı.
 - [ ] Arama kavramları bulmuyor ("uzantı"), "ağ" da "Sağlık"ı buluyor.
 - [ ] Yeni ana sayfa ve tasarım sistemi Chrome 84 ve Firefox 78'de denenmedi. Gömülü fontun Firefox `file://` altında çalıştığı doğrulanmalı.
 - [ ] Yeni tasarımda gerçek yazdırma önizlemesi ile tahta ve bilgisayarsız ortamların etkinlik görünümü denenmedi.
