@@ -379,6 +379,10 @@ select{font:inherit;padding:6px 10px;border-radius:10px;border:2px solid var(--r
   .sheet .who{grid-template-columns:1fr}
 }
 
+/* Kutlama konfetisi: hareket kapalıysa ve yazdırırken hiç görünmez */
+.confetti{display:none}
+.finish,.score,.fb,.cw{position:relative}
+
 /* =====================================================================
    Hareket — sadece transform ve opacity.
    Üç kapı: screen (yazdırmada yok), prefers-reduced-motion, html.anim (Öğretmen Masası ayarı).
@@ -404,6 +408,12 @@ select{font:inherit;padding:6px 10px;border-radius:10px;border:2px solid var(--r
   html.anim .cw-cell.ok.wave{animation:bd-grow .18s ease-out}
   html.anim .chip.land{animation:bd-land .18s ease-out}
   html.anim .chip.sel{animation:bd-grow .2s ease-out}
+
+  /* Kutlama: 0,9 sn */
+  html.anim .confetti{display:block;position:absolute;left:50%;top:50%;width:0;height:0;pointer-events:none}
+  html.anim .score .confetti,html.anim .fb .confetti{left:3em}
+  html.anim .confetti i{position:absolute;left:0;top:0}
+  html.anim .confetti b{display:block;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:2px;animation:bd-burst .9s ease-out forwards}
 }
 /* Üzerine gelince yükselme: sadece fareli cihazlarda (dokunmatikte "yapışık hover" olmasın) */
 @media screen and (prefers-reduced-motion: no-preference) and (hover: hover){
@@ -418,4 +428,5 @@ select{font:inherit;padding:6px 10px;border-radius:10px;border:2px solid var(--r
 @keyframes bd-grow{50%{transform:scale(1.1)}}
 @keyframes bd-hop{40%{transform:translateY(-5px)}}
 @keyframes bd-shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+@keyframes bd-burst{from{transform:translateY(0) scale(.5)}to{transform:translateY(-80px) rotate(200deg);opacity:0}}
 @keyframes bd-land{from{opacity:.4;transform:translateY(-8px) scale(.95)}}

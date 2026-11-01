@@ -23,6 +23,15 @@
   var applyMotion = function () { document.documentElement.classList.toggle("anim", S.motion !== "reduced"); };
   // Sınıfı kaldırıp yeniden ekler ki CSS animasyonu baştan oynasın. Sadece kullanıcı bir şeye basınca çağrılır.
   var flash = function (el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
+  // Kutlama: öğenin ortasından 12 parça konfeti, 1 sn sonra silinir. Ekran okuyucudan gizli.
+  var CONFETTI = ["#2f5bea", "#d9571f", "#ffd23f", "#14805a", "#8247d1", "#2b8fc4"];
+  var celebrate = function (el) {
+    if (!motionOn()) return;
+    var c = document.createElement("span"), h = "";
+    for (var i = 0; i < 12; i++) h += '<i style="transform:rotate(' + i * 30 + 'deg)"><b style="background:' + CONFETTI[i % 6] + '"></b></i>';
+    c.className = "confetti"; c.setAttribute("aria-hidden", "true"); c.innerHTML = h; el.appendChild(c);
+    setTimeout(function () { if (c.parentNode) c.parentNode.removeChild(c); }, 1000);
+  };
   var norm = function (s) { return String(s).toLocaleLowerCase("tr").replace(/ı/g, "i").normalize("NFD").replace(/[̀-ͯ]/g, ""); };
 
   // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>. lessonId yoksa tüm dersler.
@@ -313,7 +322,7 @@
         if (pick === q.a) { correct++; fb.textContent = "Doğru! 👏"; fb.className = "fb r"; flash(b, "hop"); }
         else { b.classList.add("wrong"); flash(b, "shake"); fb.textContent = "Olmadı. Doğru cevap yeşil olan." + (q.why ? " " + q.why : ""); fb.className = "fb w"; }
         answered++;
-        if (answered === L.quiz.length) $("#score").textContent = "Sonuç: " + L.quiz.length + " soruda " + correct + " doğru " + (correct === L.quiz.length ? "🌟" : "");
+        if (answered === L.quiz.length) { $("#score").textContent = "Sonuç: " + L.quiz.length + " soruda " + correct + " doğru " + (correct === L.quiz.length ? "🌟" : ""); if (correct === L.quiz.length) celebrate($("#score")); }
       });
     });
 
@@ -338,7 +347,9 @@
       store.set(key, arr);
       b.parentNode.classList.toggle("done", on); b.textContent = on ? "Yaptım ✓" : "Yaptım";
       if (on) flash(b.parentNode, "pop");
-      $(".finish").classList.toggle("show", arr.length === +ol.getAttribute("data-total"));
+      var all = arr.length === +ol.getAttribute("data-total");
+      $(".finish").classList.toggle("show", all);
+      if (on && all) celebrate($(".finish"));
     });
     if (L.sort && $("#sort")) bindSort(L);
   }
@@ -365,7 +376,7 @@
         $$(".chip", cat).forEach(function (ch) { placed++; var good = s.items[+ch.getAttribute("data-i")].c === ci; ch.classList.toggle("ok", good); ch.classList.toggle("bad", !good); if (good) ok++; });
       });
       var m = $("#sortMsg");
-      if (ok === s.items.length) { m.textContent = "🎉 Hepsi doğru!"; m.className = "fb r"; }
+      if (ok === s.items.length) { m.textContent = "🎉 Hepsi doğru!"; m.className = "fb r"; celebrate(m); }
       else { m.textContent = ok + " / " + s.items.length + " doğru. " + (placed < s.items.length ? "Yerleştirilmemiş kartlar var. " : "") + "Kırmızı kartları başka kutuya taşı."; m.className = "fb w"; }
     };
     $("#sortReset").onclick = reset;
@@ -406,7 +417,7 @@
       var i = inp(k); if (document.activeElement !== i) i.focus();
     }
     function step(d) { var cs = cellsOf(curWord), i = cs.indexOf(cur) + d; if (i >= 0 && i < cs.length) select(cs[i], curWord); }
-    var wasSolved = {}, ready = false; // ready: açılıştaki kayıtlı çözümler dalga yapmasın
+    var wasSolved = {}, wasAll = false, ready = false; // ready: açılıştaki kayıtlı çözümler dalga yapmasın
     function solved() {
       var all = true;
       X.words.forEach(function (w, wi) {
@@ -419,6 +430,8 @@
         wasSolved[wi] = ok;
         if (!ok) all = false;
       });
+      if (all && ready && !wasAll) celebrate(root); // mesaj metni değişince silinmesin diye bulmaca kutusuna
+      wasAll = all;
       return all;
     }
     $$(".cw-cell", root).forEach(function (el) {
