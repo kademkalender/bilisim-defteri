@@ -75,11 +75,14 @@
 
   /* ---------- Ana sayfa ---------- */
   var WEEKS = 36; // yılda 72 ders saati, haftada 2 saat
+  // Ana sayfada bakılan hafta. "Bu hafta" ayarını (S.week) değiştirmez, sayfa yenilenince ayara döner.
+  var pickedWeek = null;
+  var homeWeek = function () { return pickedWeek || S.week; };
   function weekGrid(g) {
     var h = "";
     for (var w = 1; w <= WEEKS; w++) {
       var p = planWeek(g, w), ready = p && p.lesson, cls = ready ? " ready" : p && !isStudent() ? " plan" : "", state = ready ? "ders hazır" : isStudent() ? "ders henüz yok" : p ? "ders hazır değil" : "plan henüz girilmedi";
-      h += '<button type="button" class="wk-btn' + cls + '" data-w="' + w + '" aria-label="' + w + '. hafta, ' + state + '" aria-pressed="' + (w === S.week) + '">' + w + '</button>';
+      h += '<button type="button" class="wk-btn' + cls + '" data-w="' + w + '" aria-label="' + w + '. hafta, ' + state + '" aria-pressed="' + (w === homeWeek()) + '">' + w + '</button>';
     }
     return h;
   }
@@ -107,7 +110,7 @@
         (isStudent()
           ? '<div class="wk-legend"><span><i class="wk-key ready"></i>Ders hazır</span><span><i class="wk-key"></i>Ders henüz yok</span></div>'
           : '<div class="wk-legend"><span><i class="wk-key ready"></i>Ders hazır</span><span><i class="wk-key plan"></i>Plan var, ders hazır değil</span><span><i class="wk-key"></i>Plan henüz girilmedi</span><span>Hafta dağılımı örnektir.</span></div>') +
-        '<div class="wk-card" id="wkCard" aria-live="polite">' + weekCard(S.grade, S.week) + '</div>' +
+        '<div class="wk-card" id="wkCard" aria-live="polite">' + weekCard(S.grade, homeWeek()) + '</div>' +
       '</section>' +
       (isStudent() ? "" : '<div class="env-banner"><span><b>Sınıf ortamı:</b> ' + envLabel() + ' · ' + osLabel() + ' · ' + (S.internet ? "İnternet var" : "İnternet yok") + '</span><span class="hint">Etkinlikler okulunuzun şartlarına göre gösterilir.</span><a class="btn" href="#ogretmen">Değiştir</a></div>' +
       '<div class="grid-auto">' +
@@ -122,23 +125,23 @@
       S.grade = b.getAttribute("data-g"); saveSettings();
       $$("button", this).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
       $("#wkGrid").innerHTML = weekGrid(S.grade);
-      $("#wkCard").innerHTML = weekCard(S.grade, S.week);
+      $("#wkCard").innerHTML = weekCard(S.grade, homeWeek());
     };
     // Klavye odağı kaybolmasın diye hafta değişince ızgara yeniden kurulmaz.
     $("#wkGrid").onclick = function (e) {
       var b = e.target.closest("button"); if (!b) return;
-      S.week = +b.getAttribute("data-w"); saveSettings();
+      pickedWeek = +b.getAttribute("data-w");
       $$("button", this).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
-      $("#wkCard").innerHTML = weekCard(S.grade, S.week);
+      $("#wkCard").innerHTML = weekCard(S.grade, homeWeek());
     };
   }
 
   /* ---------- Sınıf sayfası ---------- */
   function viewGrade(g) {
-    var P = BD.program[g];
+    var P = BD.program[g], curWeek = isStudent() ? 0 : S.week;
     var units = P.themes.map(function (t) {
       var weeks = (BD.plan[g] || []).filter(function (x) { return x.theme === t.no; });
-      var hasCur = weeks.some(function (x) { return x.w === S.week; });
+      var hasCur = weeks.some(function (x) { return x.w === curWeek; });
       var ready = weeks.filter(function (x) { return x.lesson; }).length;
       var info = (t.hours ? t.hours + " ders saati" : "") + (weeks.length ? " · " + weeks.length + " hafta" : "") + (ready ? " · " + ready + " ders hazır" : "");
       var body;
@@ -146,14 +149,14 @@
         body = '<div class="unit-note">Bu temanın öğrenme çıktıları ve ders planı eklenecek.</div>';
       } else {
         body = '<ul class="weeks">' + weeks.map(function (x) {
-          var cur = x.w === S.week ? " current" : "";
+          var cur = x.w === curWeek ? " current" : "";
           var tag = x.lesson ? '<span class="tag ready">Hazır</span>' : '<span class="tag soon">Yakında</span>';
           var inner = '<span class="wk">' + x.w + '. Hafta</span><span>' + esc(x.title) + (cur ? ' <span class="tag now">Bu hafta</span>' : "") +
             '<span class="codes t-only"><span class="tag code">' + x.outcome + '</span></span></span>' + tag;
           return '<li>' + (x.lesson ? '<a class="week' + cur + '" href="#ders-' + x.lesson + '">' + inner + '</a>' : '<div class="week disabled' + cur + '">' + inner + '</div>') + '</li>';
         }).join("") + '</ul>';
       }
-      return '<details class="unit"' + (hasCur || (t.no === 1 && !(BD.plan[g] || []).some(function (x) { return x.w === S.week; })) ? " open" : "") + '>' +
+      return '<details class="unit"' + (hasCur || (t.no === 1 && !(BD.plan[g] || []).some(function (x) { return x.w === curWeek; })) ? " open" : "") + '>' +
         '<summary><div class="unit-h"><h2><span class="tn">' + t.no + '.</span>' + esc(t.name) + '</h2><small>' + info + ' ›</small></div></summary>' + body + '</details>';
     }).join("");
     return '<nav class="crumbs"><a href="#home">Ana sayfa</a> › ' + P.title + '</nav>' +
@@ -388,7 +391,7 @@
         btns.forEach(function (x) { x.disabled = true; });
         btns[q.a].classList.add("right");
         if (pick === q.a) { correct++; fb.textContent = "Doğru! 👏"; fb.className = "fb r"; flash(b, "hop"); }
-        else { b.classList.add("wrong"); flash(b, "shake"); fb.textContent = "Olmadı. Doğru cevap yeşil olan." + (q.why ? " " + q.why : ""); fb.className = "fb w"; }
+        else { b.classList.add("wrong"); flash(b, "shake"); fb.textContent = "Olmadı. Doğru cevap ✓ işaretli olan." + (q.why ? " " + q.why : ""); fb.className = "fb w"; }
         answered++;
         if (answered === L.quiz.length) { $("#score").textContent = "Sonuç: " + L.quiz.length + " soruda " + correct + " doğru " + (correct === L.quiz.length ? "🌟" : ""); if (correct === L.quiz.length) celebrate($("#score")); }
       });
@@ -444,7 +447,7 @@
       });
       var m = $("#sortMsg");
       if (ok === s.items.length) { m.textContent = "🎉 Hepsi doğru!"; m.className = "fb r"; celebrate(m); }
-      else { m.textContent = ok + " / " + s.items.length + " doğru. " + (placed < s.items.length ? "Yerleştirilmemiş kartlar var. " : "") + "Kırmızı kartları başka kutuya taşı."; m.className = "fb w"; }
+      else { m.textContent = ok + " / " + s.items.length + " doğru. " + (placed < s.items.length ? "Yerleştirilmemiş kartlar var. " : "") + "✕ işaretli kartları başka kutuya taşı."; m.className = "fb w"; }
     };
     $("#sortReset").onclick = reset;
     reset();
@@ -528,7 +531,7 @@
       });
       if (solved()) msg("🎉 Harika! Bulmacayı tamamen çözdün.", true);
       else if (!filled) msg("Önce birkaç kutuyu doldur.", false);
-      else if (wrong) msg(wrong + " harf yanlış, kırmızı kutulara tekrar bak.", false);
+      else if (wrong) msg(wrong + " harf yanlış, ✕ işaretli kutulara tekrar bak.", false);
       else msg("Şimdiye kadar hepsi doğru! " + (total - filled) + " kutu kaldı.", true);
     };
     $("#cwHint").onclick = function () {
@@ -597,7 +600,7 @@
     ask.onclick = function () { box.hidden = false; clrMsg.textContent = ""; $("#clrNo").focus(); };
     $("#clrNo").onclick = function () { box.hidden = true; ask.focus(); };
     $("#clrYes").onclick = function () { var n = clearProgress(); box.hidden = true; clrMsg.textContent = n + " kayıt silindi."; ask.focus(); };
-    $("#weekSel").onchange = function (e) { S.week = +e.target.value; saveSettings(); };
+    $("#weekSel").onchange = function (e) { S.week = +e.target.value; pickedWeek = null; saveSettings(); };
     $$("[data-set]").forEach(function (b) {
       b.onclick = function () {
         var k = b.getAttribute("data-set"), v = b.getAttribute("data-val");
@@ -729,6 +732,16 @@
     var section = h.indexOf("ders-5") === 0 || h.indexOf("yazdir-5") === 0 ? "sinif-5" : h.indexOf("ders-6") === 0 || h.indexOf("yazdir-6") === 0 ? "sinif-6" : h;
     $$(".top nav a").forEach(function (a) { if (a.getAttribute("href") === "#" + section) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
     if (!keepScroll) window.scrollTo(0, 0);
+    var head = $("#app h1, #app h2");
+    document.title = head && h !== "home" && h !== "" ? head.textContent + " · Bilişim Defteri" : "Bilişim Defteri";
+    // Sayfa değişince odak başlığa geçer, ekran okuyucu yeni sayfayı okur. İlk açılışta ve yerinde yenilemede odak değişmez.
+    if (!keepScroll && rendered) focusHead();
+    rendered = true;
+  }
+  var rendered = false;
+  function focusHead() {
+    var head = $("#app h1, #app h2");
+    if (head) { head.tabIndex = -1; head.focus({ preventScroll: true }); }
   }
 
   window.addEventListener("hashchange", function () { render(false); });
@@ -738,6 +751,7 @@
   setBig(store.get("big", false));
   applyMotion();
   applyRole();
+  $("#skip").onclick = function (e) { e.preventDefault(); focusHead(); };
   $("#roleBtn").onclick = function () { S.role = null; saveSettings(); applyRole(); render(false); };
   initSearch();
   render(false);
