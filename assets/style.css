@@ -137,7 +137,6 @@ html.role-ogrenci .t-only{display:none}
 .hello p{margin:6px 0 0;color:var(--text-secondary);max-width:62ch}
 .resume{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap}
 main > #wkList{margin-top:var(--space-3)}
-.wk-parts{margin:0;padding-left:20px}
 .wk-flow{margin-top:14px}
 .wk-flow summary{cursor:pointer;font-weight:700;margin-bottom:6px}
 .env-banner{display:flex;gap:var(--space-3);align-items:center;flex-wrap:wrap;background:var(--surface-default);border:1px dashed var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-3) var(--space-4);font-size:.92rem}

@@ -206,9 +206,22 @@ Object.keys(BD.lessons).forEach(function (id) {
 
 /* ---------- plan.js kontrolleri ---------- */
 Object.keys(BD.plan || {}).forEach(function (grade) {
+  var f = "content/plan.js", planned = {};
+  BD.plan[grade].forEach(function (entry) {
+    [entry.outcome].concat(entry.also || []).forEach(function (code) {
+      planned[code] = true;
+      if (!findOutcome(code)) err(f, grade + ". sınıf " + entry.w + ". hafta: outcome kodu \"" + code + "\" program.js'te bulunamadı");
+      else if (code.split(".")[2] !== String(entry.theme)) err(f, grade + ". sınıf " + entry.w + ". hafta: " + code + " kodu " + entry.theme + ". temaya ait değil");
+    });
+  });
+  // Temanın hafta sayısı = ders saati / 2, her öğrenme çıktısı bir haftada
+  BD.program[grade].themes.forEach(function (t) {
+    var n = BD.plan[grade].filter(function (x) { return x.theme === t.no; }).length;
+    if (t.hours && n * 2 !== t.hours) warn(f, grade + ". sınıf " + t.no + ". tema: " + t.hours + " ders saati ama " + n + " hafta");
+    (t.outcomes || []).forEach(function (o) { if (!planned[o.code]) warn(f, grade + ". sınıf: " + o.code + " hiçbir haftada yok"); });
+  });
   BD.plan[grade].forEach(function (entry) {
     if (!entry.lesson) return;
-    var f = "content/plan.js";
     if (!BD.lessons[entry.lesson]) {
       err(f, grade + ". sınıf " + entry.w + ". hafta: lesson id \"" + entry.lesson + "\" bulunamadı");
       return;

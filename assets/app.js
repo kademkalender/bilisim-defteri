@@ -74,22 +74,23 @@
   var osLabel = function () { return osNow() === "pardus" ? "Pardus" : "Windows"; };
 
   /* ---------- Ana sayfa: sınıf seçimi ve temalara bölünmüş hafta listesi ---------- */
-  var WEEKS = 36; // yılda 72 ders saati, haftada 2 saat
+  var WEEKS = 36; // okul yılı; program 68 saatle 34 haftayı dolduruyor
   var TERM1 = 18; // 1. dönemin son haftası
   function lastLesson() { var id = store.get("last", null); return id ? lessonById(id) : null; }
-  // Satır açılınca: öğrenci dersin giriş sorusunu, öğretmen kazanım, düğmeler ve ders akışını görür
+  function planCodes(p) { return [p.outcome].concat(p.also || []); }
+  // Satır açılınca: öğrenci derse giriş düğmesini, öğretmen kazanım, düğmeler ve ders akışını görür
   function weekDetail(p) {
-    var oc = outcome(p.outcome), L = p.lesson ? lessonById(p.lesson) : null;
-    if (isStudent()) return '<p><b>Derse başlarken:</b> ' + esc(L.hook) + '</p><div class="row"><a class="btn primary" href="#ders-' + L.id + '">Derse gir →</a></div>';
-    var head = '<p><span class="tag code">' + p.outcome + '</span> ' + esc(oc ? oc.title : "") + '</p>';
-    if (!L) return head + '<p class="hint">Bu haftanın dersi henüz hazır değil. Süreç bileşenleri:</p><ul class="wk-parts">' + (oc ? oc.parts : []).map(function (x) { return '<li><b>' + x.k + ')</b> ' + esc(x.t) + '</li>'; }).join("") + '</ul>';
+    var L = p.lesson ? lessonById(p.lesson) : null;
+    if (isStudent()) return '<div class="row"><a class="btn primary" href="#ders-' + L.id + '">Derse gir →</a></div>';
+    var head = planCodes(p).map(function (c) { var o = outcome(c); return '<p><span class="tag code">' + c + '</span> ' + esc(o ? o.title : "") + '</p>'; }).join("");
+    if (!L) return head + '<p class="hint">Bu haftanın dersi henüz hazır değil.</p>';
     return head + '<div class="row"><a class="btn primary" href="#ders-' + L.id + '">Derse git →</a><a class="btn" href="#yazdir-' + L.id + '">🖨️ Çalışma kâğıdı</a></div>' +
       '<details class="wk-flow"><summary>Ders akışı (' + esc(L.duration) + ')</summary>' + flowHtml(L) + '</details>';
   }
   // Hazır satır açılır. Öğrencide hazır olmayan satırda açılacak bir şey yoktur.
   function weekRow(x) {
     var name = '<span><b class="wk">' + x.w + '. hafta</b> · ' + esc(x.title) + '</span>';
-    var tags = '<span class="row">' + (isStudent() ? "" : '<span class="tag code">' + x.outcome + '</span>') + (x.lesson ? '<span class="tag ready">Hazır</span>' : '<span class="tag soon">Yakında</span>') + '</span>';
+    var tags = '<span class="row">' + (isStudent() ? "" : planCodes(x).map(function (c) { return '<span class="tag code">' + c + '</span>'; }).join("")) + (x.lesson ? '<span class="tag ready">Hazır</span>' : '<span class="tag soon">Yakında</span>') + '</span>';
     if (isStudent() && !x.lesson) return '<li><div class="week soon">' + name + tags + '</div></li>';
     return '<li><details class="week-d"><summary class="week' + (x.lesson ? "" : " soon") + '">' + name + tags + '</summary><div class="week-body">' + weekDetail(x) + '</div></details></li>';
   }
@@ -101,7 +102,7 @@
       var lastTerm = last && String(last.grade) === g ? (last.week > TERM1 ? 2 : 1) : 1;
       return [1, 2].map(function (no) {
         var weeks = all.filter(function (x) { return (x.w > TERM1 ? 2 : 1) === no; }), ready = weeks.filter(function (x) { return x.lesson; }).length;
-        return '<details class="unit"' + (no === lastTerm ? " open" : "") + '><summary><div class="unit-h"><h2>' + no + '. dönem</h2><small>' + (ready ? ready + " ders hazır" : "Ders yok") + ' ›</small></div></summary>' +
+        return '<details class="unit"' + (no === lastTerm ? " open" : "") + '><summary><div class="unit-h"><h2>' + no + '. dönem</h2><small>' + (ready ? ready + " ders hazır" : "Yakında") + ' ›</small></div></summary>' +
           (weeks.length ? '<ul class="weeks">' + weeks.map(weekRow).join("") + '</ul>' : '<div class="unit-note">Bu dönemin dersleri eklendikçe burada görünecek.</div>') + '</details>';
       }).join("");
     }
@@ -110,7 +111,7 @@
       var weeks = (BD.plan[g] || []).filter(function (x) { return x.theme === t.no; });
       var ready = weeks.filter(function (x) { return x.lesson; }).length;
       var info = (t.hours ? t.hours + " ders saati" : "") + (weeks.length ? " · " + weeks.length + " hafta" : "") + (ready ? " · " + ready + " ders hazır" : "");
-      var body = weeks.length ? '<ul class="weeks">' + weeks.map(weekRow).join("") + '</ul>' : '<div class="unit-note">Bu temanın haftalık planı henüz eklenmedi. <a href="#kazanimlar">Öğrenme çıktılarını görün</a></div>';
+      var body = '<ul class="weeks">' + weeks.map(weekRow).join("") + '</ul>';
       return '<details class="unit"' + (t.no === openNo ? " open" : "") + '>' +
         '<summary><div class="unit-h"><h2><span class="tn">' + t.no + '.</span>' + esc(t.name) + '</h2><small>' + info + ' ›</small></div></summary>' + body + '</details>';
     }).join("");
@@ -222,7 +223,8 @@
     if (on) t.setAttribute("aria-label", t.getAttribute("data-name") + ", tamamlandı"); else t.removeAttribute("aria-label");
   }
 
-  // Açık sekme bellekte durur: ortam değişince yerinde kalır, sayfa yenilenince (sonraki sınıf) Sunum'a döner.
+  // Açık sekme bellekte durur: ortam değişince yerinde kalır, sayfa yenilenince (sonraki sınıf) ilk sekmeye döner.
+  function firstTab() { return isStudent() ? "slayt" : "akis"; }
   var lessonTab = {}, tabBack = null; // tabBack: ekrandaki dersin sekmesini geçmişten değiştirir
   function viewLesson(id) {
     var L = lessonById(id);
@@ -232,8 +234,8 @@
     var envBtns = Object.keys(BD.envs).map(function (k) { return '<button type="button" class="chip-btn" data-env="' + k + '" aria-pressed="' + (S.env === k) + '">' + BD.envs[k].icon + ' ' + BD.envs[k].short + '</button>'; }).join("");
     var hasCw = L.crossword && L.crossword.length;
 
-    var tabs = [["slayt", "Sunum"]].concat(T ? [["akis", "Ders akışı"]] : [], [["defter", "Deftere yaz"], ["etkinlik", "Etkinlik"], ["test", "Mini test"]], hasCw ? [["bulmaca", "Bulmaca"]] : []);
-    var active = tabs.some(function (t) { return t[0] === lessonTab[id]; }) ? lessonTab[id] : "slayt";
+    var tabs = (T ? [["akis", "Ders planı"]] : []).concat([["slayt", "Sunum"], ["defter", "Deftere yaz"], ["etkinlik", "Etkinlik"], ["test", "Mini test"]], hasCw ? [["bulmaca", "Bulmaca"]] : []);
+    var active = tabs.some(function (t) { return t[0] === lessonTab[id]; }) ? lessonTab[id] : firstTab();
     var panel = function (key, title, text, body) {
       var i = tabs.map(function (t) { return t[0]; }).indexOf(key), nx = tabs[i + 1];
       return '<section class="block" id="b-' + key + '" role="tabpanel" aria-labelledby="t-' + key + '"' + (key === active ? "" : " hidden") + '>' +
@@ -259,7 +261,7 @@
         '<div class="hint">' + (T ? "Slayta tıklayıp ← → ok tuşlarıyla geçebilirsiniz. Tam ekrandan Esc ile çıkılır." : "Slayta tıklayıp ← → ok tuşlarıyla geçebilirsin. Tam ekrandan Esc ile çıkılır.") + '</div>' +
         '<div class="hook"><b>Derse başlarken</b>' + esc(L.hook) + '</div>') +
 
-      (T ? panel("akis", "Ders akışı", "Bu bölüm öğrenci görünümünde yer almaz.",
+      (T ? panel("akis", "Ders planı", "Bu bölüm öğrenci görünümünde yer almaz.",
         '<div class="card outcome"><div class="title">Öğrenme çıktısı: <code>' + L.outcome + '</code> ' + esc(oc ? oc.title : "") + '</div>' +
         '<ul class="bil-list">' + (oc ? oc.parts : []).map(function (p) {
           var on = L.covers.indexOf(p.k) >= 0;
@@ -339,7 +341,7 @@
 
     // Sekmeler: aynı anda tek bölüm görünür
     var tabBtns = $$("#tabs .tab");
-    // Her sekme değişimi geçmişe yazılır, geri tuşu önceki sekmeye döner. Adres değişmez, yenileyince yine Sunum açılır.
+    // Her sekme değişimi geçmişe yazılır, geri tuşu önceki sekmeye döner. Adres değişmez, yenileyince yine ilk sekme açılır.
     var setHistory = function (fn, key) { try { history[fn]({ tab: key }, ""); } catch (e) {} };
     var showTab = function (key, focus, fromHistory) {
       if (!fromHistory && key !== lessonTab[id]) setHistory("pushState", key);
@@ -579,7 +581,7 @@
         rows += '<tr><td colspan="3" style="background:var(--surface-subtle)"><b>Tema ' + t.no + ':</b> ' + esc(t.name) + (t.hours ? ' <span class="hint">· ' + t.hours + ' ders saati</span>' : "") + '</td></tr>';
         t.outcomes.forEach(function (o) {
           var ls = lessonsFor(o.code);
-          var weeks = (BD.plan[g] || []).filter(function (x) { return x.outcome === o.code; }).map(function (x) { return x.w; });
+          var weeks = (BD.plan[g] || []).filter(function (x) { return planCodes(x).indexOf(o.code) >= 0; }).map(function (x) { return x.w; });
           rows += '<tr class="oc"><td><code>' + o.code + '</code></td><td>' + esc(o.title) + '</td><td>' + (weeks.length ? weeks.join(", ") + ". hafta" : "-") + '</td></tr>';
           o.parts.forEach(function (p) {
             total++;
@@ -698,7 +700,7 @@
     return '<div class="hello"><h1>Bu bilgisayarı kim kullanıyor?</h1><p>Seçim bu bilgisayarda hatırlanır. Sonradan üstteki düğmeyle değiştirilebilir.</p></div>' +
       '<div class="role-pick" id="rolePick">' +
         '<button type="button" class="role-card" data-role="ogrenci"><span aria-hidden="true">🧑‍🎓</span><b>Öğrenciyim</b><small>Sunum, defter, etkinlik, test ve bulmaca</small></button>' +
-        '<button type="button" class="role-card" data-role="ogretmen"><span aria-hidden="true">🧑‍🏫</span><b>Öğretmenim</b><small>Sunum, ders akışı, notlar ve yazdırma</small></button>' +
+        '<button type="button" class="role-card" data-role="ogretmen"><span aria-hidden="true">🧑‍🏫</span><b>Öğretmenim</b><small>Ders planı, sunum, notlar ve yazdırma</small></button>' +
       '</div>';
   }
   function bindRole() {
@@ -726,7 +728,7 @@
       var L = id ? lessonById(id) : null; if (!L) return "";
       return L.notebook.map(function (n) { return n.t.replace(/<[^>]+>/g, ""); }).concat(L.slides.map(function (s) { return s.h || ""; }), (L.crossword || []).map(function (c) { return c.a + " " + c.c; })).join(" ");
     };
-    ["5", "6"].forEach(function (g) { (BD.plan[g] || []).forEach(function (p) { var o = outcome(p.outcome); items.push({ g: g, t: p.title, w: p.w, code: p.outcome, lesson: p.lesson, hay: norm(p.title + " " + p.outcome + " " + (o ? o.title : "") + " " + lessonWords(p.lesson)) }); }); });
+    ["5", "6"].forEach(function (g) { (BD.plan[g] || []).forEach(function (p) { var cs = planCodes(p), ts = cs.map(function (c) { var o = outcome(c); return c + " " + (o ? o.title : ""); }).join(" "); items.push({ g: g, t: p.title, w: p.w, code: cs.join(", "), lesson: p.lesson, hay: norm(p.title + " " + ts + " " + lessonWords(p.lesson)) }); }); });
     // Kısa sorgu kelime başından eşleşir: "ağ" "Sağlık"ı bulmasın.
     var matches = function (hay, v) { return v.length > 3 ? hay.indexOf(v) >= 0 : (" " + hay.replace(/[^a-z0-9.]+/g, " ")).indexOf(" " + v) >= 0; };
     qIn.addEventListener("input", function () {
@@ -777,7 +779,7 @@
   window.addEventListener("hashchange", function () { render(false); });
   window.addEventListener("popstate", function (e) {
     var m = /^#ders-(.+)$/.exec(location.hash); if (!m) return;
-    var key = e.state && e.state.tab || "slayt";
+    var key = e.state && e.state.tab || firstTab();
     lessonTab[m[1]] = key;
     if (tabBack && tabBack.id === m[1]) tabBack.show(key);
   });
