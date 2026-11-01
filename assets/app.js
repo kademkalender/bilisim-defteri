@@ -113,7 +113,7 @@
         ? '<div class="hello"><h1>Hangi haftadasın?</h1><p>Sınıfını ve haftayı seç, dersin burada açılır.</p></div>'
         : '<div class="hello"><h1>Hangi haftadasınız?</h1><p>Sınıf ve hafta numarası seçilince o haftanın dersi burada açılır.</p></div>') +
       '<section class="card wk-picker" aria-label="Sınıf ve hafta seçimi">' +
-        '<div class="row" id="wkGrades">' + ["5", "6"].map(function (g) { return '<button type="button" class="chip-btn" data-g="' + g + '" aria-pressed="' + (S.grade === g) + '">' + g + '. Sınıf</button>'; }).join("") + '</div>' +
+        '<div class="row wk-top"><div class="row" id="wkGrades">' + ["5", "6"].map(function (g) { return '<button type="button" class="chip-btn" data-g="' + g + '" aria-pressed="' + (S.grade === g) + '">' + g + '. Sınıf</button>'; }).join("") + '</div><a id="wkAll" href="#sinif-' + S.grade + '">' + S.grade + '. sınıfın tüm temaları →</a></div>' +
         '<div class="wk-grid" id="wkGrid">' + weekGrid(S.grade) + '</div>' +
         (isStudent()
           ? '<div class="wk-legend"><span><i class="wk-key ready"></i>Ders hazır</span><span><i class="wk-key"></i>Ders henüz yok</span></div>'
@@ -135,6 +135,7 @@
       var ready = function (w) { var p = planWeek(S.grade, w); return p && p.lesson; }, near = nearestReady(S.grade, homeWeek());
       if (!ready(homeWeek())) pickedWeek = ready(S.week) ? S.week : near ? near.w : pickedWeek;
       $$("button", this).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+      $("#wkAll").href = "#sinif-" + S.grade; $("#wkAll").textContent = S.grade + ". sınıfın tüm temaları →";
       $("#wkGrid").innerHTML = weekGrid(S.grade);
       $("#wkCard").innerHTML = weekCard(S.grade, homeWeek());
     };
@@ -795,8 +796,7 @@
     else if (h === "kazanimlar") app.innerHTML = viewMap();
     else if (h === "ogretmen") { app.innerHTML = viewTeacher(); bindTeacher(); }
     else app.innerHTML = viewNotFound();
-    var section = h.indexOf("ders-5") === 0 || h.indexOf("yazdir-5") === 0 ? "sinif-5" : h.indexOf("ders-6") === 0 || h.indexOf("yazdir-6") === 0 ? "sinif-6" : h;
-    $$(".top nav a").forEach(function (a) { if (a.getAttribute("href") === "#" + section) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+    $$(".top nav a").forEach(function (a) { if (a.getAttribute("href") === "#" + h) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
     if (!keepScroll) window.scrollTo(0, 0);
     var head = $("#app h1, #app h2");
     document.title = head && h !== "home" && h !== "" ? head.textContent + " · Bilişim Defteri" : "Bilişim Defteri";
