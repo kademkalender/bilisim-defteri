@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bilişim Defteri · Tasarım seçenekleri</title>
+<link rel="stylesheet" href="../assets/mulish.css">
+<style>
+body{margin:0;padding:2rem;font-family:"Mulish","Segoe UI","Noto Sans",Arial,sans-serif;color:#1F2430;background:#F1F2F7}
+h1{margin:0 0 .25rem}
+p{margin:0 0 1.5rem;color:#5B6270}
+h2{margin:2rem 0 .75rem}
+h2 a{font-size:1rem;font-weight:700;margin-left:1rem;color:#1E4FA3}
+.izgara{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));grid-gap:1rem}
+figure{margin:0;background:#fff;border:1px solid #E1E4EC;border-radius:12px;padding:.75rem}
+figure img{width:100%;display:block;border:1px solid #E1E4EC;border-radius:6px}
+figcaption{font-weight:700;margin-top:.5rem;font-size:.9rem}
+</style>
+</head>
+<body>
+<h1>Tasarım seçenekleri</h1>
+<p>Görsele tıklayınca tam boyutu açılır. Güçlü ve zayıf yanlar: README.md</p>
+<script>
+// Aynı ızgarayı dört kez yazmamak için. Sadece bu tanıtım sayfası için, siteye girmez.
+var yonler = [
+  ["mevcut", "Şu anki site (öğrenci)", ""],
+  ["a", "A · Çok sade", "a-sade/index.html"],
+  ["b", "B · Renkli kartlar", "b-renkli/index.html"],
+  ["c", "C · Uygulama gibi", "c-uygulama/index.html"]
+];
+yonler.forEach(function (y) {
+  var h = '<h2>' + y[1] + (y[2] ? '<a href="' + y[2] + '">Sayfayı aç →</a>' : "") + '</h2><div class="izgara">';
+  ["ana", "ders"].forEach(function (s) {
+    ["1366", "1920"].forEach(function (w) {
+      var f = "ekran/" + y[0] + "-" + s + "-" + w + ".png";
+      h += '<figure><a href="' + f + '"><img src="' + f + '" alt="' + y[1] + ', ' + (s === "ana" ? "ana sayfa" : "ders sayfası") + ', ' + w + ' px"></a><figcaption>' + (s === "ana" ? "Ana sayfa" : "Ders sayfası") + ' · ' + w + ' px</figcaption></figure>';
+    });
+  });
+  document.write(h + '</div>');
+});
+</script>
+</body>
+</html>

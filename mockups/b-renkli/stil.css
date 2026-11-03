@@ -1,0 +1,63 @@
+/* Yön B: Renkli kartlar. Her sınıfın ve ders bölümünün kendi rengi, düz renk zemin, ikonlar.
+   Beyaz yazılı her renk 4,5:1 kontrastın üstünde. Sarı kartta yazı koyu. */
+:root{
+  --s5:#1E4FA3; --s6:#B8480A;
+  --tema1:#0B7169;
+  --sunum:#1E4FA3; --defter:#FFD23F; --etkinlik:#157A4C; --test:#5B3FB5; --bulmaca:#B8480A;
+  --yazi:#1F2430; --yazi-2:#5B6270; --zemin:#F6F4EF; --kart:#FFFFFF; --cizgi:#E6E2D8;
+}
+*{box-sizing:border-box}
+html{font-size:18px}
+@media (min-width:1600px){html{font-size:23px}}
+body{margin:0;background:var(--zemin);color:var(--yazi);font-family:"Mulish","Segoe UI","Noto Sans","DejaVu Sans",Arial,sans-serif;line-height:1.45}
+a{color:inherit;text-decoration:none}
+svg{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.kap{max-width:64rem;margin:0 auto;padding:0 2rem}
+
+.ust{height:4.25rem;display:flex;align-items:center;justify-content:space-between}
+.marka{font-weight:800;font-size:1.15rem;display:flex;align-items:center}
+.marka i{width:2.2rem;height:2.2rem;border-radius:.6rem;background:var(--s5);color:#fff;font-style:normal;font-size:.85rem;display:flex;align-items:center;justify-content:center;margin-right:.6rem}
+.ogretmen{display:inline-flex;align-items:center;min-height:3rem;padding:0 1rem;border-radius:.8rem;background:#ECE8DF;color:var(--yazi-2);font-weight:700;font-size:.9rem}
+.ogretmen svg{margin-right:.4rem}
+
+h1{font-size:2rem;margin:.75rem 0 1rem;font-weight:800}
+.siniflar{display:grid;grid-template-columns:1fr 1fr;grid-gap:1.25rem}
+.sinif{position:relative;border-radius:1.25rem;color:#fff;padding:1.25rem 1.75rem;display:flex;align-items:center;min-height:6.5rem;border:4px solid transparent}
+.sinif b{font-size:3.6rem;line-height:1;font-weight:900;margin-right:1rem}
+.sinif span{font-size:1.5rem;font-weight:800}
+.sinif.s5{background:var(--s5)} .sinif.s6{background:#fff;color:var(--s6);border-color:var(--s6)}
+.sinif.secili{border-color:var(--yazi)}
+.sinif .tik{position:absolute;right:1.25rem;top:50%;margin-top:-1.25rem;width:2.5rem;height:2.5rem;border-radius:50%;background:#fff;color:var(--s5);display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+
+.bolum{font-size:1.15rem;font-weight:800;margin:1.75rem 0 .75rem}
+.alt-izgara{display:grid;grid-template-columns:2fr 1fr;grid-gap:1.25rem}
+.buhafta{background:var(--tema1);color:#fff;border-radius:1.25rem;padding:1.75rem;display:flex;align-items:center}
+.buhafta .ikon{width:5.5rem;height:5.5rem;border-radius:1.25rem;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:3rem;margin-right:1.5rem}
+.buhafta small{font-weight:700;font-size:1rem;opacity:.9}
+.buhafta h2{margin:.15rem 0 1rem;font-size:1.9rem;line-height:1.15}
+.dugme{display:inline-flex;align-items:center;justify-content:center;min-height:3.25rem;padding:0 1.6rem;border-radius:.9rem;background:#fff;color:var(--tema1);font-weight:800;font-size:1.15rem}
+.kucukler{display:grid;grid-template-rows:1fr 1fr;grid-gap:1.25rem}
+.kucuk{background:var(--kart);border:2px solid var(--cizgi);border-radius:1.25rem;padding:1rem 1.25rem;display:flex;align-items:center;min-height:4.5rem;font-weight:800}
+.kucuk .ikon{width:3rem;height:3rem;border-radius:.8rem;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-right:.9rem;color:#fff}
+.kucuk small{display:block;font-size:.85rem;font-weight:700;color:var(--yazi-2)}
+
+/* Ders sayfası */
+.ders-bant{background:var(--tema1);color:#fff;border-radius:1.25rem;padding:1.25rem 1.75rem;display:flex;align-items:center;margin-top:.5rem}
+.ders-bant .geri{width:3rem;height:3rem;border-radius:.8rem;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-right:1.25rem}
+.ders-bant small{font-weight:700;opacity:.9}
+.ders-bant h1{margin:0;font-size:2rem;color:#fff}
+.ilerleme{margin-left:auto;text-align:right;font-weight:800}
+.ilerleme .cubuk{width:11rem;height:.75rem;border-radius:1rem;background:rgba(255,255,255,.25);margin-top:.4rem;overflow:hidden}
+.ilerleme .cubuk span{display:block;height:100%;width:40%;background:#fff}
+.kartlar{display:grid;grid-template-columns:repeat(5,1fr);grid-gap:1rem;margin-top:1.5rem}
+.bkart{border-radius:1.25rem;color:#fff;padding:1.25rem;min-height:15rem;display:flex;flex-direction:column;position:relative}
+.bkart .ikon{width:4rem;height:4rem;border-radius:1rem;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:2.2rem}
+.bkart b{font-size:1.35rem;margin-top:auto}
+.bkart small{font-weight:700;font-size:.95rem;opacity:.95;margin-top:.2rem}
+.bkart .no{position:absolute;right:1rem;top:1rem;font-weight:900;font-size:1.5rem;opacity:.5}
+.bkart.sunum{background:var(--sunum)} .bkart.defter{background:var(--defter);color:var(--yazi)} .bkart.defter .ikon{background:rgba(0,0,0,.08)}
+.bkart.etkinlik{background:var(--etkinlik)} .bkart.test{background:var(--test)} .bkart.bulmaca{background:var(--bulmaca)}
+.bkart.sirada{outline:4px solid var(--yazi);outline-offset:4px}
+.rozet{position:absolute;right:1rem;top:1.25rem;background:#fff;color:var(--yazi);border-radius:2rem;padding:.25rem .75rem;font-weight:800;font-size:.9rem}
+.cta{display:flex;justify-content:center;margin-top:1.75rem}
+.cta .dugme{background:var(--etkinlik);color:#fff;min-height:3.75rem;font-size:1.25rem;padding:0 2.5rem}

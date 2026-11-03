@@ -1,0 +1,51 @@
+/* Yön A: Çok sade. Beyaz zemin, tek vurgu rengi (lacivert), büyük yazı, bol boşluk. */
+:root{
+  --vurgu:#1E4FA3; --vurgu-acik:#E8EEF9;
+  --yazi:#1F2430; --yazi-2:#5B6270; --cizgi:#E3E6EC; --zemin:#FFFFFF;
+  --basari:#157A4C;
+}
+*{box-sizing:border-box}
+html{font-size:18px}
+@media (min-width:1600px){html{font-size:23px}}
+body{margin:0;background:var(--zemin);color:var(--yazi);font-family:"Mulish","Segoe UI","Noto Sans","DejaVu Sans",Arial,sans-serif;line-height:1.5}
+a{color:inherit;text-decoration:none}
+.kap{max-width:56rem;margin:0 auto;padding:0 2rem}
+
+.ust{height:4rem;display:flex;align-items:center;justify-content:space-between}
+.marka{font-weight:800;font-size:1.1rem}
+.marka b{color:var(--vurgu)}
+
+.adim{display:flex;align-items:center;margin:2rem 0 1rem;font-size:1rem;font-weight:700;color:var(--yazi-2)}
+.adim span{width:2rem;height:2rem;border-radius:50%;background:var(--vurgu-acik);color:var(--vurgu);display:flex;align-items:center;justify-content:center;margin-right:.75rem;font-weight:800}
+
+.siniflar{display:flex}
+.sinif{flex:1;min-height:4.5rem;border:2px solid var(--cizgi);border-radius:1rem;font:inherit;font-size:1.6rem;font-weight:800;background:#fff;color:var(--yazi);margin-right:1rem}
+.sinif:last-child{margin-right:0}
+.sinif.secili{background:var(--vurgu);border-color:var(--vurgu);color:#fff}
+
+.buhafta{border:2px solid var(--cizgi);border-radius:1.25rem;padding:2rem 2.25rem;display:flex;align-items:center;justify-content:space-between}
+.buhafta small{display:block;font-size:1rem;font-weight:700;color:var(--vurgu)}
+.buhafta h2{margin:.25rem 0 0;font-size:2.4rem;line-height:1.15;font-weight:800}
+.dugme{display:inline-flex;align-items:center;justify-content:center;min-height:3.5rem;padding:0 2rem;border-radius:.9rem;background:var(--vurgu);color:#fff;font-weight:800;font-size:1.2rem;white-space:nowrap}
+.dugme.ikincil{background:#fff;color:var(--vurgu);border:2px solid var(--vurgu)}
+
+.diger{display:flex;justify-content:space-between;align-items:center;margin-top:1.25rem;font-size:1.05rem}
+.diger a{display:inline-flex;align-items:center;min-height:3rem;color:var(--vurgu);font-weight:700}
+
+.alt{margin-top:3rem;padding:1.5rem 0;border-top:1px solid var(--cizgi);font-size:.9rem;color:var(--yazi-2)}
+.alt a{color:var(--yazi-2);text-decoration:underline;display:inline-flex;min-height:3rem;align-items:center}
+
+/* Ders sayfası */
+.geri{display:inline-flex;align-items:center;min-height:3rem;font-weight:700;color:var(--vurgu)}
+.ders-bas{display:flex;align-items:baseline;justify-content:space-between;margin-top:.25rem}
+.ders-bas h1{margin:0;font-size:2.2rem;font-weight:800}
+.ders-bas small{font-size:1rem;color:var(--yazi-2);font-weight:700}
+.adimlar{display:flex;margin:1.25rem 0 1.25rem;border-bottom:2px solid var(--cizgi)}
+.adimlar a{flex:1;min-height:3.25rem;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--yazi-2);border-bottom:4px solid transparent;margin-bottom:-2px}
+.adimlar a.bitti{color:var(--basari)}
+.adimlar a.simdi{color:var(--vurgu);border-color:var(--vurgu)}
+.slayt{height:calc(100vh - 21rem);min-height:15rem;background:var(--vurgu);color:#fff;border-radius:1.25rem;display:flex;flex-direction:column;justify-content:center;padding:0 3.5rem}
+.slayt h2{margin:0;font-size:3rem;line-height:1.1}
+.slayt p{margin:1rem 0 0;font-size:1.5rem;max-width:36rem;opacity:.95}
+.kontrol{display:flex;align-items:center;justify-content:space-between;margin-top:1rem}
+.kontrol span{font-weight:800;font-size:1.2rem;color:var(--yazi-2)}
