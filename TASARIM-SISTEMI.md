@@ -17,7 +17,6 @@ Omurga İstanbul Senin'in Senin UI sisteminden uyarlandı: token katmanları, ö
 | `--action-primary-hover` | `#183F82` | Üzerine gelince |
 | `--action-primary-pressed` | `#133268` | Basılınca |
 | `--action-primary-subtle` | `#E6EEFA` | Açık lacivert zemin |
-| `--surface-brand` | `#1E4FA3` | Üst başlık bandı |
 | `--surface-default` | `#FFFFFF` | Kart |
 | `--surface-subtle` | `#F1F2F7` | Sayfa zemini |
 | `--surface-hover` | `#F6F7FA` | Nötr kontrol üzerine gelince |
@@ -65,14 +64,18 @@ Beyaz yazıyla en düşük kontrast 5,29:1 (bulmaca), defter sarısında koyu ya
 ## Bileşenler
 
 - **Düğme (`.btn`):** 50 px, `--radius-lg`. Varsayılanı beyaz zemin ve lacivert kenarlıktır, `.primary` dolu laciverttir. Bir görünümde tek birincil düğme hedeflenir.
-- **Seçim düğmesi (`.chip-btn`):** 40 px, `--radius-md`. Seçilince dolu lacivert olur. Üst bantta şeffaf durur, seçilince beyaz olur. Rol ve A+ ayar olduğu için ince ayraçla ayrılır ve kenarlıksızdır. A+ yalnızca öğretmende görünür.
+- **Üst bant (`.top`):** İki rolde de açık zeminde (`--surface-subtle`), altta ince çizgi. Logo karesi lacivert.
+- **Seçim düğmesi (`.chip-btn`):** 40 px, `--radius-md`. Seçilince dolu lacivert olur. Üst bantta 48 px, beyaz zemin ve ince kenarlık; açık olan sayfa dolu lacivert. Rol ve A+ ayar olduğu için ince ayraçla ayrılır, bej zeminli ve kenarlıksızdır. A+ yalnızca öğretmende görünür, basılıyken lacivert. A+ açıkken sayfa genişliği 1320 px olur.
 - **Kart (`.card`):** Beyaz zemin, 1 px `--border-default`, `--radius-xl`.
 - **Etiket (`.tag`):** Açık zemin ve aynı ailenin koyu yazısı.
 - **Hafta satırı (`.week`):** Hafta numarası ve ders adı aynı satırda (`7. hafta · Dosya ve Klasör Yönetimi`). Durum etiketi sabit genişliktedir, kodlar aynı sütunda durur. Öğrencide hazır olmayan satır soluktur ve açılmaz. Öğretmende her satır açılır, bu yüzden yazı soluk değildir; durumu etiket söyler. Çalışma Kâğıtları sayfasında satır bağlantıdır, doğrudan kâğıdı açar.
-- **Ders sekmesi (`.tab`):** Ortak alt çizgide durur, etkin olanın çizgisi kalın ve lacivert. Numara dairesi kalır, biten bölümde ✓ olur.
-- **Öğrenci görünümü (renkli kartlar):** Tasarım seçimi `mockups/` içindeki B yönü. Düz renkli büyük kartlar, gölge ve gradyan yok, ikonlar satır içi SVG (`icon()` in `app.js`), emoji değil.
+- **Ders sekmesi (`.tab`, öğretmen):** Ortak alt çizgide durur, etkin olanın çizgisi kalın ve koyu. Numara karesi bölümün renginde (`--sec-*`, ders planı gri), biten bölümde yeşil ✓ olur. Öğretmen bölüm kartlarını kullanmaz: derste sık bölüm değiştirdiği için her bölüm tek tıkla açılır.
+- **Renkli kartlar (iki rol):** Tasarım seçimi `mockups/` içindeki B yönü. Düz renkli büyük kartlar, gölge ve gradyan yok, ikonlar satır içi SVG (`icon()` in `app.js`), emoji değil.
   - Üst bant açık zeminde: logo ve kilit ikonlu "Öğretmen" düğmesi. Arama öğrencide yok.
   - Ana sayfa: iki sınıf kartı (`.grade-card`), "Bu hafta" kartı (`.wk-hero`, temanın renginde, büyük hafta numarası), altında önceki ve sonraki hafta okları (`.wk-nav`), yanda küçük kartlar (`.side-card`).
   - Ders: temanın renginde bant (`.lesson-band`) ve ilerleme. Girişte 5 bölüm kartı (`.sec-card`), alttaki düğme sıradaki bölümü açar. Bölümün içinde renkli kare başlık ve "Bölümler" düğmesi. Sekme çubuğu öğrencide gizli.
+  - Öğretmen: ana sayfada aynı sınıf kartları ve "Bu hafta" kartı (kazanım kodu, "Derse git" ve "Çalışma kâğıdı"), altında temalara bölünmüş hafta listesi. Tema başlıklarında temanın renginde numara karesi (`.tn-sq`). Ders bandında tema, süre ve kazanım kodu.
+  - Öğretmen Masası: her ayar ayrı kart, başlıkta renkli ikon karesi (`.sq-sm`), seçili seçenekte ✓.
+  - Slayt kaydırmadan ekrana sığacak kadar büyür (`.deck` genişliği ekran yüksekliğinden hesaplanır, en az 520 px).
   - Bütün dokunma alanları en az 48 px.
 - **Defter (`.notebook`):** Çizgili kâğıt ve kırmızı kenar çizgisi kalır, yazı Mulish'tir. Bölümün kimliği budur, sade karta çevrilmez.

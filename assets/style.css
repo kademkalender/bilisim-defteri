@@ -18,7 +18,6 @@
   --surface-default:#FFFFFF;
   --surface-subtle:#F1F2F7;
   --surface-hover:#F6F7FA;
-  --surface-brand:#1E4FA3;
   /* Kenarlık */
   --border-default:#E1E4EC;
   --border-strong:#C5CAD3;
@@ -53,6 +52,7 @@
   color-scheme:light;
 }
 :root.big{--base:20px}
+:root.big .top-in,:root.big main{max-width:1320px}
 @media screen{:root.big{font-size:117.65%}}
 
 *{box-sizing:border-box}
@@ -72,25 +72,27 @@ button{font:inherit;cursor:pointer}
 .btn,.chip-btn,.chip,.card,.role-card,.opts button,.opt-group button,.deck-bar button,.act-steps button,.tab,a.week,.cw-clues li{transition:background-color .15s,border-color .15s,color .15s}
 
 /* ---------- Başlık ---------- */
-.top{position:sticky;top:0;z-index:20;background:var(--surface-brand);color:var(--action-on-primary)}
-.top :focus-visible{outline-color:var(--action-on-primary)}
+.top{position:sticky;top:0;z-index:20;background:var(--surface-subtle);color:var(--text-primary);border-bottom:1px solid var(--border-default)}
 .top-in{max-width:1100px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:var(--space-3) var(--space-4);flex-wrap:wrap}
-.logo{display:flex;align-items:center;gap:var(--space-3);text-decoration:none;color:var(--action-on-primary);font-weight:800;font-size:1.25rem}
-.logo-mark{width:38px;height:38px;border-radius:var(--radius-md);background:var(--surface-default);display:flex;align-items:center;justify-content:center;color:var(--action-primary);font-size:1rem;font-family:var(--font-mono);font-weight:700}
+.logo{display:flex;align-items:center;gap:var(--space-3);text-decoration:none;color:var(--text-primary);font-weight:800;font-size:1.25rem}
+.logo-mark{width:38px;height:38px;border-radius:var(--radius-md);background:var(--action-primary);display:flex;align-items:center;justify-content:center;color:var(--action-on-primary);font-size:1rem;font-family:var(--font-mono);font-weight:700}
 .top nav{display:flex;gap:var(--space-2);margin-left:auto;flex-wrap:wrap}
 .chip-btn{display:inline-flex;align-items:center;justify-content:center;min-height:var(--size-control-sm);border:1px solid var(--border-default);background:var(--surface-default);color:var(--text-primary);padding:0 var(--space-4);border-radius:var(--radius-md);font-weight:700;font-size:.9rem;text-decoration:none}
 .chip-btn:hover{background:var(--surface-hover);border-color:var(--border-strong)}
 .chip-btn[aria-pressed="true"],.chip-btn[aria-current="page"]{background:var(--action-primary);border-color:var(--action-primary);color:var(--action-on-primary)}
-.top .chip-btn{background:transparent;border-color:rgba(255,255,255,.55);color:var(--action-on-primary)}
-.top .chip-btn:hover{background:rgba(255,255,255,.14);border-color:var(--action-on-primary)}
-.top .chip-btn[aria-pressed="true"],.top .chip-btn[aria-current="page"]{background:var(--surface-default);border-color:var(--surface-default);color:var(--action-primary)}
+.top .chip-btn{min-height:48px;padding:0 var(--space-3);background:var(--surface-default);border:1.5px solid var(--border-default);color:var(--text-primary)}
+.top .chip-btn:hover{border-color:var(--action-primary);background:var(--surface-default)}
+.top .chip-btn[aria-pressed="true"],.top .chip-btn[aria-current="page"]{background:var(--action-primary);border-color:var(--action-primary);color:var(--action-on-primary)}
 /* Ayarlar gezinmeden ayrı: ayraç ve kenarlıksız. Öğrencide önünde bağlantı olmadığından ayraç yok. */
-.top-set{display:flex;gap:var(--space-1);padding-left:var(--space-2);border-left:1px solid rgba(255,255,255,.4)}
+.top-set{display:flex;gap:var(--space-1);padding-left:var(--space-2);border-left:1px solid var(--border-strong)}
 html.role-ogrenci .top-set{padding-left:0;border-left:0}
-.top .top-set .chip-btn{border-color:transparent;padding:0 var(--space-3)}
-.top .top-set .chip-btn:hover{border-color:transparent}
-.search{position:relative;flex:1;min-width:170px;max-width:280px}
-.search input{width:100%;height:var(--size-control-sm);font:inherit;font-size:.92rem;padding:0 var(--space-4);border-radius:var(--radius-md);border:0;background:var(--surface-default);color:var(--text-primary)}
+/* Rol ve A+ ayar: bej zemin, kenarlıksız. A+ basılıyken lacivert. */
+.top .top-set .chip-btn{background:#E6E3DC;border-color:transparent;color:var(--text-secondary);padding:0 var(--space-3)}
+.top .top-set .chip-btn:hover{background:var(--border-default);border-color:transparent;color:var(--text-primary)}
+.top .top-set .chip-btn[aria-pressed="true"]{background:var(--action-primary);color:var(--action-on-primary)}
+.top .chip-btn .ico{margin-right:6px}
+.search{position:relative;flex:1;min-width:170px;max-width:230px}
+.search input{width:100%;height:48px;font:inherit;font-size:.92rem;padding:0 var(--space-4);border-radius:var(--radius-md);border:1.5px solid var(--border-default);background:var(--surface-default);color:var(--text-primary)}
 .results{position:absolute;top:100%;margin-top:6px;left:0;right:0;background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-md);box-shadow:var(--shadow-md);padding:var(--space-2);display:none;z-index:30;max-height:320px;overflow:auto;min-width:260px}
 .results.show{display:block}
 .results a,.results div{display:block;padding:var(--space-2) var(--space-3);border-radius:var(--radius-sm);text-decoration:none;color:var(--text-primary);font-size:.9rem}
@@ -99,7 +101,6 @@ html.role-ogrenci .top-set{padding-left:0;border-left:0}
 
 main{max-width:1100px;margin:0 auto;padding:var(--space-6) var(--space-4) 64px}
 main > * + *{margin-top:26px}
-main > .crumbs + .lesson-head{margin-top:var(--space-3)}
 main > .block{margin-top:var(--space-4)}
 .crumbs{font-size:.9rem;color:var(--text-secondary)}
 .crumbs a{color:var(--text-secondary)}
@@ -107,7 +108,6 @@ footer{text-align:center;color:var(--text-secondary);font-size:.85rem;padding:0 
 
 /* ---------- Ortak ---------- */
 .tag{display:inline-block;font-size:.75rem;font-weight:800;padding:2px var(--space-2);border-radius:var(--radius-sm);background:var(--action-primary-subtle);color:var(--action-primary);white-space:nowrap;vertical-align:middle}
-.tag.g6{background:var(--grade-6-subtle);color:var(--grade-6)}
 .tag.soon{background:var(--surface-subtle);color:var(--text-secondary)}
 .tag.ready{background:var(--feedback-success-subtle);color:var(--feedback-success)}
 .tag.code{background:var(--action-primary-subtle);color:var(--action-primary);font-family:var(--font-mono)}
@@ -130,31 +130,25 @@ html.role-ogrenci .t-only{display:none}
 .role-pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-4)}
 .role-card{display:flex;flex-direction:column;align-items:center;gap:var(--space-2);padding:var(--space-8) var(--space-5);background:var(--surface-default);border:1.5px solid var(--border-default);border-radius:var(--radius-xl);color:var(--text-primary);font:inherit;text-align:center}
 .role-card:hover{border-color:var(--action-primary);background:var(--action-primary-subtle)}
-.role-card span{font-size:2.6rem;line-height:1}
+.role-card .sq{width:72px;height:72px;border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;font-size:2.4rem;color:var(--action-on-primary)}
 .role-card b{font-size:1.3rem;font-weight:800}
 .role-card small{color:var(--text-secondary);font-size:.92rem}
 
 /* ---------- Ana sayfa ---------- */
 .hello h1{font-size:2.2rem}
 .hello p{margin:6px 0 0;color:var(--text-secondary);max-width:62ch}
-.resume{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap}
 main > #wkList{margin-top:var(--space-3)}
-html.role-ogrenci main > #wkList{margin-top:var(--space-8)}
+main > #wkList{margin-top:var(--space-8)}
+.all-h{margin-top:var(--space-8)}
+.all-h .hint{display:block;font-weight:400;margin-top:2px}
 .wk-flow{margin-top:14px}
 .wk-flow summary{cursor:pointer;font-weight:700;margin-bottom:6px}
 .env-banner{display:flex;gap:var(--space-3);align-items:center;flex-wrap:wrap;background:var(--surface-default);border:1px dashed var(--border-strong);border-radius:var(--radius-xl);padding:var(--space-3) var(--space-4);font-size:.92rem}
 
 /* ---------- Öğrenci görünümü: renkli kartlar (TASARIM-SISTEMI.md) ---------- */
 .ico{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:-.15em}
-/* Üst bant açık zeminde: sadece logo ve Öğretmen düğmesi */
-html.role-ogrenci .top{background:var(--surface-subtle);color:var(--text-primary)}
-html.role-ogrenci .top :focus-visible{outline-color:var(--border-focus)}
-html.role-ogrenci .logo{color:var(--text-primary)}
-html.role-ogrenci .logo-mark{background:var(--action-primary);color:var(--action-on-primary)}
+/* Öğrencinin üst bandında sadece logo ve Öğretmen düğmesi */
 html.role-ogrenci .search{display:none}
-html.role-ogrenci .top .top-set .chip-btn{min-height:48px;background:#E6E3DC;color:var(--text-secondary);padding:0 var(--space-4);border-radius:var(--radius-md)}
-html.role-ogrenci .top .top-set .chip-btn:hover{background:var(--border-default);color:var(--text-primary)}
-html.role-ogrenci .top .chip-btn .ico{margin-right:6px}
 
 .grade-cards{display:grid;grid-template-columns:1fr 1fr;grid-gap:var(--space-5)}
 .grade-card{position:relative;display:flex;align-items:center;min-height:104px;padding:var(--space-4) var(--space-8);border-radius:var(--radius-xl);border:4px solid var(--action-primary);background:var(--surface-default);color:var(--action-primary);font:inherit;text-align:left}
@@ -176,6 +170,10 @@ html.role-ogrenci .top .chip-btn .ico{margin-right:6px}
 .wk-hero p{margin:0 0 var(--space-3)}
 .btn.on-color{background:var(--surface-default);border-color:var(--surface-default);color:var(--text-primary);min-height:52px;font-size:1.1rem}
 .btn.on-color:hover{background:var(--surface-hover)}
+.btn.on-color-line{background:transparent;border:2px solid var(--action-on-primary);color:var(--action-on-primary);min-height:52px}
+.btn.on-color-line:hover{background:rgba(255,255,255,.14)}
+.wk-codes{margin:0 0 var(--space-4)}
+.wk-codes .tag{background:rgba(255,255,255,.2);color:var(--action-on-primary);font-family:var(--font-mono)}
 .wk-nav{display:grid;grid-template-columns:1fr 1fr;grid-gap:var(--space-3);margin-top:var(--space-3)}
 .wk-nav button{min-height:56px;border:2px solid var(--border-default);background:var(--surface-default);color:var(--text-primary);border-radius:var(--radius-lg);font-weight:800;padding:0 var(--space-4);text-align:left;display:flex;align-items:center}
 .wk-nav button + button{justify-content:flex-end;text-align:right}
@@ -199,6 +197,7 @@ html.role-ogrenci .top .chip-btn .ico{margin-right:6px}
 .lesson-band .back{flex:none;width:52px;height:52px;border-radius:var(--radius-md);background:rgba(255,255,255,.18);color:inherit;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-right:var(--space-5)}
 .lesson-band small{font-weight:700;opacity:.95}
 .lesson-band h1{font-size:2rem;color:inherit}
+.band-code{margin-left:auto;padding:4px 12px;border-radius:var(--radius-sm);background:rgba(255,255,255,.2);font-family:var(--font-mono);font-weight:700}
 .band-prog{margin-left:auto;font-weight:800;text-align:right;padding-left:var(--space-4)}
 .band-prog .bar{width:180px;height:12px;border-radius:var(--radius-pill);background:rgba(255,255,255,.28);margin-top:6px;overflow:hidden}
 .band-prog .bar span{display:block;height:100%;background:var(--surface-default)}
@@ -221,9 +220,10 @@ html.role-ogrenci .tabs{display:none}
 .block-h .sq{flex:none;width:52px;height:52px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--action-on-primary)}
 .block-h .sq.sec-defter{color:var(--text-primary)}
 html.role-ogrenci .dots,html.role-ogrenci .deck + .hint{display:none}
-/* Slayt ve düğmeleri kaydırmadan ekrana sığsın: 360 px üst bant, ders bandı, bölüm başlığı ve slayt çubuğu */
-html.role-ogrenci .deck{max-width:calc((100vh - 360px) * 16 / 9);min-width:min(100%,520px);margin-left:auto;margin-right:auto}
-html.role-ogrenci .deck.fs{max-width:none}
+/* Slayt ve düğmeleri kaydırmadan ekrana sığsın. Çıkarılan yükseklik: üst bant, ders bandı, (öğretmende sekmeler), bölüm başlığı, slayt çubuğu. rem: A+ ile büyür */
+.deck{max-width:calc((100vh - 27rem) * 16 / 9);min-width:min(100%,520px);margin-left:auto;margin-right:auto}
+html.role-ogrenci .deck{max-width:calc((100vh - 22.5rem) * 16 / 9)}
+.deck.fs,html.role-ogrenci .deck.fs{max-width:none}
 html.role-ogrenci .deck-bar{justify-content:space-between}
 html.role-ogrenci .deck-bar button{min-height:52px;padding:0 var(--space-6)}
 
@@ -239,7 +239,7 @@ html.role-ogrenci .deck-bar button{min-height:52px;padding:0 var(--space-6)}
 .chev:before{content:"▸"}
 .unit[open] > summary .chev:before{content:"▾"}
 .unit-h small{color:var(--text-secondary);font-weight:700}
-.tn{color:var(--action-primary);margin-right:2px}
+.tn-sq{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:var(--radius-sm);color:var(--action-on-primary);font-weight:900;font-size:1rem;margin-right:var(--space-3);vertical-align:middle}
 .weeks{list-style:none;margin:0;padding:0}
 .weeks li + li{border-top:1px solid var(--border-default)}
 .week{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-5);text-decoration:none;color:var(--text-primary);font-weight:700}
@@ -258,8 +258,6 @@ summary.week::-webkit-details-marker{display:none}
 .unit-note{padding:var(--space-3) var(--space-5);background:var(--surface-subtle);color:var(--text-secondary);font-size:.9rem}
 
 /* ---------- Ders sayfası ---------- */
-.lesson-head h1{font-size:2.1rem;margin-top:6px}
-.meta{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center;color:var(--text-secondary);font-size:.9rem}
 .outcome{display:grid;gap:var(--space-2)}
 .outcome .title{font-weight:800}
 .outcome code{font-family:var(--font-mono);color:var(--action-primary);font-weight:700}
@@ -272,9 +270,14 @@ summary.week::-webkit-details-marker{display:none}
 .tabs{display:flex;gap:var(--space-1);flex-wrap:wrap;border-bottom:2px solid var(--border-strong)}
 .tab{display:flex;align-items:center;gap:var(--space-2);min-height:var(--size-control-md);color:var(--text-secondary);background:transparent;border:0;border-bottom:4px solid transparent;margin-bottom:-2px;padding:var(--space-1) var(--space-3);font-weight:700;font-size:.92rem}
 .tab:hover{border-bottom-color:var(--border-strong);color:var(--text-primary)}
-.tab[aria-selected="true"]{border-bottom-color:var(--action-primary);color:var(--action-primary);font-weight:800}
-.tab[aria-selected="true"] span{background:var(--action-primary);color:var(--action-on-primary)}
-.tab span{width:30px;height:30px;border-radius:50%;background:var(--action-primary-subtle);color:var(--action-primary);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800}
+.tab[aria-selected="true"]{border-bottom-color:var(--text-primary);color:var(--text-primary);font-weight:800}
+.tab span{width:32px;height:32px;border-radius:var(--radius-sm);background:var(--action-primary-subtle);color:var(--action-primary);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800}
+.tab[data-tab="akis"] span,.block-h .sq.sec-akis{background:var(--text-secondary);color:var(--action-on-primary)}
+.tab[data-tab="slayt"] span{background:var(--sec-slayt);color:var(--action-on-primary)}
+.tab[data-tab="defter"] span{background:var(--sec-defter);color:var(--text-primary)}
+.tab[data-tab="etkinlik"] span{background:var(--sec-etkinlik);color:var(--action-on-primary)}
+.tab[data-tab="test"] span{background:var(--sec-test);color:var(--action-on-primary)}
+.tab[data-tab="bulmaca"] span{background:var(--sec-bulmaca);color:var(--action-on-primary)}
 .tab.done span{background:var(--feedback-success);color:var(--action-on-primary)}
 .tab.done[aria-selected="true"] span{background:var(--feedback-success);color:var(--action-on-primary)}
 .tab-next{display:flex;justify-content:flex-end}
@@ -460,14 +463,16 @@ section.block > .deck + .hint{margin-top:var(--space-2)}
 .stat{font-size:2rem;font-weight:800}
 
 /* Öğretmen masası */
-.setting{display:grid;gap:var(--space-2)}
-.setting + .setting{margin-top:16px}
-.setting h3{font-size:1.05rem}
+.settings{display:grid;grid-gap:var(--space-4)}
+.setting{display:grid;gap:var(--space-3)}
+.setting h3{font-size:1.15rem;display:flex;align-items:center}
+.sq-sm{flex:none;width:40px;height:40px;border-radius:var(--radius-md);display:inline-flex;align-items:center;justify-content:center;color:var(--action-on-primary);font-size:1.25rem;margin-right:var(--space-3)}
 .confirm-box{padding:var(--space-3);border:2px solid var(--feedback-error);border-radius:var(--radius-md);background:var(--feedback-error-subtle)}
 .opt-group{display:flex;gap:var(--space-2);flex-wrap:wrap}
-.opt-group button{text-align:left;border:1.5px solid var(--border-default);background:var(--surface-default);color:var(--text-primary);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);font-weight:700;max-width:280px}
+.opt-group button{position:relative;text-align:left;border:2px solid var(--border-default);background:var(--surface-default);color:var(--text-primary);border-radius:var(--radius-lg);padding:var(--space-3) var(--space-10) var(--space-3) var(--space-4);font-weight:800;max-width:300px;min-height:64px}
 .opt-group button small{display:block;font-weight:400;color:var(--text-secondary);font-size:.84rem}
 .opt-group button[aria-pressed="true"]{border-color:var(--action-primary);background:var(--action-primary-subtle)}
+.opt-group button[aria-pressed="true"]:after{content:"✓";position:absolute;right:var(--space-3);top:var(--space-3);width:26px;height:26px;border-radius:50%;background:var(--action-primary);color:var(--action-on-primary);display:flex;align-items:center;justify-content:center;font-size:.85rem}
 select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);border-radius:var(--radius-md);border:1.5px solid var(--border-strong);background:var(--surface-default);color:var(--text-primary)}
 
 /* ---------- Yazdırma sayfası ---------- */
