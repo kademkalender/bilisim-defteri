@@ -11,3 +11,6 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# Claude Code kişisel ayarları (ekip ayarları .claude/settings.json içinde)
+.claude/settings.local.json

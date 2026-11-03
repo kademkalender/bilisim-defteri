@@ -16,6 +16,23 @@ Kayıt şablonu:
 
 ---
 
+## 2026-11-03 · Kadem Kalender + Claude Code (Opus 5.5)
+
+**Ne yapıldı**
+- GitHub'dan güncelleme alındı: efee7946-cmd'nin 2026-11-01 tarihli 36 commit'i (`7baaacb`..`da9f446`) ileri sarmayla çekildi, çakışma yok. `dogrula.js`: 0 hata, 0 uyarı.
+- Oturum başı kontrolü kuruldu: `tools/hooks/oturum-basi.js` (SessionStart hook'u, `.claude/settings.json`). Gelen commit'leri, push edilmemiş commit'leri ve commit edilmemiş değişiklikleri bildiriyor. Sadece fetch yapıyor, pull yapmıyor.
+- CLAUDE.md'ye "Oturum başı" bölümü eklendi. README'ye hook izni notu eklendi. `.claude/settings.local.json` `.gitignore`'a eklendi.
+
+**Kararlar**
+- Betik dal adını sabit yazmıyor, takip edilen uzak dalı (`@{u}`) kullanıyor (dal şu an `master`).
+- fetch 15 sn içinde biterse sonuç güncel. İnternet yoksa uyarı verip eski bilgiyi gösteriyor, oturum engellenmiyor.
+
+**Yarım kalan işler**
+- [ ] Gelen `program.js` metni MEB programıyla elle karşılaştırılmadı.
+- [ ] `#sinif-N-<hafta>` yönlendirmesi CLAUDE.md'deki yönlendirme listesinde yok.
+
+---
+
 ## 2026-11-01 · efee7946-cmd + Claude Code (Opus 5.5)
 
 **Ne yapıldı**

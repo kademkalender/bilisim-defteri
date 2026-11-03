@@ -14,6 +14,8 @@ Okula götürmek için klasörün tamamını USB belleğe kopyalayın ve okul bi
 
 **Ekibe katılınca bir kez** `tools/kur.sh` (Pardus/Linux/macOS) ya da `tools/kur.bat` (Windows) çalıştırın. Bundan sonra her commit öncesi `node tools/dogrula.js` otomatik çalışır, hata varsa commit durur.
 
+Claude Code ile çalışıyorsanız oturum başı kontrolü otomatiktir. Her oturum açılışında `tools/hooks/oturum-basi.js` GitHub'da başkasının push ettiği commit'leri bildirir (ayar: `.claude/settings.json`). Claude Code ilk açılışta bu proje hook'u için izin isteyebilir. **Bu izni verin**, yoksa kontrol çalışmaz.
+
 ---
 
 ## Temel ilkeler

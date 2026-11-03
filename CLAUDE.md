@@ -4,9 +4,21 @@
 
 Ayrıntılar: `README.md` (yapı), `ICERIK-REHBERI.md` (ders yazma kuralları). Ders içeriğiyle ilgili her işte önce `ICERIK-REHBERI.md` dosyasını oku.
 
+## Oturum başı
+
+`tools/hooks/oturum-basi.js` her oturum başında otomatik çalışır (`.claude/settings.json` içindeki SessionStart hook'u). GitHub'dan gelen commit'leri, push edilmemiş commit'leri ve commit edilmemiş değişiklikleri bildirir. Betik sadece bilgi verir. Çekme işini aşağıdaki adımlarla sen yaparsın.
+
+Hook gelen commit bildirirse:
+
+1. Önce kullanıcıya kim, ne zaman, ne değiştirmiş, kısaca özetle (`git diff --stat HEAD...@{u}`).
+2. Commit edilmemiş değişiklik varsa DUR ve kullanıcıya ne yapılacağını sor. Kendiliğinden stash, reset ya da checkout yapma. Yoksa `git pull --no-rebase` ile çek.
+3. Çakışma çıkarsa DUR. Çakışan dosyaları ve iki tarafın değişikliğini göster, kendin çözme.
+4. Çektikten sonra `node tools/dogrula.js` çalıştır.
+5. `NOTLAR.md`'ye kayıt ekle (dosya yoksa oluştur, en yeni kayıt en üstte). Kayıtta tarih, "GitHub'dan güncelleme alındı", gelen commit'ler (yazar ve mesajla), değişen dosyalar ve `dogrula.js` sonucu olsun. Bu kaydı commit et.
+
 ## Çalışma günlüğü
 
-- Her oturumun sonunda `NOTLAR.md`'ye kayıt ekle ve commit at.
+- Her oturumun sonunda `NOTLAR.md`'ye o oturumda yapılanları yaz ve commit at. Push etmeden önce kullanıcıya sor.
 - Yeni oturumun başında `NOTLAR.md`'deki son kayıtları oku.
 - En yeni kayıt en üstte olur. Her kayıtta tarih, kim çalıştı, ne yapıldı (commit'lerle), alınan kararlar ve yarım kalan işler yazılır. Şablon dosyanın başında.
 
