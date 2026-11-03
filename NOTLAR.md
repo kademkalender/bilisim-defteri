@@ -23,10 +23,12 @@ Kayıt şablonu:
 - Oturum başı kontrolü kuruldu: `tools/hooks/oturum-basi.js` (SessionStart hook'u, `.claude/settings.json`). Gelen commit'leri, push edilmemiş commit'leri ve commit edilmemiş değişiklikleri bildiriyor. Sadece fetch yapıyor, pull yapmıyor.
 - CLAUDE.md'ye "Oturum başı" bölümü eklendi. README'ye hook izni notu eklendi. `.claude/settings.local.json` `.gitignore`'a eklendi.
 - `2382ff7` Okul takvimi: `BD.calendar` (2026-2027 MEB takvimi) ve `assets/hafta.js`. Tatil haftaları sayılmıyor, 1. dönem 18, yıl 37 öğretim haftası. Test: `tools/hafta.test.js` (10 kontrol).
+- `b8388bc` Öğretmen görünümü de B tasarımına geçti: açık üst bant, "Bu hafta" kartı, renkli tema kareleri, ders bandı, bölüm renginde sekmeler, kart kart Öğretmen Masası.
 - `59f6793` Öğrenci görünümü B tasarımına geçti: sınıf kartları, "Bu hafta" kartı ve hafta okları, `#dersler`, ders bandı ve 5 bölüm kartı. Öğretmen görünümünün yerleşimi aynı.
 - `c01470d` Tasarım seçenekleri: `mockups/` altında üç yön (A sade, B renkli kartlar, C uygulama gibi). Her yön için ana sayfa ve ders sayfası, 1366 ve 1920 px ekran görüntüleri var. Mevcut tasarımın değerlendirmesi `mockups/README.md` dosyasında. Siteye dokunulmadı.
 
 **Kararlar**
+- Öğretmen derste sık bölüm değiştirdiği için bölüm kartlarını kullanmıyor, renkli sekmelerle her bölüm tek tıkla açılıyor. 1366×768'de öğretmenin slaytı biraz kayıyor (slayt en az 520 px), 1920'de sığıyor.
 - Kullanıcı B (renkli kartlar) yönünü seçti. Bu turda yalnızca öğrenci görünümü değişti, öğretmen yerleşimi sonraki iş.
 - "Bu hafta" MEB takviminden hesaplanıyor, çünkü öğretmenin ayarı öğrenci bilgisayarına ulaşmıyor. Hoca "x. haftayı açın" diyor: öğrenci ‹ › oklarıyla önceki ve sonraki haftaya tek tıkla geçiyor. Oklarla seçilen hafta bellekte, sayfa yenilenince bu haftaya dönüyor.
 - Plandaki hafta adları hâlâ örnek. Hafta numarası takvimden doğru gelse de o haftanın konusu rehber öğretmenin planıyla tutmayabilir.
@@ -37,9 +39,8 @@ Kayıt şablonu:
 
 **Yarım kalan işler**
 - [ ] Gelen `program.js` metni MEB programıyla elle karşılaştırılmadı.
-- [ ] Öğretmen görünümü B tasarımına geçirilecek (ana sayfa, ders planı, Öğretmen Masası).
 - [ ] `BD.calendar` her yıl yeni MEB takvimiyle güncellenmeli. Okul bilgisayarlarının saati yanlışsa "Bu hafta" yanlış çıkar, oklar ve "Bütün dersler" yedek yol.
-- [ ] Etkinlik bölümündeki emojiler (🎯 🧰) Pardus'ta kutu olarak görünebilir, denenmedi.
+- [ ] İçerikteki emojiler (etkinlikte 🎯 🧰, ortam seçiminde 💻 🖥️ ✏️, bulmaca ve oyun mesajları) Pardus'ta kutu olarak görünebilir, denenmedi.
 - [ ] Yeni tasarım Firefox 78 ve gerçek Pardus makinesinde denenmedi (sadece macOS'ta Chrome 156).
 
 ---
