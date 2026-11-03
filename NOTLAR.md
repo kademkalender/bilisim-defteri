@@ -22,16 +22,25 @@ Kayıt şablonu:
 - GitHub'dan güncelleme alındı: efee7946-cmd'nin 2026-11-01 tarihli 36 commit'i (`7baaacb`..`da9f446`) ileri sarmayla çekildi, çakışma yok. `dogrula.js`: 0 hata, 0 uyarı.
 - Oturum başı kontrolü kuruldu: `tools/hooks/oturum-basi.js` (SessionStart hook'u, `.claude/settings.json`). Gelen commit'leri, push edilmemiş commit'leri ve commit edilmemiş değişiklikleri bildiriyor. Sadece fetch yapıyor, pull yapmıyor.
 - CLAUDE.md'ye "Oturum başı" bölümü eklendi. README'ye hook izni notu eklendi. `.claude/settings.local.json` `.gitignore`'a eklendi.
+- `2382ff7` Okul takvimi: `BD.calendar` (2026-2027 MEB takvimi) ve `assets/hafta.js`. Tatil haftaları sayılmıyor, 1. dönem 18, yıl 37 öğretim haftası. Test: `tools/hafta.test.js` (10 kontrol).
+- `59f6793` Öğrenci görünümü B tasarımına geçti: sınıf kartları, "Bu hafta" kartı ve hafta okları, `#dersler`, ders bandı ve 5 bölüm kartı. Öğretmen görünümünün yerleşimi aynı.
 - `c01470d` Tasarım seçenekleri: `mockups/` altında üç yön (A sade, B renkli kartlar, C uygulama gibi). Her yön için ana sayfa ve ders sayfası, 1366 ve 1920 px ekran görüntüleri var. Mevcut tasarımın değerlendirmesi `mockups/README.md` dosyasında. Siteye dokunulmadı.
 
 **Kararlar**
+- Kullanıcı B (renkli kartlar) yönünü seçti. Bu turda yalnızca öğrenci görünümü değişti, öğretmen yerleşimi sonraki iş.
+- "Bu hafta" MEB takviminden hesaplanıyor, çünkü öğretmenin ayarı öğrenci bilgisayarına ulaşmıyor. Hoca "x. haftayı açın" diyor: öğrenci ‹ › oklarıyla önceki ve sonraki haftaya tek tıkla geçiyor. Oklarla seçilen hafta bellekte, sayfa yenilenince bu haftaya dönüyor.
+- Plandaki hafta adları hâlâ örnek. Hafta numarası takvimden doğru gelse de o haftanın konusu rehber öğretmenin planıyla tutmayabilir.
+- Öğrenci derse bölüm kartlarıyla giriyor (her bölüm için bir tık fazla). Alttaki düğme sıradaki bölümü açıyor, bölüm sonundaki "Sonraki bölüm" düğmesi duruyor.
+- Sunum'un ✓'i önceki karar gereği saklanmıyor; yenilenince bölüm kartında da "Bitti" gidiyor.
 - Betik dal adını sabit yazmıyor, takip edilen uzak dalı (`@{u}`) kullanıyor (dal şu an `master`).
 - fetch 15 sn içinde biterse sonuç güncel. İnternet yoksa uyarı verip eski bilgiyi gösteriyor, oturum engellenmiyor.
 
 **Yarım kalan işler**
 - [ ] Gelen `program.js` metni MEB programıyla elle karşılaştırılmadı.
-- [ ] `#sinif-N-<hafta>` yönlendirmesi CLAUDE.md'deki yönlendirme listesinde yok.
-- [ ] Tasarım yönü ekipçe seçilecek (A, B ya da C). Hangisi seçilirse seçilsin "Bu haftanın dersi" için Öğretmen Masası'na şu anki hafta ya da dönem başı ayarı gerekecek.
+- [ ] Öğretmen görünümü B tasarımına geçirilecek (ana sayfa, ders planı, Öğretmen Masası).
+- [ ] `BD.calendar` her yıl yeni MEB takvimiyle güncellenmeli. Okul bilgisayarlarının saati yanlışsa "Bu hafta" yanlış çıkar, oklar ve "Bütün dersler" yedek yol.
+- [ ] Etkinlik bölümündeki emojiler (🎯 🧰) Pardus'ta kutu olarak görünebilir, denenmedi.
+- [ ] Yeni tasarım Firefox 78 ve gerçek Pardus makinesinde denenmedi (sadece macOS'ta Chrome 156).
 
 ---
 
