@@ -84,6 +84,20 @@ BD.plan = {
   ]
 };
 
+/* Okul takvimi: öğrenci ana sayfasındaki "Bu hafta" kartı bugünün kaçıncı öğretim haftası olduğunu buradan hesaplar (assets/hafta.js).
+   Kaynak: MEB, "2026-2027 Eğitim Öğretim Yılı Takvimi Açıklandı"
+   https://www.meb.gov.tr/2026-2027-egitim-ogretim-yili-takvimi-aciklandi/haber/41057/tr
+   Her yıl yeni takvimle güncellenmeli. Tarihler YYYY-AA-GG. */
+BD.calendar = {
+  start: "2026-09-14", // birinci dönem başlangıcı
+  end: "2027-06-25",   // ders yılı sonu
+  breaks: [
+    { from: "2026-11-16", to: "2026-11-20" }, // birinci dönem ara tatili
+    { from: "2027-01-25", to: "2027-02-05" }, // yarıyıl tatili
+    { from: "2027-03-08", to: "2027-03-12" }  // ikinci dönem ara tatili
+  ]
+};
+
 /* Varsayılan ayarlar (Öğretmen Masası'ndan değiştirilebilir, tarayıcıda saklanır) */
 BD.defaults = {
   role: null,        // ogrenci | ogretmen; boşsa ilk açılışta sorulur
