@@ -39,13 +39,14 @@ Hook gelen commit bildirirse:
 ## Yapı
 
 - `index.html`: Giriş dosyası, tüm script sıralaması burada.
-- `assets/app.js`: Tek bir IIFE. Hash tabanlı yönlendirme: `#home`, `#sinif-5`, `#ders-<id>`, `#yazdir-<id>`, `#kazanimlar`, `#kagitlar`, `#ogretmen`. Görünümler `viewX()` ile HTML döndürür, olaylar `bindX()` ile bağlanır.
+- `assets/app.js`: Tek bir IIFE. Hash tabanlı yönlendirme: `#home`, `#sinif-5`, `#ders-<id>`, `#yazdir-<id>`, `#sinif-5-<hafta>`, `#dersler` (öğrencinin hazır dersleri), `#kazanimlar`, `#kagitlar`, `#ogretmen`. Görünümler `viewX()` ile HTML döndürür, olaylar `bindX()` ile bağlanır.
 - `assets/crossword.js`: `buildCrossword(entries)` fonksiyonu. Kelime + ipucu listesinden ızgara kurar. Harf temizleme tek yerde: `cwClean(s)`.
 - `assets/shuffle.js`: `shuffleOrder(n, dersId)`. Sınıflandırma kartlarını ders id'sine göre hep aynı, karışık sırada verir.
+- `assets/hafta.js`: `schoolWeek(tarih, BD.calendar)`. Öğrenci ana sayfasındaki "Bu hafta" kartı için bugünün kaçıncı öğretim haftası olduğunu bulur. Takvim `content/plan.js` içinde, MEB çalışma takviminden alınır ve her yıl güncellenir. Test: `node --test tools/hafta.test.js`.
 - `assets/style.css`: Renkler ve ölçüler `:root` içindeki tokenlardan gelir. Kurallar: `TASARIM-SISTEMI.md`.
 - `assets/mulish.css`: Gömülü Mulish yazı tipi (data URI, çünkü Firefox `file://` altında ayrı font dosyası yüklemez).
 - `content/program.js`: Resmi öğrenme çıktıları.
-- `content/plan.js`: Haftalık plan, varsayılan ayarlar, sınıf ortamları.
+- `content/plan.js`: Haftalık plan, okul takvimi (`BD.calendar`), varsayılan ayarlar, sınıf ortamları.
 - `content/lessons/*.js`: Dersler. Şablon: `_SABLON.js`.
 - Ayarlar ve öğrenci ilerlemesi `localStorage` içinde `bd:` önekiyle saklanır.
 

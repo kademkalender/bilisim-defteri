@@ -71,10 +71,11 @@ bilisim-defteri/
 │  ├─ mulish.css               Gömülü yazı tipi (lisans: mulish-OFL.txt)
 │  ├─ app.js                   Sayfalar, oyunlar, test, yazdırma
 │  ├─ crossword.js             Bulmaca oluşturucu ve harf temizleme (cwClean)
-│  └─ shuffle.js               Sınıflandırma kartları için tekrarlanabilir karıştırma
+│  ├─ shuffle.js               Sınıflandırma kartları için tekrarlanabilir karıştırma
+│  └─ hafta.js                 Okul takviminden bugünün kaçıncı öğretim haftası olduğu
 ├─ content/
 │  ├─ program.js               Resmi öğrenme çıktıları (MEB'den birebir)
-│  ├─ plan.js                  Haftalık plan + varsayılan ayarlar
+│  ├─ plan.js                  Haftalık plan, okul takvimi, varsayılan ayarlar
 │  └─ lessons/
 │     ├─ _SABLON.js            Yeni ders şablonu
 │     ├─ 5-1-5-bilgisayar-sistemleri.js

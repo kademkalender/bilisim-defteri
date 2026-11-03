@@ -34,6 +34,19 @@ Omurga İstanbul Senin'in Senin UI sisteminden uyarlandı: token katmanları, ö
 
 Beyaz yazıyla kontrast: lacivert 7,77:1, kiremit 5,29:1.
 
+### Öğrenci görünümü renkleri
+
+| Token | Değer | Kullanım |
+|---|---|---|
+| `--theme-1` … `--theme-6` | `#0B7169` `#6B3FA0` `#1D5FA8` `#B0263A` `#2E6B30` `#A8460F` | Temanın rengi: "Bu hafta" kartı, Bütün dersler kartları, ders bandı |
+| `--sec-slayt` | `#1E4FA3` | Sunum bölümü |
+| `--sec-defter` | `#FFD23F` | Deftere yaz bölümü, üstünde yazı koyu |
+| `--sec-etkinlik` | `#157A4C` | Etkinlik bölümü |
+| `--sec-test` | `#5B3FB5` | Mini test bölümü |
+| `--sec-bulmaca` | `#B8480A` | Bulmaca bölümü |
+
+Beyaz yazıyla en düşük kontrast 5,29:1 (bulmaca), defter sarısında koyu yazı 10,75:1. Renk tek başına bilgi taşımaz: bölümün adı, ikonu ve "Bitti ✓" ya da "Sıradaki" rozeti hep yazılı.
+
 ## Yazı
 
 - **Mulish**, siteye gömülü: `assets/mulish.css`. Firefox `file://` altında ayrı font dosyası yüklemediği için dosya base64 olarak CSS'in içindedir. Lisans: `assets/mulish-OFL.txt`.
@@ -57,4 +70,9 @@ Beyaz yazıyla kontrast: lacivert 7,77:1, kiremit 5,29:1.
 - **Etiket (`.tag`):** Açık zemin ve aynı ailenin koyu yazısı.
 - **Hafta satırı (`.week`):** Hafta numarası ve ders adı aynı satırda (`7. hafta · Dosya ve Klasör Yönetimi`). Durum etiketi sabit genişliktedir, kodlar aynı sütunda durur. Öğrencide hazır olmayan satır soluktur ve açılmaz. Öğretmende her satır açılır, bu yüzden yazı soluk değildir; durumu etiket söyler. Çalışma Kâğıtları sayfasında satır bağlantıdır, doğrudan kâğıdı açar.
 - **Ders sekmesi (`.tab`):** Ortak alt çizgide durur, etkin olanın çizgisi kalın ve lacivert. Numara dairesi kalır, biten bölümde ✓ olur.
+- **Öğrenci görünümü (renkli kartlar):** Tasarım seçimi `mockups/` içindeki B yönü. Düz renkli büyük kartlar, gölge ve gradyan yok, ikonlar satır içi SVG (`icon()` in `app.js`), emoji değil.
+  - Üst bant açık zeminde: logo ve kilit ikonlu "Öğretmen" düğmesi. Arama öğrencide yok.
+  - Ana sayfa: iki sınıf kartı (`.grade-card`), "Bu hafta" kartı (`.wk-hero`, temanın renginde, büyük hafta numarası), altında önceki ve sonraki hafta okları (`.wk-nav`), yanda küçük kartlar (`.side-card`).
+  - Ders: temanın renginde bant (`.lesson-band`) ve ilerleme. Girişte 5 bölüm kartı (`.sec-card`), alttaki düğme sıradaki bölümü açar. Bölümün içinde renkli kare başlık ve "Bölümler" düğmesi. Sekme çubuğu öğrencide gizli.
+  - Bütün dokunma alanları en az 48 px.
 - **Defter (`.notebook`):** Çizgili kâğıt ve kırmızı kenar çizgisi kalır, yazı Mulish'tir. Bölümün kimliği budur, sade karta çevrilmez.
