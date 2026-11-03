@@ -22,6 +22,7 @@ Kayıt şablonu:
 - GitHub'dan güncelleme alındı: efee7946-cmd'nin 2026-11-01 tarihli 36 commit'i (`7baaacb`..`da9f446`) ileri sarmayla çekildi, çakışma yok. `dogrula.js`: 0 hata, 0 uyarı.
 - Oturum başı kontrolü kuruldu: `tools/hooks/oturum-basi.js` (SessionStart hook'u, `.claude/settings.json`). Gelen commit'leri, push edilmemiş commit'leri ve commit edilmemiş değişiklikleri bildiriyor. Sadece fetch yapıyor, pull yapmıyor.
 - CLAUDE.md'ye "Oturum başı" bölümü eklendi. README'ye hook izni notu eklendi. `.claude/settings.local.json` `.gitignore`'a eklendi.
+- `c01470d` Tasarım seçenekleri: `mockups/` altında üç yön (A sade, B renkli kartlar, C uygulama gibi). Her yön için ana sayfa ve ders sayfası, 1366 ve 1920 px ekran görüntüleri var. Mevcut tasarımın değerlendirmesi `mockups/README.md` dosyasında. Siteye dokunulmadı.
 
 **Kararlar**
 - Betik dal adını sabit yazmıyor, takip edilen uzak dalı (`@{u}`) kullanıyor (dal şu an `master`).
@@ -30,6 +31,7 @@ Kayıt şablonu:
 **Yarım kalan işler**
 - [ ] Gelen `program.js` metni MEB programıyla elle karşılaştırılmadı.
 - [ ] `#sinif-N-<hafta>` yönlendirmesi CLAUDE.md'deki yönlendirme listesinde yok.
+- [ ] Tasarım yönü ekipçe seçilecek (A, B ya da C). Hangisi seçilirse seçilsin "Bu haftanın dersi" için Öğretmen Masası'na şu anki hafta ya da dönem başı ayarı gerekecek.
 
 ---
 
