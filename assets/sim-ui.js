@@ -47,7 +47,8 @@
   function mount(root, o) {
     var L = o.lesson, sim = L.sim, os = o.os === "pardus" ? "pardus" : "windows", T = LBL[os], key = "sim:" + L.id;
     var saved = o.store.get(key, null);
-    if (saved && saved.os !== os) saved = null; // işletim sistemi değiştiyse baştan
+    var ver = sim.tasks.map(function (t) { return t.id; }).join(",");
+    if (saved && (saved.os !== os || saved.ver !== ver)) saved = null; // işletim sistemi ya da dersin görevleri değiştiyse baştan
     var st = saved ? saved.state : C.create(sim.start, os), idx = saved ? saved.idx : 0, hints = saved ? saved.hints : 0;
     var hist = [], lastOp = null, wrongs = 0, hintStep = 0, msg = null, doneAt = saved ? saved.at : null;
     // Ekran durumu: kaydedilmez
@@ -59,7 +60,7 @@
     var task = function () { return sim.tasks[idx]; };
     var persist = function () {
       doneAt = idx >= sim.tasks.length ? doneAt || new Date().toISOString() : null;
-      o.store.set(key, { os: os, state: st, idx: idx, hints: hints, at: doneAt });
+      o.store.set(key, { os: os, ver: ver, state: st, idx: idx, hints: hints, at: doneAt });
     };
     var snap = function () { return { state: st, idx: idx, win: win && JSON.parse(JSON.stringify(win)) }; };
     var paneDir = function (p) { return p === "desk" ? C.ROOT : win && win.dir; };
@@ -276,7 +277,13 @@
         '<button type="button" class="btn" data-undo="1" data-f="c|undo"' + (hist.length ? "" : " disabled") + '>' + svg("undo") + ' Geri al</button>' +
         '<button type="button" class="btn" data-restart="1" data-f="c|restart">' + svg("again") + ' Baştan başla</button></div>' + list + '</div>';
     }
+    // hold: ad kutusu açıkken başka yere basıldı. Ad hemen kaydedilir ama ekran tıklama bitince çizilir,
+    // yoksa basılan düğme DOM'dan kalkar ve tıklama kaybolur.
+    var hold = false, dirty = false;
+    function release() { setTimeout(function () { if (!hold) return; hold = false; if (dirty) render(); }, 0); }
     function render() {
+      if (hold) { dirty = true; return; }
+      dirty = false;
       var a = document.activeElement, had = root.contains(a);
       if (had && !focusKey && a.getAttribute("data-f")) focusKey = a.getAttribute("data-f");
       var desk = listHtml("desk", C.ROOT, "Masaüstü");
@@ -338,6 +345,14 @@
       } else render();
     }
 
+    root.addEventListener("pointerdown", function (e) {
+      var inp = root.querySelector(".sim-edit");
+      if (!edit || !inp || e.target === inp) return;
+      hold = true;
+      window.addEventListener("pointerup", release, { capture: true, once: true });
+      window.addEventListener("pointercancel", release, { capture: true, once: true });
+      commitEdit(inp);
+    }, true);
     root.addEventListener("pointerdown", function (e) {
       lastType = e.pointerType; eat = false;
       if (menu && !e.target.closest(".sim-menu")) { menu = null; if (st.ui.menu) exec(["menu", false], true); else render(); return; }
