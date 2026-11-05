@@ -38,7 +38,7 @@
   --slide-bg-light:#1E4FA3;
   /* Öğrenci görünümü: tema ve ders bölümü renkleri. Hepsi beyaz yazıyla en az 5,2:1, defter sarısı koyu yazıyla 10,7:1 */
   --theme-1:#0B7169;--theme-2:#6B3FA0;--theme-3:#1D5FA8;--theme-4:#B0263A;--theme-5:#2E6B30;--theme-6:#A8460F;
-  --sec-slayt:#1E4FA3;--sec-defter:#FFD23F;--sec-etkinlik:#157A4C;--sec-test:#5B3FB5;--sec-bulmaca:#B8480A;
+  --sec-slayt:#1E4FA3;--sec-defter:#FFD23F;--sec-etkinlik:#157A4C;--sec-test:#5B3FB5;--sec-bulmaca:#B8480A;--sec-oyun:#B0263A;
   /* Yazı tipi */
   --font-family:"Mulish","Segoe UI","Noto Sans","DejaVu Sans",Ubuntu,"Liberation Sans",Arial,sans-serif;
   --font-mono:"DejaVu Sans Mono",Consolas,"Liberation Mono",monospace;
@@ -210,7 +210,7 @@ html.role-ogrenci .tabs{display:none}
 .sec-card .badge{position:absolute;right:var(--space-4);top:var(--space-5);font-weight:900;font-size:1.4rem;opacity:.6}
 .sec-card.done .badge,.sec-card.next .badge{opacity:1;background:var(--surface-default);color:var(--text-primary);border-radius:var(--radius-pill);padding:3px 12px;font-size:.9rem;font-weight:800}
 .sec-card.next{outline:4px solid var(--text-primary);outline-offset:4px}
-.sec-slayt{background:var(--sec-slayt)}.sec-etkinlik{background:var(--sec-etkinlik)}.sec-test{background:var(--sec-test)}.sec-bulmaca{background:var(--sec-bulmaca)}
+.sec-slayt{background:var(--sec-slayt)}.sec-etkinlik{background:var(--sec-etkinlik)}.sec-test{background:var(--sec-test)}.sec-bulmaca{background:var(--sec-bulmaca)}.sec-oyun{background:var(--sec-oyun)}
 .sec-defter{background:var(--sec-defter);color:var(--text-primary)}
 .sec-defter .sq{background:rgba(0,0,0,.08)}
 .sec-cta{display:flex;justify-content:center}
@@ -277,6 +277,7 @@ summary.week::-webkit-details-marker{display:none}
 .tab[data-tab="defter"] span{background:var(--sec-defter);color:var(--text-primary)}
 .tab[data-tab="etkinlik"] span{background:var(--sec-etkinlik);color:var(--action-on-primary)}
 .tab[data-tab="test"] span{background:var(--sec-test);color:var(--action-on-primary)}
+.tab[data-tab="oyun"] span{background:var(--sec-oyun);color:var(--action-on-primary)}
 .tab[data-tab="bulmaca"] span{background:var(--sec-bulmaca);color:var(--action-on-primary)}
 .tab.done span{background:var(--feedback-success);color:var(--action-on-primary)}
 .tab.done[aria-selected="true"] span{background:var(--feedback-success);color:var(--action-on-primary)}

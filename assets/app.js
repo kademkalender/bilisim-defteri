@@ -41,13 +41,13 @@
   };
   var norm = function (s) { return String(s).toLocaleLowerCase("tr").replace(/ı/g, "i").normalize("NFD").replace(/[̀-ͯ]/g, ""); };
 
-  // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>, quiz:<id>, sim:<id>, son açılan ders (last). lessonId yoksa tüm dersler.
+  // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>, quiz:<id>, sim:<id>, sort:<id>, son açılan ders (last). lessonId yoksa tüm dersler.
   // Ayarlar (settings, big, printOpts) bu öneklerle başlamadığı için hiç dokunulmaz.
   function clearProgress(lessonId) {
     var keys = [];
     try {
       for (var i = 0; i < localStorage.length; i++) {
-        var k = localStorage.key(i) || "", m = /^bd:(act|nb|cw|quiz|sim):(.+)$/.exec(k);
+        var k = localStorage.key(i) || "", m = /^bd:(act|nb|cw|quiz|sim|sort):(.+)$/.exec(k);
         if (k === "bd:last" && (!lessonId || store.get("last") === lessonId)) keys.push(k);
         if (!m) continue;
         var id = m[1] === "act" ? m[2].replace(/:[^:]*$/, "") : m[2];
@@ -77,6 +77,7 @@
     etkinlik: '<path d="M5 3l14 8-6 2-2 6z"/>',
     test: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.7M12 17h.01"/>',
     bulmaca: '<path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/>',
+    oyun: '<rect x="3" y="4" width="7" height="9" rx="1.5"/><rect x="14" y="4" width="7" height="9" rx="1.5"/><path d="M6.5 17v3M17.5 17v3M4 20h17"/>',
     lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
     back: '<path d="M15 5l-7 7 7 7"/>',
     clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
@@ -269,7 +270,7 @@
 
   function activityHtml(L) {
     var env = envNow(), A = L.activities[env];
-    if (hasSim(L) && env === "lab") return simHtml(L) + (L.sort ? sortHtml(L) : "");
+    if (hasSim(L) && env === "lab") return simHtml(L);
     var key = "act:" + L.id + ":" + env;
     var done = store.get(key, []);
     var html = '<div class="card activity">' +
@@ -285,17 +286,16 @@
     if (env === "kagit") html += '<div class="row"><a class="btn primary" href="#yazdir-' + L.id + '">🖨️ Çalışma kâğıdını aç ve yazdır</a><span class="hint">Kâğıtta konu özeti, etkinlik, test ve boş bulmaca var.</span></div>';
     html += '</div>';
     if (hasSim(L)) html = simHtml(L) + '<div style="margin-top:20px">' + html + '</div>';
-    if (L.sort && env !== "kagit") html += sortHtml(L);
     return html;
   }
 
   function sortHtml(L) {
     var s = L.sort;
-    return '<details class="fold"><summary>🧩 Sınıflandırma oyunu</summary><div id="sort">' + (s.b ? '<span class="tag code t-only">' + L.outcome + '.' + s.b + '</span>' : "") +
+    return '<div class="card" id="sort">' + (s.b ? '<span class="tag code t-only">' + L.outcome + '.' + s.b + '</span>' : "") +
       '<h3 style="margin:8px 0 4px;font-size:1.15rem">' + esc(s.title) + '</h3><p class="hint" style="margin:0 0 10px">' + esc(s.intro) + ' Önce bir karta, sonra doğru kutuya dokun.</p>' +
       '<div class="sort-pool" id="sortPool"></div><div class="sort-cats" style="margin-top:10px">' +
       s.cats.map(function (c, i) { return '<div class="sort-cat" data-c="' + i + '" role="button" tabindex="0" aria-label="' + esc(c) + ' kutusu"><h4>' + esc(c) + '</h4><div class="in"></div></div>'; }).join("") +
-      '</div><div class="row" style="margin-top:10px"><button type="button" class="btn primary" id="sortCheck">Kontrol et</button><button type="button" class="btn" id="sortReset">Baştan başla</button><span class="fb" id="sortMsg"></span></div></div></details>';
+      '</div><div class="row" style="margin-top:10px"><button type="button" class="btn primary" id="sortCheck">Kontrol et</button><button type="button" class="btn" id="sortReset">Baştan başla</button><span class="fb" id="sortMsg"></span></div></div>';
   }
 
   function flowHtml(L) {
@@ -340,8 +340,9 @@
     var nbDone = store.get("nb:" + id, []), T = !isStudent();
     var envBtns = Object.keys(BD.envs).map(function (k) { return '<button type="button" class="chip-btn" data-env="' + k + '" aria-pressed="' + (S.env === k) + '">' + BD.envs[k].icon + ' ' + BD.envs[k].short + '</button>'; }).join("");
     var hasCw = L.crossword && L.crossword.length;
+    var hasSort = !!L.sort && envNow() !== "kagit"; // oyun etkinlikten sonra kendi bölümünde, altta gözden kaçmasın
 
-    var tabs = (T ? [["akis", "Ders planı"]] : [["hub", "Bölümler"]]).concat([["slayt", "Sunum"], ["defter", "Deftere yaz"], ["etkinlik", "Etkinlik"], ["test", "Mini test"]], hasCw ? [["bulmaca", "Bulmaca"]] : []);
+    var tabs = (T ? [["akis", "Ders planı"]] : [["hub", "Bölümler"]]).concat([["slayt", "Sunum"], ["defter", "Deftere yaz"], ["etkinlik", "Etkinlik"]], hasSort ? [["oyun", "Oyun"]] : [], [["test", "Mini test"]], hasCw ? [["bulmaca", "Bulmaca"]] : []);
     var active = tabs.some(function (t) { return t[0] === lessonTab[id]; }) ? lessonTab[id] : firstTab();
     var panel = function (key, title, text, body) {
       var i = tabs.map(function (t) { return t[0]; }).indexOf(key), nx = key === "hub" ? null : tabs[i + 1];
@@ -358,7 +359,7 @@
       '<div class="lesson-band" style="background:var(--theme-' + L.theme + ')"><a class="back" href="#home" aria-label="Ana sayfa">' + icon("back") + '</a><div><small>' + L.grade + '. Sınıf · ' + L.week + '. hafta' + (T ? ' · Tema ' + L.theme + ': ' + esc(Th.name) + ' · ' + esc(L.duration) : "") + '</small><h1>' + esc(L.title) + '</h1></div>' +
         (T ? '<span class="band-code">' + L.outcome + '</span></div>' : '<div class="band-prog" id="bandProg"><span></span><div class="bar"><span></span></div></div></div>' +
         panel("hub", "Bölümler", "", '<div class="sec-cards">' + tabs.slice(1).map(function (t, i) {
-          var n = { slayt: L.slides.length + " slayt", defter: L.notebook.length + " madde", etkinlik: L.sim ? L.sim.tasks.length + " görev" : L.activities.lab.steps.length + " adım", test: L.quiz.length + " soru", bulmaca: hasCw ? L.crossword.length + " kelime" : "" }[t[0]];
+          var n = { slayt: L.slides.length + " slayt", defter: L.notebook.length + " madde", etkinlik: L.sim ? L.sim.tasks.length + " görev" : L.activities.lab.steps.length + " adım", oyun: hasSort ? L.sort.items.length + " kart" : "", test: L.quiz.length + " soru", bulmaca: hasCw ? L.crossword.length + " kelime" : "" }[t[0]];
           return '<button type="button" class="sec-card sec-' + t[0] + '" data-tab="' + t[0] + '"><span class="sq">' + icon(t[0]) + '</span><span class="badge" data-n="' + (i + 1) + '">' + (i + 1) + '</span><b>' + t[1] + '</b><small>' + n + '</small></button>';
         }).join("") + '</div><div class="sec-cta"><button type="button" class="btn primary" id="secNext" data-tab="slayt">Başla: Sunum →</button><p id="secDone" class="progress full" hidden>Bütün bölümleri bitirdin! İstediğin bölüme tekrar bakabilirsin.</p></div>')) +
 
@@ -400,6 +401,8 @@
           (S.env === "kagit" ? '<div class="hook"><b>Bilgisayarsız sınıf</b>Bu dersin tamamını çalışma kâğıdıyla yapabilirsiniz. <a href="#yazdir-' + id + '">Çalışma kâğıdını aç →</a></div>' : "") : "") +
         (L.infoCards ? '<h3 style="font-size:1.1rem">📇 Bilgi kartları <span class="hint" style="font-weight:400">internet olmadan araştırma için</span></h3><div class="info-cards">' + L.infoCards.map(function (c) { return '<div class="info-card"><h3>' + esc(c.h) + '</h3><p>' + esc(c.p) + '</p></div>'; }).join("") + '</div>' : "") +
         '<div id="actWrap">' + activityHtml(L) + '</div>') +
+
+      (hasSort ? panel("oyun", "Sınıflandırma oyunu", "Etkinlikte öğrendiklerini bir oyunla dene.", sortHtml(L)) : "") +
 
       panel("test", "Mini test", L.quiz.length + " soru. Ne kadar öğrendiğini kontrol et.",
         '<div id="quiz">' + L.quiz.map(function (q, qi) {
@@ -591,11 +594,12 @@
       });
       var m = $("#sortMsg");
       if (!placed) { m.textContent = "Önce kartları kutulara yerleştir."; m.className = "fb w"; }
-      else if (ok === s.items.length) { m.textContent = "🎉 Hepsi doğru!"; m.className = "fb r"; celebrate(m); }
+      else if (ok === s.items.length) { m.textContent = "🎉 Hepsi doğru!"; m.className = "fb r"; celebrate(m); store.set("sort:" + L.id, true); setTabDone("oyun", true); }
       else { m.textContent = ok + " / " + s.items.length + " doğru. " + (placed < s.items.length ? "Yerleştirilmemiş kartlar var. " : "") + "✕ işaretli kartları başka kutuya taşı."; m.className = "fb w"; }
     };
     $("#sortReset").onclick = reset;
     reset();
+    setTabDone("oyun", store.get("sort:" + L.id, false));
   }
 
   /* ---------- Bulmaca ---------- */

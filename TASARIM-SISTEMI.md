@@ -43,6 +43,7 @@ Beyaz yazıyla kontrast: lacivert 7,77:1, kiremit 5,29:1.
 | `--sec-etkinlik` | `#157A4C` | Etkinlik bölümü |
 | `--sec-test` | `#5B3FB5` | Mini test bölümü |
 | `--sec-bulmaca` | `#B8480A` | Bulmaca bölümü |
+| `--sec-oyun` | `#B0263A` | Oyun (sınıflandırma) bölümü, beyaz yazıyla 6,6:1 |
 
 Beyaz yazıyla en düşük kontrast 5,29:1 (bulmaca), defter sarısında koyu yazı 10,75:1. Renk tek başına bilgi taşımaz: bölümün adı, ikonu ve "Bitti ✓" ya da "Sıradaki" rozeti hep yazılı.
 
