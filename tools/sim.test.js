@@ -79,6 +79,21 @@ test("yanlış işlem mesajı görevin işlemini söyler", function () {
   assert.strictEqual(C.feedback(task, C.apply(C.create(start, "windows"), ["open", "Masaüstü/Eski"]).ev), null, "açmak yanlış sayılmaz");
 });
 
+test("taşıma görevi dosya silinerek geçilemez", function () {
+  var task = { id: "t", check: { type: "allIn", ext: ["txt"], to: "Masaüstü/Eski" } };
+  var s = run(C.create(start, "windows"), ["delete", "Masaüstü/siir.txt"]);
+  var a = C.advance(s, [task], 0);
+  assert.strictEqual(a.idx, 0, "çöpte .txt varken tamamlanmamalı");
+  assert.ok(/geri yükle/.test(a.warn), a.warn);
+  s = run(run(s, ["restore", 0]), ["move", "Masaüstü/siir.txt", "Masaüstü/Eski"]);
+  assert.strictEqual(C.advance(s, [task], 0).idx, 1);
+});
+
+test("boş dosya sıkıştırılabilir (boyut 0)", function () {
+  var s = run(run(run(C.create({}, "windows"), ["app", "yazi"]), ["save", "Masaüstü", "bos"]), ["zip", "Masaüstü/bos.txt"]);
+  assert.strictEqual(C.find(s, "Masaüstü/bos.zip").entries[0].size, 0);
+});
+
 var sims = Object.keys(box.window.BD.lessons).map(function (k) { return box.window.BD.lessons[k]; }).filter(function (L) { return L.sim; });
 sims.forEach(function (L) {
   ["windows", "pardus"].forEach(function (os) {

@@ -229,7 +229,7 @@
           (st.trash.length ? st.trash.map(function (t, i) { return itemHtml("trash", String(i), t.node.name, typeOf(t.node), '<small>' + esc(C.baseOf(t.from)) + "'dan" + '</small>'); }).join("") : '<p class="sim-empty">Boş</p>') + '</div>';
       } else if (z && z.kind === "zip") {
         body = '<div class="sim-zip"><table><thead><tr><th>Dosya</th><th>Önceki boyut</th><th>Sıkıştırılmış</th></tr></thead><tbody>' +
-          z.entries.map(function (e) { return '<tr><td>' + esc(e.path.replace(/^[^\/]*\//, "")) + '</td><td>' + C.fmtSize(e.size) + '</td><td>' + C.fmtSize(e.zsize) + ' <small>(%' + Math.round(100 - 100 * e.zsize / e.size) + ' küçüldü)</small></td></tr>'; }).join("") +
+          z.entries.map(function (e) { return '<tr><td>' + esc(e.path.replace(/^[^\/]*\//, "")) + '</td><td>' + C.fmtSize(e.size) + '</td><td>' + C.fmtSize(e.zsize) + (e.size ? ' <small>(%' + Math.round(100 - 100 * e.zsize / e.size) + ' küçüldü)</small>' : "") + '</td></tr>'; }).join("") +
           '</tbody><tfoot><tr><th>Toplam</th><th>' + C.fmtSize(z.before) + '</th><th>' + C.fmtSize(z.size) + '</th></tr></tfoot></table></div>';
       } else if (z) body = listHtml("win", dir, title);
       else { win = null; return ""; }

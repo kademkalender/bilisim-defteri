@@ -221,6 +221,9 @@
         return { ok: true, bind: b };
       case "allIn":
         var to = fill(c.to, v), all = files(st.fs, ROOT, []).filter(function (f) { return c.ext.indexOf(extOf(f.node.name)) >= 0; });
+        // silinen dosya taşınmış sayılmaz: görevi silerek geçmek olmasın
+        var thrown = st.trash.filter(function (t) { return t.node.kind === "file" && c.ext.indexOf(extOf(t.node.name)) >= 0; })[0];
+        if (thrown) return { ok: false, warn: "«" + thrown.node.name + "» " + trashName(st.os) + "'nda. Önce geri yükle, sonra taşı." };
         return { ok: all.length > 0 && all.every(function (f) { return same(parentOf(f.path), to); }) };
       case "inTrash":
         return { ok: st.trash.some(function (t) { return glob(fill(c.name, v), t.node.name); }) };
