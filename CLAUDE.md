@@ -43,6 +43,8 @@ Hook gelen commit bildirirse:
 - `assets/crossword.js`: `buildCrossword(entries)` fonksiyonu. Kelime + ipucu listesinden ızgara kurar. Harf temizleme tek yerde: `cwClean(s)`.
 - `assets/shuffle.js`: `shuffleOrder(n, dersId)`. Sınıflandırma kartlarını ders id'sine göre hep aynı, karışık sırada verir.
 - `assets/hafta.js`: `schoolWeek(tarih, BD.calendar)`. Öğrenci ana sayfasındaki "Bu hafta" kartı için bugünün kaçıncı öğretim haftası olduğunu bulur. Takvim `content/plan.js` içinde, MEB çalışma takviminden alınır ve her yıl güncellenir. Test: `node --test tools/hafta.test.js`.
+- `assets/sim-core.js`: Sanal masaüstünün mantığı (bellekte dosya sistemi, işlemler, görev kontrolü). DOM'a dokunmaz. Test: `node --test tools/*.test.js`.
+- `assets/sim-ui.js`: `SimUI.mount(el, {...})`. Sanal masaüstünün görünümü, fare, dokunma ve klavye. Senaryo ders dosyasındaki `sim` alanındadır, kuralları `ICERIK-REHBERI.md`'de.
 - `assets/style.css`: Renkler ve ölçüler `:root` içindeki tokenlardan gelir. Kurallar: `TASARIM-SISTEMI.md`.
 - `assets/mulish.css`: Gömülü Mulish yazı tipi (data URI, çünkü Firefox `file://` altında ayrı font dosyası yüklemez).
 - `content/program.js`: Resmi öğrenme çıktıları.

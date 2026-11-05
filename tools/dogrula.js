@@ -36,6 +36,7 @@ loadFile("content/program.js");
 loadFile("content/plan.js");
 loadFile("assets/crossword.js");
 loadFile("assets/shuffle.js");
+loadFile("assets/sim-core.js");
 
 var lessonsDir = path.join(ROOT, "content/lessons");
 var lessonFiles = fs.readdirSync(lessonsDir).filter(function (f) {
@@ -73,6 +74,36 @@ function findOutcome(code) {
     }
   }
   return null;
+}
+
+/* ---------- Sanal masaüstü senaryosu (lesson.sim) ---------- */
+// HATA: eksik alan, bilinmeyen kontrol, çözümü olmayan ya da bitmeyen senaryo. UYARI: görev sayısı 5-8.
+function checkSim(f, L, covers) {
+  var C = sandbox.SimCore, sim = L.sim, tasks = sim.tasks || [], ids = {};
+  if (!sim.start || typeof sim.start !== "object") err(f, "sim.start yok (başlangıç dosyaları)");
+  if (tasks.length < 5 || tasks.length > 8) warn(f, "sim görev sayısı " + tasks.length + " (önerilen 5-8)");
+  var walk = function (c, where) {
+    if (!c || C.KNOWN.indexOf(c.type) < 0) return err(f, where + ": bilinmeyen kontrol türü \"" + (c && c.type) + "\" (geçerli: " + C.KNOWN.join(", ") + ")");
+    if (c.type === "all") (c.of || []).forEach(function (x) { walk(x, where); });
+    if (c.type === "answer" && (!c.options || typeof c.correct !== "number" || c.correct < 0 || c.correct >= c.options.length)) err(f, where + ": answer kontrolünde options/correct geçersiz");
+  };
+  tasks.forEach(function (t, i) {
+    var where = "sim görev " + (i + 1) + (t.id ? " (" + t.id + ")" : "");
+    ["id", "text", "b", "check", "hint"].forEach(function (k) { if (!t[k]) err(f, where + ": " + k + " alanı yok"); });
+    if (t.id && ids[t.id]) err(f, where + ": id tekrar ediyor");
+    ids[t.id] = true;
+    if (t.b && covers.indexOf(t.b) < 0) err(f, where + ": b \"" + t.b + "\" dersin covers alanında yok");
+    if (t.check) walk(t.check, where);
+  });
+  if (!sim.solution || !sim.solution.length) return err(f, "sim senaryosu var ama solution (çözüm adımları) yok");
+  ["windows", "pardus"].forEach(function (os) {
+    try {
+      var r = C.play(sim, os);
+      r.errors.forEach(function (e) { err(f, "sim çözümü (" + os + ") " + e); });
+      if (r.idx < tasks.length) err(f, "sim çözümü (" + os + ") " + (r.idx + 1) + ". görevde takılıyor (" + tasks[r.idx].id + ")");
+    } catch (e) { err(f, "sim çözümü (" + os + ") çalışmadı: " + e.message); }
+  });
+  if (C.advance(C.create(sim.start, "windows"), tasks, 0).idx > 0) err(f, "sim ilk görevi başlangıçta kendiliğinden tamamlanıyor");
 }
 
 /* ---------- Ders bazlı kontroller ---------- */
@@ -138,6 +169,8 @@ function checkLesson(f, L) {
       });
     }
   });
+
+  if (L.sim) checkSim(f, L, covers);
 
   // HATA: test sorularında cevap indeksi geçerli mi
   (L.quiz || []).forEach(function (q, i) {

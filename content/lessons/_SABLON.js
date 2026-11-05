@@ -44,6 +44,22 @@ BD.lesson({
     items: [{ t: "Kart 1", c: 0 }, { t: "Kart 2", c: 1 }]
   },
 
+  // İsteğe bağlı sanal masaüstü (lab'da ana etkinlik, tahtada tam genişlik). 5-8 görev, her görev tek işlem,
+  // ipucu (hint) zorunlu, solution zorunlu. Kontrol türleri ve kurallar: ICERIK-REHBERI.md "Sanal masaüstü".
+  // sim: {
+  //   start: { "siir.txt": 6144, "kedim.png": 839680 },        // sayı: dosya boyutu (bayt), nesne: klasör
+  //   tasks: [
+  //     { id: "ana", b: "a", text: "Masaüstünde 5A_Ayşe gibi adını taşıyan bir klasör oluştur.",
+  //       check: { type: "exists", path: "Masaüstü/*", kind: "folder", format: "ogrenci", as: "ana" },
+  //       hint: { windows: "Boş yere sağ tıkla → Yeni → Klasör", pardus: "Boş yere sağ tıkla → Klasör Oluştur…" },
+  //       show: "Masaüstü", success: "Klasörün hazır!" },
+  //     { id: "tasi", b: "b", text: "kedim.png dosyasını {ana} klasörüne taşı.",
+  //       check: { type: "allIn", ext: ["png"], to: "Masaüstü/{ana}" },
+  //       hint: "Dosyayı sürükleyip klasörün üstüne bırak.", show: "Masaüstü/kedim.png" }
+  //   ],
+  //   solution: [["mkdir", "Masaüstü", "5A_Ayşe"], ["move", "Masaüstü/kedim.png", "Masaüstü/5A_Ayşe"]]
+  // },
+
   // ÜÇ ORTAMIN ÜÇÜ DE ZORUNLU. Hiçbir etkinlik internet gerektirmemeli.
   // Bilgisayar adımlarında Pardus ve Windows yönergesini ayrı yazın: { t, pardus, windows }
   activities: {
