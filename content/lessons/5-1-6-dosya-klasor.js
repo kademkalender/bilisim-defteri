@@ -50,6 +50,87 @@ BD.lesson({
     ]
   },
 
+  // Sanal masaüstü: laboratuvar ve tahtada etkinliğin başında açılır. Yazım kuralları: ICERIK-REHBERI.md
+  sim: {
+    start: {
+      "odev1.odt": 18432, "siir.txt": 6144, "notlar.txt": 9216, "taslak_eski.txt": 5120,
+      "kedim.png": 839680, "tatil.jpg": 1468006, "sarki.mp3": 3355443, "kayit.ogg": 1153433
+    },
+    tasks: [
+      { id: "ana", b: "a", op: ["mkdir", "rename"],
+        text: "Masaüstünde yeni bir klasör oluştur. Adı sınıfın, şuben ve adın olsun. Örnek: 5A_Ayşe",
+        check: { type: "exists", path: "Masaüstü/*", kind: "folder", format: "ogrenci", as: "ana" },
+        hint: { windows: "Masaüstünde boş bir yere sağ tıkla → Yeni → Klasör. Adını yaz ve Enter'a bas. Klavyeyle: Shift + F10 → Yeni → Klasör.", pardus: "Masaüstünde boş bir yere sağ tıkla → Klasör Oluştur…. Adını yaz ve Enter'a bas. Klavyeyle: Shift + F10 → Klasör Oluştur…." },
+        show: "Masaüstü",
+        success: "Klasörün hazır! Dosyalarını burada toplayacaksın." },
+      { id: "alt", b: "b",
+        text: "{ana} klasörünün içine Yazilar, Resimler ve Sesler adında 3 klasör oluştur.",
+        check: { type: "all", of: [
+          { type: "exists", path: "Masaüstü/{ana}/Yazilar", kind: "folder" },
+          { type: "exists", path: "Masaüstü/{ana}/Resimler", kind: "folder" },
+          { type: "exists", path: "Masaüstü/{ana}/Sesler", kind: "folder" }] },
+        hint: "{ana} klasörünü çift tıklayarak aç. İçinde boş bir yere sağ tıkla ve yeni klasör oluştur (klavyeyle Shift + F10). Bunu üç kez yap.",
+        show: "Masaüstü/{ana}",
+        success: "Klasör içinde klasör: tıpkı bir raftaki bölmeler gibi!" },
+      { id: "tasi", b: "b",
+        text: "Dosyaları uzantılarına göre taşı: yazılar (.txt .odt) Yazilar'a, resimler (.png .jpg) Resimler'e, sesler (.mp3 .ogg) Sesler'e.",
+        check: { type: "all", of: [
+          { type: "allIn", ext: ["txt", "odt", "docx"], to: "Masaüstü/{ana}/Yazilar" },
+          { type: "allIn", ext: ["png", "jpg"], to: "Masaüstü/{ana}/Resimler" },
+          { type: "allIn", ext: ["mp3", "ogg"], to: "Masaüstü/{ana}/Sesler" }] },
+        hint: "Dosyayı sürükleyip doğru klasörün üstüne bırak. Ya da dosyaya sağ tıkla → Kes, sonra klasörü açıp boş bir yere sağ tıkla → Yapıştır.",
+        show: "Masaüstü/{ana}",
+        success: "Masaüstün toparlandı! Her dosya türüne göre kendi klasöründe." },
+      { id: "ad", b: "b",
+        text: "Resimler klasöründeki kedim.png dosyasının adını {ana}_Resim1 yap.",
+        check: { type: "exists", path: "Masaüstü/{ana}/Resimler/{ana}_Resim1.png", kind: "file" },
+        hint: { windows: "Dosyayı seç ve F2'ye bas ya da sağ tıkla → Yeniden adlandır. Uzantıya (.png) dokunma.", pardus: "Dosyayı seç ve F2'ye bas ya da sağ tıkla → Yeniden Adlandır…. Uzantıya (.png) dokunma." },
+        show: "Masaüstü/{ana}/Resimler/kedim.png",
+        success: "Artık dosyanın adı ne olduğunu ve kimin olduğunu söylüyor." },
+      { id: "kopya", b: "a", op: "copy",
+        text: "Yazilar klasöründeki siir.txt dosyasını masaüstüne kopyala.",
+        check: { type: "all", of: [
+          { type: "exists", path: "Masaüstü/siir.txt", kind: "file" },
+          { type: "exists", path: "Masaüstü/{ana}/Yazilar/siir.txt", kind: "file" }] },
+        hint: "siir.txt dosyasına sağ tıkla → Kopyala. Sonra masaüstünde boş bir yere sağ tıkla → Yapıştır.",
+        show: "Masaüstü/{ana}/Yazilar/siir.txt",
+        success: "Şimdi siir.txt iki yerde var: Yazilar'da ve masaüstünde. Taşısaydın tek yerde kalırdı. Kopyalamakla taşımanın farkı bu." },
+      { id: "sil", b: "a", op: ["delete", "open"],
+        text: "Yazilar klasöründeki taslak_eski.txt dosyasını sil. Sonra {cop}'nu açıp içine bak.",
+        check: { type: "all", of: [
+          { type: "inTrash", name: "taslak_eski.txt" },
+          { type: "ui", key: "opened", value: "@trash" }] },
+        hint: "Dosyayı seç ve Delete tuşuna bas ya da sağ tıkla → Sil. Sonra masaüstündeki {cop} simgesini çift tıkla.",
+        show: "Masaüstü/{ana}/Yazilar/taslak_eski.txt",
+        success: "Silinen dosya hemen yok olmaz, {cop}'nda bekler. Yanlışlıkla silersen geri yükleyebilirsin." },
+      { id: "zip", b: "c",
+        text: "{ana} klasörünü sıkıştır.",
+        check: { type: "exists", path: "Masaüstü/{ana}.zip", kind: "zip" },
+        hint: { windows: "{ana} klasörüne sağ tıkla → ZIP dosyasına sıkıştır.", pardus: "{ana} klasörüne sağ tıkla → Sıkıştır…." },
+        show: "Masaüstü/{ana}",
+        success: "Sıkıştırdın! Şimdi {ana}.zip dosyasını çift tıklayıp aç ve boyutlara bak." },
+      { id: "kiyas", b: "c",
+        text: "{ana}.zip dosyasını aç ve boyutları karşılaştır. En çok hangi dosyalar küçüldü?",
+        check: { type: "answer", options: ["Resimler (.png .jpg)", "Düz yazı dosyaları (.txt)", "Ses dosyaları (.mp3 .ogg)"], correct: 1 },
+        hint: "Zip dosyasını çift tıkla. Tablonun son sütunundaki \"% küçüldü\" yazısına bak.",
+        show: "Masaüstü/{ana}.zip",
+        success: "Doğru! Düz yazı çok küçülür. Resim ve ses dosyaları zaten sıkıştırılmış biçimlerdir, pek küçülmez. Sıkıştırma en çok, çok sayıda dosyayı tek seferde gönderirken işe yarar." }
+    ],
+    // Testler ve doğrulayıcı bu adımları oynatıp bütün görevlerin bittiğini kontrol eder.
+    solution: [
+      ["mkdir", "Masaüstü", "5A_Ayşe"],
+      ["mkdir", "Masaüstü/5A_Ayşe", "Yazilar"], ["mkdir", "Masaüstü/5A_Ayşe", "Resimler"], ["mkdir", "Masaüstü/5A_Ayşe", "Sesler"],
+      ["move", "Masaüstü/odev1.odt", "Masaüstü/5A_Ayşe/Yazilar"], ["move", "Masaüstü/siir.txt", "Masaüstü/5A_Ayşe/Yazilar"],
+      ["move", "Masaüstü/notlar.txt", "Masaüstü/5A_Ayşe/Yazilar"], ["move", "Masaüstü/taslak_eski.txt", "Masaüstü/5A_Ayşe/Yazilar"],
+      ["move", "Masaüstü/kedim.png", "Masaüstü/5A_Ayşe/Resimler"], ["move", "Masaüstü/tatil.jpg", "Masaüstü/5A_Ayşe/Resimler"],
+      ["move", "Masaüstü/sarki.mp3", "Masaüstü/5A_Ayşe/Sesler"], ["move", "Masaüstü/kayit.ogg", "Masaüstü/5A_Ayşe/Sesler"],
+      ["rename", "Masaüstü/5A_Ayşe/Resimler/kedim.png", "5A_Ayşe_Resim1.png"],
+      ["copy", "Masaüstü/5A_Ayşe/Yazilar/siir.txt", "Masaüstü"],
+      ["delete", "Masaüstü/5A_Ayşe/Yazilar/taslak_eski.txt"], ["open", "@trash"],
+      ["zip", "Masaüstü/5A_Ayşe"], ["open", "Masaüstü/5A_Ayşe.zip"], ["answer", "kiyas", 1]
+    ]
+  },
+
   activities: {
     lab: {
       title: "Kendi klasör düzenimi kuruyorum",
@@ -153,7 +234,7 @@ BD.lesson({
   teacherNotes: [
     "Okul bilgisayarlarında Derin Dondurucu ya da benzeri bir program varsa öğrenci dosyaları yeniden başlatınca silinir. Etkinliği aynı derste bitirin.",
     "Pardus'ta varsayılan yazı biçimi .odt, Windows'ta Not Defteri ile .txt olur. Uzantı farkını öğrencilere fırsat olarak gösterin.",
-    "Sıkıştırmada yazı dosyaları genelde çok küçülür, .png ve .jpg resimler pek küçülmez çünkü zaten sıkıştırılmıştır. Zenginleştirme etkinliğinde bu fark tartışılabilir.",
+    "Sıkıştırmada düz metin (.txt) dosyaları çok küçülür. .odt, .docx, .png, .jpg ve ses dosyaları pek küçülmez, çünkü bu biçimler zaten sıkıştırılmıştır. Sanal masaüstündeki zip tablosu bu farkı gösterir, zenginleştirme etkinliğinde tartışılabilir.",
     "Öğrencilerin klasör adlarında Türkçe karakter ve boşluk kullanmamaları ileride sorun yaşamamaları için önerilir."
   ]
 });
