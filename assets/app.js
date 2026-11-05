@@ -23,7 +23,8 @@
   // Öğrenci kendi bilgisayarındadır: ortam hep laboratuvar, işletim sistemi bilgisayarın kendisinden.
   // Öğretmenin ayarları öğrencinin bilgisayarına ulaşmaz.
   var envNow = function () { return isStudent() ? "lab" : S.env; };
-  var osNow = function () { return !isStudent() ? S.os : /win/i.test(navigator.platform) ? "windows" : "pardus"; };
+  // Öğretmen ayarı öğrenci bilgisayarına ulaşmaz. Okul bilgisayarları Windows, Linux ise Pardus (tahta).
+  var osNow = function () { return !isStudent() ? S.os : /linux/i.test(navigator.platform) && !/android/i.test(navigator.userAgent) ? "pardus" : "windows"; };
   // Hareket açık mı: Öğretmen Masası ayarı ve sistemin "hareketi azalt" tercihi. CSS aynı iki koşula ayrıca bakar.
   var motionOn = function () { return S.motion !== "reduced" && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches); };
   var applyMotion = function () { document.documentElement.classList.toggle("anim", S.motion !== "reduced"); };
@@ -40,13 +41,13 @@
   };
   var norm = function (s) { return String(s).toLocaleLowerCase("tr").replace(/ı/g, "i").normalize("NFD").replace(/[̀-ͯ]/g, ""); };
 
-  // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>, quiz:<id>, son açılan ders (last). lessonId yoksa tüm dersler.
+  // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>, quiz:<id>, sim:<id>, son açılan ders (last). lessonId yoksa tüm dersler.
   // Ayarlar (settings, big, printOpts) bu öneklerle başlamadığı için hiç dokunulmaz.
   function clearProgress(lessonId) {
     var keys = [];
     try {
       for (var i = 0; i < localStorage.length; i++) {
-        var k = localStorage.key(i) || "", m = /^bd:(act|nb|cw|quiz):(.+)$/.exec(k);
+        var k = localStorage.key(i) || "", m = /^bd:(act|nb|cw|quiz|sim):(.+)$/.exec(k);
         if (k === "bd:last" && (!lessonId || store.get("last") === lessonId)) keys.push(k);
         if (!m) continue;
         var id = m[1] === "act" ? m[2].replace(/:[^:]*$/, "") : m[2];
@@ -243,18 +244,32 @@
     });
   }
 
-  function stepHtml(st, i, done, key) {
+  function stepHtml(st, i, done, key, noBtn) {
     var t = typeof st === "string" ? { t: st } : st;
     var os = "";
     if (t.pardus || t.windows) {
       var txt = osNow() === "pardus" ? (t.pardus || t.windows) : (t.windows || t.pardus);
       os = '<span class="os"><b>' + osLabel() + ':</b> ' + esc(txt) + '</span>';
     }
+    if (noBtn) return '<li><span>' + esc(t.t) + os + '</span></li>';
     return '<li class="' + (done ? "done" : "") + '"><span>' + esc(t.t) + os + '</span><button type="button" data-i="' + i + '" data-key="' + key + '">' + (done ? "Yaptım ✓" : "Yaptım") + '</button></li>';
+  }
+
+  // Sanal masaüstü: lab'da ana etkinlik, tahtada tam genişlikte. Gerçek bilgisayar adımları altta düğmesiz kalır.
+  var hasSim = function (L) { return !!(L.sim && window.SimUI) && envNow() !== "kagit"; };
+  function simHtml(L) {
+    var env = envNow(), A = L.activities.lab;
+    var h = '<h3 class="sim-h">Sanal masaüstünde dene</h3><p class="hint" style="margin:0 0 10px">Görevleri sırayla yap. Site her adımı kontrol eder. Fare, dokunma ya da klavye kullanabilirsin.</p><div id="sim"></div>';
+    if (env === "lab") h += '<div class="card activity" style="margin-top:20px"><h3>Şimdi gerçek bilgisayarında dene</h3>' +
+      '<div class="goal"><b>🎯 Hedef:</b> ' + esc(A.goal) + '</div>' +
+      '<ol class="act-steps">' + A.steps.map(function (st, i) { return stepHtml(st, i, false, "", true); }).join("") + '</ol>' +
+      '<p class="hint" style="margin:0">' + (isStudent() ? "Bitirince öğretmenine göster." : "Kontrol listesi Ders planı bölümünde.") + '</p></div>';
+    return h;
   }
 
   function activityHtml(L) {
     var env = envNow(), A = L.activities[env];
+    if (hasSim(L) && env === "lab") return simHtml(L) + (L.sort ? sortHtml(L) : "");
     var key = "act:" + L.id + ":" + env;
     var done = store.get(key, []);
     var html = '<div class="card activity">' +
@@ -269,6 +284,7 @@
       : '<div class="goal"><b>📴 İnternet yok:</b> Bu etkinlik için internete gerek yok. Araştırma için yukarıdaki bilgi kartlarını kullanın.</div>';
     if (env === "kagit") html += '<div class="row"><a class="btn primary" href="#yazdir-' + L.id + '">🖨️ Çalışma kâğıdını aç ve yazdır</a><span class="hint">Kâğıtta konu özeti, etkinlik, test ve boş bulmaca var.</span></div>';
     html += '</div>';
+    if (hasSim(L)) html = simHtml(L) + '<div style="margin-top:20px">' + html + '</div>';
     if (L.sort && env !== "kagit") html += sortHtml(L);
     return html;
   }
@@ -342,7 +358,7 @@
       '<div class="lesson-band" style="background:var(--theme-' + L.theme + ')"><a class="back" href="#home" aria-label="Ana sayfa">' + icon("back") + '</a><div><small>' + L.grade + '. Sınıf · ' + L.week + '. hafta' + (T ? ' · Tema ' + L.theme + ': ' + esc(Th.name) + ' · ' + esc(L.duration) : "") + '</small><h1>' + esc(L.title) + '</h1></div>' +
         (T ? '<span class="band-code">' + L.outcome + '</span></div>' : '<div class="band-prog" id="bandProg"><span></span><div class="bar"><span></span></div></div></div>' +
         panel("hub", "Bölümler", "", '<div class="sec-cards">' + tabs.slice(1).map(function (t, i) {
-          var n = { slayt: L.slides.length + " slayt", defter: L.notebook.length + " madde", etkinlik: L.activities.lab.steps.length + " adım", test: L.quiz.length + " soru", bulmaca: hasCw ? L.crossword.length + " kelime" : "" }[t[0]];
+          var n = { slayt: L.slides.length + " slayt", defter: L.notebook.length + " madde", etkinlik: L.sim ? L.sim.tasks.length + " görev" : L.activities.lab.steps.length + " adım", test: L.quiz.length + " soru", bulmaca: hasCw ? L.crossword.length + " kelime" : "" }[t[0]];
           return '<button type="button" class="sec-card sec-' + t[0] + '" data-tab="' + t[0] + '"><span class="sq">' + icon(t[0]) + '</span><span class="badge" data-n="' + (i + 1) + '">' + (i + 1) + '</span><b>' + t[1] + '</b><small>' + n + '</small></button>';
         }).join("") + '</div><div class="sec-cta"><button type="button" class="btn primary" id="secNext" data-tab="slayt">Başla: Sunum →</button><p id="secDone" class="progress full" hidden>Bütün bölümleri bitirdin! İstediğin bölüme tekrar bakabilirsin.</p></div>')) +
 
@@ -367,6 +383,8 @@
         }).join("") + '</ul></div>' +
         '<div class="card teach-card"><h3>Ders akışı (' + esc(L.duration) + ')</h3>' + flowHtml(L) +
         '<h3>Ölçme ve değerlendirme: ' + esc(L.assessment.tool) + '</h3><ul>' + L.assessment.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' +
+        (L.sim ? '<h3>Gerçek bilgisayarda kontrol listesi</h3><p class="hint" style="margin:0">Öğrenciler sanal masaüstünü bitirince aynı işleri kendi bilgisayarında yapar. Sınıfı dolaşırken bakın. Yazdırma sayfasında öğrenci adlı gözlem tablosu var.</p><ol class="check-list">' +
+          L.activities.lab.steps.map(function (st) { return '<li>' + esc(typeof st === "string" ? st : st.t) + '</li>'; }).join("") + '</ol>' : "") +
         '<h3>Notlar</h3><ul>' + L.teacherNotes.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' +
         '<div class="row"><a class="btn" href="#yazdir-' + id + '">' + icon("yazdir") + ' Yazdırılacak kâğıt ve cevap anahtarı</a><button type="button" class="btn" id="resetLesson">' + icon("sil") + ' Bu dersin ilerlemesini sıfırla</button><span class="hint" id="resetMsg" role="status"></span></div>' +
         '<div class="confirm-box" id="resetBox" style="margin-top:8px" hidden><p style="margin:0 0 8px"><b>Emin misiniz?</b> Bu bilgisayarda bu dersin öğrenci ilerlemesi silinecek. Bu işlem geri alınamaz.</p>' +
@@ -377,7 +395,7 @@
         L.notebook.map(function (n, i) { var d = nbDone.indexOf(i) >= 0; return '<li class="' + (d ? "done" : "") + '"><input type="checkbox" id="nb-' + i + '" data-i="' + i + '"' + (d ? " checked" : "") + '><label for="nb-' + i + '">' + n.t + '</label></li>'; }).join("") +
         '</ul><div class="nb-foot"><span class="progress" id="nbProg"></span></div></div>') +
 
-      panel("etkinlik", "Etkinlik", 'Adımları sırayla yap. Bitirdiğin adımda "Yaptım"a bas.',
+      panel("etkinlik", "Etkinlik", L.sim && envNow() === "lab" ? "Sanal masaüstünde görevleri yap, sonra gerçek bilgisayarında dene." : 'Adımları sırayla yap. Bitirdiğin adımda "Yaptım"a bas.',
         (T ? '<div class="env-switch"><span class="lbl">Sınıf ortamı:</span>' + envBtns + '<span class="hint">Seçime göre etkinlik değişir.</span></div>' +
           (S.env === "kagit" ? '<div class="hook"><b>Bilgisayarsız sınıf</b>Bu dersin tamamını çalışma kâğıdıyla yapabilirsiniz. <a href="#yazdir-' + id + '">Çalışma kâğıdını aç →</a></div>' : "") : "") +
         (L.infoCards ? '<h3 style="font-size:1.1rem">📇 Bilgi kartları <span class="hint" style="font-weight:400">internet olmadan araştırma için</span></h3><div class="info-cards">' + L.infoCards.map(function (c) { return '<div class="info-card"><h3>' + esc(c.h) + '</h3><p>' + esc(c.p) + '</p></div>'; }).join("") + '</div>' : "") +
@@ -530,7 +548,9 @@
   }
 
   function bindActivity(L) {
-    var ol = $(".act-steps");
+    var simEl = $("#sim"), simLab = simEl && envNow() === "lab";
+    if (simEl) window.SimUI.mount(simEl, { lesson: L, os: osNow(), wide: envNow() === "tahta", store: store, onDone: function (d) { if (simLab) setTabDone("etkinlik", d); } });
+    var ol = simLab ? null : $(".act-steps");
     if (ol) ol.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
       var key = ol.getAttribute("data-key"), i = +b.getAttribute("data-i"), arr = store.get(key, []);
@@ -725,7 +745,7 @@
         '<div class="setting card"><h3>' + sq("ekran", "var(--theme-3)") + 'Bilgisayarlardaki işletim sistemi</h3><div class="opt-group">' + optBtn("os", "pardus", "Pardus", "MEB okullarında ve etkileşimli tahtalarda (ETAP) yaygın") + optBtn("os", "windows", "Windows", "Etkinlik yönergeleri Windows menülerine göre yazılır") + '</div></div>' +
         '<div class="setting card"><h3>' + sq("wifi", "var(--theme-2)") + 'İnternet bağlantısı</h3><div class="opt-group">' + optBtn("internet", "true", "İnternet var", "İsteğe bağlı çevrim içi araştırma önerileri gösterilir") + optBtn("internet", "false", "İnternet yok / çok yavaş", "Sadece site içindeki bilgi kartları kullanılır") + '</div></div>' +
         '<div class="setting card"><h3>' + sq("hareket", "var(--theme-5)") + 'Animasyonlar</h3><div class="opt-group">' + optBtn("motion", "full", "Açık", "Sayfa geçişleri, düğme hissi ve kutlamalar") + optBtn("motion", "reduced", "Azaltılmış", "Yavaş tahtalar için: hareket yok, sadece renk değişir") + '</div></div>' +
-        '<div class="setting card"><h3>' + sq("sil", "var(--theme-4)") + 'Öğrenci ilerlemesi</h3><p class="hint" style="margin:0">Bu bilgisayarda kayıtlı "Yaptım" işaretleri, defter kutuları, test cevapları, bulmaca harfleri ve son açılan ders. Bilgisayarı başka bir sınıf kullanacaksa silin. Ayarlarınız silinmez.</p>' +
+        '<div class="setting card"><h3>' + sq("sil", "var(--theme-4)") + 'Öğrenci ilerlemesi</h3><p class="hint" style="margin:0">Bu bilgisayarda kayıtlı "Yaptım" işaretleri, sanal masaüstü görevleri, defter kutuları, test cevapları, bulmaca harfleri ve son açılan ders. Bilgisayarı başka bir sınıf kullanacaksa silin. Ayarlarınız silinmez.</p>' +
           '<div class="row"><button type="button" class="btn" id="clrAsk">Bu bilgisayardaki öğrenci ilerlemesini sil</button><span class="hint" id="clrMsg" role="status"></span></div>' +
           '<div class="confirm-box" id="clrBox" hidden><p style="margin:0 0 8px"><b>Emin misiniz?</b> Bu bilgisayardaki bütün derslerin öğrenci ilerlemesi silinecek. Bu işlem geri alınamaz.</p>' +
           '<div class="row"><button type="button" class="btn primary" id="clrYes">Evet, sil</button><button type="button" class="btn" id="clrNo">Vazgeç</button></div></div></div>' +
@@ -752,7 +772,7 @@
     var oc = outcome(L.outcome), A = L.activities.kagit;
     var box = function (k, label) { return '<label><input type="checkbox" data-po="' + k + '"' + (printOpts[k] ? " checked" : "") + '> ' + label + '</label>'; };
     var h = '<div class="print-bar no-print"><a class="btn" href="#ders-' + id + '">← Derse dön</a><button type="button" class="btn primary" id="doPrint">🖨️ Yazdır</button>' +
-      box("konu", "Konu özeti") + box("defter", "Deftere yaz") + box("etkinlik", "Etkinlik") + box("test", "Test") + box("bulmaca", "Bulmaca") + box("cevap", "Cevap anahtarı") + box("gorsel", "Slayt görselleri") +
+      box("konu", "Konu özeti") + box("defter", "Deftere yaz") + box("etkinlik", "Etkinlik") + box("test", "Test") + box("bulmaca", "Bulmaca") + box("cevap", "Cevap anahtarı") + box("gorsel", "Slayt görselleri") + (L.sim ? box("gozlem", "Gözlem tablosu") : "") +
       '<span class="hint" id="printMsg"></span></div>';
     h += '<div class="sheet">';
     h += '<div class="row" style="justify-content:space-between"><b>Bilişim Teknolojileri ve Yazılım · ' + L.grade + '. Sınıf · ' + L.week + '. Hafta</b><span>' + L.outcome + '</span></div>';
@@ -796,6 +816,12 @@
       h += '<h2>Cevap anahtarı (öğretmen için)</h2><p style="margin:0">' + L.quiz.map(function (q, i) { return (i + 1) + ") " + String.fromCharCode(65 + q.a); }).join(" · ") + '</p>';
       if (X) { h += '<p style="margin:6px 0 0">Bulmaca: ' + X.words.slice().sort(function (a, b) { return a.n - b.n || (a.dir > b.dir ? 1 : -1); }).map(function (w) { return w.n + (w.dir === "a" ? "→" : "↓") + " " + w.a; }).join(", ") + '</p>'; }
       if (L.sort) h += '<p style="margin:6px 0 0">Sınıflandırma: ' + L.sort.cats.map(function (c, ci) { return '<b>' + esc(c) + ':</b> ' + L.sort.items.filter(function (x) { return x.c === ci; }).map(function (x) { return esc(x.t); }).join(", "); }).join(" · ") + '</p>';
+    }
+    if (printOpts.gozlem && L.sim) {
+      var LS = L.activities.lab.steps, rows = "";
+      for (var gi = 0; gi < 15; gi++) rows += '<tr><td>&nbsp;</td>' + LS.map(function () { return "<td></td>"; }).join("") + '</tr>';
+      h += '<h2>Gözlem tablosu (öğretmen için): gerçek bilgisayarda</h2><div class="keep"><table class="obs"><tr><th>Ad Soyad</th>' + LS.map(function (x, i) { return '<th>' + (i + 1) + '</th>'; }).join("") + '</tr>' + rows + '</table>' +
+        '<ol style="font-size:.85rem;margin-top:6px">' + LS.map(function (st) { return '<li>' + esc(typeof st === "string" ? st : st.t) + '</li>'; }).join("") + '</ol></div>';
     }
     h += '<div class="foot">Bilişim Defteri · MEB Türkiye Yüzyılı Maarif Modeli BTY programına göre hazırlanmıştır.</div></div>';
     return h;
