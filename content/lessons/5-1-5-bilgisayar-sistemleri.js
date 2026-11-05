@@ -48,6 +48,53 @@ BD.lesson({
     ]
   },
 
+  // Sanal masaüstü: laboratuvar ve tahtada etkinliğin başında açılır. Yazım kuralları: ICERIK-REHBERI.md
+  sim: {
+    start: { "odev1.odt": 18432, "kedim.png": 839680, "sarki.mp3": 3355443 },
+    tasks: [
+      { id: "menu", b: "a",
+        text: { windows: "Ekranın altındaki Başlat düğmesine bas ve menüyü aç.", pardus: "Ekranın sol altındaki Uygulamalar düğmesine bas ve menüyü aç." },
+        check: { type: "ui", key: "menu", value: true },
+        hint: { windows: "Görev çubuğundaki Başlat düğmesine bir kez tıkla.", pardus: "Alt paneldeki Uygulamalar düğmesine bir kez tıkla." },
+        show: "ui:start",
+        success: "Bu menüyü işletim sistemi gösterir. İşletim sistemi, bilgisayarı yöneten yazılımdır." },
+      { id: "program", b: "a",
+        text: { windows: "Menüden Not Defteri'ni bul ve aç.", pardus: "Menüden Ofis → LibreOffice Writer'ı bul ve aç." },
+        check: { type: "ui", key: "app", value: "yazi" },
+        hint: { windows: "Başlat menüsünde Not Defteri yazısına tıkla.", pardus: "Uygulamalar menüsünde Ofis'e, sonra LibreOffice Writer'a tıkla." },
+        show: "ui:start",
+        success: "Yazı programı da bir yazılımdır. Donanım ve yazılım birlikte çalışır." },
+      { id: "yaz", b: "b",
+        text: "Klavyeyle adını yaz.",
+        check: { type: "typed", min: 2 },
+        hint: "Yazı alanının içine tıkla ve klavyeden adını yaz.",
+        show: "ui:text",
+        success: "Ekranda harflerin göründü!" },
+      { id: "gic", b: "b",
+        text: "Adını yazarken ne oldu? Doğru sırayı seç.",
+        check: { type: "answer", options: ["Ekrana dokundum → hoparlör işledi → klavyede gördüm", "Klavyeye bastım → işlemci işledi → ekranda gördüm", "İşlemciye bastım → klavye işledi → yazıcıda gördüm"], correct: 1 },
+        hint: "Giriş birimi bilgiyi bilgisayara verir, çıkış birimi sonucu gösterir. Hangi tuşlara bastın, harfleri nerede gördün?",
+        success: "Doğru! Klavye giriş, işlemci işlem, ekran çıkış birimidir: Giriş → İşlem → Çıkış." },
+      { id: "kaydet", b: "a",
+        text: "Dosyayı masaüstüne SınıfınŞuben_Adın_Bilgisayar adıyla kaydet. Örnek: 5A_Ayşe_Bilgisayar",
+        check: { type: "exists", path: "Masaüstü/*_Bilgisayar.*", kind: "file", format: "ogrenci", as: "dosya" },
+        hint: { windows: "Dosya → Farklı kaydet'e bas (Ctrl + Shift + S). Kaydedilecek yer: Masaüstü. Adını yaz ve Kaydet'e bas.", pardus: "Dosya → Farklı Kaydet…'e bas (Ctrl + Shift + S). Klasörde kaydet: Masaüstü. Adını yaz ve Kaydet'e bas." },
+        show: "ui:save",
+        success: "Kaydettin! Dosyan artık depolama biriminde duruyor. Bilgisayarı kapatsan da silinmez." },
+      { id: "bul", b: "a",
+        text: "Programı kapat. Kaydettiğin dosyayı masaüstünde bul ve aç.",
+        check: { type: "ui", key: "opened", value: "Masaüstü/{dosya}.*" },
+        hint: "Pencerenin sağ üstündeki X ile programı kapat. Sonra masaüstünde dosyanı bul ve çift tıkla.",
+        show: "Masaüstü/{dosya}.",
+        success: "Buldun! Dosyan depolama biriminden yeniden açıldı." }
+    ],
+    // Testler ve doğrulayıcı bu adımları oynatır. {ext}: Pardus'ta odt, Windows'ta txt.
+    solution: [
+      ["menu", true], ["app", "yazi"], ["type", "Ayşe"], ["answer", "gic", 1],
+      ["save", "Masaüstü", "5A_Ayşe_Bilgisayar"], ["close"], ["open", "Masaüstü/5A_Ayşe_Bilgisayar.{ext}"]
+    ]
+  },
+
   activities: {
     lab: {
       title: "Bilgisayarımı tanıyorum",
