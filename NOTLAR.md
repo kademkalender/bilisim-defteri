@@ -37,9 +37,8 @@ Kayıt şablonu:
 - Öğretmen kontrol listesi ekranda işaretlenmez (tek bilgisayarda 30 öğrenci), yazdırılan gözlem tablosu kullanılır.
 
 **Yarım kalan işler**
-- [ ] Review 3: tarayıcı oynatma betikleri projede değil, arayüz hatalarını yakalayan otomatik test yok.
-- [ ] Review 4: ders içeriği değişince eski `bd:sim` kaydı yanlış göreve oturabilir ("Baştan başla" kurtarıyor).
-- [ ] Review 5: ad kutusu açıkken başka düğmeye basınca ilk tıklama kayboluyor.
+- [x] Review 3: `54fba73` `tools/sim-tarayici.test.js` (8 test, yaklaşık 2 dk, Chrome yoksa atlanır).
+- [x] Review 4 ve 5: `46d192d` görevler değişince eski kayıt baştan başlar. Ad kutusu açıkken basılan düğme ilk basışta çalışır. İkisi de düzeltme geri alınınca kırmızıya dönen testlerle doğrulandı.
 - [ ] Gerçek tablette yazarken sanal klavyenin kapanıp kapanmadığı, Firefox 78 ve Pardus tahtada deneme.
 
 ---
