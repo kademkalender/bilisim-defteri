@@ -72,7 +72,7 @@ test("öğrenci adı biçimi: Türkçe harf kabul, boşluk uyarı", function () 
 test("yanlış işlem mesajı görevin işlemini söyler", function () {
   var task = { id: "t", check: { type: "exists", path: "Masaüstü/yeni.txt" } };
   var r = C.apply(C.create(start, "windows"), ["delete", "Masaüstü/Eski"]);
-  var m = C.feedback(task, r.ev);
+  var m = C.feedback(task, r.ev, "pardus");
   assert.ok(/«Eski» klasörünü sildin/.test(m), m);
   assert.ok(/adını değiştirmek|klasör oluşturmak/.test(m));
   assert.ok(/Çöp Kutusu/.test(m));

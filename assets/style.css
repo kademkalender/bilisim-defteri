@@ -597,3 +597,165 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
 @keyframes bd-shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
 @keyframes bd-burst{from{transform:translateY(0) scale(.5)}to{transform:translateY(-80px) rotate(200deg);opacity:0}}
 @keyframes bd-land{from{opacity:.4;transform:translateY(-8px) scale(.95)}}
+
+/* =====================================================================
+   Sanal masaüstü (assets/sim-ui.js)
+   Masaüstü bir "ekran" olduğu için arka planı tema rengidir. Pardus koyu alt panel, Windows açık görev çubuğu.
+   ===================================================================== */
+.sim{display:grid;gap:var(--space-3);grid-template-areas:"panel" "screen"}
+.sim.wide{width:calc(100vw - 48px);max-width:1600px;margin-left:calc(50% - 50vw + 24px)}
+@media (min-width:1600px){.sim.wide{margin-left:calc(50% - 800px)}}
+@media (min-width:900px){
+  .sim{grid-template-columns:minmax(0,1fr) 290px;grid-template-areas:"screen panel"}
+  .sim.wide{grid-template-columns:minmax(0,1fr) 340px}
+  .sim-panel{height:clamp(420px,calc(100vh - 150px),620px);overflow:hidden}
+  .sim-tasks{flex:1;min-height:60px;overflow:auto;border-top:1px solid var(--border-default);padding-top:6px}
+}
+.si{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.2em;flex:none}
+.si.big{width:34px;height:34px}
+
+.sim-panel{grid-area:panel;background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3);align-self:start}
+.sim-now small{color:var(--text-secondary);font-weight:700}
+.sim-now-t{display:flex;gap:var(--space-3);align-items:flex-start;margin-top:4px;color:var(--action-primary)}
+.sim-now-t b{font-size:1.2rem;line-height:1.3;color:var(--text-primary);min-width:0;word-break:break-word;overflow-wrap:anywhere}
+.sim-opts{display:flex;flex-direction:column;gap:var(--space-2);margin-top:var(--space-3)}
+.sim-opts .btn{justify-content:flex-start;text-align:left;padding:6px var(--space-3);font-weight:700;min-height:var(--size-control-sm)}
+.sim-msg{border-radius:var(--radius-md);padding:10px 12px;font-weight:700;font-size:.92rem;background:var(--surface-subtle)}
+.sim-msg.ok{background:var(--feedback-success-subtle);color:var(--feedback-success)}
+.sim-msg.warn{background:var(--highlight-subtle);color:var(--text-primary)}
+.sim-tools{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.sim-tools .btn{min-height:var(--size-control-sm);padding:0 var(--space-3);font-size:.88rem}
+.sim-tools .btn:disabled{opacity:.45;cursor:default}
+.sim-tools .btn.glow{border-color:var(--highlight);box-shadow:0 0 0 3px var(--highlight)}
+.sim-tasks{list-style:none;margin:0;padding:0;font-size:.88rem}
+.sim-tasks li{word-break:break-word;display:flex;gap:var(--space-2);align-items:flex-start;padding:4px 0}
+.sim-tasks li > span:first-child,.sim-tasks li > svg{width:22px;height:22px;flex:none;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;background:var(--surface-subtle)}
+.sim-tasks li.done{color:var(--feedback-success)}
+.sim-tasks li.done > svg{background:var(--feedback-success);color:#fff;padding:3px}
+.sim-tasks li.now{font-weight:800}
+.sim-tasks li.now > span:first-child{background:var(--action-primary);color:#fff}
+.sim-tasks li.next{color:var(--text-secondary)}
+.sim-done{background:var(--feedback-success-subtle);color:var(--feedback-success);border-radius:var(--radius-md);padding:var(--space-4)}
+.sim-done b{font-size:1.4rem}
+.sim-done p{margin:4px 0 0;color:var(--text-primary);font-weight:700}
+
+.sim-screen{grid-area:screen;position:relative;overflow:hidden;border-radius:var(--radius-lg);height:clamp(420px,calc(100vh - 150px),620px);background:linear-gradient(160deg,var(--theme-3),var(--slide-bg));user-select:none;-webkit-user-select:none}
+.sim.pardus .sim-screen{background:linear-gradient(160deg,var(--theme-1),#0A4A45)}
+.sim-list.desk{position:absolute;top:8px;left:8px;right:8px;bottom:56px;display:grid;grid-auto-flow:column;grid-template-rows:repeat(auto-fill,96px);grid-auto-columns:96px;gap:4px;align-content:start}
+.sim-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border-radius:var(--radius-sm);touch-action:none;cursor:default;outline-offset:0}
+.desk .sim-item{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.sim-item.sel{background:rgba(255,255,255,.25);box-shadow:inset 0 0 0 2px #fff}
+.win .sim-item.sel{background:var(--action-primary-subtle);box-shadow:inset 0 0 0 2px var(--action-primary)}
+.sim-item.cut{opacity:.5}
+.sim-name{font-size:.78rem;font-weight:700;line-height:1.2;text-align:center;word-break:break-word;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sim-item small{font-size:.7rem;color:var(--text-secondary)}
+.sim-edit{width:100%;font:inherit;font-size:.8rem;padding:2px 4px;border:2px solid var(--action-primary);border-radius:4px}
+.sim-more{position:absolute;top:0;right:0;width:30px;height:30px;padding:5px;border-radius:50%;border:1px solid var(--border-strong);background:var(--surface-default);color:var(--text-primary);display:flex;align-items:center;justify-content:center}
+.sim-more .si{width:16px;height:16px;fill:currentColor;stroke:none}
+
+.fi{width:44px;height:44px;flex:none}
+.fi path,.fi circle{stroke-width:1.2;stroke-linejoin:round;stroke-linecap:round}
+.fi > path:first-child{fill:#fff;stroke:var(--border-strong)}
+.fi .pl{fill:none;stroke-width:1.6}
+.fi-folder > path:first-child{fill:var(--highlight);stroke:#B38600}
+.fi-doc .pl{stroke:var(--theme-3)}
+.fi-img .pf{fill:var(--theme-5);stroke:none}
+.fi-audio .pl{stroke:var(--theme-2)}
+.fi-zip > path:first-child{fill:var(--highlight-subtle)}
+.fi-zip .pl{stroke:var(--theme-6)}
+.fi-trash > path:first-child{fill:var(--surface-subtle);stroke:var(--text-secondary)}
+.fi-trash .pl{stroke:var(--text-secondary)}
+.fi > .pl:nth-child(2){stroke:var(--border-strong)}
+
+.sim-win{position:absolute;top:10px;right:10px;bottom:58px;left:216px;background:var(--surface-default);color:var(--text-primary);border-radius:10px;box-shadow:var(--shadow-md);display:flex;flex-direction:column;overflow:hidden;z-index:2}
+.sim-title{display:flex;align-items:center;justify-content:space-between;gap:var(--space-2);padding:4px 4px 4px 12px;background:var(--surface-subtle);font-weight:800;font-size:.88rem}
+.sim-title span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sim-x,.sim-path button{width:40px;height:36px;border:0;border-radius:6px;background:transparent;color:inherit;display:flex;align-items:center;justify-content:center;flex:none}
+.sim-x:hover{background:var(--feedback-error);color:#fff}
+.sim-path{display:flex;align-items:center;gap:var(--space-2);padding:4px 8px;border-bottom:1px solid var(--border-default);font-size:.85rem;font-weight:700}
+.sim-path button:hover:not(:disabled){background:var(--surface-hover)}
+.sim-path button:disabled{opacity:.35}
+.sim-list.win{flex:1;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));align-content:start;gap:4px;padding:8px}
+.sim-empty{color:var(--text-secondary);padding:var(--space-4);margin:0}
+.sim-status{padding:4px 12px;font-size:.8rem;border-top:1px solid var(--border-default);color:var(--text-secondary)}
+.sim-zip{flex:1;overflow:auto;padding:var(--space-3)}
+.sim-zip table{border-collapse:collapse;width:100%;font-size:.85rem}
+.sim-zip th,.sim-zip td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border-default)}
+.sim-zip small{color:var(--feedback-success);font-weight:700}
+.sim-view{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:var(--space-4)}
+.sim-view .fi{width:96px;height:96px}
+.sim-view p{margin:6px 0 0}
+.sim-tb{display:flex;gap:4px;padding:4px 8px;border-bottom:1px solid var(--border-default)}
+.sim-tbtn{min-height:36px;padding:0 10px;border:0;border-radius:6px;background:transparent;color:inherit;font-weight:700;font-size:.85rem;display:inline-flex;align-items:center;gap:6px}
+.sim-tbtn:hover{background:var(--surface-hover)}
+.sim-text{flex:1;border:0;resize:none;padding:var(--space-4);font:inherit;color:var(--text-primary);user-select:text;-webkit-user-select:text}
+.sim.pardus .editor .sim-text{margin:10px 10%;box-shadow:var(--shadow-sm);border:1px solid var(--border-default)}
+.sim.pardus .editor{background:var(--surface-subtle)}
+.sim-dlg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(380px,92%);background:var(--surface-default);border:1px solid var(--border-strong);border-radius:var(--radius-md);box-shadow:var(--shadow-md);padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3);z-index:3}
+.sim-dlg h4{margin:0}
+.sim-dlg label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;font-weight:700}
+.sim-dlg select,.sim-dlg input{font:inherit;min-height:40px;padding:4px 8px;border:1.5px solid var(--border-strong);border-radius:6px;background:#fff;width:100%}
+.sim-row{display:flex;gap:var(--space-2);align-items:center}
+.sim-dlg .btn{min-height:var(--size-control-sm);padding:0 var(--space-4)}
+
+.sim-bar{position:absolute;left:0;right:0;bottom:0;height:48px;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 8px;background:rgba(255,255,255,.88);color:var(--text-primary);z-index:3}
+.sim.pardus .sim-bar{justify-content:flex-start;background:var(--text-primary);color:#fff}
+.sim-start,.sim-task{height:40px;padding:0 10px;border:0;border-radius:6px;background:transparent;color:inherit;display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:.85rem}
+.sim-start:hover,button.sim-task:hover{background:rgba(127,127,127,.2)}
+.sim-task.on{box-shadow:inset 0 -3px 0 var(--action-primary)}
+.sim.pardus .sim-task.on{box-shadow:inset 0 -3px 0 var(--highlight)}
+.sim.pardus .sim-start{background:rgba(255,255,255,.12)}
+
+.sim-menu{position:absolute;z-index:5;min-width:210px;max-width:calc(100% - 16px);background:var(--surface-default);color:var(--text-primary);border:1px solid var(--border-strong);border-radius:var(--radius-sm);box-shadow:var(--shadow-md);padding:4px;display:flex;flex-direction:column}
+.sim-menu button{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);text-align:left;min-height:40px;padding:0 12px;border:0;border-radius:6px;background:transparent;color:inherit;font-size:.9rem;font-weight:600}
+.sim-menu button:hover,.sim-menu button:focus{background:var(--action-primary-subtle)}
+.sim-menu button.off{color:var(--text-secondary);cursor:default}
+.sim-menu .sim-back{color:var(--text-secondary);border-bottom:1px solid var(--border-default);border-radius:6px 6px 0 0}
+.sim-ghost{position:fixed;z-index:50;pointer-events:none;transform:translate(-50%,-50%);width:96px;display:flex;flex-direction:column;align-items:center;padding:4px;border-radius:var(--radius-sm);background:rgba(255,255,255,.9);box-shadow:var(--shadow-md);color:var(--text-primary);font-size:.78rem;font-weight:700;text-align:center}
+.sim-ghost .sim-more{display:none}
+.sim-hint{outline:4px solid var(--highlight)!important;outline-offset:2px;box-shadow:0 0 0 9px rgba(255,210,63,.45)!important}
+
+/* Tahta ve dokunmatik: dokunma alanları en az 48 px, yazılar büyük */
+.sim.wide{font-size:1.1rem}
+.sim.wide .sim-now-t b{font-size:1.45rem}
+.sim.wide .sim-list.desk{grid-template-rows:repeat(auto-fill,116px);grid-auto-columns:116px;bottom:68px}
+.sim.wide .sim-win{left:256px;bottom:70px}
+.sim.wide .fi{width:56px;height:56px}
+.sim.wide .sim-name{font-size:.9rem}
+.sim.wide .sim-bar{height:60px}
+.sim.wide .sim-start,.sim.wide .sim-task,.sim.wide .sim-x,.sim.wide .sim-path button,.sim.wide .sim-tbtn,.sim.wide .sim-menu button,.sim.wide .sim-tools .btn,.sim.wide .sim-opts .btn{min-height:48px;height:auto}
+.sim.wide .sim-x,.sim.wide .sim-path button{width:52px;height:48px}
+.sim.wide .sim-more{width:44px;height:44px;top:-6px;right:-6px}
+@media (pointer:coarse){
+  .sim-start,.sim-task,.sim-tbtn,.sim-menu button,.sim-tools .btn,.sim-opts .btn,.sim-dlg .btn{min-height:48px}
+  .sim-x,.sim-path button{width:48px;height:48px}
+  .sim-more{width:44px;height:44px;top:-6px;right:-6px}
+  .sim-bar{height:56px}
+  .sim-list.desk{bottom:62px}
+  .sim-win{bottom:64px}
+}
+@media (max-width:899px){
+  .sim-tasks{display:none} /* dar ekranda o anki görev ve "Görev 3 / 8" yeter, masaüstü yakında kalsın */
+  .sim-panel{padding:var(--space-3)}
+}
+@media (max-width:700px){
+  .sim-zip{padding:var(--space-2)}
+  .sim-zip table{font-size:.75rem}
+  .sim-zip td,.sim-zip th{padding:4px}
+  .sim-zip small{display:block}
+  .sim-list.desk{grid-auto-flow:row;grid-template-rows:none;grid-auto-rows:96px;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));grid-auto-columns:auto}
+  .sim-win,.sim.wide .sim-win{top:0;left:0;right:0;border-radius:0}
+  .sim-screen{height:clamp(420px,calc(100vh - 120px),560px)}
+  .sim-task span{display:none}
+}
+@media screen and (prefers-reduced-motion: no-preference){
+  html.anim .sim-hint{animation:sim-blink 1s ease-in-out infinite}
+  html.anim .sim-now.pop,html.anim .sim-done.pop{animation:bd-grow .3s ease-out}
+  html.anim .sim-tools .btn.glow{animation:sim-blink 1.2s ease-in-out 3}
+}
+@keyframes sim-blink{50%{opacity:.55}}
+.sim-h{font-size:1.2rem;margin-bottom:4px}
+.check-list{margin:6px 0 14px;padding-left:1.4em}
+.check-list li{margin:4px 0}
+.sheet table.obs td,.sheet table.obs th{text-align:center;min-width:28px}
+.sheet table.obs td:first-child,.sheet table.obs th:first-child{text-align:left;width:40%}

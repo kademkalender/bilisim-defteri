@@ -22,7 +22,7 @@
   var parentOf = function (p) { return p.replace(/\/[^\/]*$/, ""); };
   var baseOf = function (p) { return p.replace(/^.*\//, ""); };
   var same = function (a, b) { return lower(a) === lower(b); };
-  var kindWord = function (n) { return n.kind === "folder" ? "klasör" : "dosya"; };
+  var trashName = function (os) { return os === "pardus" ? "Çöp Kutusu" : "Geri Dönüşüm Kutusu"; };
 
   function fail(msg) { var e = new Error(msg); e.sim = true; throw e; }
 
@@ -113,11 +113,11 @@
       var n = remove(st, path);
       st.trash.push({ node: n, from: parentOf(path) });
       if (st.ui.file && inside(path, st.ui.file)) { st.ui.app = null; st.ui.file = null; st.ui.text = ""; }
-      return { path: path, name: n.name, kind: n.kind, msg: "«" + n.name + "» Çöp Kutusu'na taşındı." };
+      return { path: path, name: n.name, kind: n.kind, msg: "«" + n.name + "» " + trashName(st.os) + "'na taşındı." };
     },
     restore: function (st, i) {
       var t = st.trash[i];
-      if (!t) fail("Çöp Kutusu'nda böyle bir öğe yok.");
+      if (!t) fail("Böyle bir silinmiş öğe yok.");
       var from = find(st, t.from) && find(st, t.from).kind === "folder" ? t.from : ROOT, d = folder(st, from);
       validName(d, t.node.name);
       st.trash.splice(i, 1);
@@ -139,7 +139,7 @@
     },
     open: function (st, path) {
       st.ui.menu = false;
-      if (path === TRASH) { st.ui.opened = TRASH; return { path: path, msg: "Çöp Kutusu açıldı." }; }
+      if (path === TRASH) { st.ui.opened = TRASH; return { path: path, msg: trashName(st.os) + " açıldı." }; }
       var n = need(st, path);
       st.ui.opened = path;
       if (n.kind === "file" && TEXT_EXT.indexOf(extOf(n.name)) >= 0) { st.ui.app = "yazi"; st.ui.file = path; st.ui.text = n.text || ""; }
@@ -269,7 +269,7 @@
     };
     return map(c);
   }
-  function feedback(task, ev) {
+  function feedback(task, ev, os) {
     if (!task || ev.err || CHANGES.indexOf(ev.op) < 0) return null;
     var want = expected(task);
     if (want.indexOf(ev.op) >= 0) return null;
@@ -280,7 +280,7 @@
       copy: q + "nı kopyaladın", move: q + "nı taşıdın", "delete": q + "nı sildin", zip: q + "nı sıkıştırdın"
     }[ev.op].replace("klasörünı", "klasörünü");
     return did + ", ama bu görevde yapman gereken: " + WANT[want[0]] + ". " +
-      (ev.op === "delete" ? "Geri al düğmesine bas ya da Çöp Kutusu'ndan geri yükle." : "Geri al düğmesiyle (Ctrl+Z) eski haline döndürebilirsin.");
+      (ev.op === "delete" ? "Geri al düğmesine bas ya da " + trashName(os) + "'ndan geri yükle." : "Geri al düğmesiyle (Ctrl+Z) eski haline döndürebilirsin.");
   }
 
   // Çözümü baştan sona oynatır. Test ve doğrulayıcı kullanır. {ext} işletim sisteminin yazı uzantısı olur.
@@ -305,6 +305,6 @@
   root.SimCore = {
     ROOT: ROOT, TRASH: TRASH, EXT: EXT, create: create, apply: apply, find: find, size: size,
     check: check, advance: advance, expected: expected, feedback: feedback, play: play, fill: fill,
-    fmtSize: fmtSize, extOf: extOf, stem: stem, parentOf: parentOf, baseOf: baseOf, KNOWN: ["exists", "allIn", "inTrash", "ui", "typed", "answer", "all"]
+    fmtSize: fmtSize, trashName: trashName, extOf: extOf, stem: stem, parentOf: parentOf, baseOf: baseOf, KNOWN: ["exists", "allIn", "inTrash", "ui", "typed", "answer", "all"]
   };
 })(typeof window !== "undefined" ? window : this);
