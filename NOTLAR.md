@@ -16,6 +16,34 @@ Kayıt şablonu:
 
 ---
 
+## 2026-11-05 · Kadem Kalender + Claude Code (Opus 5.5)
+
+**Ne yapıldı**
+- GitHub kontrol edildi: gelen ya da giden commit yok.
+- `6dc3954` Sanal masaüstü mantık katmanı `assets/sim-core.js` ve `tools/sim.test.js`. Dosya sistemi bellekte, işlemler saf fonksiyon, görev kontrolleri bildirimsel (`exists`, `allIn`, `inTrash`, `ui`, `typed`, `answer`, `all`).
+- `41d9d50` Arayüz `assets/sim-ui.js`: masaüstü, Dosya Yöneticisi, çöp, zip tablosu, yazı programı, Farklı Kaydet. Fare, dokunma (uzun basış, ⋯ düğmesi) ve klavye (oklar, Enter, F2, Delete, Ctrl+C/X/V/Z, Shift+F10). İpucu iki aşamalı, geri al, baştan başla, özet ekranı. İlerleme `bd:sim:<ders>`.
+- `06ae88c` 5-1-6 senaryosu (8 görev), `9eda7db` 5-1-5 senaryosu (6 görev). 6-1-1'e simülasyon eklenmedi.
+- `102c965` Ortamlar: lab'da simülasyon ana etkinlik, altında "Şimdi gerçek bilgisayarında dene" düğmesiz. Tahtada tam genişlik. Ders planında kontrol listesi, yazdırmada gözlem tablosu.
+- `e6b9926` `dogrula.js` çözümü Windows ve Pardus için oynatır. ICERIK-REHBERI.md ve _SABLON.js'e `sim` kuralları yazıldı.
+- `0014aad` /ponytail-review'un 1. ve 2. bulgusu: taşıma görevi dosya silinerek geçilemez, boş dosyada %NaN yok.
+- `fa9221a` Sınıflandırma oyunu etkinliğin altından kendi bölümüne taşındı: Etkinlik → Oyun → Mini test (oyunu olan bütün derslerde).
+- İki senaryo başsız Chrome'da fare, sadece klavye ve 390 px dokunmayla baştan sona oynatıldı. Her birinde yanlış işlem ve ipucu denendi, konsolda hata yok.
+
+**Kararlar**
+- Öğrenci bilgisayarları Windows: öğrenci görünümü Windows varsayar, Linux'ta (Pardus tahta) Pardus. Öğretmen görünümü Öğretmen Masası ayarını kullanır.
+- Windows'ta çöpün adı "Geri Dönüşüm Kutusu", Pardus'ta "Çöp Kutusu".
+- Klavyeyle yeni klasör: Shift+F10 menüsü. Ctrl+Shift+N tarayıcıya ayrılmış, sayfaya ulaşmıyor.
+- Sıkıştırma oranları gerçekçi: .txt çok küçülür, .odt/.docx/resim/ses az. 5-1-6 öğretmen notu buna göre düzeltildi.
+- Öğretmen kontrol listesi ekranda işaretlenmez (tek bilgisayarda 30 öğrenci), yazdırılan gözlem tablosu kullanılır.
+
+**Yarım kalan işler**
+- [ ] Review 3: tarayıcı oynatma betikleri projede değil, arayüz hatalarını yakalayan otomatik test yok.
+- [ ] Review 4: ders içeriği değişince eski `bd:sim` kaydı yanlış göreve oturabilir ("Baştan başla" kurtarıyor).
+- [ ] Review 5: ad kutusu açıkken başka düğmeye basınca ilk tıklama kayboluyor.
+- [ ] Gerçek tablette yazarken sanal klavyenin kapanıp kapanmadığı, Firefox 78 ve Pardus tahtada deneme.
+
+---
+
 ## 2026-11-03 · Kadem Kalender + Claude Code (Opus 5.5)
 
 **Ne yapıldı**
