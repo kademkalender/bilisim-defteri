@@ -92,6 +92,7 @@
   // Hazır satır açılır. Öğrencide hazır olmayan satırda açılacak bir şey yoktur.
   function weekRow(x) {
     var name = '<span><b class="wk">' + x.w + '. hafta</b> · ' + esc(x.title) + '</span>';
+    if (x.event) return '<li data-w="' + x.w + '"><div class="week soon">' + name + '<span class="row"><span class="tag">Etkinlik haftası</span></span></div></li>';
     var tags = '<span class="row">' + (isStudent() ? "" : planCodes(x).map(function (c) { return '<span class="tag code">' + c + '</span>'; }).join("")) + (x.lesson ? '<span class="tag ready">Hazır</span>' : '<span class="tag soon">Yakında</span>') + '</span>';
     if (isStudent() && !x.lesson) return '<li data-w="' + x.w + '"><div class="week soon">' + name + tags + '</div></li>';
     return '<li data-w="' + x.w + '"><details class="week-d"><summary class="week' + (x.lesson ? "" : " soon") + '">' + name + tags + '</summary><div class="week-body">' + weekDetail(x) + '</div></details></li>';
@@ -110,7 +111,8 @@
   /* Öğrenci: "Bu hafta" kartı. Hafta MEB takviminden (content/plan.js → BD.calendar, assets/hafta.js) hesaplanır,
      öğretmen "7. haftayı açın" deyince öğrenci oklarla önceki ya da sonraki haftaya geçer. */
   var shownWeek = {}; // sınıf → şeritte seçilen hafta. Bellekte durur, sayfa yenilenince bu haftaya döner.
-  var stripAt = {}, STRIP = 11; // sınıf → şeritte görünen ilk haftanın sırası; şeritte aynı anda 11 hafta
+  var stripAt = {}, STRIP = 11; // sınıf → şeritte görünen ilk haftanın sırası; şeritte aynı anda 11 hafta, dar ekranda (560 px ve altı) 5
+  function stripSize() { return window.innerWidth <= 560 ? 5 : 11; }
   // 2. dönemin ilk öğretim haftası (takvimde term2 yoksa 0: dönem ayrımı yapılmaz)
   function term2Week() {
     var c = BD.calendar; if (!c || !c.term2 || !window.schoolWeek) return 0;
@@ -124,11 +126,13 @@
     return b <= 0 ? [0, plan.length, ""] : at < b ? [0, b, "1. dönem"] : [b, plan.length, "2. dönem"];
   }
   function stripMove(plan, at, dir) {
+    STRIP = stripSize();
     var t = stripTerm(plan, at);
     if (dir > 0) return at + STRIP < t[1] ? Math.min(at + STRIP, t[1] - STRIP) : t[1];
     return at > t[0] ? Math.max(at - STRIP, t[0]) : Math.max(0, t[0] - STRIP);
   }
   function weekStrip(g, plan, sel, nowW) {
+    STRIP = stripSize();
     var n = plan.length, idx = plan.map(function (x) { return x.w; }).indexOf(sel), at = stripAt[g];
     var t = stripTerm(plan, at == null ? idx : at);
     if (at == null) at = idx - Math.floor(STRIP / 2);
@@ -150,7 +154,9 @@
     var plan = (BD.plan[g] || []).slice().sort(function (a, b) { return a.w - b.w; });
     if (!plan.length) return '<div class="empty">Bu sınıfın dersleri henüz eklenmedi.</div>';
     var now = nowWeek(), nowW = Math.min(now.w, plan[plan.length - 1].w);
-    var i = Math.max(0, plan.map(function (x) { return x.w; }).indexOf(shownWeek[g] || nowW));
+    var ws = plan.map(function (x) { return x.w; }), i = ws.indexOf(shownWeek[g] || nowW);
+    // Planda olmayan hafta (#sinif-5-99) sessizce 1. haftaya düşmesin: takvim haftası gösterilir
+    if (i < 0) { shownWeek[g] = null; i = Math.max(0, ws.indexOf(nowW)); }
     var p = plan[i], L = p.lesson ? lessonById(p.lesson) : null;
     var T = !isStudent();
     // Ders hazır değilse önce geriye, yoksa ileriye doğru en yakın hazır hafta
@@ -168,11 +174,17 @@
     var last = lastLesson();
     if (isStudent()) return weekHero(g);
     var hero = weekHero(g);
-    var openNo = last && String(last.grade) === g ? last.theme : 1;
+    var plan = (BD.plan[g] || []).slice().sort(function (a, b) { return a.w - b.w; });
+    var themeBefore = function (w) { var p = plan.filter(function (x) { return x.w < w && !x.event; }).pop(); return p ? p.theme : 1; };
+    // Açık tema: şeritte seçilen haftanınki, seçim yoksa son açılan dersinki
+    var sw = plan.filter(function (x) { return x.w === shownWeek[g]; })[0];
+    var openNo = sw ? (sw.event ? themeBefore(sw.w) : sw.theme) : last && String(last.grade) === g ? last.theme : 1;
     var units = BD.program[g].themes.map(function (t) {
-      var weeks = (BD.plan[g] || []).filter(function (x) { return x.theme === t.no; });
+      // Etkinlik haftası bir önceki haftanın temasında listelenir (5. hafta 1. temada, 18. hafta 3. temada); hafta aralığına girmez
+      var weeks = plan.filter(function (x) { return x.event ? themeBefore(x.w) === t.no : x.theme === t.no; });
+      var tw = weeks.filter(function (x) { return !x.event; });
       var ready = weeks.filter(function (x) { return x.lesson; }).length;
-      var span = weeks.length ? (weeks.length > 1 ? weeks[0].w + "–" + weeks[weeks.length - 1].w : weeks[0].w) + ". hafta" : "";
+      var span = tw.length ? (tw.length > 1 ? tw[0].w + "–" + tw[tw.length - 1].w : tw[0].w) + ". hafta" : "";
       var info = [span, t.hours ? t.hours + " ders saati" : "", ready ? ready + " ders hazır" : ""].filter(Boolean).join(" · ");
       var body = '<ul class="weeks">' + weeks.map(weekRow).join("") + '</ul>';
       return '<details class="unit"' + (t.no === openNo ? " open" : "") + '>' +
@@ -895,9 +907,11 @@
       var L = id ? lessonById(id) : null; if (!L) return "";
       return L.notebook.map(function (n) { return n.t.replace(/<[^>]+>/g, ""); }).concat(L.slides.map(function (s) { return s.h || ""; }), (L.crossword || []).map(function (c) { return c.a + " " + c.c; })).join(" ");
     };
-    ["5", "6"].forEach(function (g) { (BD.plan[g] || []).forEach(function (p) { var cs = planCodes(p), ts = cs.map(function (c) { var o = outcome(c); return c + " " + (o ? o.title : ""); }).join(" "); items.push({ g: g, t: p.title, w: p.w, code: cs.join(", "), lesson: p.lesson, nt: norm(p.title), ots: cs.map(function (c) { var o = outcome(c); return o ? o.title : ""; }), hay: norm(p.title + " " + ts + " " + lessonWords(p.lesson)) }); }); });
+    ["5", "6"].forEach(function (g) { (BD.plan[g] || []).forEach(function (p) { var cs = planCodes(p), ts = cs.map(function (c) { var o = outcome(c); return c + " " + (o ? o.title : ""); }).join(" "); items.push({ g: g, t: p.title, w: p.w, ev: p.event, code: cs.join(", "), lesson: p.lesson, nt: norm(p.title), ots: cs.map(function (c) { var o = outcome(c); return o ? o.title : ""; }), hay: norm(p.title + " " + ts + " " + (p.note || "") + " " + lessonWords(p.lesson)) }); }); });
     // Kısa sorgu kelime başından eşleşir: "ağ" "Sağlık"ı bulmasın.
-    var matches = function (hay, v) { return v.length > 3 ? hay.indexOf(v) >= 0 : (" " + hay.replace(/[^a-z0-9.]+/g, " ")).indexOf(" " + v) >= 0; };
+    var matchWord = function (hay, v) { return v.length > 3 ? hay.indexOf(v) >= 0 : (" " + hay.replace(/[^a-z0-9.]+/g, " ")).indexOf(" " + v) >= 0; };
+    // Birden çok kelime sırası ve aradaki kelimeler önemsiz, hepsi geçmeli
+    var matches = function (hay, v) { return v.split(/\s+/).every(function (w) { return matchWord(hay, w); }); };
     qIn.addEventListener("input", function () {
       var v = norm(qIn.value.trim());
       // "7", "7. hafta", "7.hafta", "hafta 7": hafta numarasıyla arama
@@ -906,7 +920,7 @@
       // Başlığında geçenler önce gelir; başlıkta geçmeyen sonuçta nedeni (kazanım adı) yazar
       var inTitle = function (x) { return wk || matches(x.nt, v); };
       var hits = items.filter(function (x) { return wk ? x.w === wk : matches(x.hay, v); }).sort(function (a, b) { return (inTitle(a) ? 0 : 1) - (inTitle(b) ? 0 : 1); }).slice(0, 8);
-      res.innerHTML = hits.length ? hits.map(function (x) { var why = inTitle(x) ? "" : x.ots.filter(function (o) { return matches(norm(o), v); })[0]; return '<a href="' + (x.lesson ? "#ders-" + x.lesson : "#sinif-" + x.g + "-" + x.w) + '">' + esc(x.t) + '<small>' + x.g + '. sınıf · ' + x.w + '. hafta · ' + (isStudent() ? "" : x.code + ' · ') + (x.lesson ? "Hazır" : "Yakında") + '</small>' + (why ? '<small>' + esc(why) + '</small>' : "") + '</a>'; }).join("") : wk >= 1 && wk <= WEEKS ? "<div>" + wk + ". hafta için plan henüz girilmedi.</div>" : "<div>Sonuç bulunamadı.</div>";
+      res.innerHTML = hits.length ? hits.map(function (x) { var why = inTitle(x) ? "" : x.ots.filter(function (o) { return matches(norm(o), v); })[0]; return '<a href="' + (x.lesson ? "#ders-" + x.lesson : "#sinif-" + x.g + "-" + x.w) + '">' + esc(x.t) + '<small>' + x.g + '. sınıf · ' + x.w + '. hafta · ' + (x.ev ? "Etkinlik haftası" : (isStudent() ? "" : x.code + ' · ') + (x.lesson ? "Hazır" : "Yakında")) + '</small>' + (why ? '<small>' + esc(why) + '</small>' : "") + '</a>'; }).join("") : wk >= 1 && wk <= WEEKS ? "<div>" + wk + ". hafta için plan henüz girilmedi.</div>" : "<div>Sonuç bulunamadı.</div>";
       status.textContent = hits.length ? hits.length + " sonuç bulundu" : res.textContent;
       res.classList.add("show");
     });

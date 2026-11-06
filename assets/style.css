@@ -147,7 +147,7 @@ html.role-ogrenci .t-only{display:none}
 .hello p{margin:6px 0 0;color:var(--text-secondary);max-width:62ch}
 main > #wkList{margin-top:var(--space-3)}
 main > #wkList{margin-top:var(--space-8)}
-.all-h{margin-top:var(--space-8)}
+.label-h.all-h{margin-top:var(--space-8)}
 .all-h .hint{display:block;font-weight:400;margin-top:2px}
 .wk-flow{margin-top:14px}
 .wk-flow summary{cursor:pointer;font-weight:700;margin-bottom:6px}
