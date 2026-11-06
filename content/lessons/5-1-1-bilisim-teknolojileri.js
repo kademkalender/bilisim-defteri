@@ -12,7 +12,7 @@ BD.lesson({
   hook: "Bu sabah uyandığından beri kaç teknoloji kullandın? Çalan alarm, açılan televizyon, okul zili, servisteki harita... Parmaklarınla say bakalım. Bugün bunların ortak adını öğreneceğiz!",
 
   slides: [
-    { type: "title", pill: "5. Sınıf · 1. Hafta", h: "Bilişim Teknolojilerini Tanıyalım", p: "Her gün kullandığımız teknolojiler neler, dün nasıldı, bugün nasıl?" },
+    { type: "title", pill: "5. sınıf · 1. hafta", h: "Bilişim Teknolojilerini Tanıyalım", p: "Her gün kullandığımız teknolojiler neler, dün nasıldı, bugün nasıl?" },
     { emoji: "❓", h: "Tahmin et: Bu ne?", p: "Hem saat, hem fotoğraf makinesi, hem harita, hem müzik çalar, hem de mektup. Üstelik cebine sığıyor!", reveal: "Akıllı telefon! Eskiden bu işlerin her biri için ayrı bir cihaz gerekiyordu.", b: "b" },
     { h: "Dört anahtar kavram 🔑", cols: [
       { h: "Bilgi", p: "Öğrendiğimiz şeyler. Örnek: Yarın yağmur yağacağını bilmek." },
@@ -143,11 +143,11 @@ BD.lesson({
   },
 
   quiz: [
-    { q: "Bilgiyi toplamak, saklamak, işlemek ve iletmek için kullandığımız araçlara ne denir?", o: ["Bilişim teknolojileri", "El aletleri", "Doğal kaynaklar"], a: 0, b: "a" },
-    { q: "Dosyalarını internette saklayıp okuldan da evden de açıyorsun. Buna ne denir?", o: ["Sosyal medya", "Bulut bilişim", "Daktilo"], a: 1, b: "a" },
-    { q: "Daktilo ile bilgisayardaki yazı programının benzerliği nedir?", o: ["İkisi de internete bağlanır", "İkisinde de hata silinir", "İkisiyle de yazı yazılır"], a: 2, b: "b", why: "İş aynı kaldı: yazı yazmak. Silme ve kaydetme ise yazı programının getirdiği farklılıktır." },
-    { q: "Bugünkü bilgisayarların ilk bilgisayarlardan farkı nedir?", o: ["Daha küçük ve hızlıdır", "Daha büyük ve ağırdır", "Elektrik kullanmaz"], a: 0, b: "b" },
-    { q: "Navigasyon hangi kullanım alanına girer?", o: ["Sağlık", "Ulaşım", "Sinema ve televizyon"], a: 1, b: "c" }
+    { q: "Bilgiyi toplamak, saklamak, işlemek ve iletmek için kullandığımız araçlara ne denir?", o: ["Bilişim teknolojileri", "El aletleri", "Doğal kaynaklar"], a: 0, b: "a", hint: "Bilgisayar ve telefon bilgiyle ne yapar? Onları düşün.", why: "Bilgiyi toplayan, saklayan, işleyen ve ileten araçlara bilişim teknolojileri denir." },
+    { q: "Dosyalarını internette saklayıp okuldan da evden de açıyorsun. Buna ne denir?", o: ["Sosyal medya", "Bulut bilişim", "Daktilo"], a: 1, b: "a", hint: "Dosyaların saklandığı bu yeri gökyüzündeki bir şeye benzetiriz.", why: "Dosyaları internette saklayıp her yerden açmaya bulut bilişim denir." },
+    { q: "Daktilo ile bilgisayardaki yazı programının benzerliği nedir?", o: ["İkisi de internete bağlanır", "İkisinde de hata silinir", "İkisiyle de yazı yazılır"], a: 2, b: "b", why: "İş aynı kaldı: yazı yazmak. Silme ve kaydetme ise yazı programının getirdiği farklılıktır.", hint: "İki aracın ikisinin de yaptığı işi düşün." },
+    { q: "Bugünkü bilgisayarların ilk bilgisayarlardan farkı nedir?", o: ["Daha küçük ve hızlıdır", "Daha büyük ve ağırdır", "Elektrik kullanmaz"], a: 0, b: "b", hint: "İlk bilgisayarlar koca bir odayı kaplardı.", why: "Bilgisayarlar zamanla küçüldü ve hızlandı. Bugün cebimize sığıyorlar." },
+    { q: "Navigasyon hangi kullanım alanına girer?", o: ["Sağlık", "Ulaşım", "Sinema ve televizyon"], a: 1, b: "c", hint: "Navigasyon sana nasıl gideceğini söyler.", why: "Navigasyon yol bulmamıza yardım eder, bu yüzden ulaşım alanına girer." }
   ],
 
   crossword: [

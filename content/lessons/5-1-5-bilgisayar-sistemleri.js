@@ -10,7 +10,7 @@ BD.lesson({
   hook: "Bankamatikten para çekerken neler oluyor? Kartı takıyoruz, şifreyi giriyoruz, makine bir şeyler yapıyor, sonra para ve fiş çıkıyor. Bilgisayar da tam olarak böyle çalışır!",
 
   slides: [
-    { type: "title", pill: "5. Sınıf · 5. Hafta", h: "Bilgisayar Sistemleri", p: "Bilgisayar hangi parçalardan oluşur ve bu parçalar nasıl birlikte çalışır?" },
+    { type: "title", pill: "5. sınıf · 5. hafta", h: "Bilgisayar Sistemleri", p: "Bilgisayar hangi parçalardan oluşur ve bu parçalar nasıl birlikte çalışır?" },
     { emoji: "❓", h: "Tahmin et: Bankamatikte neler oluyor?", p: "Kartı takıyorsun, şifreni giriyorsun, sonra para ve fiş çıkıyor. Hangileri makineye bilgi veriyor, hangileri bize sonuç veriyor?", reveal: "Kart ve şifre tuşları bilgi verir: giriş. Para ve fiş sonuçtur: çıkış. Arada makinenin içindeki işlemci hesap yapar. Bilgisayar da tam böyle çalışır!", b: "b" },
     { emoji: "⚙️", h: "Bilgisayar sistemi nedir?", p: "Donanım, yazılım ve kullanıcı birlikte çalışarak bir bilgisayar sistemi oluşturur. Biri eksik olursa sistem çalışmaz.", b: "a" },
     { h: "Donanım ve yazılım", cols: [
@@ -152,10 +152,10 @@ BD.lesson({
   },
 
   quiz: [
-    { q: "Aşağıdakilerden hangisi giriş birimidir?", o: ["Hoparlör", "Klavye", "Yazıcı"], a: 1, b: "a" },
-    { q: "Aşağıdakilerden hangisi bir yazılımdır?", o: ["Fare", "Pardus", "Ekran"], a: 1, b: "a" },
-    { q: "Bilgisayar kapansa bile bilgileri saklayan birim hangisidir?", o: ["İşlemci", "USB bellek", "Hoparlör"], a: 1, b: "a" },
-    { q: "Yazıcıdan çıktı alırken doğru sıra hangisidir?", o: ["Çıkış → Giriş → İşlem", "Giriş → İşlem → Çıkış", "İşlem → Çıkış → Giriş"], a: 1, b: "b", why: "Önce komutu veririz (giriş), bilgisayar işler (işlem), yazıcı yazdırır (çıkış)." }
+    { q: "Aşağıdakilerden hangisi giriş birimidir?", o: ["Hoparlör", "Klavye", "Yazıcı"], a: 1, b: "a", hint: "Giriş birimi bilgisayara bilgi gönderir.", why: "Klavyeyle bilgisayara bilgi göndeririz. Hoparlör ve yazıcı çıkış birimidir." },
+    { q: "Aşağıdakilerden hangisi bir yazılımdır?", o: ["Fare", "Pardus", "Ekran"], a: 1, b: "a", hint: "Yazılıma elle dokunamazsın.", why: "Pardus bir işletim sistemidir, yani yazılımdır. Fare ve ekran donanımdır." },
+    { q: "Bilgisayar kapansa bile bilgileri saklayan birim hangisidir?", o: ["İşlemci", "USB bellek", "Hoparlör"], a: 1, b: "a", hint: "Bilgisayardan çıkarıp cebinde taşıyabildiğin birimi düşün.", why: "USB bellek, bilgisayar kapansa da bilgileri saklar." },
+    { q: "Yazıcıdan çıktı alırken doğru sıra hangisidir?", o: ["Çıkış → Giriş → İşlem", "Giriş → İşlem → Çıkış", "İşlem → Çıkış → Giriş"], a: 1, b: "b", why: "Önce komutu veririz (giriş), bilgisayar işler (işlem), yazıcı yazdırır (çıkış).", hint: "Yazıcı işin en sonunda çalışır." }
   ],
 
   crossword: [
@@ -193,7 +193,7 @@ BD.lesson({
   ],
 
   teacherNotes: [
-    "Okulda bilgisayar yoksa Öğretmen Masası'ndan Bilgisayarsız ortamı seçin ve çalışma kâğıdını önceden yazdırın.",
+    "Okulda bilgisayar yoksa Öğretmen masası'ndan Bilgisayarsız ortamı seçin ve çalışma kâğıdını önceden yazdırın.",
     "Etkileşimli tahtalarda (ETAP) Pardus yüklüdür. İşletim sistemi örneği olarak tahtanın kendisini gösterebilirsiniz.",
     "Bit ve bayt konusu bu derste sadece tanıtılır. Piksel ve sıkıştırma örnekleri Dosya ve Klasör Yönetimi dersinde tekrar edilir.",
     "Kasa açılarak iç parçalar gösterilecekse öğretmen gözetiminde ve elektrik bağlantısı kesik olarak yapılmalıdır."

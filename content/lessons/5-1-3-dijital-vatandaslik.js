@@ -12,7 +12,7 @@ BD.lesson({
   hook: "Kumsalda yürüdüğünde arkanda ayak izlerin kalır. Peki internette gezinirken de iz bırakıyor musun? Bugün internetteki kimliğimizi ve izlerimizi tanıyacağız.",
 
   slides: [
-    { type: "title", pill: "5. Sınıf · 3. Hafta", h: "Dijital Vatandaşlık", p: "İnternette kimiz, hangi izleri bırakıyoruz ve nasıl iyi bir dijital vatandaş oluruz?" },
+    { type: "title", pill: "5. sınıf · 3. hafta", h: "Dijital Vatandaşlık", p: "İnternette kimiz, hangi izleri bırakıyoruz ve nasıl iyi bir dijital vatandaş oluruz?" },
     { emoji: "❓", h: "Tahmin et: İnternette yürürsek?", p: "Kumda yürürsen ayak izin kalır, dalga gelince silinir. İnternette gezinirken de iz bırakır mıyız?", reveal: "Evet! Paylaşımlar, yorumlar, beğeniler ve aramalar iz bırakır. Ama bu izleri dalga silmez, yıllarca kalabilir.", b: "b" },
     { emoji: "👤", h: "Dijital kimlik nedir?", p: "İnternetteki hesaplarımız ve hakkımızdaki bilgilerin tamamıdır. Gerçek kimliğimiz gibi bizi tanıtır.", list: ["Kullanıcı adı ve profil resmi", "Oyun ve eğitim platformu hesapları", "Paylaşımlarımız ve gizlilik ayarlarımız"], b: "a" },
     { h: "Güvenli kullanıcı adı seçelim 🔐", cols: [
@@ -127,11 +127,11 @@ BD.lesson({
   },
 
   quiz: [
-    { q: "Hangisi güvenli bir kullanıcı adıdır?", o: ["AyseYilmaz2015", "KitapKurdu42", "Ali_5B_okulum"], a: 1, b: "a", why: "KitapKurdu42 adını, yaşını ve okulunu söylemez." },
-    { q: "İnternete yazdığın bir yorumu sildin. Hangisi doğrudur?", o: ["Kesinlikle yok olmuştur", "Biri ekran görüntüsü almış olabilir", "Sadece öğretmen görebilir"], a: 1, b: "b" },
-    { q: "İnternette bir oyuncak aradın. Sonra başka sitelerde hep onun reklamını görüyorsun. Neden?", o: ["Dijital ayak izin yüzünden", "Bilgisayar bozuk olduğu için", "Tesadüf olduğu için"], a: 0, b: "b" },
-    { q: "Oyunda biri senden şifreni istiyor. Ne yapmalısın?", o: ["Arkadaşsa veririm", "Vermem ve bir yetişkine söylerim", "Yarısını veririm"], a: 1, b: "c" },
-    { q: "\"İzin almadan arkadaşının fotoğrafını paylaşmamak\" hangi alandaki bir kuraldır?", o: ["Sosyal medya", "Alışveriş", "Bankacılık"], a: 0, b: "c" }
+    { q: "Hangisi güvenli bir kullanıcı adıdır?", o: ["AyseYilmaz2015", "KitapKurdu42", "Ali_5B_okulum"], a: 1, b: "a", why: "KitapKurdu42 adını, yaşını ve okulunu söylemez.", hint: "Seni tanımayan biri bu addan neler öğrenebilir?" },
+    { q: "İnternete yazdığın bir yorumu sildin. Hangisi doğrudur?", o: ["Kesinlikle yok olmuştur", "Biri ekran görüntüsü almış olabilir", "Sadece öğretmen görebilir"], a: 1, b: "b", hint: "Sen silmeden önce yorumunu başkaları da gördü.", why: "Silmeden önce biri ekran görüntüsü almış olabilir. İnternete yazılan kolay kolay yok olmaz." },
+    { q: "İnternette bir oyuncak aradın. Sonra başka sitelerde hep onun reklamını görüyorsun. Neden?", o: ["Dijital ayak izin yüzünden", "Bilgisayar bozuk olduğu için", "Tesadüf olduğu için"], a: 0, b: "b", hint: "İnternette gezdiğin yerler arkanda bir şey bırakır.", why: "Aramaların dijital ayak izi bırakır. Siteler reklamları buna göre gösterir." },
+    { q: "Oyunda biri senden şifreni istiyor. Ne yapmalısın?", o: ["Arkadaşsa veririm", "Vermem ve bir yetişkine söylerim", "Yarısını veririm"], a: 1, b: "c", hint: "Şifre kimseyle paylaşılmayan bir bilgidir.", why: "Şifre arkadaşla bile paylaşılmaz. Biri isterse bir yetişkine haber verilir." },
+    { q: "\"İzin almadan arkadaşının fotoğrafını paylaşmamak\" hangi alandaki bir kuraldır?", o: ["Sosyal medya", "Alışveriş", "Bankacılık"], a: 0, b: "c", hint: "Fotoğraflar en çok nerede paylaşılır?", why: "Fotoğraflar sosyal medyada paylaşılır, bu da bir sosyal medya kuralıdır." }
   ],
 
   crossword: [

@@ -177,6 +177,9 @@ function checkLesson(f, L) {
     if (typeof q.a !== "number" || q.a < 0 || q.a >= (q.o || []).length) {
       err(f, "quiz sorusu " + (i + 1) + ": cevap indeksi (a: " + q.a + ") geçersiz");
     }
+    // UYARI: ilk yanlışta ipucu, ikincide neden gösterilir (YAZIM-REHBERI.md)
+    if (!q.hint) warn(f, "quiz sorusu " + (i + 1) + ": ipucu (hint) yok");
+    if (!q.why) warn(f, "quiz sorusu " + (i + 1) + ": neden (why) yok");
   });
 
   // HATA: sınıflandırma kartları karışmıyorsa oyun cevabı kendisi gösterir

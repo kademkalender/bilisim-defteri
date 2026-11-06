@@ -435,7 +435,7 @@ section.block > .block-hint + *{margin-top:var(--space-3)}
 .opts button.wrong:before{content:"✕ ";color:var(--feedback-error);font-weight:800}
 .opts button:disabled{cursor:default}
 .fb{font-size:.92rem;font-weight:700;min-height:1.4em;margin-top:8px}
-.fb.r{color:var(--feedback-success)}.fb.w{color:var(--feedback-error)}
+.fb.r{color:var(--feedback-success)}.fb.w{color:var(--feedback-error)}.fb.h{color:var(--action-primary)}
 .score{font-weight:800;font-size:1.15rem}
 
 /* Bulmaca */

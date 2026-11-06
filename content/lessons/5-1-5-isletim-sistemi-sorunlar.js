@@ -12,7 +12,7 @@ BD.lesson({
   hook: "Okulumuzda müdür, zil ve ders programı olmasaydı ne olurdu? Herkes nereye gideceğini şaşırırdı! Bilgisayarın da bir yöneticisi var. Bugün onu tanıyacak ve bilgisayar bozulduğunda bir uzman gibi düşünmeyi öğreneceğiz.",
 
   slides: [
-    { type: "title", pill: "5. Sınıf · 6. Hafta", h: "İşletim Sistemi ve Bilgisayar Sorunları", p: "Bilgisayarın yöneticisi kim? Bir sorun çıkınca ne yaparız?" },
+    { type: "title", pill: "5. sınıf · 6. hafta", h: "İşletim Sistemi ve Bilgisayar Sorunları", p: "Bilgisayarın yöneticisi kim? Bir sorun çıkınca ne yaparız?" },
     { emoji: "❓", h: "Tahmin et: Okulun müdürü olmasaydı?", p: "Zil çalmasa, ders programı olmasa, kimse hangi sınıfa gireceğini bilmese ne olurdu?", reveal: "Her şey karışırdı! Bilgisayarda bu düzeni işletim sistemi sağlar. O, bilgisayarın müdürüdür.", b: "b" },
     { emoji: "💻", h: "İşletim sistemi nedir?", p: "Bilgisayar açılınca ilk çalışan, donanımı ve diğer programları yöneten yazılımdır.", list: ["Örnekler: Pardus, Windows. Telefonların da işletim sistemi vardır.", "Pardus, Türkiye'de geliştirilen işletim sistemidir.", "Kullanıcı arayüzü: Ekranda gördüğümüz masaüstü, simgeler ve menüler."], b: "a" },
     { h: "İşletim sisteminin görevleri ⚙️", cols: [
@@ -119,11 +119,11 @@ BD.lesson({
   },
 
   quiz: [
-    { q: "Bilgisayarı ve programları yöneten yazılım hangisidir?", o: ["Kelime işlemci", "İşletim sistemi", "Oyun programı"], a: 1, b: "a" },
-    { q: "Açık programlara bellekte yer ayırmak hangi görevdir?", o: ["Bellek yönetimi", "Dosya yönetimi", "Kullanıcı arayüzü"], a: 0, b: "a" },
-    { q: "Şarkıya çift tıkladın, hoparlörden müzik geldi. Aradaki köprü hangisidir?", o: ["Yazıcı", "İşletim sistemi", "Klavye"], a: 1, b: "b" },
-    { q: "Hangisi yazılım sorunudur?", o: ["Farenin pili bitti", "Program dondu", "Yazıcıda kâğıt yok"], a: 1, b: "b" },
-    { q: "Hoparlörden ses gelmiyor. İlk ne yapmalısın?", o: ["Kasayı açarım", "Ses ayarına ve kabloya bakarım", "Yeni hoparlör alırım"], a: 1, b: "b", why: "Sorun çözerken önce kolay ve güvenli adımlara bakılır." }
+    { q: "Bilgisayarı ve programları yöneten yazılım hangisidir?", o: ["Kelime işlemci", "İşletim sistemi", "Oyun programı"], a: 1, b: "a", hint: "Pardus ve Windows bu yazılım türüne örnektir.", why: "İşletim sistemi bilgisayarı ve programları yönetir. Pardus ve Windows birer işletim sistemidir." },
+    { q: "Açık programlara bellekte yer ayırmak hangi görevdir?", o: ["Bellek yönetimi", "Dosya yönetimi", "Kullanıcı arayüzü"], a: 0, b: "a", hint: "Programlar çalışırken bilgileri nerede tutar?", why: "Açık programlara bellekte yer ayırmak, işletim sisteminin bellek yönetimi görevidir." },
+    { q: "Şarkıya çift tıkladın, hoparlörden müzik geldi. Aradaki köprü hangisidir?", o: ["Yazıcı", "İşletim sistemi", "Klavye"], a: 1, b: "b", hint: "Komutunu alıp hoparlöre ileten yazılımı düşün.", why: "İşletim sistemi komutunu alır ve hoparlöre iletir. Aradaki köprü odur." },
+    { q: "Hangisi yazılım sorunudur?", o: ["Farenin pili bitti", "Program dondu", "Yazıcıda kâğıt yok"], a: 1, b: "b", hint: "Yazılım sorunu dokunabildiğin parçalarda değil, programlarda olur.", why: "Donan program bir yazılım sorunudur. Pil ve kâğıt donanım sorunudur." },
+    { q: "Hoparlörden ses gelmiyor. İlk ne yapmalısın?", o: ["Kasayı açarım", "Ses ayarına ve kabloya bakarım", "Yeni hoparlör alırım"], a: 1, b: "b", why: "Sorun çözerken önce kolay ve güvenli adımlara bakılır.", hint: "Önce kendi başına güvenle bakabileceğin şeyleri düşün." }
   ],
 
   crossword: [

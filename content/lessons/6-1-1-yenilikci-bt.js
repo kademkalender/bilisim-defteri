@@ -10,7 +10,7 @@ BD.lesson({
   hook: "Telefonun kamerasını bir odaya tuttuğunda ekranda olmayan bir koltuk görsen, bu sihir mi? Hayır, bu bir yenilikçi bilişim teknolojisi! Bugün hayatımıza yeni giren teknolojileri tanıyacağız.",
 
   slides: [
-    { type: "title", pill: "6. Sınıf · 1. Hafta", h: "Yenilikçi Bilişim Teknolojileri", p: "Hayatımıza yeni giren teknolojiler neler ve işimizi nasıl kolaylaştırıyor?" },
+    { type: "title", pill: "6. sınıf · 1. hafta", h: "Yenilikçi Bilişim Teknolojileri", p: "Hayatımıza yeni giren teknolojiler neler ve işimizi nasıl kolaylaştırıyor?" },
     { emoji: "💡", h: "Yenilikçi bilişim teknolojisi nedir?", p: "Hayatımıza yeni giren ve bir işi eskisinden farklı, daha kolay ya da daha hızlı yapmamızı sağlayan teknolojilerdir.", b: "a" },
     { emoji: "📱", h: "Artırılmış gerçeklik (AR)", p: "Gerçek dünyanın üzerine dijital görüntüler ekler. Örnek: Telefon kamerasıyla odaya sanal bir mobilya yerleştirmek, kitaptaki resmin ekranda canlanması.", b: "a" },
     { emoji: "👓", h: "Sanal gerçeklik (VR)", p: "Özel bir gözlükle bizi tamamen dijital bir dünyaya götürür. Örnek: Sınıftan çıkmadan bir müzeyi gezmek.", b: "a" },
@@ -118,10 +118,10 @@ BD.lesson({
   },
 
   quiz: [
-    { q: "Telefon kamerasıyla odaya bakınca ekranda sanal bir koltuk görmek hangi teknolojiye örnektir?", o: ["Sanal gerçeklik", "Artırılmış gerçeklik", "Bulut depolama"], a: 1, b: "a" },
-    { q: "Aşağıdakilerden hangisi giyilebilir teknolojidir?", o: ["Akıllı saat", "Masaüstü bilgisayar", "Yazıcı"], a: 0, b: "a" },
-    { q: "Anlık çeviri uygulaması günlük hayatı nasıl kolaylaştırır?", o: ["Dosyaları küçültür", "Farklı dilleri konuşan insanların anlaşmasını sağlar", "Kalp atışını ölçer"], a: 1, b: "b" },
-    { q: "Araba fabrikasında çalışan robot kol hangi kullanım alanına girer?", o: ["Sanayi", "Eğlence", "Sağlık"], a: 0, b: "c" }
+    { q: "Telefon kamerasıyla odaya bakınca ekranda sanal bir koltuk görmek hangi teknolojiye örnektir?", o: ["Sanal gerçeklik", "Artırılmış gerçeklik", "Bulut depolama"], a: 1, b: "a", hint: "Gerçek oda görünüyor, üstüne sanal bir şey ekleniyor.", why: "Gerçek görüntünün üstüne sanal nesne eklemek artırılmış gerçekliktir." },
+    { q: "Aşağıdakilerden hangisi giyilebilir teknolojidir?", o: ["Akıllı saat", "Masaüstü bilgisayar", "Yazıcı"], a: 0, b: "a", hint: "Giyilebilir teknolojiyi üstünde taşırsın.", why: "Akıllı saat bileğe takılır, bu yüzden giyilebilir teknolojidir." },
+    { q: "Anlık çeviri uygulaması günlük hayatı nasıl kolaylaştırır?", o: ["Dosyaları küçültür", "Farklı dilleri konuşan insanların anlaşmasını sağlar", "Kalp atışını ölçer"], a: 1, b: "b", hint: "Çeviri bir dili başka bir dile aktarır.", why: "Anlık çeviri, farklı dilleri konuşan insanların birbirini anlamasını sağlar." },
+    { q: "Araba fabrikasında çalışan robot kol hangi kullanım alanına girer?", o: ["Sanayi", "Eğlence", "Sağlık"], a: 0, b: "c", hint: "Fabrikada üretim yapılır.", why: "Fabrikada üretim yapan robotlar sanayi alanına girer." }
   ],
 
   crossword: [

@@ -24,7 +24,7 @@ BD.lesson({
   //   Metin + yan görsel: mevcut alanlarla birlikte { side: "02.png", alt: "..." }
   //   Görseller content/img/<ders-id>/ klasöründe durur. alt zorunludur, doğrulayıcı kontrol eder.
   slides: [
-    { type: "title", pill: "5. Sınıf · 1. Hafta", h: "Ders Başlığı", p: "Dersin ana sorusu" },
+    { type: "title", pill: "5. sınıf · 1. hafta", h: "Ders Başlığı", p: "Dersin ana sorusu" },
     { emoji: "💡", h: "Kavram", p: "Kısa ve 10-11 yaşına uygun açıklama.", b: "a" },
     { h: "Örnekler", list: ["Birinci örnek", "İkinci örnek"], b: "b" },
     { emoji: "❓", h: "Tahmin et!", p: "Sınıfa sorulacak soru?", reveal: "Cevap ve kısa açıklama.", b: "b" },
@@ -92,9 +92,10 @@ BD.lesson({
     zengin: { who: "Etkinliği erken bitiren öğrenciler için", items: [""] }
   },
 
-  // Test: 3-5 soru, 3 seçenek. a: doğru seçeneğin sırası (0'dan başlar). why: isteğe bağlı açıklama
+  // Test: 3-5 soru, 3 seçenek. a: doğru seçeneğin sırası (0'dan başlar).
+  // hint: ilk yanlışta görünen ipucu, cevabı söylemez. why: ikinci yanlışta doğru cevapla görünen neden.
   quiz: [
-    { q: "Soru?", o: ["Seçenek A", "Seçenek B", "Seçenek C"], a: 0, b: "a" }
+    { q: "Soru?", o: ["Seçenek A", "Seçenek B", "Seçenek C"], a: 0, b: "a", hint: "Nereye bakacağını söyleyen ipucu.", why: "Doğru cevabın tek cümlelik nedeni." }
   ],
 
   // Bulmaca: 6-8 kelime. Izgara otomatik oluşur. Boşluklu kelime kullanmayın.

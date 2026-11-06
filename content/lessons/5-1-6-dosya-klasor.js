@@ -10,7 +10,7 @@ BD.lesson({
   hook: "Bir kütüphanede bütün kitaplar yere karışık atılmış olsaydı aradığın kitabı nasıl bulurdun? Raflar ve etiketler olmasaydı ne olurdu? Bilgisayarda da dosyaları düzenli tutmazsak aynı şey olur.",
 
   slides: [
-    { type: "title", pill: "5. Sınıf · 7. Hafta", h: "Dosya ve Klasör Yönetimi", p: "Bilgisayarımızı nasıl düzenli tutarız?" },
+    { type: "title", pill: "5. sınıf · 7. hafta", h: "Dosya ve Klasör Yönetimi", p: "Bilgisayarımızı nasıl düzenli tutarız?" },
     { img: "ornek-01.png", alt: "Masaüstünde karışık duran, türlerine göre gruplanmamış, üst üste dağılmış dosyalar (geçici örnek görsel)." },
     { emoji: "📄", h: "Dosya nedir?", p: "Bilgisayarda kaydettiğimiz her bilgi bir dosyadır: bir resim, bir şarkı, bir yazı.", b: "a" },
     { emoji: "📁", h: "Klasör nedir?", p: "Klasör, dosyaları düzenli saklamak için kullandığımız bir raftır. Bir klasörün içinde başka klasörler de olabilir.", b: "a" },
@@ -191,10 +191,10 @@ BD.lesson({
   },
 
   quiz: [
-    { q: "Aşağıdakilerden hangisi bir ses dosyasıdır?", o: ["tatil.png", "kayit.ogg", "odev.odt"], a: 1, b: "a" },
-    { q: "Bir dosyayı kopyalayınca ne olur?", o: ["Dosya silinir", "Dosyanın aynısından bir tane daha oluşur", "Dosyanın yeri değişir"], a: 1, b: "a" },
-    { q: "Hangisi daha iyi bir dosya adıdır?", o: ["asdfgh.png", "yeni yeni son1.png", "5A_Ali_Resim1.png"], a: 2, b: "b" },
-    { q: "Hangi durumda dosyaları sıkıştırmak en çok işe yarar?", o: ["Her gün açtığımız bir dosyada", "Çok sayıda dosyayı tek seferde gönderirken", "Dosyanın adını değiştirirken"], a: 1, b: "c", why: "Sıkıştırma göndermeyi ve saklamayı kolaylaştırır. Sık kullanılan dosyada ise her seferinde açmak zaman kaybettirir." }
+    { q: "Aşağıdakilerden hangisi bir ses dosyasıdır?", o: ["tatil.png", "kayit.ogg", "odev.odt"], a: 1, b: "a", hint: "Uzantıya bak: noktadan sonra gelen kısım dosyanın türünü söyler.", why: ".ogg bir ses dosyasıdır. .png resim, .odt yazı dosyasıdır." },
+    { q: "Bir dosyayı kopyalayınca ne olur?", o: ["Dosya silinir", "Dosyanın aynısından bir tane daha oluşur", "Dosyanın yeri değişir"], a: 1, b: "a", hint: "Kopyalamak ile kesmek arasındaki farkı düşün.", why: "Kopyalayınca dosya yerinde kalır ve aynısından bir tane daha oluşur." },
+    { q: "Hangisi daha iyi bir dosya adıdır?", o: ["asdfgh.png", "yeni yeni son1.png", "5A_Ali_Resim1.png"], a: 2, b: "b", hint: "Dosyanın içinde ne olduğu adından anlaşılmalı.", why: "5A_Ali_Resim1.png kimin ve ne olduğunu söyler. Diğer adlar bir şey anlatmaz." },
+    { q: "Hangi durumda dosyaları sıkıştırmak en çok işe yarar?", o: ["Her gün açtığımız bir dosyada", "Çok sayıda dosyayı tek seferde gönderirken", "Dosyanın adını değiştirirken"], a: 1, b: "c", why: "Sıkıştırma göndermeyi ve saklamayı kolaylaştırır. Sık kullanılan dosyada ise her seferinde açmak zaman kaybettirir.", hint: "Sıkıştırınca birçok dosya tek bir dosyaya dönüşür." }
   ],
 
   crossword: [

@@ -81,13 +81,15 @@ Yapma: öğretmene ders verme ("Unutmayın, iyi bir öğretmen…"), ünlem, emo
 ### Başlık ve sayfa adı
 
 - **Cümle düzeni:** yalnız ilk harf büyük. Özel adlar (Bilişim Defteri, Pardus, Windows, MEB) büyük kalır.
+- **Resmî adlar MEB'deki gibi kalır.** Ders adları (`title`, `content/plan.js`), tema adları ve kazanım metinleri (`content/program.js`) cümle düzenine çevrilmez; MEB programında nasıl yazıyorsa öyle yazılır.
 - Sonunda nokta yok. Ünlem yalnızca öğrenciyi göreve çağıran başlıkta.
 - İşlevi söyler, slogan atmaz.
 
 ✗ Kazanım Haritası  ✓ Kazanım haritası
 ✗ Çalışma Kâğıtları  ✓ Çalışma kâğıtları
-✗ Dosya ve Klasör Yönetimi  ✓ Dosya ve klasör yönetimi
+✗ Haftanın Bulmacası  ✓ Haftanın bulmacası
 ✗ Bilgi Dünyasına Yolculuk  ✓ Bilgisayar sistemleri
+✓ Dosya ve Klasör Yönetimi  (ders adı, MEB'deki gibi kalır)
 
 ### Yönerge (öğrenci)
 
@@ -106,14 +108,15 @@ Kalıp: **Sonuç + neden.** Yanlışta öğrenci bir kez daha dener.
 | Durum | Metin |
 |---|---|
 | Doğru | Doğru! 👏 |
-| İlk yanlış | Az kaldı! Uzantıya bak: ses dosyaları .ogg ya da .mp3 olur. |
-| İkinci yanlış | Bu sefer olmadı. .png bir resim dosyasıdır. Ses dosyası: kayit.ogg ✓ |
-| Test bitti, hepsi doğru | 5 sorunun 5'i de doğru! 🎉 |
-| Test bitti | 5 sorudan 4'ü doğru. Yanlış olanın doğrusu ✓ ile işaretli. |
+| İlk yanlış | Az kaldı! Uzantıya bak: noktadan sonra gelen kısım dosyanın türünü söyler. Bir daha dene. |
+| İkinci yanlış | Bu sefer olmadı. .ogg bir ses dosyasıdır. .png resim, .odt yazı dosyasıdır. Doğru cevap: kayit.ogg ✓ |
+| Test bitti, hepsi doğru | 5 sorunun 5'i de ilk denemede doğru! 🎉 |
+| Test bitti | 5 sorudan 4'ü ilk denemede doğru. |
 
 - İpucu cevabı söylemez, nereye bakacağını söyler.
 - Yanlışta suçlama yok: "Yanlış!" değil, "Az kaldı!" ya da "Bu sefer olmadı."
-- İpucu ve neden ders dosyasında her soru için yazılır (bkz. "Sitede henüz uygulanmayanlar").
+- İpucu (`hint`) ve neden (`why`) ders dosyasında her soru için yazılır; eksikse `dogrula.js` uyarır.
+- Test sonucu ilk denemedeki doğruları sayar.
 
 ### Kutlama ve bitirme
 
@@ -146,7 +149,7 @@ Kalıp: **Neden boş + ilk adım.**
 
 | Konu | Kural | Örnek |
 |---|---|---|
-| Büyük harf | Cümle düzeni; özel adlar büyük | Öğretmen masası · Pardus |
+| Büyük harf | Cümle düzeni; özel adlar ve resmî adlar (ders, tema, kazanım) MEB'deki gibi | Öğretmen masası · Pardus · Dosya ve Klasör Yönetimi |
 | Büyük/küçük dönüşüm | Kodda `toLocaleUpperCase("tr")` | İ, ı doğru çıkar |
 | Hafta | Sayı + nokta + "hafta" | 7. hafta (✗ Hafta 7) |
 | Sınıf | Sayı + nokta + "sınıf" | 5. sınıf |
@@ -188,16 +191,6 @@ Aynı şeye her yerde bu ad verilir.
 - Mulish'te I ve l birbirine benzer. Dosya adı, uzantı ve kazanım kodu bu yüzden eş aralıklı yazı tipiyle (`--font-mono`, `.tag.code` ya da `<code>`) yazılır.
 - Büyük harfle uzun metin yazılmaz; vurgu kalınla ya da fosforlu kalemle (`<mark>`) yapılır.
 - Ölçüler ve canlı örnekler: `tasarim-sistemi.html` → Yazı.
-
-## Sitede henüz uygulanmayanlar
-
-Bu rehber 2026-11-06'da yazıldı. Şu kurallar sitede henüz yok, sırayla uygulanacak:
-
-- Düğmelerdeki ok (→) kalkacak: "Başla →", "Derse git →".
-- Sayfa adları cümle düzenine geçecek: "Kazanım Haritası", "Çalışma Kâğıtları", "Öğretmen Masası". Ders adları da (`content/plan.js`, ders dosyalarındaki `title`).
-- Mini testte tekrar deneme: ilk yanlışta ipucu, ikincide doğru cevap ve neden. Ders dosyalarındaki her soruya ipucu ve neden alanı eklenecek.
-- Öğrenci metinlerinde görev dili: bölüm bitişi "Görev tamam!", etkinlik başlığı "Görev: …".
-- Öğretmen ders planı ve ipuçları "nedenini de söyleyen" tona göre gözden geçirilecek.
 
 ## Kontrol listesi
 

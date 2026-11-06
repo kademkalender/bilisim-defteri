@@ -40,7 +40,7 @@ Dersteki ve arayüzdeki metnin tonu (öğrenciye görev dili, geri bildirim kal�
 | Deftere yaz | 3–5 madde |
 | Etkinlik | 5–9 adım. Her adım tek bir iş |
 | Sınıflandırma oyunu | 2–5 grup, 6–12 kart |
-| Test | 3–5 soru, 3 seçenek. Yanıltıcı seçenekler mantıklı olmalı |
+| Test | 3–5 soru, 3 seçenek. Yanıltıcı seçenekler mantıklı olmalı. Her soruda `hint` (ilk yanlışta görünür, cevabı söylemez, nereye bakacağını söyler) ve `why` (ikinci yanlışta doğru cevapla görünür, tek cümle) |
 | Bulmaca | 6–8 kelime, kelimeler derste geçmiş olmalı. Boşluklu kelime yok |
 | Ders akışı | Toplam 80 dakika (40+40) |
 
@@ -103,6 +103,6 @@ Dosya, klasör ya da program açma gibi bilgisayar becerisi öğreten derslerde 
 - [ ] Sanal masaüstü varsa: 5–8 görev, her görevde ipucu var, `solution` var ve `dogrula.js` hatasız
 - [ ] Bulmacada kelime atlanmıyor (sayfada tüm ipuçları görünüyor)
 - [ ] Çalışma kâğıdı yazdırma önizlemesinde düzgün
-- [ ] Kazanım Haritası'nda ders doğru yerde görünüyor
+- [ ] Kazanım haritası'nda ders doğru yerde görünüyor
 - [ ] Slayt görseli varsa `alt` metni var, `content/img/<ders-id>/` içinde ve 300 KB altında
 - [ ] Ekipten başka bir kişi dersi okudu ve onayladı

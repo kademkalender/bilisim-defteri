@@ -13,7 +13,7 @@ BD.lesson({
   hook: "Telefon yüzünü tanıyıp kilidi açıyor, robot süpürge evin haritasını çıkarıyor. Sence bu makineler düşünüyor mu? Bugün bir araştırmacı gibi merak edecek, soru soracak ve cevapları kontrol edeceğiz.",
 
   slides: [
-    { type: "title", pill: "5. Sınıf · 4. Hafta", h: "Yapay Zekâ ile Tanışalım", p: "Makineler düşünebilir mi? Merak et, sor, araştır, doğrula!" },
+    { type: "title", pill: "5. sınıf · 4. hafta", h: "Yapay Zekâ ile Tanışalım", p: "Makineler düşünebilir mi? Merak et, sor, araştır, doğrula!" },
     { emoji: "❓", h: "Tahmin et: Makineler düşünebilir mi?", p: "Telefon yüzünü tanıyor, robot süpürge evin haritasını çıkarıyor. Sence bunlar bizim gibi düşünüyor mu?", reveal: "Bilim insanları bunu 70 yılı aşkın süredir tartışıyor! Yapay zekâ çok sayıda örnekten öğrenip tahmin yapar ama bizim gibi hissetmez.", b: "a" },
     { emoji: "💡", h: "Yapay zekâ nedir?", p: "Bilgisayarların örneklerden öğrenerek tanıma, tahmin ve karar verme yapmasını sağlayan teknolojidir.", list: ["Örnekler: sesli asistan, yüz tanıma, sürücüsüz (otonom) araba, robot süpürge"], b: "a" },
     { h: "Doğal zekâ ve yapay zekâ", cols: [
@@ -134,11 +134,11 @@ BD.lesson({
   },
 
   quiz: [
-    { q: "Hangisi doğal zekâya örnektir?", o: ["Telefonun yüz tanıması", "Bebeğin yürümeyi öğrenmesi", "Robot süpürgenin çalışması"], a: 1, b: "a" },
-    { q: "Hangisi araştırmaya başlamak için iyi bir sorudur?", o: ["Yapay zekâ yüzümü nasıl tanır?", "Robot süpürge mavi mi?", "Yapay zekâ güzel mi?"], a: 0, b: "b", why: "İyi bir soru, cevabını araştırarak öğrenebileceğimiz bir şeyi sorar." },
-    { q: "1959'da makinelerin düşünüp düşünemeyeceğini soran Türk matematikçi kimdir?", o: ["Cahit Arf", "Alan Turing", "John McCarthy"], a: 0, b: "c" },
-    { q: "Bir bilginin doğru olup olmadığını anlamak için ne yapmalıyız?", o: ["İlk okuduğumuza inanırız", "Başka kaynakla karşılaştırırız", "En uzun yazıyı seçeriz"], a: 1, b: "ç" },
-    { q: "Yapay zekânın tarımdaki olası etkisi hangisidir?", o: ["Bitki hastalıklarını erken fark etmek", "Yağmur yağdırmak", "Toprağın rengini değiştirmek"], a: 0, b: "d" }
+    { q: "Hangisi doğal zekâya örnektir?", o: ["Telefonun yüz tanıması", "Bebeğin yürümeyi öğrenmesi", "Robot süpürgenin çalışması"], a: 1, b: "a", hint: "Doğal zekâ makinelerde değil, canlılarda olur.", why: "Bebeğin yürümeyi öğrenmesi doğal zekâdır. Diğer ikisi makinedir." },
+    { q: "Hangisi araştırmaya başlamak için iyi bir sorudur?", o: ["Yapay zekâ yüzümü nasıl tanır?", "Robot süpürge mavi mi?", "Yapay zekâ güzel mi?"], a: 0, b: "b", why: "İyi bir soru, cevabını araştırarak öğrenebileceğimiz bir şeyi sorar.", hint: "Kişiden kişiye değişen bir cevabı araştıramazsın." },
+    { q: "1959'da makinelerin düşünüp düşünemeyeceğini soran Türk matematikçi kimdir?", o: ["Cahit Arf", "Alan Turing", "John McCarthy"], a: 0, b: "c", hint: "Seçeneklerden yalnızca biri Türk.", why: "Cahit Arf, makinelerin düşünüp düşünemeyeceğini soran Türk matematikçidir." },
+    { q: "Bir bilginin doğru olup olmadığını anlamak için ne yapmalıyız?", o: ["İlk okuduğumuza inanırız", "Başka kaynakla karşılaştırırız", "En uzun yazıyı seçeriz"], a: 1, b: "ç", hint: "Bir bilgiyi tek bir yerden okumak yeter mi?", why: "Bir bilgiyi başka kaynaklarla karşılaştırınca doğru olup olmadığını anlarız." },
+    { q: "Yapay zekânın tarımdaki olası etkisi hangisidir?", o: ["Bitki hastalıklarını erken fark etmek", "Yağmur yağdırmak", "Toprağın rengini değiştirmek"], a: 0, b: "d", hint: "Yapay zekâ fotoğraflara bakıp bir şeyleri fark edebilir.", why: "Yapay zekâ bitki fotoğraflarına bakıp hastalığı erkenden fark edebilir." }
   ],
 
   crossword: [

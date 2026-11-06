@@ -12,7 +12,7 @@ BD.lesson({
   hook: "Uzun süre tablet ya da bilgisayar kullandıktan sonra hiç gözlerin yandı mı, boynun ağrıdı mı? Teknoloji çok işe yarar ama doğru kullanmazsak bedenimizi yorar. Bugün teknolojiyle nasıl sağlıklı arkadaş olacağımızı öğreneceğiz.",
 
   slides: [
-    { type: "title", pill: "5. Sınıf · 2. Hafta", h: "Teknoloji ve Sağlığım", p: "Bilişim teknolojileri bize neler kazandırıyor, nelere dikkat etmeliyiz?" },
+    { type: "title", pill: "5. sınıf · 2. hafta", h: "Teknoloji ve Sağlığım", p: "Bilişim teknolojileri bize neler kazandırıyor, nelere dikkat etmeliyiz?" },
     { emoji: "❓", h: "Tahmin et: Can'a ne oldu?", p: "Can tatil günü sabahtan akşama kadar tablette oyun oynadı. Akşam gözleri yandı, boynu ağrıdı, gece uyuyamadı. Sence neden?", reveal: "Saatlerce ara vermeden ekrana baktı, eğilerek oturdu ve yatmadan önce de oynadı. Teknoloji suçlu değil, kullanma biçimi önemli!", b: "c" },
     { emoji: "⚖️", h: "Madalyonun iki yüzü", cols: [
       { h: "Olumlu yönler", p: "Hızlı iletişim, bilgiye kolay ulaşma, uzaktaki akrabayla görüntülü konuşma, ödev ve öğrenme." },
@@ -128,11 +128,11 @@ BD.lesson({
   },
 
   quiz: [
-    { q: "Aşağıdakilerden hangisi bilişim teknolojilerinin olumsuz yönüdür?", o: ["Akrabayla görüntülü konuşmak", "Bilgiye hızlı ulaşmak", "Saatlerce oyun oynayıp uykusuz kalmak"], a: 2, b: "a" },
-    { q: "Bulut depolamanın olumlu yönü hangisidir?", o: ["Dosyam kaybolmaz", "İnternetsiz de açılır", "Göz yorgunluğunu azaltır"], a: 0, b: "a" },
-    { q: "Telefon şarj olurken ne yapmalıyız?", o: ["Yastığın altına koymalıyız", "Düz ve açık bir yere koymalıyız", "Üstünü örtmeliyiz"], a: 1, b: "b", why: "Şarj olan telefon ısınır. Üstü kapalı kalırsa çok ısınabilir." },
-    { q: "Hangisi ergonomik oturuştur?", o: ["Ekrana yaklaşıp eğilmek", "Sırtı yaslı, ayaklar yerde", "Yatakta uzanmak"], a: 1, b: "c" },
-    { q: "Yatmadan hemen önce ekrana bakmak neye yol açabilir?", o: ["Uykunun kaçmasına", "Gözlerin dinlenmesine", "Boyun ağrısının geçmesine"], a: 0, b: "c" }
+    { q: "Aşağıdakilerden hangisi bilişim teknolojilerinin olumsuz yönüdür?", o: ["Akrabayla görüntülü konuşmak", "Bilgiye hızlı ulaşmak", "Saatlerce oyun oynayıp uykusuz kalmak"], a: 2, b: "a", hint: "Sağlığımıza zarar veren seçeneği bul.", why: "Uykusuz kalmak sağlığa zarar verir. Diğer ikisi teknolojinin olumlu yönleridir." },
+    { q: "Bulut depolamanın olumlu yönü hangisidir?", o: ["Dosyam kaybolmaz", "İnternetsiz de açılır", "Göz yorgunluğunu azaltır"], a: 0, b: "a", hint: "Bilgisayarın bozulsa buluttaki dosyana ne olur?", why: "Bulutta saklanan dosya, bilgisayar bozulsa da kaybolmaz." },
+    { q: "Telefon şarj olurken ne yapmalıyız?", o: ["Yastığın altına koymalıyız", "Düz ve açık bir yere koymalıyız", "Üstünü örtmeliyiz"], a: 1, b: "b", why: "Şarj olan telefon ısınır. Üstü kapalı kalırsa çok ısınabilir.", hint: "Şarj olurken telefonun hava alması gerekir." },
+    { q: "Hangisi ergonomik oturuştur?", o: ["Ekrana yaklaşıp eğilmek", "Sırtı yaslı, ayaklar yerde", "Yatakta uzanmak"], a: 1, b: "c", hint: "Boynunu ve belini yormayan oturuşu düşün.", why: "Sırtı yaslayıp ayakları yere basmak boynu ve beli yormaz." },
+    { q: "Yatmadan hemen önce ekrana bakmak neye yol açabilir?", o: ["Uykunun kaçmasına", "Gözlerin dinlenmesine", "Boyun ağrısının geçmesine"], a: 0, b: "c", hint: "Ekranın ışığı beyne \"daha gündüz\" der.", why: "Ekranın ışığı uykuyu geciktirir, bu yüzden uykumuz kaçabilir." }
   ],
 
   crossword: [

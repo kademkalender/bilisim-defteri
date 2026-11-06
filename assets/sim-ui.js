@@ -85,7 +85,7 @@
         if (op[0] === "answer") fb = "Bu cevap doğru değil. Bir daha düşün.";
         if (fb) {
           wrongs++;
-          if (wrongs >= 3 && hintStep === 0) fb += " Zorlanıyorsan İpucu düğmesine bas.";
+          if (wrongs >= 3 && hintStep === 0) fb += " Zorlanıyorsan İpucu düğmesine tıkla.";
           msg = { kind: "warn", text: fb };
         } else if (a.warn) msg = { kind: "warn", text: a.warn };
         else if (!quiet && r.ev.msg) msg = { kind: "info", text: r.ev.msg };
@@ -106,7 +106,7 @@
     function restart() {
       hist.push(snap());
       st = C.create(sim.start, os); idx = 0; hints = 0; wrongs = 0; hintStep = 0; win = null; sel = null; clip = null; edit = null; menu = null; saveDlg = null; saved = null;
-      say("Baştan başladın. Fikrini değiştirirsen Geri al düğmesine bas."); persist(); render();
+      say("Baştan başladın. Fikrini değiştirirsen Geri al düğmesine tıkla."); persist(); render();
       if (o.onDone) o.onDone(false);
     }
     function hint() {

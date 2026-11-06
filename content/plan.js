@@ -98,7 +98,7 @@ BD.calendar = {
   ]
 };
 
-/* Varsayılan ayarlar (Öğretmen Masası'ndan değiştirilebilir, tarayıcıda saklanır) */
+/* Varsayılan ayarlar (Öğretmen masası'ndan değiştirilebilir, tarayıcıda saklanır) */
 BD.defaults = {
   role: null,        // ogrenci | ogretmen; boşsa ilk açılışta sorulur
   grade: "5",       // Ana sayfada seçili sınıf

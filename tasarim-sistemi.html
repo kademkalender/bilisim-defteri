@@ -180,13 +180,13 @@ body{background:var(--surface-subtle)}
     where: "Bu hafta kartı, ders planı, bölüm sonu, çalışma kâğıdı.",
     rules: ["50 px yükseklik, köşe <code>--radius-lg</code>.", "Bir görünümde tek birincil düğme olur.", "<code>on-color</code> ve <code>on-color-line</code> yalnızca tema renkli kartın (Bu hafta) üstünde kullanılır.", "İkon <code>icon(\"ad\")</code> ile eklenir, emoji değil."],
     props: [
-      { k: "metin", l: "Metin", t: "text", d: "Derse git →" },
+      { k: "metin", l: "Metin", t: "text", d: "Derse git" },
       { k: "tur", l: "Tür", t: "seg", d: "primary", o: [["", "Varsayılan"], ["primary", "Birincil"], ["on-color", "Renkli üstü"], ["on-color-line", "Renkli üstü çizgi"]] },
       { k: "ikon", l: "İkon", t: "select", d: "", o: [["", "yok"]].concat(iconOpts) }
     ],
     render: function (p) { return '<button type="button" class="btn' + (p.tur ? " " + p.tur : "") + '">' + (p.ikon ? ico(p.ikon) + " " : "") + esc(p.metin) + '</button>'; },
     wrap: function (p, h) { return /on-color/.test(p.tur) ? '<div class="ds-color" style="background:var(--theme-1)">' + h + '</div>' : h; },
-    variants: [["Varsayılan", { tur: "", metin: "Değiştir" }], ["Birincil", {}], ["İkonlu", { tur: "", ikon: "yazdir", metin: "Çalışma kâğıdı" }], ["Renkli kart üstünde", { tur: "on-color", metin: "Başla →" }], ["Renkli kart üstünde, ikinci", { tur: "on-color-line", ikon: "yazdir", metin: "Çalışma kâğıdı" }]]
+    variants: [["Varsayılan", { tur: "", metin: "Değiştir" }], ["Birincil", {}], ["İkonlu", { tur: "", ikon: "yazdir", metin: "Çalışma kâğıdı" }], ["Renkli kart üstünde", { tur: "on-color", metin: "Başla" }], ["Renkli kart üstünde, ikinci", { tur: "on-color-line", ikon: "yazdir", metin: "Çalışma kâğıdı" }]]
   });
 
   add({ id: "secim", group: "Eylemler", name: "Seçim düğmesi", cls: ".chip-btn",
@@ -206,12 +206,12 @@ body{background:var(--surface-subtle)}
       if (p.yer === "sayfa") return h;
       return '<div class="top"><div class="top-in"><nav>' + (p.yer === "ayar" ? '<span class="top-set">' + h + '</span>' : h) + '</nav></div></div>';
     },
-    variants: [["Sayfada", {}], ["Sayfada, seçili", { secili: true }], ["Üst bantta", { yer: "bant", metin: "Kazanım Haritası" }], ["Üst bantta, açık sayfa", { yer: "bant", metin: "Kazanım Haritası", secili: true }], ["Bantta ayar", { yer: "ayar", metin: "A+" }], ["Bantta ayar, basılı", { yer: "ayar", metin: "A+", secili: true }]]
+    variants: [["Sayfada", {}], ["Sayfada, seçili", { secili: true }], ["Üst bantta", { yer: "bant", metin: "Kazanım haritası" }], ["Üst bantta, açık sayfa", { yer: "bant", metin: "Kazanım haritası", secili: true }], ["Bantta ayar", { yer: "ayar", metin: "A+" }], ["Bantta ayar, basılı", { yer: "ayar", metin: "A+", secili: true }]]
   });
 
   add({ id: "secenek", group: "Eylemler", name: "Seçenek düğmesi", cls: ".opt-group button",
     desc: "Açıklamalı seçenek. Bir ayarın değerleri arasından biri seçilir.",
-    where: "Öğretmen Masası.",
+    where: "Öğretmen masası.",
     rules: ["En az 64 px yükseklik, en fazla 300 px genişlik.", "Seçili olanda sağ üstte ✓ ve açık lacivert zemin.", "Bir grupta tek seçili seçenek olur; grup <code>.opt-group</code>."],
     props: [
       { k: "baslik", l: "Başlık", t: "text", d: "İnternet var" },
@@ -226,14 +226,14 @@ body{background:var(--surface-subtle)}
   add({ id: "arama", group: "Formlar", name: "Arama kutusu", cls: ".search",
     desc: "Ders, hafta ya da kazanım kodu arar. Sonuçlar kutunun altında açılır.",
     where: "Üst bant (yalnızca öğretmen).",
-    rules: ["48 px, köşe <code>--radius-md</code>. Genişlik 160–230 px.", "Öğrencide gizlidir.", "İpucu haftayı söyler: öğretmen dersi hafta numarasıyla arar.", "Sonuçta ders adı, altında sınıf · hafta · kod · durum. Sonuç yoksa \"Sonuç bulunamadı.\""],
+    rules: ["48 px, köşe <code>--radius-md</code>. Genişlik 160–230 px.", "Öğrencide gizlidir.", "İpucu ne aranabileceğini söyler: öğretmen dersi hafta numarasıyla arar. Emoji yok.", "Sonuçta ders adı, altında sınıf · hafta · kod · durum. Sonuç yoksa \"Sonuç bulunamadı.\""],
     props: [
-      { k: "ipucu", l: "İpucu", t: "text", d: "🔍 Ders, hafta, kod" },
+      { k: "ipucu", l: "İpucu", t: "text", d: "Ders, hafta, kod" },
       { k: "durum", l: "Durum", t: "seg", d: "sonuc", o: [["kapali", "Kapalı"], ["sonuc", "Sonuçlar"], ["yok", "Sonuç yok"]] }
     ],
     render: function (p) {
       var res = p.durum === "kapali" ? "" : '<div class="results show">' + (p.durum === "yok" ? '<div>Sonuç bulunamadı.</div>'
-        : '<a href="#ders-5-1-6-dosya-klasor">Dosya ve Klasör Yönetimi<small>5. Sınıf · 7. Hafta · BTY.5.1.6 · Hazır</small></a><a href="#sinif-6-7">Video Düzenleme ve Kurgu<small>6. Sınıf · 7. Hafta · BTY.6.2.8 · Yakında</small></a>') + '</div>';
+        : '<a href="#ders-5-1-6-dosya-klasor">Dosya ve Klasör Yönetimi<small>5. sınıf · 7. hafta · BTY.5.1.6 · Hazır</small></a><a href="#sinif-6-7">Video Düzenleme ve Kurgu<small>6. sınıf · 7. hafta · BTY.6.2.8 · Yakında</small></a>') + '</div>';
       return '<div class="search" role="search"><label for="ds-q" class="sr">Ders ara</label><input id="ds-q" type="search" placeholder="' + esc(p.ipucu) + '" autocomplete="off">' + res + '</div>';
     },
     wrap: function (p, h) { return '<div style="min-height:' + (p.durum === "sonuc" ? 190 : p.durum === "yok" ? 120 : 60) + 'px;width:260px">' + h + '</div>'; },
@@ -282,13 +282,13 @@ body{background:var(--surface-subtle)}
   add({ id: "mesaj", group: "Geri bildirim", name: "Sonuç mesajı", cls: ".fb, .finish",
     desc: "Cevaptan ya da bitirilen etkinlikten sonra gelen kısa mesaj.",
     where: "Mini test, oyun, bulmaca, etkinlik.",
-    rules: ["Doğru yeşil (<code>.fb.r</code>), yanlış kırmızı (<code>.fb.w</code>). Renk tek başına bilgi taşımaz, mesaj yazılıdır.", "Yanlışta doğru cevabı gösterir.", "Emoji süs olarak kalabilir, görünmese de mesaj anlaşılır."],
-    props: [{ k: "tur", l: "Tür", t: "seg", d: "dogru", o: [["dogru", "Doğru"], ["yanlis", "Yanlış"], ["bitti", "Bitti"]] }],
+    rules: ["Doğru yeşil (<code>.fb.r</code>), ilk yanlışta ipucu lacivert (<code>.fb.h</code>), ikinci yanlış kırmızı (<code>.fb.w</code>). Renk tek başına bilgi taşımaz, mesaj yazılıdır.", "İlk yanlışta \"Az kaldı!\" + ipucu (<code>hint</code>); ikincide \"Bu sefer olmadı.\" + neden (<code>why</code>) + doğru cevap.", "Emoji yalnızca kutlamada.", "Emoji süs olarak kalabilir, görünmese de mesaj anlaşılır."],
+    props: [{ k: "tur", l: "Tür", t: "seg", d: "dogru", o: [["dogru", "Doğru"], ["ipucu", "İlk yanlış"], ["yanlis", "İkinci yanlış"], ["bitti", "Bitti"]] }],
     render: function (p) {
-      if (p.tur === "bitti") return '<div class="finish show">🎉 Tebrikler, etkinliği bitirdin!</div>';
-      return p.tur === "dogru" ? '<div class="fb r">Doğru! 👏</div>' : '<div class="fb w">Olmadı. Doğru cevap ✓ işaretli olan.</div>';
+      if (p.tur === "bitti") return '<div class="finish show">Görev tamam! 🎉 Etkinliği bitirdin.</div>';
+      return p.tur === "dogru" ? '<div class="fb r">Doğru! 👏</div>' : p.tur === "ipucu" ? '<div class="fb h">' + esc(quizFb(q0, 1)) + '</div>' : '<div class="fb w">' + esc(quizFb(q0, 2)) + '</div>';
     },
-    variants: [["Doğru", {}], ["Yanlış", { tur: "yanlis" }], ["Etkinlik bitti", { tur: "bitti" }]]
+    variants: [["Doğru", {}], ["İlk yanlış: ipucu", { tur: "ipucu" }], ["İkinci yanlış: neden", { tur: "yanlis" }], ["Etkinlik bitti", { tur: "bitti" }]]
   });
 
   add({ id: "onay", group: "Geri bildirim", name: "Silme onayı", cls: ".confirm-box",
@@ -302,7 +302,7 @@ body{background:var(--surface-subtle)}
 
   add({ id: "kart", group: "Kartlar", name: "Kart", cls: ".card",
     desc: "İlgili bilgileri bir arada tutan beyaz yüzey.",
-    where: "Ders planı, Öğretmen Masası ayarları.",
+    where: "Ders planı, Öğretmen masası ayarları.",
     rules: ["Beyaz zemin, 1 px <code>--border-default</code>, köşe <code>--radius-xl</code>.", "Gölge yok."],
     props: [{ k: "baslik", l: "Başlık", t: "text", d: "Kazanım: BTY.5.1.6" }, { k: "metin", l: "Metin", t: "text", d: "Dosya ve klasör yönetimi ile ilgili temel işlemlerle çalışabilme" }],
     render: function (p) { return '<div class="card"><b>' + esc(p.baslik) + '</b><div class="hint">' + esc(p.metin) + '</div></div>'; },
@@ -345,8 +345,8 @@ body{background:var(--surface-subtle)}
     ],
     render: function (p) {
       var w = esc(p.hafta), body = bool(p.hazir)
-        ? '<div class="row"><a class="btn on-color" href="#ders-5-1-6-dosya-klasor">' + (T() ? "Derse git →" : "Başla →") + '</a>' + (T() ? '<a class="btn on-color-line" href="#yazdir-5-1-6-dosya-klasor">' + ico("yazdir") + ' Çalışma kâğıdı</a>' : "") + '</div>'
-        : '<p>Bu haftanın dersi henüz hazır değil.</p><div class="row"><button type="button" class="btn on-color" data-wk="' + (p.hafta - 1) + '">Son hazır ders: ' + (p.hafta - 1) + '. hafta →</button></div>';
+        ? '<div class="row"><a class="btn on-color" href="#ders-5-1-6-dosya-klasor">' + (T() ? "Derse git" : "Başla") + '</a>' + (T() ? '<a class="btn on-color-line" href="#yazdir-5-1-6-dosya-klasor">' + ico("yazdir") + ' Çalışma kâğıdı</a>' : "") + '</div>'
+        : '<p>Bu haftanın dersi henüz hazır değil.</p><div class="row"><button type="button" class="btn on-color" data-wk="' + (p.hafta - 1) + '">Son hazır ders: ' + (p.hafta - 1) + '. hafta</button></div>';
       return '<div class="wk-hero" style="background:var(--theme-' + p.tema + ')"><div class="wk-no" aria-hidden="true"><b>' + w + '</b><small>hafta</small></div><div>' +
         '<h2><span class="sr">' + w + '. hafta: </span>' + esc(p.baslik) + '</h2>' + (T() ? '<p class="wk-codes"><span class="tag">BTY.5.1.6</span></p>' : "") + body + '</div></div>';
     },
@@ -367,7 +367,7 @@ body{background:var(--surface-subtle)}
   });
 
   add({ id: "yan-kart", group: "Kartlar", name: "Yan kart", cls: ".side-card",
-    desc: "Bu hafta kartının yanında kısa yol: kaldığın yer, Bütün dersler, Kazanım Haritası.",
+    desc: "Bu hafta kartının yanında kısa yol: kaldığın yer, Bütün dersler, Kazanım haritası.",
     where: "Ana sayfa.",
     rules: ["En az 88 px, 2 px kenarlık.", "İkon karesi gri ya da gittiği dersin tema rengi.", "Üstte küçük açıklama, altta kalın hedef adı."],
     props: [
@@ -378,7 +378,7 @@ body{background:var(--surface-subtle)}
     ],
     render: function (p) { return '<a class="side-card" href="#"><span class="sq"' + (p.renk ? ' style="background:var(--theme-' + p.renk + ')"' : "") + '>' + ico(p.ikon) + '</span><span><small>' + esc(p.ust) + '</small>' + esc(p.baslik) + '</span></a>'; },
     wrap: function (p, h) { return '<div style="width:340px">' + h + '</div>'; },
-    variants: [["Kaldığın yer", {}], ["Kazanım Haritası", { ust: "Süreç bileşenleri", baslik: "Kazanım Haritası", ikon: "harita", renk: "" }], ["Bütün dersler", { ust: "Hepsi", baslik: "Bütün dersler", ikon: "bulmaca", renk: "" }]]
+    variants: [["Kaldığın yer", {}], ["Kazanım haritası", { ust: "Süreç bileşenleri", baslik: "Kazanım haritası", ikon: "harita", renk: "" }], ["Bütün dersler", { ust: "Hepsi", baslik: "Bütün dersler", ikon: "bulmaca", renk: "" }]]
   });
 
   add({ id: "ders-karti", group: "Kartlar", name: "Ders kartı", cls: ".all-cards a",
@@ -419,8 +419,8 @@ body{background:var(--surface-subtle)}
   });
 
   add({ id: "ayar-karti", group: "Kartlar", name: "Ayar kartı", cls: ".setting.card",
-    desc: "Öğretmen Masası'nda bir ayar ve seçenekleri.",
-    where: "Öğretmen Masası.",
+    desc: "Öğretmen masası'nda bir ayar ve seçenekleri.",
+    where: "Öğretmen masası.",
     rules: ["Başlıkta 40 px renkli ikon karesi (<code>.sq-sm</code>).", "Seçenekler seçenek düğmesidir (<code>.opt-group</code>).", "Her ayar ayrı kart."],
     props: [{ k: "secili", l: "Seçili", t: "seg", d: "lab", o: Object.keys(BD.envs).map(function (k) { return [k, BD.envs[k].short]; }) }],
     render: function (p) {
@@ -441,44 +441,44 @@ body{background:var(--surface-subtle)}
     render: function (p) {
       var link = function (h, t) { return '<a class="chip-btn t-only" href="#' + h + '"' + (p.aktif === h ? ' aria-current="page"' : "") + '>' + t + '</a>'; };
       return '<header class="top"><div class="top-in"><a class="logo" href="#home"><span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>Bilişim Defteri</a>' +
-        '<div class="search" role="search"><label for="ds-q2" class="sr">Ders ara</label><input id="ds-q2" type="search" placeholder="🔍 Ders, hafta, kod" autocomplete="off"></div>' +
-        '<nav aria-label="Ana menü">' + link("kazanimlar", "Kazanım Haritası") + link("kagitlar", "Çalışma Kâğıtları") + link("ogretmen", "Öğretmen Masası") +
+        '<div class="search" role="search"><label for="ds-q2" class="sr">Ders ara</label><input id="ds-q2" type="search" placeholder="Ders, hafta, kod" autocomplete="off"></div>' +
+        '<nav aria-label="Ana menü">' + link("kazanimlar", "Kazanım haritası") + link("kagitlar", "Çalışma kâğıtları") + link("ogretmen", "Öğretmen masası") +
         '<span class="top-set"><button type="button" class="chip-btn">' + (T() ? "Rol: Öğretmen" : ico("lock") + "Öğretmen") + '</button>' +
         '<button type="button" class="chip-btn t-only" aria-label="Yazıyı büyüt" aria-pressed="' + bool(p.buyuk) + '">A+</button></span></nav></div></header>';
     },
     // Bandın sıkı düzeni ekran genişliğine (1180 px) bağlı; önizleme geniş ekrandaki gibi çizilir, sahne yatay kayar
     wrap: function (p, h) { return '<div style="min-width:1200px">' + h + '</div>'; },
     width: "full",
-    variants: [["Ana sayfada", {}], ["Kazanım Haritası açık", { aktif: "kazanimlar" }], ["A+ açık", { buyuk: true }]]
+    variants: [["Ana sayfada", {}], ["Kazanım haritası açık", { aktif: "kazanimlar" }], ["A+ açık", { buyuk: true }]]
   });
 
   add({ id: "yol", group: "Gezinme", name: "Yol", cls: ".crumbs",
     desc: "Ana sayfadan bu sayfaya giden yol.",
-    where: "Kazanım Haritası, Çalışma Kâğıtları, Öğretmen Masası.",
+    where: "Kazanım haritası, Çalışma kâğıtları, Öğretmen masası.",
     rules: ["Küçük ve soluk; sayfa başlığının üstünde.", "Son öğe bağlantı değildir."],
-    props: [{ k: "sayfa", l: "Sayfa", t: "text", d: "Kazanım Haritası" }],
+    props: [{ k: "sayfa", l: "Sayfa", t: "text", d: "Kazanım haritası" }],
     render: function (p) { return '<nav class="crumbs"><a href="#home">Ana sayfa</a> › ' + esc(p.sayfa) + '</nav>'; },
     variants: [["Varsayılan", {}]]
   });
 
   add({ id: "hafta-listesi", group: "Gezinme", name: "Hafta listesi", cls: ".unit, .week",
     desc: "Temalara bölünmüş 34 hafta. Öğretmen dersi hafta numarasıyla bulur.",
-    where: "Öğretmen ana sayfası, Çalışma Kâğıtları.",
-    rules: ["Tema başlığında temanın renginde numara karesi (<code>.tn-sq</code>).", "Satırda \"7. hafta · Ders adı\", sağda kodlar ve sabit genişlikte durum etiketi.", "Öğretmende her satır açılır: kazanım, Derse git ve Çalışma kâğıdı. Çalışma Kâğıtları sayfasında satır doğrudan kâğıdı açan bağlantıdır.", "Yalnızca öğretmende."],
-    props: [{ k: "tur", l: "Tür", t: "seg", d: "liste", o: [["liste", "Ana sayfa"], ["kagit", "Çalışma Kâğıtları"]] }, { k: "acik", l: "Hazır satır açık", t: "bool", d: true }],
+    where: "Öğretmen ana sayfası, Çalışma kâğıtları.",
+    rules: ["Tema başlığında temanın renginde numara karesi (<code>.tn-sq</code>).", "Satırda \"7. hafta · Ders adı\", sağda kodlar ve sabit genişlikte durum etiketi.", "Öğretmende her satır açılır: kazanım, Derse git ve Çalışma kâğıdı. Çalışma kâğıtları sayfasında satır doğrudan kâğıdı açan bağlantıdır.", "Yalnızca öğretmende."],
+    props: [{ k: "tur", l: "Tür", t: "seg", d: "liste", o: [["liste", "Ana sayfa"], ["kagit", "Çalışma kâğıtları"]] }, { k: "acik", l: "Hazır satır açık", t: "bool", d: true }],
     render: function (p) {
       var t = TH[0], plan = BD.plan["5"].filter(function (x) { return x.theme === 1; }).slice(4, 7);
-      if (p.tur === "kagit") return '<section class="unit"><div class="unit-h"><h2><span class="tn-sq" style="background:var(--action-primary)">5</span>5. Sınıf</h2></div><ul class="weeks">' +
+      if (p.tur === "kagit") return '<section class="unit"><div class="unit-h"><h2><span class="tn-sq" style="background:var(--action-primary)">5</span>5. sınıf</h2></div><ul class="weeks">' +
         '<li><a class="week" href="#yazdir-5-1-6-dosya-klasor"><span><b class="wk">7. hafta</b> · Dosya ve Klasör Yönetimi</span><span class="row"><span class="tag code">BTY.5.1.6</span><span aria-hidden="true">→</span></span></a></li></ul></section>';
       var rows = plan.map(function (x) {
         var tags = '<span class="row"><span class="tag code">' + x.outcome + '</span>' + (x.lesson ? '<span class="tag ready">Hazır</span>' : '<span class="tag soon">Yakında</span>') + '</span>';
-        var body = x.lesson ? '<p><span class="tag code">' + x.outcome + '</span> ' + esc(outcomeTitle(x.outcome)) + '</p><div class="row"><a class="btn primary" href="#ders-' + x.lesson + '">Derse git →</a><a class="btn" href="#yazdir-' + x.lesson + '">' + ico("yazdir") + ' Çalışma kâğıdı</a></div>' : '<p class="hint">Bu haftanın dersi henüz hazır değil.</p>';
+        var body = x.lesson ? '<p><span class="tag code">' + x.outcome + '</span> ' + esc(outcomeTitle(x.outcome)) + '</p><div class="row"><a class="btn primary" href="#ders-' + x.lesson + '">Derse git</a><a class="btn" href="#yazdir-' + x.lesson + '">' + ico("yazdir") + ' Çalışma kâğıdı</a></div>' : '<p class="hint">Bu haftanın dersi henüz hazır değil.</p>';
         return '<li data-w="' + x.w + '"><details class="week-d"' + (x.lesson && bool(p.acik) ? " open" : "") + '><summary class="week' + (x.lesson ? "" : " soon") + '"><span><b class="wk">' + x.w + '. hafta</b> · ' + esc(x.title) + '</span>' + tags + '</summary><div class="week-body">' + body + '</div></details></li>';
       }).join("");
       return '<details class="unit" open><summary><div class="unit-h"><h2><span class="tn-sq" style="background:var(--theme-1)">1</span>' + esc(t.name) + '</h2><small>1–7. hafta · ' + t.hours + ' ders saati<span class="chev" aria-hidden="true"></span></small></div></summary><ul class="weeks">' + rows + '</ul></details>';
     },
     width: "full",
-    variants: [["Satır kapalı", { acik: false }], ["Satır açık", {}], ["Çalışma Kâğıtları", { tur: "kagit" }]]
+    variants: [["Satır kapalı", { acik: false }], ["Satır açık", {}], ["Çalışma kâğıtları", { tur: "kagit" }]]
   });
 
   add({ id: "ders-bandi", group: "Gezinme", name: "Ders bandı", cls: ".lesson-band",
@@ -488,7 +488,7 @@ body{background:var(--surface-subtle)}
     props: [{ k: "tema", l: "Tema", t: "select", d: "1", o: themeOpts }, { k: "biten", l: "Biten bölüm", t: "seg", d: "2", o: [["0", "0"], ["2", "2"], ["6", "6"]] }],
     render: function (p) {
       var th = TH[p.tema - 1];
-      return '<div class="lesson-band" style="background:var(--theme-' + p.tema + ')"><a class="back" href="#home" aria-label="Ana sayfa">' + ico("back") + '</a><div><small>5. Sınıf · 7. hafta' + (T() ? ' · Tema ' + p.tema + ': ' + esc(th.name) + ' · ' + esc(L.duration) : "") + '</small><h1>' + esc(L.title) + '</h1></div>' +
+      return '<div class="lesson-band" style="background:var(--theme-' + p.tema + ')"><a class="back" href="#home" aria-label="Ana sayfa">' + ico("back") + '</a><div><small>5. sınıf · 7. hafta' + (T() ? ' · Tema ' + p.tema + ': ' + esc(th.name) + ' · ' + esc(L.duration) : "") + '</small><h1>' + esc(L.title) + '</h1></div>' +
         (T() ? '<span class="band-code">' + L.outcome + '</span></div>' : '<div class="band-prog"><span>' + p.biten + ' / 6 bitti</span><div class="bar"><span style="width:' + Math.round(p.biten / 6 * 100) + '%"></span></div></div></div>');
     },
     width: "full",
@@ -521,7 +521,7 @@ body{background:var(--surface-subtle)}
       return '<div class="block-h"><span class="sq sec-' + p.bolum + '">' + ico(p.bolum) + '</span><div><h2>' + SEC[p.bolum] + '</h2><p>' + esc(p.aciklama) + '</p></div><button type="button" class="btn sec-back" data-tab="hub" style="margin-left:auto">' + ico("back") + ' Bölümler</button></div>';
     },
     width: "full",
-    variants: [["Deftere yaz", {}], ["Etkinlik", { bolum: "etkinlik", aciklama: "Adımları sırayla yap. Bitirdiğin adımda \"Yaptım\"a bas." }]]
+    variants: [["Deftere yaz", {}], ["Etkinlik", { bolum: "etkinlik", aciklama: "Görevleri sırayla yap. Bitirdiğin adımda \"Yaptım\"a tıkla." }]]
   });
 
   // Slayt: gerçek ders verisi (5-1-6)
@@ -534,6 +534,7 @@ body{background:var(--surface-subtle)}
       (s.reveal ? '<button type="button" class="reveal">Cevabı göster</button><p class="reveal-ans"' + (open ? "" : " hidden") + '>' + esc(s.reveal) + '</p>' : "") + num + '</div>';
   };
   var q0 = L.quiz[0];
+  var quizFb = function (q, n) { return n < 2 ? "Az kaldı! " + q.hint + " Bir daha dene." : "Bu sefer olmadı. " + q.why + " Doğru cevap: " + q.o[q.a] + " ✓"; };
   var SLIDES = { baslik: [L.slides[0], 0], metin: [L.slides[2], 2], sutun: [L.slides[4], 4], liste: [L.slides[5], 5], tahmin: [{ h: q0.q, p: q0.o.join(" · "), reveal: q0.o[q0.a] }, 3] };
   add({ id: "slayt", group: "Ders içeriği", name: "Slayt", cls: ".deck, .slide",
     desc: "Tahtaya yansıtılan ders sunumu. Öğrenci aynı sunumu kendi bilgisayarında açar.",
@@ -568,27 +569,28 @@ body{background:var(--surface-subtle)}
   add({ id: "test", group: "Ders içeriği", name: "Test sorusu", cls: ".q, .opts",
     desc: "Mini testte bir soru ve şıkları.",
     where: "Mini test bölümü.",
-    rules: ["Şıklar A), B), C) ile başlar.", "Cevaptan sonra şıklar kilitlenir: doğru yeşil ✓, yanlış kırmızı ✕.", "Altında sonuç mesajı (<code>.fb</code>)."],
-    props: [{ k: "durum", l: "Durum", t: "seg", d: "", o: [["", "Cevapsız"], ["dogru", "Doğru"], ["yanlis", "Yanlış"]] }],
+    rules: ["Şıklar A), B), C) ile başlar.", "İki deneme: ilk yanlış şık kırmızı ✕ ve kilitli, diğerleri açık kalır, altında ipucu. İkinci yanlışta bütün şıklar kilitlenir, doğru şık yeşil ✓.", "Sonuç ilk denemedeki doğruları sayar: \"5 sorudan 4'ü ilk denemede doğru.\""],
+    props: [{ k: "durum", l: "Durum", t: "seg", d: "", o: [["", "Cevapsız"], ["dogru", "Doğru"], ["ipucu", "İlk yanlış"], ["yanlis", "İkinci yanlış"]] }],
     render: function (p) {
-      var q = q0, pick = p.durum === "dogru" ? q.a : p.durum === "yanlis" ? (q.a + 1) % q.o.length : -1;
+      var q = q0, w1 = (q.a + 1) % q.o.length, w2 = (q.a + 2) % q.o.length, d = p.durum;
+      var picks = d === "dogru" ? [q.a] : d === "ipucu" ? [w1] : d === "yanlis" ? [w1, w2] : [], locked = d === "dogru" || d === "yanlis";
       return '<div class="q"><p>1. ' + esc(q.q) + '</p><div class="opts">' + q.o.map(function (o, i) {
-        var cls = pick < 0 ? "" : i === q.a ? "right" : i === pick ? "wrong" : "";
-        return '<button type="button"' + (cls ? ' class="' + cls + '"' : "") + (pick < 0 ? "" : " disabled") + '>' + String.fromCharCode(65 + i) + ') ' + esc(o) + '</button>';
-      }).join("") + '</div><div class="fb' + (pick < 0 ? "" : pick === q.a ? " r" : " w") + '">' + (pick < 0 ? "" : pick === q.a ? "Doğru! 👏" : "Olmadı. Doğru cevap ✓ işaretli olan.") + '</div></div>';
+        var cls = picks.indexOf(i) >= 0 && i !== q.a ? "wrong" : (locked && i === q.a ? "right" : "");
+        return '<button type="button"' + (cls ? ' class="' + cls + '"' : "") + (locked || cls ? " disabled" : "") + '>' + String.fromCharCode(65 + i) + ') ' + esc(o) + '</button>';
+      }).join("") + '</div><div class="fb' + (d === "dogru" ? " r" : d === "ipucu" ? " h" : d === "yanlis" ? " w" : "") + '">' + (d === "dogru" ? "Doğru! 👏" : d ? esc(quizFb(q, picks.length)) : "") + '</div></div>';
     },
     width: "full",
-    variants: [["Cevapsız", {}], ["Doğru", { durum: "dogru" }], ["Yanlış", { durum: "yanlis" }]]
+    variants: [["Cevapsız", {}], ["Doğru", { durum: "dogru" }], ["İlk yanlış", { durum: "ipucu" }], ["İkinci yanlış", { durum: "yanlis" }]]
   });
 
   add({ id: "adimlar", group: "Ders içeriği", name: "Etkinlik adımları", cls: ".act-steps",
     desc: "Bilgisayar ya da sınıf etkinliğinin adımları. Öğrenci bitirdiği adımı işaretler.",
     where: "Etkinlik bölümü.",
-    rules: ["Numaralı, her adım ayrı kutu; biten adımda yeşil ✓ ve \"Yaptım ✓\".", "Bilgisayar adımında Pardus ve Windows yönergesi ayrı yazılır, seçili işletim sistemi gösterilir.", "Üstte hedef kutusu (<code>.goal</code>)."],
+    rules: ["Numaralı, her adım ayrı kutu; biten adımda yeşil ✓ ve \"Yaptım ✓\".", "Bilgisayar adımında Pardus ve Windows yönergesi ayrı yazılır, seçili işletim sistemi gösterilir.", "Üstte hedef kutusu (<code>.goal</code>): öğrenciye \"Görev:\", öğretmene \"Hedef:\". Emoji yok."],
     props: [{ k: "os", l: "İşletim sistemi", t: "seg", d: "pardus", o: [["pardus", "Pardus"], ["windows", "Windows"]] }, { k: "biten", l: "Biten adım", t: "seg", d: "1", o: [["0", "0"], ["1", "1"], ["3", "3"]] }],
     render: function (p) {
       var A = L.activities.lab, n = +p.biten;
-      return '<div class="card activity"><div class="goal"><b>🎯 Hedef:</b> ' + esc(A.goal) + '</div><ol class="act-steps">' + A.steps.slice(0, 3).map(function (st, i) {
+      return '<div class="card activity"><div class="goal"><b>' + (T() ? "Hedef:" : "Görev:") + '</b> ' + esc(A.goal) + '</div><ol class="act-steps">' + A.steps.slice(0, 3).map(function (st, i) {
         var t = typeof st === "string" ? { t: st } : st, d = i < n;
         var os = t.pardus || t.windows ? '<span class="os"><b>' + (p.os === "pardus" ? "Pardus" : "Windows") + ':</b> ' + esc(p.os === "pardus" ? (t.pardus || t.windows) : (t.windows || t.pardus)) + '</span>' : "";
         return '<li class="' + (d ? "done" : "") + '"><span>' + esc(t.t) + os + '</span><button type="button">' + (d ? "Yaptım ✓" : "Yaptım") + '</button></li>';
@@ -662,13 +664,13 @@ body{background:var(--surface-subtle)}
         var rows = [
           ["Sayfa başlığı", ".hello h1", '<div class="hello"><h1>Merhaba! Sınıfını seç</h1></div>'],
           ["Ders adı", ".lesson-band h1", '<div class="lesson-band" style="background:var(--theme-1);padding:8px 16px"><div><h1>' + esc(L.title) + '</h1></div></div>'],
-          ["Sayfa başlığı (iç)", ".section-h h1", '<div class="section-h"><h1>Kazanım Haritası</h1></div>'],
+          ["Sayfa başlığı (iç)", ".section-h h1", '<div class="section-h"><h1>Kazanım haritası</h1></div>'],
           ["Bölüm başlığı", ".block-h h2", '<div class="block-h"><div><h2>Deftere yaz</h2></div></div>'],
           ["Tema başlığı", ".unit-h h2", '<div class="unit-h" style="padding:0"><h2>' + esc(TH[0].name) + '</h2></div>'],
           ["Alan etiketi", ".label-h", '<div class="label-h" style="margin:0">Bu hafta</div>'],
           ["Gövde", "body", '<p style="margin:0">' + esc(L.slides[2].p) + '</p>'],
           ["Yardımcı yazı", ".hint", '<p class="hint" style="margin:0">Hafta adları ve dağılımı örnektir, MEB programından gelmez.</p>'],
-          ["Yol", ".crumbs", '<nav class="crumbs"><a href="#home">Ana sayfa</a> › Kazanım Haritası</nav>'],
+          ["Yol", ".crumbs", '<nav class="crumbs"><a href="#home">Ana sayfa</a> › Kazanım haritası</nav>'],
           ["Etiket", ".tag", '<span class="tag ready">Hazır</span>'],
           ["Kod", ".tag.code", '<span class="tag code">BTY.5.1.6</span>']
         ];
@@ -707,11 +709,11 @@ body{background:var(--surface-subtle)}
         '</div><p class="ds-note">Site kendinden "biz" diye söz etmez. Yazı tipi Mulish; dosya adı ve kod eş aralıklı yazılır (Mulish\'te I ile l benzer).</p></section>' +
         sec("Öğrenci metni", "", [["Etkinlik tamamlandı.", "Görev tamam! 🎉 Sırada Oyun var."], ["Bu derste dosya işlemleri öğretilecektir.", "Dağınık masaüstünü toparla!"], ["Başarı oranınız %80.", "5 sorudan 4'ü doğru."], ["Hadi bakalım minik dostum!", "Görev: Kendi klasörünü oluştur."]]) +
         sec("Öğretmen metni", "", [["Bu haftanın dersi üzerinde çalışıyoruz.", "Bu haftanın dersi henüz hazır değil. 7. haftanın dersini kullanabilirsiniz."], ["Giriş yapılır.", "Giriş · 5 dk: 2. slayttaki soruyu sorun. Konuya merak uyandırır."], ["Ayarlarınız başarıyla kaydedilmiştir!", "Ayarlar kaydedildi. Dersler artık Pardus yönergeleriyle açılır."]]) +
-        sec("Yanlış cevap", "Sonuç + neden. İlk yanlışta ipucu ve bir hak daha, ikincide doğru cevap.", [["Yanlış!", "Az kaldı! Uzantıya bak: ses dosyaları .ogg ya da .mp3 olur."], ["Olmadı.", "Bu sefer olmadı. .png bir resim dosyasıdır. Ses dosyası: kayit.ogg ✓"]]) +
+        sec("Yanlış cevap", "Sonuç + neden. İlk yanlışta ipucu ve bir hak daha, ikincide doğru cevap.", [["Yanlış!", "Az kaldı! Uzantıya bak: noktadan sonra gelen kısım dosyanın türünü söyler. Bir daha dene."], ["Olmadı. Doğru cevap ✓ işaretli olan.", "Bu sefer olmadı. .ogg bir ses dosyasıdır. Doğru cevap: kayit.ogg ✓"]]) +
         sec("Düğme", "Fiille başlar; ok, ünlem, emoji yok. Ok yalnızca slayt ve hafta oklarında.", [["Başla →", "Başla"], ["Tamam", "Kontrol et"], ["Evet", "Evet, sıfırla"]]) +
-        sec("Başlık", "Cümle düzeni: yalnız ilk harf büyük, özel adlar hariç. Sonda nokta yok.", [["Kazanım Haritası", "Kazanım haritası"], ["Dosya ve Klasör Yönetimi", "Dosya ve klasör yönetimi"], ["Bilgi Dünyasına Yolculuk", "Bilgisayar sistemleri"]]) +
+        sec("Başlık", "Cümle düzeni: yalnız ilk harf büyük, özel adlar hariç. Sonda nokta yok. Ders, tema ve kazanım adları MEB'deki gibi kalır (Dosya ve Klasör Yönetimi).", [["Kazanım Haritası", "Kazanım haritası"], ["Haftanın Bulmacası", "Haftanın bulmacası"], ["Bilgi Dünyasına Yolculuk", "Bilgisayar sistemleri"]]) +
         sec("Yönerge ve boş durum", "Ekranla ilgili fiil \"tıkla\". Boş durum: neden boş + ilk adım.", [["Lütfen maddeleri defterinize yazınız.", "Sadece bu maddeleri defterine geçir."], ["Butona basarak cevabı görebilirsin!", "Cevabı görmek için düğmeye tıkla."], ["Sonuç bulunamadı.", "\"klasor\" için sonuç yok. Ders adı ya da hafta numarası yaz."]]) +
-        '<p class="ds-note">Bu kuralların bir kısmı sitede henüz uygulanmadı (düğmedeki ok, sayfa adlarının büyük harfi, testte tekrar deneme). Liste: <code>YAZIM-REHBERI.md</code> → "Sitede henüz uygulanmayanlar".</p>';
+        '';
     } };
   var FOUND = ["renkler", "yazi", "olculer", "ikonlar", "yazim"];
 
