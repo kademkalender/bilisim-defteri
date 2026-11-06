@@ -27,6 +27,7 @@ Kayıt şablonu:
 - `0c27acc` Tasarım sistemi kataloğu `tasarim-sistemi.html` (Senin UI örnek alındı): Renkler (canlı değer ve kontrast), Yazı, Ölçüler, İkonlar ve 6 grupta 32 bileşen. Her bileşende Önizleme / Çeşitler / Kod sekmesi, Özellikler paneli, kullanım kuralları; üstte Öğretmen/Öğrenci görünümü. Bileşenler sitenin `style.css`'iyle ve 5-1-6 dersinin verisiyle çizilir. CLAUDE.md'ye 7. kural, README ve TASARIM-SISTEMI.md'ye bağlantı. `file://` altında 36 sayfa konsol hatasız, 375 px'te taşma yok, testler 33/33, dogrula 0.
 - `5b924ee` Yazım rehberi `YAZIM-REHBERI.md` (ses tonu ve arayüz metni, Senin UI ses tonu rehberi örnek alındı) ve katalogda "Ses ve yazım" sayfası. Kararlar kullanıcıya örnekli sorularla soruldu. CLAUDE.md, README, ICERIK-REHBERI ve TASARIM-SISTEMI rehbere bağlandı.
 - `a8f081d` Yazım rehberi siteye uygulandı: düğmelerde ok yok, sayfa adları cümle düzeninde, öğrenciye görev dili, kutlama dışında emoji yok, "tıkla", öğretmene ayrı bölüm açıklamaları. Mini testte iki deneme: ilk yanlışta ipucu (`hint`), ikincide neden (`why`) ve doğru cevap; sonuç ilk denemedeki doğruları sayar. 8 dersteki 37 soruya `hint`/`why` yazıldı, `dogrula.js` eksikte uyarır, eski test kayıtları okunur. Testler 33/33, dogrula 0, `file://` konsolu temiz.
+- `99da9d9` Sentetik kullanılabilirlik testi `tools/ux-test/` (paketsiz: başsız Chrome + Node). Betiklenmiş persona 4 görevi 768 px düzeltmeleri öncesinde (`995abb4`) ve sonrasında yaptı, 1366×657, tarih 8. haftaya sabit. 8/8 koşu başarılı. Tıklama eşit (14 ve 14); eski sürümde 4 kaydırma adımı ve 1 dolayım vardı, yenide yok (Sunum'da "Sonraki" düğmesi ve sanal masaüstündeki boş yer artık ekranda). "Son hazır ders" düğmesi bu testte tıklama kazandırmadı, çünkü hazır ders bir hafta gerideydi. Rapor `tools/ux-test/results/report.html`, git dışı.
 
 **Kararlar**
 - Oturum başında GitHub'daki yeni commit'ler çekilir (CLAUDE.md "Oturum başı").
@@ -41,6 +42,7 @@ Kayıt şablonu:
 - Başlık ve sayfa adları cümle düzeninde; düğme fiil ve okusuz; ekranla ilgili fiil "tıkla".
 - Ders, tema ve kazanım adları gibi resmî adlar cümle düzenine çevrilmez, MEB'deki gibi kalır (kullanıcı kararı).
 - Yazı tipi Mulish kalır (Atkinson Hyperlegible ve Lexend ile karşılaştırıldı); dosya adı ve kod eş aralıklı yazılır.
+- Sentetik test sonuçları kullanıcı araştırması diye sunulmaz; aracın çıktıları (`results/`) git'e girmez, `package.json` eklenmez.
 - Geri bildirim ve etkinlik etiketlerindeki emoji (🎉 👏 🌟 🎯 📋 🌐 📇) süs olarak kaldı; yalnızca ikon görevindekiler SVG oldu.
 
 **Yarım kalan işler**
@@ -49,6 +51,8 @@ Kayıt şablonu:
 - [ ] 37 test sorusunun ipucu ve neden metinleri Claude'un yazdığı ilk taslak; ekipte biri içerik olarak gözden geçirmeli.
 - [ ] Kadem yazım rehberini ve test değişikliğini görmedi.
 - [ ] Kadem bölüm kartı dizilişi ve öğretmen bölüm başlığı değişikliklerini görmedi.
+- [ ] Pardus ayarında sanal masaüstünün sağ tık menüsü "Yeni › Klasör" gösteriyor; ders yönergesi Pardus için "Klasör Oluştur…" diyor. Hangisinin doğru olduğuna bakılmalı.
+- [ ] Sentetik test yalnızca bir haftalık boşlukla denendi; hazır derse uzak bir haftada (ör. 12. hafta) "Son hazır ders" düğmesi ölçülmedi.
 - [ ] `tools/sim-tarayici.test.js` içindeki "eski kayıt baştan başlar" testi tüm testlerle birlikte koşunca ara sıra düşüyor. Süre sınırına ya da bekleme süresine bakılmalı.
 
 ---
