@@ -11,7 +11,7 @@ window.BD = window.BD || { lessons: {} };
 
 BD.plan = {
   "5": [
-    { w: 1, theme: 1, outcome: "BTY.5.1.1", title: "Bilişim Teknolojilerini Tanıyalım", lesson: null },
+    { w: 1, theme: 1, outcome: "BTY.5.1.1", title: "Bilişim Teknolojilerini Tanıyalım", lesson: "5-1-1-bilisim-teknolojileri" },
     { w: 2, theme: 1, outcome: "BTY.5.1.2", title: "Bilişim Teknolojilerinin Etkileri ve Dijital Sağlık", lesson: null },
     { w: 3, theme: 1, outcome: "BTY.5.1.3", title: "Dijital Vatandaşlık", lesson: null },
     { w: 4, theme: 1, outcome: "BTY.5.1.4", title: "Yapay Zekâ ile Tanışalım", lesson: null },

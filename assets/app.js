@@ -232,7 +232,8 @@
       (s.p ? '<p>' + esc(s.p) + '</p>' : "") +
       (s.list ? '<ul>' + s.list.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' : "") +
       (s.cols ? '<div class="cols">' + s.cols.map(function (c) { return '<div><b>' + esc(c.h) + '</b>' + esc(c.p) + '</div>'; }).join("") + '</div>' : "") +
-      (s.tree ? '<div class="tree">' + esc(s.tree) + '</div>' : "");
+      (s.tree ? '<div class="tree">' + esc(s.tree) + '</div>' : "") +
+      (s.reveal ? '<button type="button" class="reveal">Cevabı göster</button><p class="reveal-ans" tabindex="-1" hidden>' + esc(s.reveal) + '</p>' : "");
     if (s.side) return '<div class="slide slide-split' + (i === 0 ? " on" : "") + '"><div class="slide-text">' + body + '</div><div class="slide-side-img">' + imgBlock(id, s.side, s.alt) + '</div>' + num + '</div>';
     return '<div class="slide' + (i === 0 ? " on" : "") + '">' + body + num + '</div>';
   }
@@ -443,7 +444,10 @@
     $("#prev").onclick = function () { go(cur - 1); };
     $("#next").onclick = function () { go(cur + 1); };
     dots.forEach(function (d) { d.onclick = function () { go(+d.getAttribute("data-i")); }; });
-    stage.addEventListener("click", function (e) { var r = stage.getBoundingClientRect(); go(e.clientX - r.left > r.width / 2 ? cur + 1 : cur - 1); });
+    stage.addEventListener("click", function (e) {
+      var rv = e.target.closest(".reveal");
+      if (rv) { rv.nextSibling.hidden = false; rv.nextSibling.focus(); rv.hidden = true; return; } // "Tahmin et" slaytı: tıklama slaytı geçirmez
+      var r = stage.getBoundingClientRect(); go(e.clientX - r.left > r.width / 2 ? cur + 1 : cur - 1); });
     var setFs = function (on) {
       deck.classList.toggle("fs", on); $("#fs").textContent = on ? "✕ Kapat" : "Tam ekran";
       try { if (on && deck.requestFullscreen) deck.requestFullscreen().catch(function () {}); else if (!on && document.fullscreenElement) document.exitFullscreen().catch(function () {}); } catch (e) {}
@@ -788,6 +792,7 @@
           (s.list ? '<ul>' + s.list.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' : "") +
           (s.cols ? '<ul>' + s.cols.map(function (c) { return '<li><b>' + esc(c.h) + ':</b> ' + esc(c.p) + '</li>'; }).join("") + '</ul>' : "") +
           (s.tree ? '<pre style="margin:4px 0;font-family:var(--font-mono);font-size:.85rem">' + esc(s.tree) + '</pre>' : "") +
+          (s.reveal ? '<div><i>Cevap:</i> ' + esc(s.reveal) + '</div>' : "") +
           (printOpts.gorsel && (s.img || s.side) ? '<div class="print-img-wrap">' + imgBlock(L.id, s.img || s.side, s.alt, "print-slide-img") + '</div>' : "") +
           '</div>';
       }).join("");

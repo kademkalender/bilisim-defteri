@@ -42,6 +42,11 @@ Bilişim Defteri'ne ders yazarken uyulacak kurallar. Amaç: her dersin **kazanı
 | Bulmaca | 6–8 kelime, kelimeler derste geçmiş olmalı. Boşluklu kelime yok |
 | Ders akışı | Toplam 80 dakika (40+40) |
 
+### Tahmin et slaytı
+
+- Merak uyandırmak için slayta `reveal` alanı eklenir. Önce `h` ve `p` ile soru görünür, öğretmen sınıfın tahminlerini alır, sonra "Cevabı göster" düğmesine basar.
+- Bir derste 2–3 tane yeterli. Cevap 1–2 cümle. Çalışma kâğıdının konu özetinde cevap da yazılır.
+
 ### Slayt görselleri (isteğe bağlı)
 
 - Canva ya da PowerPoint'ten **1600×900 piksel PNG** olarak dışa aktarılır, `content/img/<ders-id>/` klasörüne konur.
