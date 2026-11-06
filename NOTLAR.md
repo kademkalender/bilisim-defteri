@@ -16,6 +16,26 @@ Kayıt şablonu:
 
 ---
 
+## 2026-11-06 · Kadem Kalender + Claude Code (Opus 5.5)
+
+**Ne yapıldı**
+- GitHub kontrol edildi: gelen ya da giden commit yok.
+- `5892da3` Emoji taraması. Eski Windows ve Pardus'ta kutu görünebilecek yeni emojiler (U+1F900 sonrası) değiştirildi: 🧩 🧠 → ⚙️, 🥽 → 👓, 🤖 → ☁️, 🧰 → 📋. Tam ekran düğmesindeki ⛶ kaldırıldı. `dogrula.js` yeni emojide uyarıyor, kural ICERIK-REHBERI.md §3'te.
+- `ad519b3` 5-1-1 Bilişim Teknolojilerini Tanıyalım (BTY.5.1.1, a-b-c). 11 slayt, 7 bilgi kartı. Etkinlikler: lab'da dün-bugün sunusu, tahtada kavram kavanozu, kâğıtta zaman tüneli afişi. Ayrıca "Teknoloji hangi alanda?" oyunu, 5 soru, 8 kelimelik bulmaca ve dereceli puanlama anahtarı var. Etkinlikler programdaki öğrenme-öğretme uygulamalarından alındı.
+- `ad519b3` Yeni slayt alanı `reveal` ("Tahmin et" slaytı): önce soru görünür, "Cevabı göster" düğmesi cevabı açar. Şablona ve rehbere eklendi.
+- Başsız Chrome'da denendi: üç ortam, cevap düğmesi (fare ve ok tuşu), 11 slaytın ekran görüntüsü, kazanım haritası, yazdırma (4 sayfa). Konsolda hata yok. `node --test tools/*.test.js` 33/33.
+
+**Kararlar**
+- Dört kutulu (`cols`) slaytlarda büyük emoji kullanılmaz, 1366 px'te slayt taşıyor. Emoji başlığın sonuna konur.
+- Emoji süs olarak kalır. Görünmezse de metin anlaşılır olmalı.
+
+**Yarım kalan işler**
+- [ ] Emojiler ve yeni ders gerçek Pardus ve Windows bilgisayarında denenmedi. Pardus'ta renkli emoji yazı tipi olup olmadığı bilinmiyor.
+- [ ] 5-1-1 ekipten biri tarafından okunup onaylanmadı (ICERIK-REHBERI.md §7).
+- [ ] Slayt taşmasını otomatik yakalayan bir kontrol yok. Şimdilik ekran görüntüsüyle bakılıyor.
+
+---
+
 ## 2026-11-05 · Kadem Kalender + Claude Code (Opus 5.5)
 
 **Ne yapıldı**
