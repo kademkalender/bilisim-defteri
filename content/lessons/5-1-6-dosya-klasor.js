@@ -2,7 +2,7 @@
    Süreç bileşenleri: a) temel işlemleri belirler  b) bu işlemleri kullanır  c) sıkıştırmayı verimlilik kapsamında değerlendirir */
 BD.lesson({
   id: "5-1-6-dosya-klasor",
-  grade: "5", theme: 1, week: 7,
+  grade: "5", theme: 1, week: 8,
   title: "Dosya ve Klasör Yönetimi",
   outcome: "BTY.5.1.6",
   covers: ["a", "b", "c"],
@@ -10,7 +10,7 @@ BD.lesson({
   hook: "Bir kütüphanede bütün kitaplar yere karışık atılmış olsaydı aradığın kitabı nasıl bulurdun? Raflar ve etiketler olmasaydı ne olurdu? Bilgisayarda da dosyaları düzenli tutmazsak aynı şey olur.",
 
   slides: [
-    { type: "title", pill: "5. sınıf · 7. hafta", h: "Dosya ve Klasör Yönetimi", p: "Bilgisayarımızı nasıl düzenli tutarız?" },
+    { type: "title", pill: "5. sınıf · 8. hafta", h: "Dosya ve Klasör Yönetimi", p: "Bilgisayarımızı nasıl düzenli tutarız?" },
     { img: "ornek-01.png", alt: "Masaüstünde karışık duran, türlerine göre gruplanmamış, üst üste dağılmış dosyalar (geçici örnek görsel)." },
     { emoji: "📄", h: "Dosya nedir?", p: "Bilgisayarda kaydettiğimiz her bilgi bir dosyadır: bir resim, bir şarkı, bir yazı.", b: "a" },
     { emoji: "📁", h: "Klasör nedir?", p: "Klasör, dosyaları düzenli saklamak için kullandığımız bir raftır. Bir klasörün içinde başka klasörler de olabilir.", b: "a" },

@@ -92,7 +92,7 @@ var html = '<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta nam
   '<h2>Kurulum</h2><div class="card"><ul>' +
   '<li>Versiyonlar: ' + V.map(function (v) { return esc(v.label); }).join(" ve ") + '. Eski versiyon git\'ten ayrı klasöre çıkarıldı.</li>' +
   '<li>Tarayıcı: başsız Chrome, <code>file://</code>, ekran ' + M.viewport.width + '×' + M.viewport.height + ' px, her koşuda boş profil.</li>' +
-  '<li>Tarih ' + esc(M.date.slice(0, 10)) + ' olarak sabitlendi (8. hafta, dersi hazır değil). İlk ziyaret, kayıtlı ilerleme yok.</li>' +
+  '<li>Tarih ' + esc(M.date.slice(0, 10)) + ' olarak sabitlendi (9. hafta, dersi hazır değil). İlk ziyaret, kayıtlı ilerleme yok.</li>' +
   '<li>Persona kuralı iki versiyonda aynı: görevle doğrudan eşleşen, ekranda görünen düğmeye tıklar; yoksa hafta oklarına döner (dolayım); hedef ekranın dışındaysa fare tekerleğiyle kaydırır.</li>' +
   '<li>Tempo: fareyi götürme ' + num(M.tempo.point) + ' sn + tıklama ' + num(M.tempo.press) + ' sn, tuş ' + num(M.tempo.key) + ' sn, düşünme ' + num(M.tempo.think) + ' sn, kaydırma adımı ' + num(M.tempo.wheel) + ' sn (bu sonuncusu bizim varsayımımız).</li>' +
   '</ul></div>' +

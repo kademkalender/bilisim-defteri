@@ -2,7 +2,7 @@
    Süreç bileşenleri: a) temel bileşenleri belirler  b) bileşenler arasındaki ilişkileri belirler */
 BD.lesson({
   id: "5-1-5-bilgisayar-sistemleri",
-  grade: "5", theme: 1, week: 5,
+  grade: "5", theme: 1, week: 6,
   title: "Bilgisayar Sistemleri",
   outcome: "BTY.5.1.5",
   covers: ["a", "b"],
@@ -10,7 +10,7 @@ BD.lesson({
   hook: "Bankamatikten para çekerken neler oluyor? Kartı takıyoruz, şifreyi giriyoruz, makine bir şeyler yapıyor, sonra para ve fiş çıkıyor. Bilgisayar da tam olarak böyle çalışır!",
 
   slides: [
-    { type: "title", pill: "5. sınıf · 5. hafta", h: "Bilgisayar Sistemleri", p: "Bilgisayar hangi parçalardan oluşur ve bu parçalar nasıl birlikte çalışır?" },
+    { type: "title", pill: "5. sınıf · 6. hafta", h: "Bilgisayar Sistemleri", p: "Bilgisayar hangi parçalardan oluşur ve bu parçalar nasıl birlikte çalışır?" },
     { emoji: "❓", h: "Tahmin et: Bankamatikte neler oluyor?", p: "Kartı takıyorsun, şifreni giriyorsun, sonra para ve fiş çıkıyor. Hangileri makineye bilgi veriyor, hangileri bize sonuç veriyor?", reveal: "Kart ve şifre tuşları bilgi verir: giriş. Para ve fiş sonuçtur: çıkış. Arada makinenin içindeki işlemci hesap yapar. Bilgisayar da tam böyle çalışır!", b: "b" },
     { emoji: "⚙️", h: "Bilgisayar sistemi nedir?", p: "Donanım, yazılım ve kullanıcı birlikte çalışarak bir bilgisayar sistemi oluşturur. Biri eksik olursa sistem çalışmaz.", b: "a" },
     { h: "Donanım ve yazılım", cols: [

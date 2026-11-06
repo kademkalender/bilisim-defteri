@@ -248,6 +248,12 @@ Object.keys(BD.lessons).forEach(function (id) {
 Object.keys(BD.plan || {}).forEach(function (grade) {
   var f = "content/plan.js", planned = {};
   BD.plan[grade].forEach(function (entry) {
+    // Etkinlik haftası (Code Week, dönem sonu): tema, kazanım ve ders yok, öğrenciye not gösterilir
+    if (entry.event) {
+      if (entry.outcome || entry.theme || entry.lesson) err(f, grade + ". sınıf " + entry.w + ". hafta: etkinlik haftasında theme, outcome ve lesson olmaz");
+      if (!entry.note) err(f, grade + ". sınıf " + entry.w + ". hafta: etkinlik haftasının note alanı boş");
+      return;
+    }
     [entry.outcome].concat(entry.also || []).forEach(function (code) {
       planned[code] = true;
       if (!findOutcome(code)) err(f, grade + ". sınıf " + entry.w + ". hafta: outcome kodu \"" + code + "\" program.js'te bulunamadı");

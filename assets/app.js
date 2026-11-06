@@ -77,9 +77,9 @@
   var osLabel = function () { return osNow() === "pardus" ? "Pardus" : "Windows"; };
 
   /* ---------- Ana sayfa: sınıf seçimi ve temalara bölünmüş hafta listesi ---------- */
-  var WEEKS = 36; // okul yılı; program 68 saatle 34 haftayı dolduruyor
+  var WEEKS = 36; // plandaki hafta sayısı: programın 34 haftası ve 2 etkinlik haftası
   function lastLesson() { var id = store.get("last", null); return id ? lessonById(id) : null; }
-  function planCodes(p) { return [p.outcome].concat(p.also || []); }
+  function planCodes(p) { return p.outcome ? [p.outcome].concat(p.also || []) : []; } // etkinlik haftasında kod yok
   // Satır açılınca: öğrenci derse giriş düğmesini, öğretmen kazanım, düğmeler ve ders akışını görür
   function weekDetail(p) {
     var L = p.lesson ? lessonById(p.lesson) : null;
@@ -111,16 +111,34 @@
      öğretmen "7. haftayı açın" deyince öğrenci oklarla önceki ya da sonraki haftaya geçer. */
   var shownWeek = {}; // sınıf → şeritte seçilen hafta. Bellekte durur, sayfa yenilenince bu haftaya döner.
   var stripAt = {}, STRIP = 11; // sınıf → şeritte görünen ilk haftanın sırası; şeritte aynı anda 11 hafta
-  // Hafta şeridi: ilk açılışta ve hafta şerit dışından seçilince (Son hazır ders, Bu haftaya dön) seçili hafta ortalanır; ‹ › bir sayfa (11 hafta) geçer
+  // 2. dönemin ilk öğretim haftası (takvimde term2 yoksa 0: dönem ayrımı yapılmaz)
+  function term2Week() {
+    var c = BD.calendar; if (!c || !c.term2 || !window.schoolWeek) return 0;
+    var p = c.term2.split("-"); return window.schoolWeek(new Date(+p[0], +p[1] - 1, +p[2]), c).w;
+  }
+  // Hafta şeridi: ilk açılışta ve hafta şerit dışından seçilince (Son hazır ders) seçili hafta ortalanır.
+  // Bir sayfa dönem sınırını geçmez; ‹ › dönem içinde 11 hafta, dönemin ucunda öbür döneme geçer.
+  // Şeritteki sıranın dönemi: [ilk sıra, son sıra + 1, ad]. Takvimde 2. dönem yoksa tek parça.
+  function stripTerm(plan, at) {
+    var b = plan.map(function (x) { return x.w; }).indexOf(term2Week());
+    return b <= 0 ? [0, plan.length, ""] : at < b ? [0, b, "1. dönem"] : [b, plan.length, "2. dönem"];
+  }
+  function stripMove(plan, at, dir) {
+    var t = stripTerm(plan, at);
+    if (dir > 0) return at + STRIP < t[1] ? Math.min(at + STRIP, t[1] - STRIP) : t[1];
+    return at > t[0] ? Math.max(at - STRIP, t[0]) : Math.max(0, t[0] - STRIP);
+  }
   function weekStrip(g, plan, sel, nowW) {
     var n = plan.length, idx = plan.map(function (x) { return x.w; }).indexOf(sel), at = stripAt[g];
+    var t = stripTerm(plan, at == null ? idx : at);
     if (at == null) at = idx - Math.floor(STRIP / 2);
-    at = stripAt[g] = Math.max(0, Math.min(at, n - STRIP));
+    at = stripAt[g] = Math.max(t[0], Math.min(at, t[1] - STRIP));
+    var term = t[2];
     var page = function (dir) { var off = dir < 0 ? at === 0 : at + STRIP >= n; return '<button type="button" class="wk-page" data-page="' + dir + '" aria-label="' + (dir < 0 ? "Önceki" : "Sonraki") + ' haftalar"' + (off ? " disabled" : "") + '>' + (dir < 0 ? "‹" : "›") + '</button>'; };
-    return '<div class="wk-strip" role="group" aria-label="Haftalar">' + page(-1) + plan.slice(at, at + STRIP).map(function (x) {
+    return (term ? '<div class="wk-term">' + term + '</div>' : "") + '<div class="wk-strip" role="group" aria-label="' + (term ? term + " haftaları" : "Haftalar") + '">' + page(-1) + plan.slice(at, Math.min(at + STRIP, t[1])).map(function (x) {
       var ready = x.lesson && lessonById(x.lesson), now = x.w === nowW;
-      return '<button type="button" class="wk-chip' + (ready ? "" : " soon") + (now ? " now" : "") + '" data-wk="' + x.w + '" aria-pressed="' + (x.w === sel) + '"' + (ready ? ' style="--c:var(--theme-' + x.theme + ')"' : "") +
-        ' aria-label="' + x.w + '. hafta: ' + esc(x.title) + (now ? ", takvime göre bu hafta" : "") + (ready ? "" : ", henüz hazır değil") + '"><b>' + x.w + '</b><small>' + (now ? "takvim" : "hafta") + '</small></button>';
+      return '<button type="button" class="wk-chip' + (ready ? "" : x.event ? " event" : " soon") + (now ? " now" : "") + '" data-wk="' + x.w + '" aria-pressed="' + (x.w === sel) + '"' + (ready ? ' style="--c:var(--theme-' + x.theme + ')"' : "") +
+        ' aria-label="' + x.w + '. hafta: ' + esc(x.title) + (now ? ", takvime göre bu hafta" : "") + (ready ? "" : x.event ? ", etkinlik haftası" : ", henüz hazır değil") + '"><b>' + x.w + '</b><small>' + (now ? "takvim" : x.event ? "etkinlik" : "hafta") + '</small></button>';
     }).join("") + page(1) + '</div>';
   }
   function nowWeek() { return BD.calendar && window.schoolWeek ? window.schoolWeek(new Date(), BD.calendar) : { w: 1, state: "once" }; }
@@ -134,12 +152,12 @@
     // Ders hazır değilse önce geriye, yoksa ileriye doğru en yakın hazır hafta
     var ready = function (x) { return x.lesson && lessonById(x.lesson); };
     var fb = L ? null : plan.slice(0, i).reverse().filter(ready)[0] || plan.slice(i + 1).filter(ready)[0];
-    var label = p.w !== now.w ? (T ? "Seçtiğiniz hafta" : "Seçtiğin hafta") : { ders: "Takvime göre bu hafta", tatil: "Tatilden sonraki ilk hafta", once: "Okulun ilk haftası", sonra: "Yılın son haftası" }[now.state];
+    var label = p.w !== now.w ? (T ? "Seçtiğiniz hafta" : "Seçtiğin hafta") : { ders: now.w === term2Week() ? "Takvime göre 2. dönemin ilk haftası" : "Takvime göre bu hafta", tatil: "Tatilden sonraki ilk hafta", once: "Okulun ilk haftası", sonra: "Yılın son haftası" }[now.state];
     return '<div class="label-h">' + label + '</div>' +
-      '<div class="wk-hero" style="background:var(--theme-' + p.theme + ')"><div class="wk-no" aria-hidden="true"><b>' + p.w + '</b><small>hafta</small></div><div>' +
+      '<div class="wk-hero" style="background:var(' + (p.event ? "--text-primary" : "--theme-" + p.theme) + ')"><div class="wk-no" aria-hidden="true"><b>' + p.w + '</b><small>hafta</small></div><div>' +
         '<h2><span class="sr">' + p.w + '. hafta: </span>' + esc(p.title) + '</h2>' +
-        (T ? '<p class="wk-codes">' + planCodes(p).map(function (c) { return '<span class="tag">' + c + '</span>'; }).join(" ") + '</p>' : "") +
-        (L ? '<div class="row"><a class="btn on-color" href="#ders-' + L.id + '">' + (T ? "Derse git" : "Başla") + '</a>' + (T ? '<a class="btn on-color-line" href="#yazdir-' + L.id + '">' + icon("yazdir") + ' Çalışma kâğıdı</a>' : "") + '</div>' : '<p>Bu haftanın dersi henüz hazır değil.</p>' + (fb ? '<div class="row"><button type="button" class="btn on-color" data-wk="' + fb.w + '">' + (fb.w < p.w ? "Son hazır ders: " : "İlk hazır ders: ") + fb.w + '. hafta</button></div>' : "")) +
+        (T && !p.event ? '<p class="wk-codes">' + planCodes(p).map(function (c) { return '<span class="tag">' + c + '</span>'; }).join(" ") + '</p>' : "") +
+        (L ? '<div class="row"><a class="btn on-color" href="#ders-' + L.id + '">' + (T ? "Derse git" : "Başla") + '</a>' + (T ? '<a class="btn on-color-line" href="#yazdir-' + L.id + '">' + icon("yazdir") + ' Çalışma kâğıdı</a>' : "") + '</div>' : '<p>' + (p.event ? esc(p.note) : "Bu haftanın dersi henüz hazır değil.") + '</p>' + (fb ? '<div class="row"><button type="button" class="btn on-color" data-wk="' + fb.w + '">' + (fb.w < p.w ? "Son hazır ders: " : "İlk hazır ders: ") + fb.w + '. hafta</button></div>' : "")) +
       '</div></div>' + weekStrip(g, plan, p.w, nowW);
   }
   function weekList(g) {
@@ -180,7 +198,7 @@
     $("#wkList").onclick = function (e) {
       var b = e.target.closest("[data-wk], [data-page]"); if (!b) return;
       var nav = $$(".wk-strip button"), k = nav.indexOf(b);
-      if (b.hasAttribute("data-page")) stripAt[S.grade] += +b.getAttribute("data-page") * STRIP;
+      if (b.hasAttribute("data-page")) stripAt[S.grade] = stripMove((BD.plan[S.grade] || []).slice().sort(function (x, y) { return x.w - y.w; }), stripAt[S.grade], +b.getAttribute("data-page"));
       else { shownWeek[S.grade] = +b.getAttribute("data-wk"); if (k < 0) stripAt[S.grade] = null; }
       this.innerHTML = weekList(S.grade);
       var f = k >= 0 && !$$(".wk-strip button")[k].disabled ? $$(".wk-strip button")[k] : $(".wk-hero a, .wk-hero h2", this);

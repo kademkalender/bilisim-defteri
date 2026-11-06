@@ -1,10 +1,10 @@
-/* 5. Sınıf · Tema 1 · BTY.5.1.5 Bilgisayar sistemlerini çözümleyebilme (2. ders, 6. hafta)
+/* 5. Sınıf · Tema 1 · BTY.5.1.5 Bilgisayar sistemlerini çözümleyebilme (2. ders, 7. hafta)
    Süreç bileşenleri: a) temel bileşenleri belirler  b) bileşenler arasındaki ilişkileri belirler
    Programdaki uygulamalardan: işletim sisteminin görevleri ve bileşenleri, farklı işletim sistemleri,
    D/Y eğitsel oyunu ("Günün BT Uzmanı"), donanım ve yazılım sorunları, sorun çözme algoritması afişi */
 BD.lesson({
   id: "5-1-5-isletim-sistemi-sorunlar",
-  grade: "5", theme: 1, week: 6,
+  grade: "5", theme: 1, week: 7,
   title: "İşletim Sistemi ve Bilgisayar Sorunları",
   outcome: "BTY.5.1.5",
   covers: ["a", "b"],
@@ -12,7 +12,7 @@ BD.lesson({
   hook: "Okulumuzda müdür, zil ve ders programı olmasaydı ne olurdu? Herkes nereye gideceğini şaşırırdı! Bilgisayarın da bir yöneticisi var. Bugün onu tanıyacak ve bilgisayar bozulduğunda bir uzman gibi düşünmeyi öğreneceğiz.",
 
   slides: [
-    { type: "title", pill: "5. sınıf · 6. hafta", h: "İşletim Sistemi ve Bilgisayar Sorunları", p: "Bilgisayarın yöneticisi kim? Bir sorun çıkınca ne yaparız?" },
+    { type: "title", pill: "5. sınıf · 7. hafta", h: "İşletim Sistemi ve Bilgisayar Sorunları", p: "Bilgisayarın yöneticisi kim? Bir sorun çıkınca ne yaparız?" },
     { emoji: "❓", h: "Tahmin et: Okulun müdürü olmasaydı?", p: "Zil çalmasa, ders programı olmasa, kimse hangi sınıfa gireceğini bilmese ne olurdu?", reveal: "Her şey karışırdı! Bilgisayarda bu düzeni işletim sistemi sağlar. O, bilgisayarın müdürüdür.", b: "b" },
     { emoji: "💻", h: "İşletim sistemi nedir?", p: "Bilgisayar açılınca ilk çalışan, donanımı ve diğer programları yöneten yazılımdır.", list: ["Örnekler: Pardus, Windows. Telefonların da işletim sistemi vardır.", "Pardus, Türkiye'de geliştirilen işletim sistemidir.", "Kullanıcı arayüzü: Ekranda gördüğümüz masaüstü, simgeler ve menüler."], b: "a" },
     { h: "İşletim sisteminin görevleri ⚙️", cols: [

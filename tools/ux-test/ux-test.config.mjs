@@ -5,16 +5,16 @@ var LESSON = "5-1-6-dosya-klasor";
 var STU = { role: "ogrenci", grade: "5", env: "lab", os: "pardus", internet: true, motion: "full" };
 var TEA = { role: "ogretmen", grade: "5", env: "lab", os: "pardus", internet: true, motion: "full" };
 
-var week7 = [
-  { css: ".wk-hero button[data-wk]", text: "Son hazır ders: 7. hafta" }, // yalnız yeni versiyonda var
-  { css: ".wk-nav button[data-wk='7']" }, // eski versiyonun hafta okları
-  { css: ".wk-strip .wk-chip[data-wk='7']" } // yeni versiyonun hafta şeridi
+var week8 = [
+  { css: ".wk-hero button[data-wk]", text: "Son hazır ders: 8. hafta" }, // yalnız yeni versiyonda var
+  { css: ".wk-nav button[data-wk='8']" }, // eski versiyonun hafta okları
+  { css: ".wk-strip .wk-chip[data-wk='8']" } // yeni versiyonun hafta şeridi
 ];
 async function bodyHas(p, css) { return p.eval("(function(){var e=document.querySelector(" + JSON.stringify(css) + ");return !!e&&!e.hidden&&e.getClientRects().length>0;})()"); }
 async function poll(p, fn) { for (var i = 0; i < 30; i++) { if (await fn()) return true; await p.wait(100); } return false; }
 
 export default {
-  date: "2026-11-06T10:00:00+03:00", // 8. hafta: bu haftanın dersi hazır değil
+  date: "2026-11-13T10:00:00+03:00", // 9. hafta: bu haftanın dersi hazır değil
   viewport: { width: 1366, height: 657 },
   pace: 1,
   versions: [
@@ -27,14 +27,14 @@ export default {
   ],
   tasks: [
     {
-      id: "G1", role: "Öğrenci", title: "7. haftanın dersini aç, Sunum'u başlat",
-      scenario: "Öğretmen 7. haftanın dersini açmamı söyledi. Dersi açıp Sunum'u başlatacağım.",
+      id: "G1", role: "Öğrenci", title: "8. haftanın dersini aç, Sunum'u başlat",
+      scenario: "Öğretmen 8. haftanın dersini açmamı söyledi. Dersi açıp Sunum'u başlatacağım.",
       start: { hash: "#home", storage: { "bd:settings": STU } },
       run: async function (p) {
-        var t = await p.find(week7);
-        await p.say(t.text ? "Burada 7. hafta yazan bir düğme var." : "7. hafta okuna basarım.");
+        var t = await p.find(week8);
+        await p.say(t.text ? "Burada 8. hafta yazan bir düğme var." : "8. hafta okuna basarım.");
         await p.tap(t);
-        await p.say("7. hafta açıldı, Başla'ya tıklarım.");
+        await p.say("8. hafta açıldı, Başla'ya tıklarım.");
         await p.tap({ css: ".wk-hero a.btn", text: "Başla" });
         var s = await p.find([{ css: "#secNext" }, { css: ".sec-card[data-tab=slayt]" }]);
         await p.say("Sunum'u başlatırım.");
@@ -64,11 +64,11 @@ export default {
       scenario: "Bu hafta hazır ders yok. Hazır olan en yakın dersin çalışma kâğıdını açacağım.",
       start: { hash: "#home", storage: { "bd:settings": TEA } },
       run: async function (p) {
-        var t = await p.find(week7);
+        var t = await p.find(week8);
         if (t.text) await p.say("Son hazır ders düğmesi var, ona tıklarım.");
         else { await p.say("Hazır ders düğmesi yok. Önceki haftaya bakarım."); await p.count("dolayim", "hazır derse giden düğme yok, hafta okuyla aranıyor"); }
         await p.tap(t);
-        await p.say("7. hafta hazır. Çalışma kâğıdını açarım.");
+        await p.say("8. hafta hazır. Çalışma kâğıdını açarım.");
         await p.tap({ css: ".wk-hero a.btn", text: "Çalışma kâğıdı" });
       },
       success: async function (p) { return poll(p, async function () { return (await p.eval("location.hash")) === "#yazdir-" + LESSON; }); }
