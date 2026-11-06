@@ -16,6 +16,21 @@ Kayıt şablonu:
 
 ---
 
+## 2026-11-06 · efee7946-cmd + Claude Code (Opus 5.5)
+
+**Ne yapıldı**
+- GitHub'dan güncelleme alındı: Kadem Kalender'in 27 commit'i (`3c44016` … `995abb4`, 2026-11-03 ile 2026-11-06 arası), çakışma olmadan ileri sarıldı. 55 dosya, +3650 / −109 satır.
+- Gelenler: oturum başı hook'u (`3c44016`), üç tasarım seçeneği mockup'ı (`c01470d`), okul takvimi (`2382ff7`), öğrenci ve öğretmen görünümünde renkli kart tasarımı (`59f6793`, `b8388bc`), sanal masaüstü ve testleri (`6dc3954` … `54fba73`), Oyun bölümü (`fa9221a`), emoji taraması (`5892da3`), 5. sınıf 1-6. hafta dersleri (`ad519b3`, `d953bd7`, `06ccb1f`).
+- Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı CDP ile denendi, konsol hatası yok. `node --test tools/*.test.js` ilk çalıştırmada 32/33 ("dersin görevleri değişince eski kayıt baştan başlar" testi tüm testlerle birlikte çalışırken düştü). Tek başına geçti, ikinci tam çalıştırmada 33/33.
+
+**Kararlar**
+- Oturum başında GitHub'daki yeni commit'ler çekilir (CLAUDE.md "Oturum başı").
+
+**Yarım kalan işler**
+- [ ] `tools/sim-tarayici.test.js` içindeki "eski kayıt baştan başlar" testi tüm testlerle birlikte koşunca ara sıra düşüyor. Süre sınırına ya da bekleme süresine bakılmalı.
+
+---
+
 ## 2026-11-06 · Kadem Kalender + Claude Code (Opus 5.5)
 
 **Ne yapıldı**
