@@ -46,6 +46,7 @@ body{background:var(--surface-subtle)}
 .ds-rules li + li{margin-top:var(--space-1)}
 .ds-rules code,.ds-lead code,.ds-note code{font-family:var(--font-mono);font-size:.88em;background:var(--surface-subtle);border-radius:4px;padding:0 4px}
 .ds-vars{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--space-4)}
+.ds-vars.full{grid-template-columns:1fr}
 .ds-var{background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-xl);overflow:hidden}
 .ds-var > b{display:block;padding:var(--space-3) var(--space-4) 0;font-size:.9rem}
 .ds-var .ds-stage{border:0;border-radius:0;padding:var(--space-5);min-height:160px}
@@ -334,9 +335,9 @@ body{background:var(--surface-subtle)}
   });
 
   add({ id: "bu-hafta", group: "Kartlar", name: "Bu hafta kartı", cls: ".wk-hero",
-    desc: "Okul takvimine göre bu haftanın dersi. Ana sayfanın odak noktası.",
+    desc: "Seçili haftanın dersi; açılışta takvime göre bu hafta. Ana sayfanın odak noktası.",
     where: "Ana sayfa (iki rol).",
-    rules: ["Zemin temanın rengi (<code>--theme-N</code>), yazı beyaz.", "Solda büyük hafta numarası. Öğretmende kazanım kodları ve Çalışma kâğıdı düğmesi de var.", "Ders hazır değilse en yakın hazır derse götüren düğme gösterilir."],
+    rules: ["Zemin temanın rengi (<code>--theme-N</code>), yazı beyaz.", "Solda büyük hafta numarası. Öğretmende kazanım kodları ve Çalışma kâğıdı düğmesi de var.", "Ders hazır değilse en yakın hazır derse götüren düğme gösterilir.", "Üstteki başlık takvim haftasında \"Takvime göre bu hafta\", başka haftada \"Seçtiğin hafta\". Kart tam genişlikte, altında hafta şeridi."],
     props: [
       { k: "tema", l: "Tema", t: "select", d: "1", o: themeOpts },
       { k: "hafta", l: "Hafta", t: "text", d: "7" },
@@ -353,32 +354,22 @@ body{background:var(--surface-subtle)}
     variants: [["Hazır", {}], ["Hazır değil", { hafta: "8", baslik: "Görsel Düzenleme Programları", hazir: false, tema: "2" }]]
   });
 
-  add({ id: "hafta-oklari", group: "Gezinme", name: "Hafta okları", cls: ".wk-nav",
-    desc: "Bu hafta kartının altında önceki ve sonraki haftaya geçer.",
-    where: "Ana sayfa.",
-    rules: ["56 px, iki eşit sütun.", "Hafta numarası kalın, ders adı soluk ve sığmazsa \"…\" ile kısalır.", "Önceki ya da sonraki hafta yoksa ok görünmez ama yeri kalır."],
-    props: [{ k: "onceki", l: "Önceki ders", t: "text", d: "İşletim Sistemi ve Bilgisayar Sorunları" }, { k: "sonraki", l: "Sonraki ders", t: "text", d: "Görsel Düzenleme Programları" }, { k: "ilk", l: "İlk hafta", t: "bool", d: false }],
+  add({ id: "hafta-seridi", group: "Gezinme", name: "Hafta şeridi", cls: ".wk-strip, .wk-chip",
+    desc: "Bu hafta kartının altında 11 hafta. Öğretmenin söylediği haftaya tek tıkla gidilir.",
+    where: "Ana sayfa (iki rol).",
+    rules: ["Açılışta takvimdeki hafta seçili ve ortada; kutusunda \"takvim\" yazar. Site sınıfın hangi haftada olduğunu bilmez, takvimi söyler.", "Seçili hafta dolu mavi. Takvim haftası başka bir hafta seçilince de mavi çerçevesini korur.", "Hazır dersi olan haftanın alt çizgisi tema renginde; hazır olmayan gri ama tıklanabilir.", "‹ › kaydırmaz, 11 haftalık sayfa geçer. Uçta düğme görünmez ama yeri kalır.", "Hafta şerit dışından seçilirse (Son hazır ders) şerit o haftaya ortalanır."],
+    props: [{ k: "secili", l: "Seçili hafta", t: "text", d: "8" }, { k: "sayfa", l: "Sayfa", t: "seg", d: "orta", o: [["bas", "1–11"], ["orta", "3–13"], ["son", "24–34"]] }],
     render: function (p) {
-      var b = function (w, t, dir) { return '<button type="button" data-wk="' + w + '" aria-label="' + (dir < 0 ? "Önceki" : "Sonraki") + ' hafta: ' + w + '. hafta · ' + esc(t) + '">' + (dir < 0 ? "<b>‹ " + w + ". hafta</b><span>" + esc(t) + "</span>" : "<span>" + esc(t) + "</span><b>" + w + ". hafta ›</b>") + '</button>'; };
-      return '<div class="wk-nav">' + (bool(p.ilk) ? '<button type="button" disabled></button>' : b(6, p.onceki, -1)) + b(8, p.sonraki, 1) + '</div>';
+      var plan = BD.plan["5"], at = { bas: 0, orta: 2, son: plan.length - 11 }[p.sayfa], sel = +p.secili;
+      var page = function (dir, off) { return '<button type="button" class="wk-page" aria-label="' + (dir < 0 ? "Önceki" : "Sonraki") + ' haftalar"' + (off ? " disabled" : "") + '>' + (dir < 0 ? "‹" : "›") + '</button>'; };
+      return '<div class="wk-strip" role="group" aria-label="Haftalar">' + page(-1, at === 0) + plan.slice(at, at + 11).map(function (x) {
+        var now = x.w === 8;
+        return '<button type="button" class="wk-chip' + (x.lesson ? "" : " soon") + (now ? " now" : "") + '" aria-pressed="' + (x.w === sel) + '"' + (x.lesson ? ' style="--c:var(--theme-' + x.theme + ')"' : "") + '><b>' + x.w + '</b><small>' + (now ? "takvim" : "hafta") + '</small></button>';
+      }).join("") + page(1, at + 11 >= plan.length) + '</div>';
     },
-    wrap: function (p, h) { return '<div style="width:720px;max-width:100%">' + h + '</div>'; },
-    variants: [["Varsayılan", {}], ["İlk hafta", { ilk: true }]]
-  });
-
-  add({ id: "yan-kart", group: "Kartlar", name: "Yan kart", cls: ".side-card",
-    desc: "Bu hafta kartının yanında kısa yol: kaldığın yer, Bütün dersler, Kazanım haritası.",
-    where: "Ana sayfa.",
-    rules: ["En az 88 px, 2 px kenarlık.", "İkon karesi gri ya da gittiği dersin tema rengi.", "Üstte küçük açıklama, altta kalın hedef adı."],
-    props: [
-      { k: "ust", l: "Açıklama", t: "text", d: "Kaldığınız yer · 7. hafta" },
-      { k: "baslik", l: "Başlık", t: "text", d: "Dosya ve Klasör Yönetimi" },
-      { k: "ikon", l: "İkon", t: "select", d: "clock", o: iconOpts },
-      { k: "renk", l: "Renk", t: "select", d: "1", o: [["", "Gri"]].concat(themeOpts) }
-    ],
-    render: function (p) { return '<a class="side-card" href="#"><span class="sq"' + (p.renk ? ' style="background:var(--theme-' + p.renk + ')"' : "") + '>' + ico(p.ikon) + '</span><span><small>' + esc(p.ust) + '</small>' + esc(p.baslik) + '</span></a>'; },
-    wrap: function (p, h) { return '<div style="width:340px">' + h + '</div>'; },
-    variants: [["Kaldığın yer", {}], ["Kazanım haritası", { ust: "Süreç bileşenleri", baslik: "Kazanım haritası", ikon: "harita", renk: "" }], ["Bütün dersler", { ust: "Hepsi", baslik: "Bütün dersler", ikon: "bulmaca", renk: "" }]]
+    wrap: function (p, h) { return '<div style="width:100%">' + h + '</div>'; },
+    width: "full",
+    variants: [["Açılış: takvim haftası", {}], ["Başka hafta seçili", { secili: "3" }], ["İlk sayfa", { sayfa: "bas", secili: "3" }], ["Son sayfa", { sayfa: "son", secili: "30" }]]
   });
 
   add({ id: "ders-karti", group: "Kartlar", name: "Ders kartı", cls: ".all-cards a",
@@ -765,7 +756,7 @@ body{background:var(--surface-subtle)}
     var p = propsOf(c);
     $("#dsWrap").classList.remove("no-props"); $("#dsProps").hidden = false;
     var tabs = [["onizleme", "Önizleme", ""], ["cesitler", "Çeşitler", c.variants.length], ["kod", "Kod", ""]];
-    var body = tab === "cesitler" ? '<div class="ds-vars">' + c.variants.map(function (v) { return '<div class="ds-var"><b>' + esc(v[0]) + '</b>' + stage(c, merged(c, v[1])) + '</div>'; }).join("") + '</div>'
+    var body = tab === "cesitler" ? '<div class="ds-vars' + (c.width === "full" ? " full" : "") + '">' + c.variants.map(function (v) { return '<div class="ds-var"><b>' + esc(v[0]) + '</b>' + stage(c, merged(c, v[1])) + '</div>'; }).join("") + '</div>'
       : tab === "kod" ? '<div class="ds-codebar"><span class="hint">Sitede bu işaretleme <code>app.js</code> içinde metin olarak üretilir. <code>&lt;!-- icon("ad") --&gt;</code> yerine <code>icon("ad")</code> çağrılır.</span><button type="button" class="btn" id="dsCopy">Kopyala</button></div><pre class="ds-code"><code>' + esc(pretty(c.render(p))) + '</code></pre>'
       : '<div class="ds-bgsw" role="group" aria-label="Zemin"><button type="button" class="chip-btn" data-bg="beyaz" aria-pressed="' + (bg === "beyaz") + '">Beyaz</button><button type="button" class="chip-btn" data-bg="gri" aria-pressed="' + (bg === "gri") + '">Gri</button><span class="hint">Görünüm: ' + (T() ? "öğretmen" : "öğrenci") + '. Değiştirmek için üstteki düğmeyi kullanın.</span></div>' + stage(c, p, "ds-live");
     $("#dsMain").innerHTML = head(c.group, c.name, c.desc, '<span class="tag code">' + esc(c.cls) + '</span><span>Sitede: ' + esc(c.where) + '</span>') +

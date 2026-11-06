@@ -7,7 +7,8 @@ var TEA = { role: "ogretmen", grade: "5", env: "lab", os: "pardus", internet: tr
 
 var week7 = [
   { css: ".wk-hero button[data-wk]", text: "Son hazır ders: 7. hafta" }, // yalnız yeni versiyonda var
-  { css: ".wk-nav button[data-wk='7']" }
+  { css: ".wk-nav button[data-wk='7']" }, // eski versiyonun hafta okları
+  { css: ".wk-strip .wk-chip[data-wk='7']" } // yeni versiyonun hafta şeridi
 ];
 async function bodyHas(p, css) { return p.eval("(function(){var e=document.querySelector(" + JSON.stringify(css) + ");return !!e&&!e.hidden&&e.getClientRects().length>0;})()"); }
 async function poll(p, fn) { for (var i = 0; i < 30; i++) { if (await fn()) return true; await p.wait(100); } return false; }

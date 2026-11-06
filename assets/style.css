@@ -174,7 +174,6 @@ html:not(.role-ogrenci) .grade-card span{font-size:1.2rem}
 html:not(.role-ogrenci) .grade-card[aria-pressed="true"]:after{width:32px;height:32px;margin-top:-16px;font-size:1.05rem}
 
 .label-h{font-size:1.15rem;font-weight:800;margin:0 0 var(--space-3)}
-.wk-grid{display:grid;grid-template-columns:2fr 1fr;grid-gap:var(--space-5)}
 .wk-hero{border-radius:var(--radius-xl);color:var(--action-on-primary);padding:var(--space-6) var(--space-8);display:flex;align-items:center;min-height:200px}
 .wk-no{flex:none;width:96px;height:96px;border-radius:var(--radius-xl);background:rgba(255,255,255,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;margin-right:var(--space-6);line-height:1}
 .wk-no b{font-size:2.6rem;font-weight:900}
@@ -187,18 +186,20 @@ html:not(.role-ogrenci) .grade-card[aria-pressed="true"]:after{width:32px;height
 .btn.on-color-line:hover{background:rgba(255,255,255,.14)}
 .wk-codes{margin:0 0 var(--space-4)}
 .wk-codes .tag{background:rgba(255,255,255,.2);color:var(--action-on-primary);font-family:var(--font-mono)}
-.wk-nav{display:grid;grid-template-columns:1fr 1fr;grid-gap:var(--space-3);margin-top:var(--space-3)}
-.wk-nav button{min-height:56px;border:2px solid var(--border-default);background:var(--surface-default);color:var(--text-primary);border-radius:var(--radius-lg);font-weight:800;padding:0 var(--space-4);text-align:left;display:flex;align-items:center}
-.wk-nav button + button{justify-content:flex-end;text-align:right}
-.wk-nav button:hover{border-color:var(--action-primary)}
-.wk-nav button b{flex:none;white-space:nowrap}
-.wk-nav button span{flex:1;min-width:0;font-weight:600;color:var(--text-secondary);margin:0 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.wk-nav button[disabled]{visibility:hidden}
-.side-cards{display:grid;align-content:start;grid-gap:var(--space-5)}
-.side-card{display:flex;align-items:center;font:inherit;text-align:left;width:100%;min-height:88px;padding:var(--space-4) var(--space-5);background:var(--surface-default);border:2px solid var(--border-default);border-radius:var(--radius-xl);text-decoration:none;color:var(--text-primary);font-weight:800}
-.side-card:hover{border-color:var(--action-primary)}
-.side-card .sq{flex:none;width:52px;height:52px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--action-on-primary);background:var(--text-secondary);margin-right:var(--space-4)}
-.side-card small{display:block;font-size:.85rem;color:var(--text-secondary);font-weight:700}
+/* Hafta şeridi: hazır hafta alt çizgisi tema renginde, bu hafta mavi çerçeveli, seçili hafta dolu */
+.wk-strip{display:flex;gap:var(--space-2);margin-top:var(--space-4)}
+.wk-chip{flex:1 1 0;min-width:0;min-height:68px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15;border:2px solid var(--border-default);border-bottom:6px solid var(--c,var(--border-default));border-radius:var(--radius-lg);background:var(--surface-default);color:var(--text-primary);font:inherit;cursor:pointer}
+.wk-chip b{font-size:1.4rem;font-weight:900}
+.wk-chip small{font-size:.75rem;font-weight:700;color:var(--text-secondary);white-space:nowrap}
+.wk-chip.soon{background:var(--surface-subtle);color:var(--text-secondary)}
+.wk-chip:hover{border-top-color:var(--action-primary);border-left-color:var(--action-primary);border-right-color:var(--action-primary)}
+.wk-chip.now{border-top-color:var(--action-primary);border-left-color:var(--action-primary);border-right-color:var(--action-primary)}
+.wk-chip.now small{color:var(--action-primary)}
+.wk-chip[aria-pressed="true"]{background:var(--action-primary);color:var(--action-on-primary);border-top-color:var(--action-primary);border-left-color:var(--action-primary);border-right-color:var(--action-primary)}
+.wk-chip[aria-pressed="true"] small{color:var(--action-on-primary)}
+.wk-page{flex:none;width:52px;border:2px solid var(--border-default);border-radius:var(--radius-lg);background:var(--surface-default);color:var(--text-primary);font:inherit;font-size:1.8rem;font-weight:900;cursor:pointer}
+.wk-page:hover{border-color:var(--action-primary)}
+.wk-page[disabled]{visibility:hidden}
 
 .all-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));grid-gap:var(--space-4)}
 .all-cards a{display:flex;align-items:center;min-height:110px;padding:var(--space-4) var(--space-5);border-radius:var(--radius-xl);color:var(--action-on-primary);text-decoration:none;font-weight:800;font-size:1.15rem}
@@ -532,7 +533,6 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
 
 @media (max-width:760px){
   .top{position:static}
-  .wk-grid{grid-template-columns:1fr}
   .band-prog{margin:var(--space-3) 0 0;padding-left:0;text-align:left;width:100%}
   .band-prog .bar{width:100%}
   /* Dar ekranda ayarlar kendi satırına düşer, ayraç boşta kalmasın */
@@ -563,7 +563,6 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
   .grade-card[aria-pressed="true"]:after{right:var(--space-3)}
   .wk-hero{padding:var(--space-5);flex-direction:column;align-items:flex-start}
   .wk-no{margin:0 0 var(--space-3)}
-  .wk-nav button span{display:none}
   .lesson-band{padding:var(--space-4)}
   .lesson-band h1{font-size:1.5rem}
   .sheet .who{grid-template-columns:1fr}
