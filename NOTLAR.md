@@ -25,6 +25,7 @@ Kayıt şablonu:
 - Siteye /outsider-design-review yapıldı (1366×768, 1024×768): 1 yüksek, 6 orta, 3 düşük bulgu. En büyük sorun 768 px yükseklikte önemli düğmelerin ekran dışında kalmasıydı.
 - `38e90c7` Review düzeltmelerinin hepsi: bölüm kartları geniş ekranda tek sıra (Başla 790 → 536 px), sanal masaüstü görev çubuğu ekranda (962 → 726 px), öğretmen slaytı 597 → 853 px ve çubuğu tek satır, öğretmende bölüm başlığı yerine tek satır açıklama, hazır olmayan hafta kartında "Son hazır ders" düğmesi, bölüm numarası kontrastı 2,88 → en az 4,26:1, öğretmen sınıf kartları 104 → 64 px, öğretmen üst bandı 1024 px'te tek satır. İkonlar `assets/ikonlar.js`'e taşındı; ortam, yazdır ve tekrar düğmeleri emoji değil SVG. `--surface-setting` token'ı eklendi. Testler 33/33, `file://` konsolu temiz.
 - `0c27acc` Tasarım sistemi kataloğu `tasarim-sistemi.html` (Senin UI örnek alındı): Renkler (canlı değer ve kontrast), Yazı, Ölçüler, İkonlar ve 6 grupta 32 bileşen. Her bileşende Önizleme / Çeşitler / Kod sekmesi, Özellikler paneli, kullanım kuralları; üstte Öğretmen/Öğrenci görünümü. Bileşenler sitenin `style.css`'iyle ve 5-1-6 dersinin verisiyle çizilir. CLAUDE.md'ye 7. kural, README ve TASARIM-SISTEMI.md'ye bağlantı. `file://` altında 36 sayfa konsol hatasız, 375 px'te taşma yok, testler 33/33, dogrula 0.
+- `5b924ee` Yazım rehberi `YAZIM-REHBERI.md` (ses tonu ve arayüz metni, Senin UI ses tonu rehberi örnek alındı) ve katalogda "Ses ve yazım" sayfası. Kararlar kullanıcıya örnekli sorularla soruldu. CLAUDE.md, README, ICERIK-REHBERI ve TASARIM-SISTEMI rehbere bağlandı.
 
 **Kararlar**
 - Oturum başında GitHub'daki yeni commit'ler çekilir (CLAUDE.md "Oturum başı").
@@ -33,11 +34,17 @@ Kayıt şablonu:
 - Öğretmen Sunum sekmesini açınca sayfa sekmeleri üste getirecek kadar kayar; slaytın büyümesi buna bağlı.
 - Katalog ayarları (sekme, zemin, görünüm) `bdds:` önekiyle saklanır, sitenin `bd:` kayıtlarına karışmaz.
 - Sitede bir bileşenin işaretlemesi değişirse katalog aynı commit'te güncellenir (CLAUDE.md kural 7).
+- Ses tonu: öğrenciye oyun arkadaşı (görev dili; puan, seviye, rozet yok), öğretmene yardımcı asistan (ne ve neden, en fazla iki cümle). Site "biz" demez.
+- Ünlem öğrenci kutlamasında ve göreve çağıran tek cümlede; emoji yalnızca öğrenci kutlamasında. Öğretmen metninde ikisi de yok.
+- Yanlış cevapta ilk seferde ipucu ve bir hak daha, ikincide doğru cevap ve neden.
+- Başlık ve sayfa adları cümle düzeninde; düğme fiil ve okusuz; ekranla ilgili fiil "tıkla".
+- Yazı tipi Mulish kalır (Atkinson Hyperlegible ve Lexend ile karşılaştırıldı); dosya adı ve kod eş aralıklı yazılır.
 - Geri bildirim ve etkinlik etiketlerindeki emoji (🎉 👏 🌟 🎯 📋 🌐 📇) süs olarak kaldı; yalnızca ikon görevindekiler SVG oldu.
 
 **Yarım kalan işler**
 - [ ] Katalog `app.js`'teki işaretlemenin elle kopyası; ikisi otomatik karşılaştırılmıyor.
 - [ ] Kadem kataloğu ve 7. kuralı görmedi.
+- [ ] Yazım rehberi siteye uygulanmadı: düğmelerdeki ok, sayfa ve ders adlarının büyük harfi, öğrenci görev dili, mini testte tekrar deneme (her soruya ipucu ve neden alanı). Liste `YAZIM-REHBERI.md` sonunda.
 - [ ] Kadem bölüm kartı dizilişi ve öğretmen bölüm başlığı değişikliklerini görmedi.
 - [ ] `tools/sim-tarayici.test.js` içindeki "eski kayıt baştan başlar" testi tüm testlerle birlikte koşunca ara sıra düşüyor. Süre sınırına ya da bekleme süresine bakılmalı.
 
