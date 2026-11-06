@@ -11,6 +11,7 @@ BD.lesson({
 
   slides: [
     { type: "title", pill: "5. Sınıf · 5. Hafta", h: "Bilgisayar Sistemleri", p: "Bilgisayar hangi parçalardan oluşur ve bu parçalar nasıl birlikte çalışır?" },
+    { emoji: "❓", h: "Tahmin et: Bankamatikte neler oluyor?", p: "Kartı takıyorsun, şifreni giriyorsun, sonra para ve fiş çıkıyor. Hangileri makineye bilgi veriyor, hangileri bize sonuç veriyor?", reveal: "Kart ve şifre tuşları bilgi verir: giriş. Para ve fiş sonuçtur: çıkış. Arada makinenin içindeki işlemci hesap yapar. Bilgisayar da tam böyle çalışır!", b: "b" },
     { emoji: "⚙️", h: "Bilgisayar sistemi nedir?", p: "Donanım, yazılım ve kullanıcı birlikte çalışarak bir bilgisayar sistemi oluşturur. Biri eksik olursa sistem çalışmaz.", b: "a" },
     { h: "Donanım ve yazılım", cols: [
       { h: "Donanım", p: "Bilgisayarın elle dokunabildiğimiz fiziksel parçaları: klavye, fare, ekran, kasa." },
@@ -24,7 +25,7 @@ BD.lesson({
       { h: "Depolama", p: "Bilgileri saklar: sabit disk, USB bellek, hafıza kartı. Bilgisayar kapansa da bilgiler kaybolmaz." }
     ], b: "a" },
     { h: "Parçalar birlikte nasıl çalışır?", tree: "⌨️  GİRİŞ      Klavyede A tuşuna bastım\n      ↓\n⚙️  İŞLEM      İşlemci bu tuşu tanıdı\n      ↓\n🖥️  ÇIKIŞ      Ekranda A harfi göründü\n      ↓\n💾 DEPOLAMA   Kaydedince dosya saklandı", b: "b" },
-    { h: "Bilgisayarın dili: bit ve bayt", list: ["Bilgisayar her şeyi 0 ve 1 ile saklar.", "Her bir 0 ya da 1'e bit denir.", "8 bit bir araya gelince 1 bayt olur.", "Bir harf yaklaşık 1 bayt yer kaplar."], b: "a" },
+    { h: "Bilgisayarın dili: bit ve bayt", list: ["Bilgisayar her şeyi 0 ve 1 ile saklar. Her birine bit denir.", "8 bit bir araya gelince 1 bayt olur.", "Tahmin et: \"Can\" yazısı kaç bayt yer kaplar?"], reveal: "3 bayt! Her harf yaklaşık 1 bayt tutar. Yani 24 bit: tam 24 tane 0 ve 1.", b: "a" },
     { emoji: "✏️", h: "Sıra sende!", p: "Deftere Yaz kısmını defterine geçir, sonra etkinliğe başla.", end: true }
   ],
 

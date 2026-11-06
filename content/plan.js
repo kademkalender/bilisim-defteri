@@ -13,10 +13,10 @@ BD.plan = {
   "5": [
     { w: 1, theme: 1, outcome: "BTY.5.1.1", title: "Bilişim Teknolojilerini Tanıyalım", lesson: "5-1-1-bilisim-teknolojileri" },
     { w: 2, theme: 1, outcome: "BTY.5.1.2", title: "Bilişim Teknolojilerinin Etkileri ve Dijital Sağlık", lesson: "5-1-2-etkiler-dijital-saglik" },
-    { w: 3, theme: 1, outcome: "BTY.5.1.3", title: "Dijital Vatandaşlık", lesson: null },
-    { w: 4, theme: 1, outcome: "BTY.5.1.4", title: "Yapay Zekâ ile Tanışalım", lesson: null },
+    { w: 3, theme: 1, outcome: "BTY.5.1.3", title: "Dijital Vatandaşlık", lesson: "5-1-3-dijital-vatandaslik" },
+    { w: 4, theme: 1, outcome: "BTY.5.1.4", title: "Yapay Zekâ ile Tanışalım", lesson: "5-1-4-yapay-zeka" },
     { w: 5, theme: 1, outcome: "BTY.5.1.5", title: "Bilgisayar Sistemleri", lesson: "5-1-5-bilgisayar-sistemleri" },
-    { w: 6, theme: 1, outcome: "BTY.5.1.5", title: "İşletim Sistemi ve Bilgisayar Sorunları", lesson: null },
+    { w: 6, theme: 1, outcome: "BTY.5.1.5", title: "İşletim Sistemi ve Bilgisayar Sorunları", lesson: "5-1-5-isletim-sistemi-sorunlar" },
     { w: 7, theme: 1, outcome: "BTY.5.1.6", title: "Dosya ve Klasör Yönetimi", lesson: "5-1-6-dosya-klasor" },
     { w: 8, theme: 2, outcome: "BTY.5.2.1", title: "Görsel Düzenleme Programları", lesson: null },
     { w: 9, theme: 2, outcome: "BTY.5.2.2", title: "Görsel İçin Hikâye Kurgulayalım", lesson: null },
