@@ -13,13 +13,13 @@ BD.lesson({
     { type: "title", pill: "6. Sınıf · 1. Hafta", h: "Yenilikçi Bilişim Teknolojileri", p: "Hayatımıza yeni giren teknolojiler neler ve işimizi nasıl kolaylaştırıyor?" },
     { emoji: "💡", h: "Yenilikçi bilişim teknolojisi nedir?", p: "Hayatımıza yeni giren ve bir işi eskisinden farklı, daha kolay ya da daha hızlı yapmamızı sağlayan teknolojilerdir.", b: "a" },
     { emoji: "📱", h: "Artırılmış gerçeklik (AR)", p: "Gerçek dünyanın üzerine dijital görüntüler ekler. Örnek: Telefon kamerasıyla odaya sanal bir mobilya yerleştirmek, kitaptaki resmin ekranda canlanması.", b: "a" },
-    { emoji: "🥽", h: "Sanal gerçeklik (VR)", p: "Özel bir gözlükle bizi tamamen dijital bir dünyaya götürür. Örnek: Sınıftan çıkmadan bir müzeyi gezmek.", b: "a" },
+    { emoji: "👓", h: "Sanal gerçeklik (VR)", p: "Özel bir gözlükle bizi tamamen dijital bir dünyaya götürür. Örnek: Sınıftan çıkmadan bir müzeyi gezmek.", b: "a" },
     { h: "AR ile VR arasındaki fark", cols: [
       { h: "Artırılmış gerçeklik", p: "Gerçek dünyayı görmeye devam ederiz, üstüne dijital görüntü eklenir." },
       { h: "Sanal gerçeklik", p: "Gerçek dünyayı görmeyiz, tamamen dijital bir ortamdayız." }
     ], b: "a" },
     { emoji: "⌚", h: "Giyilebilir teknolojiler", p: "Üzerimizde taşıdığımız akıllı cihazlardır. Örnek: Adım sayan bileklik, nabız ölçen akıllı saat, akıllı gözlük.", b: "a" },
-    { emoji: "🤖", h: "Yapay zekâ ve bulut", list: ["Yapay zekâ: Örneklerden öğrenip tahmin yapan sistemler. Örnek: Sesli asistan, anlık çeviri.", "Bulut depolama: Dosyaları internetteki bilgisayarlarda saklamak. Her cihazdan ulaşabiliriz."], b: "a" },
+    { emoji: "☁️", h: "Yapay zekâ ve bulut", list: ["Yapay zekâ: Örneklerden öğrenip tahmin yapan sistemler. Örnek: Sesli asistan, anlık çeviri.", "Bulut depolama: Dosyaları internetteki bilgisayarlarda saklamak. Her cihazdan ulaşabiliriz."], b: "a" },
     { h: "Hayatımızı nasıl kolaylaştırıyorlar?", list: ["Sağlık: Akıllı saat kalp atışını takip eder.", "Eğitim: AR kitaplarla konuyu 3 boyutlu görürüz.", "Ulaşım: Yapay zekâlı harita en kısa yolu bulur.", "İletişim: Anlık çeviri farklı dilleri konuşanları buluşturur."], b: "b" },
     { h: "Kullanım alanlarına göre gruplandıralım", cols: [
       { h: "Sağlık", p: "Akıllı saat, yapay zekâlı röntgen inceleme" },

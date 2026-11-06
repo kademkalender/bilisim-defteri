@@ -11,7 +11,7 @@ BD.lesson({
 
   slides: [
     { type: "title", pill: "5. Sınıf · 5. Hafta", h: "Bilgisayar Sistemleri", p: "Bilgisayar hangi parçalardan oluşur ve bu parçalar nasıl birlikte çalışır?" },
-    { emoji: "🧩", h: "Bilgisayar sistemi nedir?", p: "Donanım, yazılım ve kullanıcı birlikte çalışarak bir bilgisayar sistemi oluşturur. Biri eksik olursa sistem çalışmaz.", b: "a" },
+    { emoji: "⚙️", h: "Bilgisayar sistemi nedir?", p: "Donanım, yazılım ve kullanıcı birlikte çalışarak bir bilgisayar sistemi oluşturur. Biri eksik olursa sistem çalışmaz.", b: "a" },
     { h: "Donanım ve yazılım", cols: [
       { h: "Donanım", p: "Bilgisayarın elle dokunabildiğimiz fiziksel parçaları: klavye, fare, ekran, kasa." },
       { h: "Yazılım", p: "Bilgisayara ne yapacağını söyleyen programlar. Dokunamayız, sadece ekranda görürüz." }
@@ -23,7 +23,7 @@ BD.lesson({
       { h: "İşlemci", p: "Bilgisayarın beyni. Gelen bilgileri işler ve hesaplar." },
       { h: "Depolama", p: "Bilgileri saklar: sabit disk, USB bellek, hafıza kartı. Bilgisayar kapansa da bilgiler kaybolmaz." }
     ], b: "a" },
-    { h: "Parçalar birlikte nasıl çalışır?", tree: "⌨️  GİRİŞ      Klavyede A tuşuna bastım\n      ↓\n🧠 İŞLEM      İşlemci bu tuşu tanıdı\n      ↓\n🖥️  ÇIKIŞ      Ekranda A harfi göründü\n      ↓\n💾 DEPOLAMA   Kaydedince dosya saklandı", b: "b" },
+    { h: "Parçalar birlikte nasıl çalışır?", tree: "⌨️  GİRİŞ      Klavyede A tuşuna bastım\n      ↓\n⚙️  İŞLEM      İşlemci bu tuşu tanıdı\n      ↓\n🖥️  ÇIKIŞ      Ekranda A harfi göründü\n      ↓\n💾 DEPOLAMA   Kaydedince dosya saklandı", b: "b" },
     { h: "Bilgisayarın dili: bit ve bayt", list: ["Bilgisayar her şeyi 0 ve 1 ile saklar.", "Her bir 0 ya da 1'e bit denir.", "8 bit bir araya gelince 1 bayt olur.", "Bir harf yaklaşık 1 bayt yer kaplar."], b: "a" },
     { emoji: "✏️", h: "Sıra sende!", p: "Deftere Yaz kısmını defterine geçir, sonra etkinliğe başla.", end: true }
   ],

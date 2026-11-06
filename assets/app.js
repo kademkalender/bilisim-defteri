@@ -277,7 +277,7 @@
       '<div class="row t-only"><span class="tag">' + BD.envs[env].icon + ' ' + BD.envs[env].short + '</span>' + (A.b || []).map(function (b) { return '<span class="tag code t-only">' + L.outcome + '.' + b + '</span>'; }).join("") + '</div>' +
       '<h3>' + esc(A.title) + '</h3>' +
       '<div class="goal"><b>🎯 Hedef:</b> ' + esc(A.goal) + '</div>' +
-      (A.needs ? '<div class="needs">' + A.needs.map(function (n) { return '<span>🧰 ' + esc(n) + '</span>'; }).join("") + '</div>' : "") +
+      (A.needs ? '<div class="needs">' + A.needs.map(function (n) { return '<span>📋 ' + esc(n) + '</span>'; }).join("") + '</div>' : "") +
       '<ol class="act-steps" data-key="' + key + '" data-total="' + A.steps.length + '">' + A.steps.map(function (st, i) { return stepHtml(st, i, done.indexOf(i) >= 0, key); }).join("") + '</ol>' +
       '<div class="finish' + (done.length === A.steps.length ? " show" : "") + '">🎉 Tebrikler, etkinliği bitirdin!</div>';
     if (A.online) html += S.internet
@@ -372,7 +372,7 @@
         '<div class="deck" id="deck"><div class="stage" tabindex="0" role="group" aria-label="Ders slaytları">' + L.slides.map(function (s, i) { return slideHtml(id, s, i); }).join("") + '</div>' +
         '<div class="deck-bar"><button type="button" id="prev" aria-label="Önceki slayt">← <span class="w">Önceki</span></button><span class="count" id="count" aria-live="polite">1 / ' + L.slides.length + '</span><button type="button" id="next" aria-label="Sonraki slayt"><span class="w">Sonraki</span> →</button>' +
         '<div class="dots" id="dots">' + L.slides.map(function (_, i) { return '<button type="button" aria-label="' + (i + 1) + '. slayt" class="' + (i === 0 ? "on" : "") + '" data-i="' + i + '"></button>'; }).join("") + '</div>' +
-        '<button type="button" id="fs">⛶ Tam ekran</button></div></div>' +
+        '<button type="button" id="fs">Tam ekran</button></div></div>' +
         '<div class="hint">' + (T ? "Slayta tıklayıp ← → ok tuşlarıyla geçebilirsiniz. Tam ekrandan Esc ile çıkılır." : "Slayta tıklayıp ← → ok tuşlarıyla geçebilirsin. Tam ekrandan Esc ile çıkılır.") + '</div>' +
         (T ? '<div class="hook"><b>Derse başlarken</b>' + esc(L.hook) + '</div>' : "")) +
 
@@ -445,7 +445,7 @@
     dots.forEach(function (d) { d.onclick = function () { go(+d.getAttribute("data-i")); }; });
     stage.addEventListener("click", function (e) { var r = stage.getBoundingClientRect(); go(e.clientX - r.left > r.width / 2 ? cur + 1 : cur - 1); });
     var setFs = function (on) {
-      deck.classList.toggle("fs", on); $("#fs").textContent = on ? "✕ Kapat" : "⛶ Tam ekran";
+      deck.classList.toggle("fs", on); $("#fs").textContent = on ? "✕ Kapat" : "Tam ekran";
       try { if (on && deck.requestFullscreen) deck.requestFullscreen().catch(function () {}); else if (!on && document.fullscreenElement) document.exitFullscreen().catch(function () {}); } catch (e) {}
       setTimeout(fit, 60);
     };

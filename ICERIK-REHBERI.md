@@ -28,6 +28,7 @@ Bilişim Defteri'ne ders yazarken uyulacak kurallar. Amaç: her dersin **kazanı
 - Önce günlük hayattan örnek, sonra kavram. ("Kütüphanede raflar olmasaydı…" → klasör)
 - Yabancı terimlerin Türkçesini kullanın: "dosya uzantısı", "işlemci". Kısaltmaları ilk geçtiği yerde açın: "Artırılmış gerçeklik (AR)".
 - Deftere yaz maddeleri **3–5 madde**, her madde en fazla 2 cümle. Anahtar kavram `<mark>` içinde.
+- **Emoji süstür, anlam taşımaz.** Emoji görünmezse cümle yine anlaşılmalı. Eski Windows ve Pardus'ta kutu görünmemesi için 🤖 🧠 🧩 gibi U+1F900 sonrası yeni emojiler kullanılmaz (`dogrula.js` uyarır). Yerine 💡 📱 💻 ⚙️ ☁️ 👓 gibi eski emojileri seçin.
 
 ## 4. Bölüm bölüm ölçüler
 

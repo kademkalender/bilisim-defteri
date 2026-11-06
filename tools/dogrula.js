@@ -231,6 +231,10 @@ function checkLesson(f, L) {
   var total = 0;
   (L.flow || []).forEach(function (step) { if (typeof step.m === "number") total += step.m; });
   if (total !== 80) warn(f, "ders akışı toplamı " + total + " dk (beklenen 80 dk)");
+
+  // UYARI: U+1F900 ve sonrası yeni emojiler (2015+), eski Windows ve Pardus'ta kutu görünebilir
+  var newEmoji = JSON.stringify(L).match(/[\u{1F900}-\u{1FAFF}]/gu);
+  if (newEmoji) warn(f, "eski sistemlerde görünmeyebilecek emoji: " + newEmoji.join(" ") + " (ICERIK-REHBERI.md §3)");
 }
 
 Object.keys(BD.lessons).forEach(function (id) {
