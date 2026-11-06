@@ -35,6 +35,9 @@ Kayıt şablonu:
 - Dönem geçişi belli olsun diye şeritte dönemin ucundaki ‹ › mavi dolu ve öbür dönemin adını taşır ("2. dönem", "1. dönem"); şeridin üstündeki dönem adı büyüdü ve koyulaştı. Katalogda "1. dönemin son sayfası" çeşidi.
 - Ana sayfaya outsider-design-review (öğrenci ve öğretmen, 1280 ve 375 px). Kontrast, dokunma alanı ve erişilebilir adlarda sorun yok. Bulgular düzeltildi: aramada etkinlik haftası etiketi, kelime kelime arama ve not araması, öğretmen listesinde etkinlik haftaları, şeritte seçilen haftanın temasının açılması, geçersiz hafta adresinde takvim haftası, şerit altı boşluk, 560 px ve altında 5 haftalık şerit. Testler 33/33, dogrula 0, sentetik G1/G3 OK.
 - Öğrenci ana sayfasına Gestalt değerlendirmesi. Seçili durum tek renk dilinde: sınıf kartı iki sınıfta da seçiliyken dolu mavi (hafta şeridi gibi), sınıfın rengi yalnızca seçili olmayan kartın numarasında. Kalan öneriler: tamamlanmış sınıf seçimini küçültmek (katalogda bileşen gerekir), etkinlik haftası ve ‹ › düğmelerini ayrıştırmak, hafta kartının yarı boş sağ tarafı.
+- Hafta şeridi: takvim haftası kesikli mavi çerçeveli, seçili haftanın üstünde karta bakan mavi üçgen (kutu ile kart bağı), ‹ › çerçevesiz. Etkinlik haftaları eski görünümünde (kullanıcı kararı).
+- Okul monitörü: 1500 px'ten geniş ve 880 px'ten yüksek ekranda içerik 1440 px, yazı 22 px, boşluklar ve px bileşen ölçüleri `--k` ile %30 büyük. Dizüstü (1366×768) ve 1280×1024 değişmez. Sunum slaytı monitörde 861 px (dizüstünde 528 px); üst kısım büyüdüğü için ölçeksiz hâlden küçük.
+- Sayfa altındaki alt bilgi (YTÜ BÖTE, MEB kaynağı) kaldırıldı (kullanıcı isteği).
 
 **Kararlar**
 - 2. dönem 19. haftada başlar; 5. hafta Code Week, 18. hafta dönem sonu etkinlik haftası, iki sınıfta da (kullanıcı kararı). Plandaki ders başlıkları ve kazanım dağılımı yine örnek.
