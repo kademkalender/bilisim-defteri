@@ -149,3 +149,21 @@ node tools/dogrula.js
 
 - MEB TYMM Bilişim Teknolojileri ve Yazılım, 5. sınıf 1. tema: https://tymm.meb.gov.tr/bilisim-teknolojileri-ve-yazilim-dersi/unite/674
 - MEB TYMM Bilişim Teknolojileri ve Yazılım, 6. sınıf 1. tema: https://tymm.meb.gov.tr/bilisim-teknolojileri-ve-yazilim-dersi/unite/681
+
+## Sentetik kullanılabilirlik testi
+
+```
+node tools/ux-test/runner.mjs
+node tools/ux-test/report.mjs
+```
+
+Betiklenmiş bir persona aynı görevleri iki versiyonda (bir git commit'i ve şimdiki hâl) yapar: tıklama, tuş, kaydırma ve dolayım sayılır, süre sabit bir tempo modeliyle hesaplanır, ekran kaydı alınır. Sonuç `tools/ux-test/results/report.html` dosyasıdır (videolar içinde, git'e girmez). Görevler, versiyonlar ve rapor metni `tools/ux-test/ux-test.config.mjs` içindedir. Yüklü Chrome ve Node 22+ ister, npm paketi kullanmaz. Bu kullanıcı araştırması değildir; gerçek öğrencilerle yapılan testin yerini tutmaz.
+
+## Sentetik kullanılabilirlik testi
+
+```
+node tools/ux-test/runner.mjs
+node tools/ux-test/report.mjs
+```
+
+Betiklenmiş bir persona aynı görevleri iki versiyonda (bir git commit'i ve şimdiki hâl) yapar: tıklama, tuş, kaydırma ve dolayım sayılır, süre sabit bir tempo modeliyle hesaplanır, ekran kaydı alınır. Sonuç `tools/ux-test/results/report.html` dosyasıdır (videolar içinde, git'e girmez). Görevler, versiyonlar ve rapor metni `tools/ux-test/ux-test.config.mjs` içindedir. Yüklü Chrome ve Node 22+ ister, npm paketi kullanmaz. Bu kullanıcı araştırması değildir; gerçek öğrencilerle yapılan testin yerini tutmaz.

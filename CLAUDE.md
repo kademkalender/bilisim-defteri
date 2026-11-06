@@ -47,6 +47,7 @@ Hook gelen commit bildirirse:
 - `assets/hafta.js`: `schoolWeek(tarih, BD.calendar)`. Öğrenci ana sayfasındaki "Bu hafta" kartı için bugünün kaçıncı öğretim haftası olduğunu bulur. Takvim `content/plan.js` içinde, MEB çalışma takviminden alınır ve her yıl güncellenir. Test: `node --test tools/hafta.test.js`.
 - `assets/sim-core.js`: Sanal masaüstünün mantığı (bellekte dosya sistemi, işlemler, görev kontrolü). DOM'a dokunmaz. Test: `node --test tools/*.test.js`.
 - `assets/sim-ui.js`: `SimUI.mount(el, {...})`. Sanal masaüstünün görünümü, fare, dokunma ve klavye. Senaryo ders dosyasındaki `sim` alanındadır, kuralları `ICERIK-REHBERI.md`'de. Tarayıcı testi: `tools/sim-tarayici.test.js` iki senaryoyu başsız Chrome'da fare, klavye ve dokunmayla oynar (yaklaşık 2 dk). Chrome bulunamazsa atlanır, yol `BD_CHROME` ile verilir.
+- `tools/ux-test/`: Sentetik kullanılabilirlik testi (persona betiği, iki versiyon, videolu HTML rapor). Görevler `ux-test.config.mjs` içinde, kullanım README'de. Sonuçlar `results/` altında, git dışı.
 - `assets/style.css`: Renkler ve ölçüler `:root` içindeki tokenlardan gelir. Kurallar: `TASARIM-SISTEMI.md`, canlı katalog: `tasarim-sistemi.html`.
 - `assets/mulish.css`: Gömülü Mulish yazı tipi (data URI, çünkü Firefox `file://` altında ayrı font dosyası yüklemez).
 - `content/program.js`: Resmi öğrenme çıktıları.
