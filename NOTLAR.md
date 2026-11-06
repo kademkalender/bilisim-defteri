@@ -22,11 +22,19 @@ Kayıt şablonu:
 - GitHub'dan güncelleme alındı: Kadem Kalender'in 27 commit'i (`3c44016` … `995abb4`, 2026-11-03 ile 2026-11-06 arası), çakışma olmadan ileri sarıldı. 55 dosya, +3650 / −109 satır.
 - Gelenler: oturum başı hook'u (`3c44016`), üç tasarım seçeneği mockup'ı (`c01470d`), okul takvimi (`2382ff7`), öğrenci ve öğretmen görünümünde renkli kart tasarımı (`59f6793`, `b8388bc`), sanal masaüstü ve testleri (`6dc3954` … `54fba73`), Oyun bölümü (`fa9221a`), emoji taraması (`5892da3`), 5. sınıf 1-6. hafta dersleri (`ad519b3`, `d953bd7`, `06ccb1f`).
 - Testler: `node tools/dogrula.js` 0 hata, 0 uyarı. `file://` açılışı CDP ile denendi, konsol hatası yok. `node --test tools/*.test.js` ilk çalıştırmada 32/33 ("dersin görevleri değişince eski kayıt baştan başlar" testi tüm testlerle birlikte çalışırken düştü). Tek başına geçti, ikinci tam çalıştırmada 33/33.
+- Siteye /outsider-design-review yapıldı (1366×768, 1024×768): 1 yüksek, 6 orta, 3 düşük bulgu. En büyük sorun 768 px yükseklikte önemli düğmelerin ekran dışında kalmasıydı.
+- `38e90c7` Review düzeltmelerinin hepsi: bölüm kartları geniş ekranda tek sıra (Başla 790 → 536 px), sanal masaüstü görev çubuğu ekranda (962 → 726 px), öğretmen slaytı 597 → 853 px ve çubuğu tek satır, öğretmende bölüm başlığı yerine tek satır açıklama, hazır olmayan hafta kartında "Son hazır ders" düğmesi, bölüm numarası kontrastı 2,88 → en az 4,26:1, öğretmen sınıf kartları 104 → 64 px, öğretmen üst bandı 1024 px'te tek satır. İkonlar `assets/ikonlar.js`'e taşındı; ortam, yazdır ve tekrar düğmeleri emoji değil SVG. `--surface-setting` token'ı eklendi. Testler 33/33, `file://` konsolu temiz.
 
 **Kararlar**
 - Oturum başında GitHub'daki yeni commit'ler çekilir (CLAUDE.md "Oturum başı").
+- Önce site düzeltilir, sonra tasarım sistemi kataloğu (`tasarim-sistemi.html`, repoda, sitenin `style.css`'ini kullanan, açık tema) yazılır ve "yeni arayüz katalogdan yapılır" kuralı CLAUDE.md'ye eklenir.
+- Ekran ölçüsü olarak 1366×768 esas alındı; okul bilgisayarlarının çözünürlüğü doğrulanmadı.
+- Öğretmen Sunum sekmesini açınca sayfa sekmeleri üste getirecek kadar kayar; slaytın büyümesi buna bağlı.
+- Geri bildirim ve etkinlik etiketlerindeki emoji (🎉 👏 🌟 🎯 📋 🌐 📇) süs olarak kaldı; yalnızca ikon görevindekiler SVG oldu.
 
 **Yarım kalan işler**
+- [ ] Tasarım sistemi kataloğu (`tasarim-sistemi.html`) yazılmadı. Senin UI (`senin-ui.html`) örnek alınacak: sol menü, Önizleme / Çeşitler / Kod sekmeleri, Özellikler paneli.
+- [ ] Kadem bölüm kartı dizilişi ve öğretmen bölüm başlığı değişikliklerini görmedi.
 - [ ] `tools/sim-tarayici.test.js` içindeki "eski kayıt baştan başlar" testi tüm testlerle birlikte koşunca ara sıra düşüyor. Süre sınırına ya da bekleme süresine bakılmalı.
 
 ---
