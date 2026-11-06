@@ -92,6 +92,14 @@ body{background:var(--surface-subtle)}
 .ds-icons button:hover{border-color:var(--action-primary)}
 .ds-icons .ico{width:32px;height:32px;color:var(--action-primary)}
 .ds-note{font-size:.9rem;color:var(--text-secondary);max-width:75ch}
+.ds-voices{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--space-4)}
+.ds-voices h3{display:flex;align-items:center;gap:var(--space-3);font-size:1.05rem}
+.ds-voices ul{margin:var(--space-3) 0 0;padding-left:1.2em}
+.ds-dd{display:grid;gap:var(--space-2)}
+.ds-dd > div{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-2)}
+.ds-x,.ds-v{display:block;padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);font-size:.95rem}
+.ds-x{background:var(--feedback-error-subtle);color:var(--feedback-error)}
+.ds-v{background:var(--feedback-success-subtle);color:var(--feedback-success);font-weight:700}
 .ds-toast{position:fixed;left:50%;bottom:var(--space-6);transform:translateX(-50%);background:var(--text-primary);color:#fff;padding:var(--space-2) var(--space-4);border-radius:var(--radius-pill);font-weight:700;font-size:.9rem;z-index:60;display:none}
 .ds-toast.show{display:block}
 @media (max-width:1180px){
@@ -689,7 +697,23 @@ body{background:var(--surface-subtle)}
     ikonlar: { group: "Temeller", name: "İkonlar", desc: "Satır içi SVG, 24×24 çizgi. Liste <code>assets/ikonlar.js</code> (<code>BD.icons</code>), sitede <code>icon(\"ad\")</code> ile çizilir. Emoji yerine bunlar kullanılır: Pardus'ta renkli emoji yazı tipi olmayabilir. Basınca <code>icon(\"ad\")</code> kopyalanır.",
       body: function () { return '<div class="ds-icons">' + Object.keys(BD.icons).map(function (k) { return '<button type="button" data-copy=\'icon("' + k + '")\'>' + ico(k) + k + '</button>'; }).join("") + '</div><p class="ds-note">Yeni ikon önce <code>assets/ikonlar.js</code>\'e eklenir, kendiliğinden burada görünür.</p>'; } }
   };
-  var FOUND = ["renkler", "yazi", "olculer", "ikonlar"];
+  F.yazim = { group: "Temeller", name: "Ses ve yazım", desc: "Ekrandaki her metnin tonu ve kalıbı. Kuralların tamamı ve terim sözlüğü <code>YAZIM-REHBERI.md</code>'de; burada kısa hâli ve örnekler var.",
+    body: function () {
+      var pairs = function (rows) { return '<div class="ds-dd">' + rows.map(function (r) { return '<div><span class="ds-x">✗ ' + esc(r[0]) + '</span><span class="ds-v">✓ ' + esc(r[1]) + '</span></div>'; }).join("") + '</div>'; };
+      var sec = function (h, note, rows) { return '<section class="ds-section"><h2>' + h + '</h2>' + (note ? '<p class="ds-note" style="margin:0 0 12px">' + note + '</p>' : "") + pairs(rows) + '</section>'; };
+      return '<section class="ds-section"><div class="ds-voices">' +
+        '<div class="card"><h3><span class="sq-sm" style="background:var(--action-primary)">' + ico("ogrenci") + '</span>Öğrenciye: oyun arkadaşı</h3><ul><li>"sen" der, görev verir, bitince kutlar.</li><li>Puan, seviye, rozet yok; ilerleme sayıyla görünür.</li><li>Ünlem: kutlamada ve göreve çağıran tek cümlede.</li><li>Emoji yalnızca kutlamada.</li></ul></div>' +
+        '<div class="card"><h3><span class="sq-sm" style="background:var(--theme-1)">' + ico("ogretmen") + '</span>Öğretmene: yardımcı asistan</h3><ul><li>"siz" der; ne yapacağını, gerekirse nedenini söyler.</li><li>Somut: süre, slayt numarası, sayfa adı.</li><li>Ünlem ve emoji yok.</li><li>En fazla iki cümle.</li></ul></div>' +
+        '</div><p class="ds-note">Site kendinden "biz" diye söz etmez. Yazı tipi Mulish; dosya adı ve kod eş aralıklı yazılır (Mulish\'te I ile l benzer).</p></section>' +
+        sec("Öğrenci metni", "", [["Etkinlik tamamlandı.", "Görev tamam! 🎉 Sırada Oyun var."], ["Bu derste dosya işlemleri öğretilecektir.", "Dağınık masaüstünü toparla!"], ["Başarı oranınız %80.", "5 sorudan 4'ü doğru."], ["Hadi bakalım minik dostum!", "Görev: Kendi klasörünü oluştur."]]) +
+        sec("Öğretmen metni", "", [["Bu haftanın dersi üzerinde çalışıyoruz.", "Bu haftanın dersi henüz hazır değil. 7. haftanın dersini kullanabilirsiniz."], ["Giriş yapılır.", "Giriş · 5 dk: 2. slayttaki soruyu sorun. Konuya merak uyandırır."], ["Ayarlarınız başarıyla kaydedilmiştir!", "Ayarlar kaydedildi. Dersler artık Pardus yönergeleriyle açılır."]]) +
+        sec("Yanlış cevap", "Sonuç + neden. İlk yanlışta ipucu ve bir hak daha, ikincide doğru cevap.", [["Yanlış!", "Az kaldı! Uzantıya bak: ses dosyaları .ogg ya da .mp3 olur."], ["Olmadı.", "Bu sefer olmadı. .png bir resim dosyasıdır. Ses dosyası: kayit.ogg ✓"]]) +
+        sec("Düğme", "Fiille başlar; ok, ünlem, emoji yok. Ok yalnızca slayt ve hafta oklarında.", [["Başla →", "Başla"], ["Tamam", "Kontrol et"], ["Evet", "Evet, sıfırla"]]) +
+        sec("Başlık", "Cümle düzeni: yalnız ilk harf büyük, özel adlar hariç. Sonda nokta yok.", [["Kazanım Haritası", "Kazanım haritası"], ["Dosya ve Klasör Yönetimi", "Dosya ve klasör yönetimi"], ["Bilgi Dünyasına Yolculuk", "Bilgisayar sistemleri"]]) +
+        sec("Yönerge ve boş durum", "Ekranla ilgili fiil \"tıkla\". Boş durum: neden boş + ilk adım.", [["Lütfen maddeleri defterinize yazınız.", "Sadece bu maddeleri defterine geçir."], ["Butona basarak cevabı görebilirsin!", "Cevabı görmek için düğmeye tıkla."], ["Sonuç bulunamadı.", "\"klasor\" için sonuç yok. Ders adı ya da hafta numarası yaz."]]) +
+        '<p class="ds-note">Bu kuralların bir kısmı sitede henüz uygulanmadı (düğmedeki ok, sayfa adlarının büyük harfi, testte tekrar deneme). Liste: <code>YAZIM-REHBERI.md</code> → "Sitede henüz uygulanmayanlar".</p>';
+    } };
+  var FOUND = ["renkler", "yazi", "olculer", "ikonlar", "yazim"];
 
   /* ---------- Kod görünümü ---------- */
   var BLOCK = /^(div|section|ul|ol|li|nav|header|details|summary|p|h1|h2|h3|h4|button|a|select|label)$/;

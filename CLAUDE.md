@@ -2,7 +2,7 @@
 
 5. ve 6. sınıf Bilişim Teknolojileri ve Yazılım dersi için, MEB Türkiye Yüzyılı Maarif Modeli öğrenme çıktılarına bağlı ders sitesi. YTÜ BÖTE stajyerleri geliştiriyor. Kullanıcılar 10–12 yaş öğrenciler ve BT öğretmenleri.
 
-Ayrıntılar: `README.md` (yapı), `ICERIK-REHBERI.md` (ders yazma kuralları). Ders içeriğiyle ilgili her işte önce `ICERIK-REHBERI.md` dosyasını oku.
+Ayrıntılar: `README.md` (yapı), `ICERIK-REHBERI.md` (ders yazma kuralları), `YAZIM-REHBERI.md` (ses tonu ve arayüz metni). Ders içeriğiyle ilgili her işte önce `ICERIK-REHBERI.md` dosyasını, ekranda görünen bir metin yazarken ya da değiştirirken `YAZIM-REHBERI.md` dosyasını oku.
 
 ## Oturum başı
 
@@ -57,6 +57,7 @@ Hook gelen commit bildirirse:
 ## Dil
 
 - Arayüz ve içerik Türkçe. Öğrenciye "sen", öğretmene "siz" diye hitap edilir.
+- Ses tonu: öğrenciye oyun arkadaşı (görev dili, kutlama), öğretmene yardımcı asistan. Düğme fiil, okusuz; başlıklar cümle düzeninde; site "biz" demez. Ayrıntı ve örnekler: `YAZIM-REHBERI.md`.
 - Büyük-küçük harf dönüşümlerinde `toLocaleUpperCase("tr")` ve `toLocaleLowerCase("tr")` kullan (İ/ı sorunu).
 - Kod yorumları Türkçe olabilir. Değişken adları İngilizce ya da Türkçe karakter içermeyen Türkçe olabilir.
 

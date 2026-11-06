@@ -86,7 +86,8 @@ bilisim-defteri/
 ├─ README.md
 ├─ NOTLAR.md                   Çalışma günlüğü (en yeni kayıt üstte)
 ├─ TASARIM-SISTEMI.md          Renk, yazı, ölçü ve bileşen kuralları
-└─ ICERIK-REHBERI.md           Ders yazarken uyulacak kurallar
+├─ ICERIK-REHBERI.md           Ders yazarken uyulacak kurallar
+└─ YAZIM-REHBERI.md            Ses tonu ve arayüz metni kuralları
 ```
 
 İçerikler `.json` değil `.js` dosyasıdır. Böylece site sunucu olmadan, çift tıklayarak ve internetsiz açılabilir.

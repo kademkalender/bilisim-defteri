@@ -2,6 +2,8 @@
 
 Bilişim Defteri'ne ders yazarken uyulacak kurallar. Amaç: her dersin **kazanıma bağlı**, **her okulda uygulanabilir** ve **ekipteki herkes yazmış olsa da aynı kalitede** olması.
 
+Dersteki ve arayüzdeki metnin tonu (öğrenciye görev dili, geri bildirim kalıpları, düğme ve başlık yazımı, terimler) `YAZIM-REHBERI.md`'dedir.
+
 ---
 
 ## 1. Kazanıma bağlılık

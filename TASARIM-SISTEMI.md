@@ -2,7 +2,7 @@
 
 Omurga İstanbul Senin'in Senin UI sisteminden uyarlandı: token katmanları, ölçüler, yazı tipi ve bileşen biçimleri. Renkler bu projenin. Değerlerin tek kaynağı `assets/style.css` içindeki `:root` bloğudur.
 
-Canlı katalog: `tasarim-sistemi.html` (çift tıklayınca açılır). Renkler, yazı, ölçüler, ikonlar ve 32 bileşen sitenin kendi stilleriyle ve gerçek ders verisiyle çizilir. Her bileşenin Önizleme, Çeşitler ve Kod sekmesi, Özellikler paneli ve kullanım kuralları vardır. Üstteki Görünüm düğmesi öğretmen ve öğrenci hâlini değiştirir. Yeni arayüz bu bileşenlerle yapılır; yeni bileşen önce kataloğa eklenir.
+Canlı katalog: `tasarim-sistemi.html` (çift tıklayınca açılır). Renkler, yazı, ölçüler, ikonlar, ses ve yazım ile 32 bileşen sitenin kendi stilleriyle ve gerçek ders verisiyle çizilir. Her bileşenin Önizleme, Çeşitler ve Kod sekmesi, Özellikler paneli ve kullanım kuralları vardır. Üstteki Görünüm düğmesi öğretmen ve öğrenci hâlini değiştirir. Yeni arayüz bu bileşenlerle yapılır; yeni bileşen önce kataloğa eklenir.
 
 ## Kurallar
 
