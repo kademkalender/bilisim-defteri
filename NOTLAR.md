@@ -24,6 +24,8 @@ Kayıt şablonu:
 - `ad519b3` 5-1-1 Bilişim Teknolojilerini Tanıyalım (BTY.5.1.1, a-b-c). 11 slayt, 7 bilgi kartı. Etkinlikler: lab'da dün-bugün sunusu, tahtada kavram kavanozu, kâğıtta zaman tüneli afişi. Ayrıca "Teknoloji hangi alanda?" oyunu, 5 soru, 8 kelimelik bulmaca ve dereceli puanlama anahtarı var. Etkinlikler programdaki öğrenme-öğretme uygulamalarından alındı.
 - `ad519b3` Yeni slayt alanı `reveal` ("Tahmin et" slaytı): önce soru görünür, "Cevabı göster" düğmesi cevabı açar. Şablona ve rehbere eklendi.
 - `d953bd7` 5-1-2 Bilişim Teknolojilerinin Etkileri ve Dijital Sağlık (BTY.5.1.2, a-b-c). Programdan: olumlu-olumsuz tartışması, hatalı kullanımı bulma (tahtada canlandırma), ergonomi, cihaza göre güvenlik önlemleri, dijital sağlığın üç boyutu, öz değerlendirme formu. Ekran süresi günlüğü isteğe bağlı ve kişisel (ICERIK-REHBERI.md §6). Aynı tarayıcı kontrolleri yapıldı, çalışma kâğıdı 4 sayfa.
+- `06ccb1f` 5-1-3 Dijital Vatandaşlık, 5-1-4 Yapay Zekâ ile Tanışalım (beş süreç bileşeni a-b-c-ç-d), 6. hafta 5-1-5-isletim-sistemi-sorunlar (BTY.5.1.5'in ikinci dersi). 5-1-5'e bankamatik ve bit-bayt Tahmin et slaytları eklendi. Etkinlikler programdaki öğrenme-öğretme uygulamalarından alındı. İnternet gerektirenler (ad-soyad araması, yapay zekâ araçları) yalnızca `online` alanında ve öğretmen notunda.
+- 5. sınıf 1-7. haftaların hepsinin dersi var.
 - Başsız Chrome'da denendi: üç ortam, cevap düğmesi (fare ve ok tuşu), 11 slaytın ekran görüntüsü, kazanım haritası, yazdırma (4 sayfa). Konsolda hata yok. `node --test tools/*.test.js` 33/33.
 
 **Kararlar**
@@ -32,7 +34,9 @@ Kayıt şablonu:
 
 **Yarım kalan işler**
 - [ ] Emojiler ve yeni ders gerçek Pardus ve Windows bilgisayarında denenmedi. Pardus'ta renkli emoji yazı tipi olup olmadığı bilinmiyor.
-- [ ] 5-1-1 ve 5-1-2 ekipten biri tarafından okunup onaylanmadı (ICERIK-REHBERI.md §7).
+- [ ] 5-1-1, 5-1-2, 5-1-3, 5-1-4 ve 6. hafta dersi ekipten biri tarafından okunup onaylanmadı.
+- [ ] 6. hafta laboratuvar adımlarındaki Pardus menü adları (Hakkında, Görev Yöneticisi / Sistem Gözlemcisi) gerçek Pardus'ta denenmedi.
+- [ ] Tarayıcı testi bir kez 20 dakikadan uzun takıldı (bilgisayarda başka bir oturumun çok sayıda Chrome'u açıktı). Tek başına yeniden çalıştırınca 2 dakikada 8/8 geçti. Tekrar ederse `tools/sim-tarayici.test.js`'te Chrome açılışına süre sınırı gerekebilir. (ICERIK-REHBERI.md §7).
 - [ ] Slayt taşmasını otomatik yakalayan bir kontrol yok. Şimdilik ekran görüntüsüyle bakılıyor.
 
 ---
