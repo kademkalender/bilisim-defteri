@@ -23,6 +23,7 @@ Kayıt şablonu:
 - `5892da3` Emoji taraması. Eski Windows ve Pardus'ta kutu görünebilecek yeni emojiler (U+1F900 sonrası) değiştirildi: 🧩 🧠 → ⚙️, 🥽 → 👓, 🤖 → ☁️, 🧰 → 📋. Tam ekran düğmesindeki ⛶ kaldırıldı. `dogrula.js` yeni emojide uyarıyor, kural ICERIK-REHBERI.md §3'te.
 - `ad519b3` 5-1-1 Bilişim Teknolojilerini Tanıyalım (BTY.5.1.1, a-b-c). 11 slayt, 7 bilgi kartı. Etkinlikler: lab'da dün-bugün sunusu, tahtada kavram kavanozu, kâğıtta zaman tüneli afişi. Ayrıca "Teknoloji hangi alanda?" oyunu, 5 soru, 8 kelimelik bulmaca ve dereceli puanlama anahtarı var. Etkinlikler programdaki öğrenme-öğretme uygulamalarından alındı.
 - `ad519b3` Yeni slayt alanı `reveal` ("Tahmin et" slaytı): önce soru görünür, "Cevabı göster" düğmesi cevabı açar. Şablona ve rehbere eklendi.
+- `d953bd7` 5-1-2 Bilişim Teknolojilerinin Etkileri ve Dijital Sağlık (BTY.5.1.2, a-b-c). Programdan: olumlu-olumsuz tartışması, hatalı kullanımı bulma (tahtada canlandırma), ergonomi, cihaza göre güvenlik önlemleri, dijital sağlığın üç boyutu, öz değerlendirme formu. Ekran süresi günlüğü isteğe bağlı ve kişisel (ICERIK-REHBERI.md §6). Aynı tarayıcı kontrolleri yapıldı, çalışma kâğıdı 4 sayfa.
 - Başsız Chrome'da denendi: üç ortam, cevap düğmesi (fare ve ok tuşu), 11 slaytın ekran görüntüsü, kazanım haritası, yazdırma (4 sayfa). Konsolda hata yok. `node --test tools/*.test.js` 33/33.
 
 **Kararlar**
@@ -31,7 +32,7 @@ Kayıt şablonu:
 
 **Yarım kalan işler**
 - [ ] Emojiler ve yeni ders gerçek Pardus ve Windows bilgisayarında denenmedi. Pardus'ta renkli emoji yazı tipi olup olmadığı bilinmiyor.
-- [ ] 5-1-1 ekipten biri tarafından okunup onaylanmadı (ICERIK-REHBERI.md §7).
+- [ ] 5-1-1 ve 5-1-2 ekipten biri tarafından okunup onaylanmadı (ICERIK-REHBERI.md §7).
 - [ ] Slayt taşmasını otomatik yakalayan bir kontrol yok. Şimdilik ekran görüntüsüyle bakılıyor.
 
 ---
