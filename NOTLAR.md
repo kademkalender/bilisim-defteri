@@ -31,8 +31,10 @@ Kayıt şablonu:
 - Öğrencinin 3. hafta görevi için sentetik replay (3 persona, tahmin) ve benchmark (Code.org, Khan Academy, takvim uygulamaları). HMW: "Öğretmenin tahtada söylediği hafta numarasıyla dersi arayan öğrencinin, o haftanın dersini haftaları tek tek gezmeden açma ihtiyacını, site öğrenciyi her zaman takvimin haftasında karşılıyor, sınıf ise çoğu zaman başka bir haftayı işliyor gerçeğine rağmen nasıl karşılayabiliriz?" İçgörünün ikinci yarısı varsayım, görüşmeyle doğrulanmadı.
 - Code.org tarzı hafta listesi (tema başlığı + bölüm baloncukları) denendi, kullanıcı beğenmedi, geri alındı (commit yok).
 - `cb0aafc` Ana sayfada hafta okları yerine 11 haftalık hafta şeridi: ‹ › kaydırmadan sayfa geçer, açılışta takvim haftası seçili ve "takvim" yazar, kart başlığı "Takvime göre bu hafta". 8'den 3. haftanın dersine 6 tık yerine 2 tık. Yan kartlar kaldırıldı (öğrenci ve öğretmen). Katalogda Hafta okları ve Yan kart yerine Hafta şeridi. Testler 33/33, dogrula 0, `file://` sentetik koşular hatasız.
+- `2530f00` Takvime 2. dönem başlangıcı (`term2`, 19. hafta); hafta şeridi dönem sınırını geçmez, üstünde "1. dönem"/"2. dönem" yazar. İki sınıfta 5. hafta Code Week, 18. hafta dönem sonu etkinlik haftası (`event: true`, tema/kazanım/ders yok, `note` gösterilir); sonraki haftalar kaydı, plan 36 hafta. Hazır 5. sınıf dersleri 6, 7, 8. haftaya geçti. Şeritte "etkinlik", kartta koyu zemin; dogrula etkinlik haftasını denetler. Sentetik test tarihi 13 Kasım (9. hafta). Testler 33/33, dogrula 0.
 
 **Kararlar**
+- 2. dönem 19. haftada başlar; 5. hafta Code Week, 18. hafta dönem sonu etkinlik haftası, iki sınıfta da (kullanıcı kararı). Plandaki ders başlıkları ve kazanım dağılımı yine örnek.
 - Oturum başında GitHub'daki yeni commit'ler çekilir (CLAUDE.md "Oturum başı").
 - Önce site düzeltilir, sonra tasarım sistemi kataloğu (`tasarim-sistemi.html`, repoda, sitenin `style.css`'ini kullanan, açık tema) yazılır ve "yeni arayüz katalogdan yapılır" kuralı CLAUDE.md'ye eklenir.
 - Ekran ölçüsü olarak 1366×768 esas alındı; okul bilgisayarlarının çözünürlüğü doğrulanmadı.
@@ -58,6 +60,8 @@ Kayıt şablonu:
 - [ ] Kadem bölüm kartı dizilişi ve öğretmen bölüm başlığı değişikliklerini görmedi.
 - [ ] Öğretmen ana sayfasında "Kaldığınız yer" kartı da kalktı; öğretmen isterse geri eklenebilir.
 - [ ] `#dersler` (Bütün dersler) sayfasına ana sayfadan bağlantı kalmadı; sayfa kaldırılmalı mı karar verilmeli.
+- [ ] Etkinlik haftaları öğretmenin "Bütün haftalar" tema listesinde görünmüyor (temaya ait değiller); gerekirse ayrı satır eklenebilir.
+- [ ] Sentetik testin eski versiyonu (995abb4) yeni hafta numaralarıyla koşmuyor (ders orada 7. haftada); karşılaştırma tarihî.
 - [ ] Hafta şeridi telefon genişliğinde (375 px) çok sıkışıyor; telefon öncelik değil ama bakılmadı.
 - [ ] "Öğretmen takvimden ne sıklıkla sapıyor" ve "haftayı öğrenciye nasıl söylüyor" soruları bir öğretmene sorulmalı.
 - [ ] Pardus ayarında sanal masaüstünün sağ tık menüsü "Yeni › Klasör" gösteriyor; ders yönergesi Pardus için "Klasör Oluştur…" diyor. Hangisinin doğru olduğuna bakılmalı.
