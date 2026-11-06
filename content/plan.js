@@ -109,7 +109,7 @@ BD.defaults = {
 };
 
 BD.envs = {
-  lab:   { icon: "💻", name: "Bilgisayar laboratuvarı", short: "Laboratuvar", desc: "Her öğrencinin ya da her iki öğrencinin bir bilgisayarı var." },
-  tahta: { icon: "🖥️", name: "Sadece etkileşimli tahta", short: "Etkileşimli tahta", desc: "Sınıfta tek ekran var: etkileşimli tahta ya da projeksiyon. Ders öğretmenle birlikte yapılır." },
-  kagit: { icon: "✏️", name: "Bilgisayarsız sınıf", short: "Bilgisayarsız", desc: "Bilgisayar ya da elektrik yok. Etkinlikler kâğıt, kalem ve kartlarla yapılır. Çalışma kâğıdı önceden yazdırılır." }
+  lab:   { icon: "ekran", name: "Bilgisayar laboratuvarı", short: "Laboratuvar", desc: "Her öğrencinin ya da her iki öğrencinin bir bilgisayarı var." },
+  tahta: { icon: "tahta", name: "Sadece etkileşimli tahta", short: "Etkileşimli tahta", desc: "Sınıfta tek ekran var: etkileşimli tahta ya da projeksiyon. Ders öğretmenle birlikte yapılır." },
+  kagit: { icon: "defter", name: "Bilgisayarsız sınıf", short: "Bilgisayarsız", desc: "Bilgisayar ya da elektrik yok. Etkinlikler kâğıt, kalem ve kartlarla yapılır. Çalışma kâğıdı önceden yazdırılır." }
 };

@@ -70,31 +70,10 @@
   function lessonById(id) { return Object.prototype.hasOwnProperty.call(BD.lessons, id) ? BD.lessons[id] : null; }
   function theme(g, no) { return BD.program[g].themes[no - 1]; }
   function lessonsFor(code) { return Object.keys(BD.lessons).map(function (k) { return BD.lessons[k]; }).filter(function (l) { return l.outcome === code; }); }
-  // Öğrenci görünümünün ikonları. Emoji değil SVG: Pardus'ta renkli emoji yazı tipi olmayabilir.
-  var ICON = {
-    slayt: '<path d="M8 5v14l11-7z" fill="currentColor"/>',
-    defter: '<path d="M4 20h4L19 9l-4-4L4 16z"/>',
-    etkinlik: '<path d="M5 3l14 8-6 2-2 6z"/>',
-    test: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.7M12 17h.01"/>',
-    bulmaca: '<path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/>',
-    oyun: '<rect x="3" y="4" width="7" height="9" rx="1.5"/><rect x="14" y="4" width="7" height="9" rx="1.5"/><path d="M6.5 17v3M17.5 17v3M4 20h17"/>',
-    lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
-    back: '<path d="M15 5l-7 7 7 7"/>',
-    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
-    akis: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9zM9 11h6M9 15h4"/>',
-    okul: '<path d="M3 21h18M5 21V10l7-5 7 5v11M10 21v-5h4v5"/>',
-    ekran: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
-    wifi: '<path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 19.5h.01"/>',
-    hareket: '<path d="M3 12h3l3-7 4 14 3-7h5"/>',
-    sil: '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
-    ogrenci: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
-    ogretmen: '<rect x="3" y="3" width="18" height="12" rx="2"/><path d="M8 21l3-6M16 21l-3-6M7 8h6"/>',
-    harita: '<path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2zM9 4v14M15 6v14"/>',
-    yazdir: '<path d="M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z"/>'
-  };
+  var ICON = BD.icons; // assets/ikonlar.js
   var sq = function (k, color) { return '<span class="sq-sm" style="background:' + color + '">' + icon(k) + '</span>'; };
   var icon = function (k) { return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">' + ICON[k] + '</svg>'; };
-  var envLabel = function () { var e = BD.envs[S.env]; return e.icon + " " + e.short; };
+  var envLabel = function () { var e = BD.envs[S.env]; return icon(e.icon) + " " + e.short; };
   var osLabel = function () { return osNow() === "pardus" ? "Pardus" : "Windows"; };
 
   /* ---------- Ana sayfa: sınıf seçimi ve temalara bölünmüş hafta listesi ---------- */
@@ -107,7 +86,7 @@
     if (isStudent()) return '<div class="row"><a class="btn primary" href="#ders-' + L.id + '">Derse gir →</a></div>';
     var head = planCodes(p).map(function (c) { var o = outcome(c); return '<p><span class="tag code">' + c + '</span> ' + esc(o ? o.title : "") + '</p>'; }).join("");
     if (!L) return head + '<p class="hint">Bu haftanın dersi henüz hazır değil.</p>';
-    return head + '<div class="row"><a class="btn primary" href="#ders-' + L.id + '">Derse git →</a><a class="btn" href="#yazdir-' + L.id + '">🖨️ Çalışma kâğıdı</a></div>' +
+    return head + '<div class="row"><a class="btn primary" href="#ders-' + L.id + '">Derse git →</a><a class="btn" href="#yazdir-' + L.id + '">' + icon("yazdir") + ' Çalışma kâğıdı</a></div>' +
       '<details class="wk-flow"><summary>Ders akışı (' + esc(L.duration) + ')</summary>' + flowHtml(L) + '</details>';
   }
   // Hazır satır açılır. Öğrencide hazır olmayan satırda açılacak bir şey yoktur.
@@ -139,6 +118,9 @@
     var i = Math.max(0, plan.map(function (x) { return x.w; }).indexOf(shownWeek[g] || nowW));
     var p = plan[i], prev = plan[i - 1], next = plan[i + 1], L = p.lesson ? lessonById(p.lesson) : null, last = lastLesson();
     var T = !isStudent();
+    // Ders hazır değilse önce geriye, yoksa ileriye doğru en yakın hazır hafta
+    var ready = function (x) { return x.lesson && lessonById(x.lesson); };
+    var fb = L ? null : plan.slice(0, i).reverse().filter(ready)[0] || plan.slice(i + 1).filter(ready)[0];
     var label = p.w !== now.w ? (T ? "Seçtiğiniz hafta" : "Seçtiğin hafta") : { ders: "Bu hafta", tatil: "Tatilden sonraki ilk hafta", once: "Okulun ilk haftası", sonra: "Yılın son haftası" }[now.state];
     var navBtn = function (x, dir) {
       if (!x) return '<button type="button" disabled></button>';
@@ -154,7 +136,7 @@
       '<div class="wk-hero" style="background:var(--theme-' + p.theme + ')"><div class="wk-no" aria-hidden="true"><b>' + p.w + '</b><small>hafta</small></div><div>' +
         '<h2><span class="sr">' + p.w + '. hafta: </span>' + esc(p.title) + '</h2>' +
         (T ? '<p class="wk-codes">' + planCodes(p).map(function (c) { return '<span class="tag">' + c + '</span>'; }).join(" ") + '</p>' : "") +
-        (L ? '<div class="row"><a class="btn on-color" href="#ders-' + L.id + '">' + (T ? "Derse git →" : "Başla →") + '</a>' + (T ? '<a class="btn on-color-line" href="#yazdir-' + L.id + '">' + icon("yazdir") + ' Çalışma kâğıdı</a>' : "") + '</div>' : '<p>Bu haftanın dersi henüz hazır değil.</p>') +
+        (L ? '<div class="row"><a class="btn on-color" href="#ders-' + L.id + '">' + (T ? "Derse git →" : "Başla →") + '</a>' + (T ? '<a class="btn on-color-line" href="#yazdir-' + L.id + '">' + icon("yazdir") + ' Çalışma kâğıdı</a>' : "") + '</div>' : '<p>Bu haftanın dersi henüz hazır değil.</p>' + (fb ? '<div class="row"><button type="button" class="btn on-color" data-wk="' + fb.w + '">' + (fb.w < p.w ? "Son hazır ders: " : "İlk hazır ders: ") + fb.w + '. hafta →</button></div>' : "")) +
       '</div></div>' +
       '<div class="wk-nav">' + navBtn(prev, -1) + navBtn(next, 1) + '</div></div>' +
       '<div class="side-cards">' + side + '</div></div>';
@@ -261,7 +243,7 @@
   var hasSim = function (L) { return !!(L.sim && window.SimUI) && envNow() !== "kagit"; };
   function simHtml(L) {
     var env = envNow(), A = L.activities.lab;
-    var h = '<h3 class="sim-h">Sanal masaüstünde dene</h3><p class="hint" style="margin:0 0 10px">Görevleri sırayla yap. Site her adımı kontrol eder. Fare, dokunma ya da klavye kullanabilirsin.</p><div id="sim"></div>';
+    var h = '<div id="sim"></div>';
     if (env === "lab") h += '<div class="card activity" style="margin-top:20px"><h3>Şimdi gerçek bilgisayarında dene</h3>' +
       '<div class="goal"><b>🎯 Hedef:</b> ' + esc(A.goal) + '</div>' +
       '<ol class="act-steps">' + A.steps.map(function (st, i) { return stepHtml(st, i, false, "", true); }).join("") + '</ol>' +
@@ -275,7 +257,7 @@
     var key = "act:" + L.id + ":" + env;
     var done = store.get(key, []);
     var html = '<div class="card activity">' +
-      '<div class="row t-only"><span class="tag">' + BD.envs[env].icon + ' ' + BD.envs[env].short + '</span>' + (A.b || []).map(function (b) { return '<span class="tag code t-only">' + L.outcome + '.' + b + '</span>'; }).join("") + '</div>' +
+      '<div class="row t-only"><span class="tag">' + icon(BD.envs[env].icon) + ' ' + BD.envs[env].short + '</span>' + (A.b || []).map(function (b) { return '<span class="tag code t-only">' + L.outcome + '.' + b + '</span>'; }).join("") + '</div>' +
       '<h3>' + esc(A.title) + '</h3>' +
       '<div class="goal"><b>🎯 Hedef:</b> ' + esc(A.goal) + '</div>' +
       (A.needs ? '<div class="needs">' + A.needs.map(function (n) { return '<span>📋 ' + esc(n) + '</span>'; }).join("") + '</div>' : "") +
@@ -284,7 +266,7 @@
     if (A.online) html += S.internet
       ? '<div class="goal"><b>🌐 İnternet varsa:</b> ' + esc(A.online) + '</div>'
       : '<div class="goal"><b>📴 İnternet yok:</b> Bu etkinlik için internete gerek yok. Araştırma için yukarıdaki bilgi kartlarını kullanın.</div>';
-    if (env === "kagit") html += '<div class="row"><a class="btn primary" href="#yazdir-' + L.id + '">🖨️ Çalışma kâğıdını aç ve yazdır</a><span class="hint">Kâğıtta konu özeti, etkinlik, test ve boş bulmaca var.</span></div>';
+    if (env === "kagit") html += '<div class="row"><a class="btn primary" href="#yazdir-' + L.id + '">' + icon("yazdir") + ' Çalışma kâğıdını aç ve yazdır</a><span class="hint">Kâğıtta konu özeti, etkinlik, test ve boş bulmaca var.</span></div>';
     html += '</div>';
     if (hasSim(L)) html = simHtml(L) + '<div style="margin-top:20px">' + html + '</div>';
     return html;
@@ -339,7 +321,7 @@
     if (!L) return viewNotFound();
     var oc = outcome(L.outcome), Th = theme(L.grade, L.theme);
     var nbDone = store.get("nb:" + id, []), T = !isStudent();
-    var envBtns = Object.keys(BD.envs).map(function (k) { return '<button type="button" class="chip-btn" data-env="' + k + '" aria-pressed="' + (S.env === k) + '">' + BD.envs[k].icon + ' ' + BD.envs[k].short + '</button>'; }).join("");
+    var envBtns = Object.keys(BD.envs).map(function (k) { return '<button type="button" class="chip-btn" data-env="' + k + '" aria-pressed="' + (S.env === k) + '">' + icon(BD.envs[k].icon) + ' ' + BD.envs[k].short + '</button>'; }).join("");
     var hasCw = L.crossword && L.crossword.length;
     var hasSort = !!L.sort && envNow() !== "kagit"; // oyun etkinlikten sonra kendi bölümünde, altta gözden kaçmasın
 
@@ -348,8 +330,9 @@
     var panel = function (key, title, text, body) {
       var i = tabs.map(function (t) { return t[0]; }).indexOf(key), nx = key === "hub" ? null : tabs[i + 1];
       var head = key === "hub" ? '<h2 class="sr">' + title + '</h2>'
+        : T ? '<h2 class="sr">' + title + '</h2>' + (text ? '<p class="hint block-hint">' + text + '</p>' : "")
         : '<div class="block-h"><span class="sq sec-' + key + '">' + icon(key) + '</span><div><h2>' + title + '</h2><p>' + text + '</p></div>' +
-          (T ? "" : '<button type="button" class="btn sec-back" data-tab="hub" style="margin-left:auto">' + icon("back") + ' Bölümler</button>') + '</div>';
+          '<button type="button" class="btn sec-back" data-tab="hub" style="margin-left:auto">' + icon("back") + ' Bölümler</button></div>';
       return '<section class="block" id="b-' + key + '" role="tabpanel" aria-labelledby="t-' + key + '"' + (key === active ? "" : " hidden") + '>' +
         head + body +
         (nx ? '<div class="tab-next"><button type="button" class="btn primary" data-tab="' + nx[0] + '">Sonraki bölüm: ' + nx[1] + ' →</button></div>' : "") +
@@ -397,7 +380,7 @@
         L.notebook.map(function (n, i) { var d = nbDone.indexOf(i) >= 0; return '<li class="' + (d ? "done" : "") + '"><input type="checkbox" id="nb-' + i + '" data-i="' + i + '"' + (d ? " checked" : "") + '><label for="nb-' + i + '">' + n.t + '</label></li>'; }).join("") +
         '</ul><div class="nb-foot"><span class="progress" id="nbProg"></span></div></div>') +
 
-      panel("etkinlik", "Etkinlik", L.sim && envNow() === "lab" ? "Sanal masaüstünde görevleri yap, sonra gerçek bilgisayarında dene." : 'Adımları sırayla yap. Bitirdiğin adımda "Yaptım"a bas.',
+      panel("etkinlik", "Etkinlik", L.sim && envNow() === "lab" ? "Sanal masaüstünde görevleri sırayla yap, site her adımı kontrol eder. Sonra gerçek bilgisayarında dene." : 'Adımları sırayla yap. Bitirdiğin adımda "Yaptım"a bas.',
         (T ? '<div class="env-switch"><span class="lbl">Sınıf ortamı:</span>' + envBtns + '<span class="hint">Seçime göre etkinlik değişir.</span></div>' +
           (S.env === "kagit" ? '<div class="hook"><b>Bilgisayarsız sınıf</b>Bu dersin tamamını çalışma kâğıdıyla yapabilirsiniz. <a href="#yazdir-' + id + '">Çalışma kâğıdını aç →</a></div>' : "") : "") +
         (L.infoCards ? '<h3 style="font-size:1.1rem">📇 Bilgi kartları <span class="hint" style="font-weight:400">internet olmadan araştırma için</span></h3><div class="info-cards">' + L.infoCards.map(function (c) { return '<div class="info-card"><h3>' + esc(c.h) + '</h3><p>' + esc(c.p) + '</p></div>'; }).join("") + '</div>' : "") +
@@ -409,7 +392,7 @@
         '<div id="quiz">' + L.quiz.map(function (q, qi) {
           return '<div class="q" data-q="' + qi + '"><p>' + (qi + 1) + '. ' + esc(q.q) + '</p><div class="opts">' +
             q.o.map(function (o, oi) { return '<button type="button" data-o="' + oi + '">' + String.fromCharCode(65 + oi) + ') ' + esc(o) + '</button>'; }).join("") + '</div><div class="fb"></div></div>';
-        }).join("") + '</div><div class="score" id="score" aria-live="polite"></div><div class="row"><button type="button" class="btn" id="quizAgain" hidden>🔁 Testi yeniden çöz</button></div>') +
+        }).join("") + '</div><div class="score" id="score" aria-live="polite"></div><div class="row"><button type="button" class="btn" id="quizAgain" hidden>' + icon("tekrar") + ' Testi yeniden çöz</button></div>') +
 
       (hasCw ? panel("bulmaca", "Haftanın bulmacası", "Bir kutuya tıkla ve yaz. Aynı kutuya tekrar tıklarsan yön değişir. İpucuna tıklayınca o kelimeye gidersin.", '<div class="cw" id="cw"></div>') : "") +
 
@@ -478,7 +461,7 @@
       if (focus && isStudent()) { var hd = $("#b-" + key + " h2"); hd.tabIndex = -1; hd.focus({ preventScroll: true }); }
       if (key === "slayt") fit(); // gizliyken genişliği sıfırdı
       var bar = $(".top"), top = $(isStudent() ? ".lesson-band" : "#tabs").getBoundingClientRect().top - (getComputedStyle(bar).position === "sticky" ? bar.offsetHeight : 0) - 12;
-      if (top < 0) window.scrollBy(0, top);
+      if (top < 0 || (key === "slayt" && !isStudent())) window.scrollBy(0, top);
     };
     lessonTab[id] = $('#tabs .tab[aria-selected="true"]').getAttribute("data-tab");
     setHistory("replaceState", lessonTab[id]);
@@ -749,7 +732,7 @@
     return '<nav class="crumbs"><a href="#home">Ana sayfa</a> › Öğretmen Masası</nav>' +
       '<div class="section-h"><h1>Öğretmen Masası</h1><p>Okulunuzun şartlarını bir kez ayarlayın. Ders sayfalarındaki etkinlikler ve yönergeler buna göre değişir. Ayarlar bu bilgisayarda saklanır.</p></div>' +
       '<div class="settings">' +
-        '<div class="setting card"><h3>' + sq("okul", "var(--theme-1)") + 'Sınıf ortamı</h3><div class="opt-group">' + Object.keys(BD.envs).map(function (k) { return optBtn("env", k, BD.envs[k].icon + " " + BD.envs[k].name, BD.envs[k].desc); }).join("") + '</div></div>' +
+        '<div class="setting card"><h3>' + sq("okul", "var(--theme-1)") + 'Sınıf ortamı</h3><div class="opt-group">' + Object.keys(BD.envs).map(function (k) { return optBtn("env", k, icon(BD.envs[k].icon) + " " + BD.envs[k].name, BD.envs[k].desc); }).join("") + '</div></div>' +
         '<div class="setting card"><h3>' + sq("ekran", "var(--theme-3)") + 'Bilgisayarlardaki işletim sistemi</h3><div class="opt-group">' + optBtn("os", "pardus", "Pardus", "MEB okullarında ve etkileşimli tahtalarda (ETAP) yaygın") + optBtn("os", "windows", "Windows", "Etkinlik yönergeleri Windows menülerine göre yazılır") + '</div></div>' +
         '<div class="setting card"><h3>' + sq("wifi", "var(--theme-2)") + 'İnternet bağlantısı</h3><div class="opt-group">' + optBtn("internet", "true", "İnternet var", "İsteğe bağlı çevrim içi araştırma önerileri gösterilir") + optBtn("internet", "false", "İnternet yok / çok yavaş", "Sadece site içindeki bilgi kartları kullanılır") + '</div></div>' +
         '<div class="setting card"><h3>' + sq("hareket", "var(--theme-5)") + 'Animasyonlar</h3><div class="opt-group">' + optBtn("motion", "full", "Açık", "Sayfa geçişleri, düğme hissi ve kutlamalar") + optBtn("motion", "reduced", "Azaltılmış", "Yavaş tahtalar için: hareket yok, sadece renk değişir") + '</div></div>' +
@@ -779,7 +762,7 @@
     var L = lessonById(id); if (!L) return viewNotFound();
     var oc = outcome(L.outcome), A = L.activities.kagit;
     var box = function (k, label) { return '<label><input type="checkbox" data-po="' + k + '"' + (printOpts[k] ? " checked" : "") + '> ' + label + '</label>'; };
-    var h = '<div class="print-bar no-print"><a class="btn" href="#ders-' + id + '">← Derse dön</a><button type="button" class="btn primary" id="doPrint">🖨️ Yazdır</button>' +
+    var h = '<div class="print-bar no-print"><a class="btn" href="#ders-' + id + '">← Derse dön</a><button type="button" class="btn primary" id="doPrint">' + icon("yazdir") + ' Yazdır</button>' +
       box("konu", "Konu özeti") + box("defter", "Deftere yaz") + box("etkinlik", "Etkinlik") + box("test", "Test") + box("bulmaca", "Bulmaca") + box("cevap", "Cevap anahtarı") + box("gorsel", "Slayt görselleri") + (L.sim ? box("gozlem", "Gözlem tablosu") : "") +
       '<span class="hint" id="printMsg"></span></div>';
     h += '<div class="sheet">';

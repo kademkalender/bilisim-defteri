@@ -18,6 +18,7 @@
   --surface-default:#FFFFFF;
   --surface-subtle:#F1F2F7;
   --surface-hover:#F6F7FA;
+  --surface-setting:#E6E3DC;
   /* Kenarlık */
   --border-default:#E1E4EC;
   --border-strong:#C5CAD3;
@@ -87,12 +88,19 @@ button{font:inherit;cursor:pointer}
 .top-set{display:flex;gap:var(--space-1);padding-left:var(--space-2);border-left:1px solid var(--border-strong)}
 html.role-ogrenci .top-set{padding-left:0;border-left:0}
 /* Rol ve A+ ayar: bej zemin, kenarlıksız. A+ basılıyken lacivert. */
-.top .top-set .chip-btn{background:#E6E3DC;border-color:transparent;color:var(--text-secondary);padding:0 var(--space-3)}
+.top .top-set .chip-btn{background:var(--surface-setting);border-color:transparent;color:var(--text-secondary);padding:0 var(--space-3)}
 .top .top-set .chip-btn:hover{background:var(--border-default);border-color:transparent;color:var(--text-primary)}
 .top .top-set .chip-btn[aria-pressed="true"]{background:var(--action-primary);color:var(--action-on-primary)}
 .top .chip-btn .ico{margin-right:6px}
 .search{position:relative;flex:1;min-width:170px;max-width:230px}
 .search input{width:100%;height:48px;font:inherit;font-size:.92rem;padding:0 var(--space-4);border-radius:var(--radius-md);border:1.5px solid var(--border-default);background:var(--surface-default);color:var(--text-primary)}
+/* 1024 px'te öğretmen bandı tek satıra sığsın (iki satırda 129 px yer kaplıyordu) */
+@media (max-width:1180px){
+  .top nav{gap:var(--space-1)}
+  .top .chip-btn,.top .top-set .chip-btn{padding:0 var(--space-2)}
+  .search{min-width:160px}
+  .search input{padding:0 var(--space-3)}
+}
 .results{position:absolute;top:100%;margin-top:6px;left:0;right:0;background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-md);box-shadow:var(--shadow-md);padding:var(--space-2);display:none;z-index:30;max-height:320px;overflow:auto;min-width:260px}
 .results.show{display:block}
 .results a,.results div{display:block;padding:var(--space-2) var(--space-3);border-radius:var(--radius-sm);text-decoration:none;color:var(--text-primary);font-size:.9rem}
@@ -159,6 +167,11 @@ html.role-ogrenci .search{display:none}
 .grade-card.g6[aria-pressed="true"]{background:var(--grade-6)}
 .grade-card[aria-pressed="true"]:after{content:"✓";position:absolute;right:var(--space-6);top:50%;margin-top:-22px;width:44px;height:44px;border-radius:50%;background:var(--surface-default);color:var(--action-primary);display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900}
 .grade-card.g6[aria-pressed="true"]:after{color:var(--grade-6)}
+/* Öğretmende sınıf seçimi bir ayar: kısa kart, hafta listesi yukarı gelir */
+html:not(.role-ogrenci) .grade-card{min-height:64px;padding:var(--space-2) var(--space-6)}
+html:not(.role-ogrenci) .grade-card b{font-size:2.4rem}
+html:not(.role-ogrenci) .grade-card span{font-size:1.2rem}
+html:not(.role-ogrenci) .grade-card[aria-pressed="true"]:after{width:32px;height:32px;margin-top:-16px;font-size:1.05rem}
 
 .label-h{font-size:1.15rem;font-weight:800;margin:0 0 var(--space-3)}
 .wk-grid{display:grid;grid-template-columns:2fr 1fr;grid-gap:var(--space-5)}
@@ -202,12 +215,14 @@ html.role-ogrenci .search{display:none}
 .band-prog .bar{width:180px;height:12px;border-radius:var(--radius-pill);background:rgba(255,255,255,.28);margin-top:6px;overflow:hidden}
 .band-prog .bar span{display:block;height:100%;background:var(--surface-default)}
 html.role-ogrenci .tabs{display:none}
-.sec-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));grid-gap:var(--space-4)}
+.sec-cards{display:grid;grid-template-columns:repeat(2,1fr);grid-gap:var(--space-4)}
+@media (min-width:561px){.sec-cards{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:1000px){.sec-cards{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:1fr}}
 .sec-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:230px;padding:var(--space-5);border:0;border-radius:var(--radius-xl);color:var(--action-on-primary);font:inherit;text-align:left}
 .sec-card .sq{width:64px;height:64px;border-radius:var(--radius-lg);background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:2.1rem}
 .sec-card b{font-size:1.35rem;margin-top:auto}
 .sec-card small{font-weight:700;font-size:.95rem;margin-top:2px}
-.sec-card .badge{position:absolute;right:var(--space-4);top:var(--space-5);font-weight:900;font-size:1.4rem;opacity:.6}
+.sec-card .badge{position:absolute;right:var(--space-4);top:var(--space-5);font-weight:900;font-size:1.4rem;opacity:.85}
 .sec-card.done .badge,.sec-card.next .badge{opacity:1;background:var(--surface-default);color:var(--text-primary);border-radius:var(--radius-pill);padding:3px 12px;font-size:.9rem;font-weight:800}
 .sec-card.next{outline:4px solid var(--text-primary);outline-offset:4px}
 .sec-slayt{background:var(--sec-slayt)}.sec-etkinlik{background:var(--sec-etkinlik)}.sec-test{background:var(--sec-test)}.sec-bulmaca{background:var(--sec-bulmaca)}.sec-oyun{background:var(--sec-oyun)}
@@ -221,7 +236,7 @@ html.role-ogrenci .tabs{display:none}
 .block-h .sq.sec-defter{color:var(--text-primary)}
 html.role-ogrenci .dots,html.role-ogrenci .deck + .hint{display:none}
 /* Slayt ve düğmeleri kaydırmadan ekrana sığsın. Çıkarılan yükseklik: üst bant, ders bandı, (öğretmende sekmeler), bölüm başlığı, slayt çubuğu. rem: A+ ile büyür */
-.deck{max-width:calc((100vh - 27rem) * 16 / 9);min-width:min(100%,520px);margin-left:auto;margin-right:auto}
+.deck{max-width:calc((100vh - 18rem) * 16 / 9);min-width:min(100%,520px);margin-left:auto;margin-right:auto}
 html.role-ogrenci .deck{max-width:calc((100vh - 22.5rem) * 16 / 9)}
 .deck.fs,html.role-ogrenci .deck.fs{max-width:none}
 html.role-ogrenci .deck-bar{justify-content:space-between}
@@ -289,6 +304,9 @@ section.block > .deck + .hint{margin-top:var(--space-2)}
 .block-h{display:flex;align-items:center;gap:var(--space-3)}
 .block-h h2{font-size:1.4rem}
 .block-h p{margin:2px 0 0;color:var(--text-secondary);font-size:.92rem}
+.block-hint{margin:0}
+section.block > .sr + .block-hint{margin-top:0}
+section.block > .block-hint + *{margin-top:var(--space-3)}
 .hook{background:var(--action-primary-subtle);border-radius:var(--radius-xl);padding:var(--space-4) var(--space-5);font-size:1.05rem}
 .hook b{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);margin-bottom:2px}
 
@@ -611,7 +629,7 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
 @media (min-width:900px){
   .sim{grid-template-columns:minmax(0,1fr) 290px;grid-template-areas:"screen panel"}
   .sim.wide{grid-template-columns:minmax(0,1fr) 340px}
-  .sim-panel{height:clamp(420px,calc(100vh - 150px),620px);overflow:hidden}
+  .sim-panel{height:clamp(420px,calc(100vh - 320px),620px);overflow:hidden}
   .sim-tasks{flex:1;min-height:60px;overflow:auto;border-top:1px solid var(--border-default);padding-top:6px}
 }
 .si{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.2em;flex:none}
@@ -642,7 +660,7 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
 .sim-done b{font-size:1.4rem}
 .sim-done p{margin:4px 0 0;color:var(--text-primary);font-weight:700}
 
-.sim-screen{grid-area:screen;position:relative;overflow:hidden;border-radius:var(--radius-lg);height:clamp(420px,calc(100vh - 150px),620px);background:linear-gradient(160deg,var(--theme-3),var(--slide-bg));user-select:none;-webkit-user-select:none}
+.sim-screen{grid-area:screen;position:relative;overflow:hidden;border-radius:var(--radius-lg);height:clamp(420px,calc(100vh - 320px),620px);background:linear-gradient(160deg,var(--theme-3),var(--slide-bg));user-select:none;-webkit-user-select:none}
 .sim.pardus .sim-screen{background:linear-gradient(160deg,var(--theme-1),#0A4A45)}
 .sim-list.desk{position:absolute;top:8px;left:8px;right:8px;bottom:56px;display:grid;grid-auto-flow:column;grid-template-rows:repeat(auto-fill,96px);grid-auto-columns:96px;gap:4px;align-content:start}
 .sim-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border-radius:var(--radius-sm);touch-action:none;cursor:default;outline-offset:0}
@@ -757,7 +775,6 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
   html.anim .sim-tools .btn.glow{animation:sim-blink 1.2s ease-in-out 3}
 }
 @keyframes sim-blink{50%{opacity:.55}}
-.sim-h{font-size:1.2rem;margin-bottom:4px}
 .check-list{margin:6px 0 14px;padding-left:1.4em}
 .check-list li{margin:4px 0}
 .sheet table.obs td,.sheet table.obs th{text-align:center;min-width:28px}

@@ -70,6 +70,7 @@ bilisim-defteri/
 │  ├─ style.css                Tasarım (sadece açık tema)
 │  ├─ mulish.css               Gömülü yazı tipi (lisans: mulish-OFL.txt)
 │  ├─ app.js                   Sayfalar, oyunlar, test, yazdırma
+│  ├─ ikonlar.js               Arayüzün SVG ikonları (BD.icons)
 │  ├─ crossword.js             Bulmaca oluşturucu ve harf temizleme (cwClean)
 │  ├─ shuffle.js               Sınıflandırma kartları için tekrarlanabilir karıştırma
 │  └─ hafta.js                 Okul takviminden bugünün kaçıncı öğretim haftası olduğu
