@@ -66,6 +66,7 @@ Ana sayfada sınıf seçilir, haftalar temalara bölünmüş listede numarası v
 ```
 bilisim-defteri/
 ├─ index.html                  Sitenin giriş dosyası
+├─ tasarim-sistemi.html        Bileşen kataloğu (sitenin stilleriyle, internetsiz açılır)
 ├─ assets/
 │  ├─ style.css                Tasarım (sadece açık tema)
 │  ├─ mulish.css               Gömülü yazı tipi (lisans: mulish-OFL.txt)

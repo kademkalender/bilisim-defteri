@@ -35,6 +35,7 @@ Hook gelen commit bildirirse:
 4. **Üç sınıf ortamı.** Her dersin `activities` alanında `lab`, `tahta` ve `kagit` etkinliklerinin üçü de dolu olmalı. Bilgisayar adımlarında `pardus` ve `windows` yönergeleri ayrı yazılır.
 5. **Sadece açık tema.** Koyu tema ekleme.
 6. **Bağımlılık yok.** Kullanıcı istemedikçe npm paketi, framework ya da build adımı ekleme. Site düz HTML, CSS ve JS olarak kalmalı. Geliştirme araçları (test, doğrulama) `tools/` altında olabilir ve siteye dahil edilmez.
+7. **Arayüz katalogdan yapılır.** Yeni arayüz `tasarim-sistemi.html` kataloğundaki bileşenlerle yapılır. Katalogda olmayan bir bileşen gerekiyorsa önce kataloğa eklenir (önizleme, çeşitler, kullanım kuralları), sonra sitede aynı işaretlemeyle kullanılır. Bir bileşenin işaretlemesi ya da sınıfı sitede değişirse katalog da aynı commit'te güncellenir.
 
 ## Yapı
 
@@ -46,7 +47,7 @@ Hook gelen commit bildirirse:
 - `assets/hafta.js`: `schoolWeek(tarih, BD.calendar)`. Öğrenci ana sayfasındaki "Bu hafta" kartı için bugünün kaçıncı öğretim haftası olduğunu bulur. Takvim `content/plan.js` içinde, MEB çalışma takviminden alınır ve her yıl güncellenir. Test: `node --test tools/hafta.test.js`.
 - `assets/sim-core.js`: Sanal masaüstünün mantığı (bellekte dosya sistemi, işlemler, görev kontrolü). DOM'a dokunmaz. Test: `node --test tools/*.test.js`.
 - `assets/sim-ui.js`: `SimUI.mount(el, {...})`. Sanal masaüstünün görünümü, fare, dokunma ve klavye. Senaryo ders dosyasındaki `sim` alanındadır, kuralları `ICERIK-REHBERI.md`'de. Tarayıcı testi: `tools/sim-tarayici.test.js` iki senaryoyu başsız Chrome'da fare, klavye ve dokunmayla oynar (yaklaşık 2 dk). Chrome bulunamazsa atlanır, yol `BD_CHROME` ile verilir.
-- `assets/style.css`: Renkler ve ölçüler `:root` içindeki tokenlardan gelir. Kurallar: `TASARIM-SISTEMI.md`.
+- `assets/style.css`: Renkler ve ölçüler `:root` içindeki tokenlardan gelir. Kurallar: `TASARIM-SISTEMI.md`, canlı katalog: `tasarim-sistemi.html`.
 - `assets/mulish.css`: Gömülü Mulish yazı tipi (data URI, çünkü Firefox `file://` altında ayrı font dosyası yüklemez).
 - `content/program.js`: Resmi öğrenme çıktıları.
 - `content/plan.js`: Haftalık plan, okul takvimi (`BD.calendar`), varsayılan ayarlar, sınıf ortamları.

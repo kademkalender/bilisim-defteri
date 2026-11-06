@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tasarım Sistemi · Bilişim Defteri</title>
+<meta name="description" content="Bilişim Defteri sitesinin renkleri, ölçüleri, ikonları ve bileşenleri. Bileşenler sitenin kendi stil dosyasıyla çizilir.">
+<!-- Sitenin kendi stilleri: katalogdaki her bileşen sitede nasıl görünüyorsa öyle görünür. -->
+<link rel="stylesheet" href="assets/mulish.css">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+/* Yalnızca kataloğun kendi kabuğu. Değerler sitenin token'larından gelir, ds- önekiyle siteden ayrılır. */
+body{background:var(--surface-subtle)}
+.ds-top{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:var(--space-4);flex-wrap:wrap;padding:10px var(--space-4);background:var(--surface-default);border-bottom:1px solid var(--border-default)}
+.ds-top .logo small{font-size:.85rem;font-weight:700;color:var(--text-secondary);margin-left:var(--space-2)}
+.ds-top .ds-role{margin-left:auto;display:flex;align-items:center;gap:var(--space-2)}
+.ds-top .ds-role > span{font-size:.85rem;font-weight:800;color:var(--text-secondary)}
+.ds-wrap{display:grid;grid-template-columns:250px minmax(0,1fr) 300px;align-items:start;min-height:calc(100vh - 69px)}
+.ds-wrap.no-props{grid-template-columns:250px minmax(0,1fr)}
+.ds-side{position:sticky;top:69px;max-height:calc(100vh - 69px);overflow:auto;padding:var(--space-4);border-right:1px solid var(--border-default);background:var(--surface-default)}
+.ds-filter{width:100%;height:var(--size-control-sm);font:inherit;font-size:.9rem;padding:0 var(--space-3);border:1.5px solid var(--border-default);border-radius:var(--radius-md);background:var(--surface-subtle);color:var(--text-primary)}
+.ds-group{margin:var(--space-4) 0 var(--space-1);font-size:.72rem;font-weight:800;letter-spacing:.06em;color:var(--text-secondary)}
+.ds-side a{display:flex;justify-content:space-between;align-items:center;min-height:36px;padding:0 var(--space-3);border-radius:var(--radius-sm);color:var(--text-primary);text-decoration:none;font-weight:700;font-size:.92rem}
+.ds-side a:hover{background:var(--surface-hover)}
+.ds-side a[aria-current="page"]{background:var(--action-primary-subtle);color:var(--action-primary)}
+.ds-side a small{font-size:.75rem;font-weight:800;color:var(--text-secondary)}
+.ds-side .ds-none{font-size:.88rem;color:var(--text-secondary);margin:var(--space-3) 0 0}
+.ds-main{padding:var(--space-6) var(--space-8) var(--space-10);min-width:0}
+.ds-main > * + *{margin-top:var(--space-5)}
+.ds-eyebrow{font-size:.75rem;font-weight:800;letter-spacing:.06em;color:var(--action-primary)}
+.ds-main h1{font-size:2rem;margin-top:var(--space-1)}
+.ds-lead{margin:var(--space-2) 0 0;color:var(--text-secondary);max-width:70ch}
+.ds-meta{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center;font-size:.88rem;color:var(--text-secondary)}
+.ds-tabs{margin-top:var(--space-6)}
+.ds-tabs .tab small{font-size:.75rem;font-weight:800;color:var(--text-secondary);background:var(--surface-default);border-radius:var(--radius-pill);padding:0 var(--space-2)}
+.ds-bgsw{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap}
+.ds-bgsw .chip-btn{min-height:34px;padding:0 var(--space-3);font-size:.85rem}
+.ds-stage{position:relative;border:1px solid var(--border-default);border-radius:var(--radius-xl);background:var(--surface-default);padding:var(--space-8);display:flex;justify-content:center;align-items:center;min-height:240px;overflow:auto}
+.ds-stage.gri{background:var(--surface-subtle)}
+.ds-stage > .ds-in{width:100%}
+.ds-stage .top{position:static}
+.ds-color{border-radius:var(--radius-xl);padding:var(--space-6);display:flex;gap:var(--space-3);flex-wrap:wrap;justify-content:center}
+.ds-rules{background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-xl);padding:var(--space-4) var(--space-5)}
+.ds-rules h2{font-size:1.05rem}
+.ds-rules ul{margin:var(--space-2) 0 0;padding-left:1.2em}
+.ds-rules li + li{margin-top:var(--space-1)}
+.ds-rules code,.ds-lead code,.ds-note code{font-family:var(--font-mono);font-size:.88em;background:var(--surface-subtle);border-radius:4px;padding:0 4px}
+.ds-vars{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--space-4)}
+.ds-var{background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-xl);overflow:hidden}
+.ds-var > b{display:block;padding:var(--space-3) var(--space-4) 0;font-size:.9rem}
+.ds-var .ds-stage{border:0;border-radius:0;padding:var(--space-5);min-height:160px}
+.ds-code{position:relative;background:var(--text-primary);color:#E9ECF3;border-radius:var(--radius-xl);padding:var(--space-5);overflow:auto;font-family:var(--font-mono);font-size:.82rem;line-height:1.6;white-space:pre;margin:0;max-height:520px}
+.ds-codebar{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+.ds-props{position:sticky;top:69px;max-height:calc(100vh - 69px);overflow:auto;padding:var(--space-5) var(--space-4);border-left:1px solid var(--border-default);background:var(--surface-default)}
+.ds-props-h{display:flex;justify-content:space-between;align-items:center;gap:var(--space-2);margin-bottom:var(--space-3)}
+.ds-props-h h2{font-size:1.1rem}
+.ds-props-h .chip-btn{min-height:34px;padding:0 var(--space-3);font-size:.82rem}
+.ds-prop{display:block;margin-top:var(--space-4)}
+.ds-prop > span{display:block;font-weight:800;font-size:.88rem;margin-bottom:var(--space-1)}
+.ds-prop > span code{font-family:var(--font-mono);font-weight:400;font-size:.78rem;color:var(--text-secondary);margin-left:var(--space-1)}
+.ds-prop input[type="text"]{width:100%;min-height:var(--size-control-sm);font:inherit;font-size:.92rem;padding:0 var(--space-3);border:1.5px solid var(--border-strong);border-radius:var(--radius-md);background:var(--surface-default);color:var(--text-primary);box-sizing:border-box}
+.ds-prop select{width:100%}
+.ds-seg{display:flex;flex-wrap:wrap;gap:var(--space-1)}
+.ds-seg .chip-btn{min-height:34px;padding:0 var(--space-3);font-size:.82rem}
+.ds-check{display:flex;align-items:center;gap:var(--space-2);font-weight:700;font-size:.9rem;cursor:pointer;min-height:var(--size-control-sm)}
+.ds-check input{width:20px;height:20px;margin:0}
+/* Temeller */
+.ds-section h2{font-size:1.25rem;margin-bottom:var(--space-3)}
+.ds-section + .ds-section{margin-top:var(--space-8)}
+.ds-swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:var(--space-3)}
+.ds-sw{background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-lg);overflow:hidden;text-align:left;font:inherit;color:inherit;padding:0;cursor:pointer}
+.ds-sw:hover{border-color:var(--action-primary)}
+.ds-sw i{display:block;height:64px;border-bottom:1px solid var(--border-default)}
+.ds-sw span{display:block;padding:var(--space-2) var(--space-3) var(--space-3);font-size:.82rem}
+.ds-sw b{display:block;font-family:var(--font-mono);font-size:.8rem}
+.ds-sw em{font-style:normal;color:var(--text-secondary);display:block;margin-top:2px}
+.ds-type{background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-xl)}
+.ds-type > div{display:grid;grid-template-columns:200px minmax(0,1fr);gap:var(--space-4);align-items:center;padding:var(--space-4) var(--space-5)}
+.ds-type > div + div{border-top:1px solid var(--border-default)}
+.ds-type small{display:block;color:var(--text-secondary);font-weight:700;font-size:.8rem}
+.ds-type small code{font-family:var(--font-mono)}
+.ds-scale{display:grid;gap:var(--space-2)}
+.ds-scale > div{display:grid;grid-template-columns:150px minmax(0,1fr);gap:var(--space-3);align-items:center;font-size:.85rem}
+.ds-scale code{font-family:var(--font-mono)}
+.ds-bar{height:16px;background:var(--action-primary);border-radius:3px}
+.ds-boxes{display:flex;flex-wrap:wrap;gap:var(--space-4)}
+.ds-box{width:120px;font-size:.8rem;text-align:center}
+.ds-box i{display:block;height:80px;margin-bottom:var(--space-2);background:var(--action-primary-subtle);border:2px solid var(--action-primary)}
+.ds-box code{font-family:var(--font-mono)}
+.ds-icons{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:var(--space-3)}
+.ds-icons button{display:flex;flex-direction:column;align-items:center;gap:var(--space-2);padding:var(--space-4) var(--space-2);background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-lg);font:inherit;font-size:.82rem;font-weight:700;color:var(--text-primary)}
+.ds-icons button:hover{border-color:var(--action-primary)}
+.ds-icons .ico{width:32px;height:32px;color:var(--action-primary)}
+.ds-note{font-size:.9rem;color:var(--text-secondary);max-width:75ch}
+.ds-toast{position:fixed;left:50%;bottom:var(--space-6);transform:translateX(-50%);background:var(--text-primary);color:#fff;padding:var(--space-2) var(--space-4);border-radius:var(--radius-pill);font-weight:700;font-size:.9rem;z-index:60;display:none}
+.ds-toast.show{display:block}
+@media (max-width:1180px){
+  .ds-wrap,.ds-wrap.no-props{grid-template-columns:230px minmax(0,1fr)}
+  .ds-props{position:static;max-height:none;grid-column:2;border-left:0;border-top:1px solid var(--border-default)}
+  .ds-main{padding:var(--space-5)}
+}
+@media (max-width:760px){
+  .ds-wrap,.ds-wrap.no-props{display:block}
+  .ds-side{position:static;max-height:40vh;border-right:0;border-bottom:1px solid var(--border-default)}
+  .ds-main{padding:var(--space-4)}
+  .ds-stage{padding:var(--space-4)}
+  .ds-type > div{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#dsMain">İçeriğe geç</a>
+<header class="ds-top">
+  <a class="logo" href="#renkler"><span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>Bilişim Defteri<small>Tasarım sistemi</small></a>
+  <div class="ds-role" role="group" aria-label="Görünüm">
+    <span>Görünüm:</span>
+    <button type="button" class="chip-btn" data-role="ogretmen" aria-pressed="true">Öğretmen</button>
+    <button type="button" class="chip-btn" data-role="ogrenci" aria-pressed="false">Öğrenci</button>
+    <a class="chip-btn" href="index.html">Siteyi aç</a>
+  </div>
+</header>
+<div class="ds-wrap" id="dsWrap">
+  <nav class="ds-side" aria-label="Katalog">
+    <label for="dsFilter" class="sr">Bileşen ara</label>
+    <input id="dsFilter" class="ds-filter" type="search" placeholder="Bileşen ara…" autocomplete="off">
+    <div id="dsNav"></div>
+  </nav>
+  <div class="ds-main" id="dsMain" role="main" tabindex="-1"></div>
+  <aside class="ds-props" id="dsProps" aria-label="Özellikler"></aside>
+</div>
+<div class="ds-toast" id="dsToast" role="status"></div>
+
+<script src="content/program.js"></script>
+<script src="content/plan.js"></script>
+<script src="content/lessons/5-1-6-dosya-klasor.js"></script>
+<script src="assets/ikonlar.js"></script>
+<script>
+/* Bilişim Defteri tasarım sistemi kataloğu.
+   Bileşenler sitenin kendi sınıflarıyla (assets/style.css) ve gerçek ders verisiyle (5-1-6) çizilir.
+   Sitede yeni bir arayüz parçası gerekirse önce buraya eklenir, sonra sitede aynı işaretleme kullanılır. */
+(function () {
+  "use strict";
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem("bdds:" + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem("bdds:" + k, JSON.stringify(v)); } catch (e) {} }
+  };
+  // Sitedeki icon() ile aynı çıktı; data-ico yalnızca Kod sekmesinde icon("ad") yazabilmek için
+  var ico = function (k) { return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" data-ico="' + k + '">' + BD.icons[k] + '</svg>'; };
+  var L = BD.lessons["5-1-6-dosya-klasor"];
+  var TH = BD.program["5"].themes;
+  var role = store.get("role", "ogretmen");
+  var T = function () { return role === "ogretmen"; };
+
+  var SEC = { slayt: "Sunum", defter: "Deftere yaz", etkinlik: "Etkinlik", oyun: "Oyun", test: "Mini test", bulmaca: "Bulmaca" };
+  var SEC_N = { slayt: L.slides.length + " slayt", defter: L.notebook.length + " madde", etkinlik: "8 görev", oyun: L.sort.items.length + " kart", test: L.quiz.length + " soru", bulmaca: L.crossword.length + " kelime" };
+  var outcomeTitle = function (code) { var o = null; TH.forEach(function (t) { (t.outcomes || []).forEach(function (x) { if (x.code === code) o = x; }); }); return o ? o.title : ""; };
+  var themeOpts = TH.map(function (t) { return [String(t.no), t.no + ". " + t.name]; });
+  var secOpts = Object.keys(SEC).map(function (k) { return [k, SEC[k]]; });
+  var iconOpts = Object.keys(BD.icons).map(function (k) { return [k, k]; });
+  var bool = function (v) { return v === true || v === "true"; };
+
+  /* ---------- Bileşenler ----------
+     render(p): sitedeki işaretleme (Kod sekmesinde görünen). wrap(p, html): yalnızca önizlemenin çerçevesi. */
+  var C = [];
+  var add = function (o) { C.push(o); };
+
+  add({ id: "dugme", group: "Eylemler", name: "Düğme", cls: ".btn",
+    desc: "Bir işi başlatır: derse gitmek, yazdırmak, sıfırlamak.",
+    where: "Bu hafta kartı, ders planı, bölüm sonu, çalışma kâğıdı.",
+    rules: ["50 px yükseklik, köşe <code>--radius-lg</code>.", "Bir görünümde tek birincil düğme olur.", "<code>on-color</code> ve <code>on-color-line</code> yalnızca tema renkli kartın (Bu hafta) üstünde kullanılır.", "İkon <code>icon(\"ad\")</code> ile eklenir, emoji değil."],
+    props: [
+      { k: "metin", l: "Metin", t: "text", d: "Derse git →" },
+      { k: "tur", l: "Tür", t: "seg", d: "primary", o: [["", "Varsayılan"], ["primary", "Birincil"], ["on-color", "Renkli üstü"], ["on-color-line", "Renkli üstü çizgi"]] },
+      { k: "ikon", l: "İkon", t: "select", d: "", o: [["", "yok"]].concat(iconOpts) }
+    ],
+    render: function (p) { return '<button type="button" class="btn' + (p.tur ? " " + p.tur : "") + '">' + (p.ikon ? ico(p.ikon) + " " : "") + esc(p.metin) + '</button>'; },
+    wrap: function (p, h) { return /on-color/.test(p.tur) ? '<div class="ds-color" style="background:var(--theme-1)">' + h + '</div>' : h; },
+    variants: [["Varsayılan", { tur: "", metin: "Değiştir" }], ["Birincil", {}], ["İkonlu", { tur: "", ikon: "yazdir", metin: "Çalışma kâğıdı" }], ["Renkli kart üstünde", { tur: "on-color", metin: "Başla →" }], ["Renkli kart üstünde, ikinci", { tur: "on-color-line", ikon: "yazdir", metin: "Çalışma kâğıdı" }]]
+  });
+
+  add({ id: "secim", group: "Eylemler", name: "Seçim düğmesi", cls: ".chip-btn",
+    desc: "Birkaç seçenekten birini seçer ya da üst banttaki sayfaları açar.",
+    where: "Üst bant, ders içinde sınıf ortamı seçimi.",
+    rules: ["40 px, köşe <code>--radius-md</code>. Üst bantta 48 px.", "Seçili olan dolu laciverttir: düğmede <code>aria-pressed=\"true\"</code>, bağlantıda <code>aria-current=\"page\"</code>.", "Banttaki ayarlar (rol, A+) bej zeminli ve kenarlıksızdır, sayfa bağlantılarından ince ayraçla ayrılır."],
+    props: [
+      { k: "metin", l: "Metin", t: "text", d: "Laboratuvar" },
+      { k: "secili", l: "Seçili", t: "bool", d: false },
+      { k: "yer", l: "Yer", t: "seg", d: "sayfa", o: [["sayfa", "Sayfada"], ["bant", "Üst bantta"], ["ayar", "Bantta ayar"]] }
+    ],
+    render: function (p) {
+      if (p.yer === "bant") return '<a class="chip-btn" href="#kazanimlar"' + (bool(p.secili) ? ' aria-current="page"' : "") + '>' + esc(p.metin) + '</a>';
+      return '<button type="button" class="chip-btn" aria-pressed="' + bool(p.secili) + '">' + esc(p.metin) + '</button>';
+    },
+    wrap: function (p, h) {
+      if (p.yer === "sayfa") return h;
+      return '<div class="top"><div class="top-in"><nav>' + (p.yer === "ayar" ? '<span class="top-set">' + h + '</span>' : h) + '</nav></div></div>';
+    },
+    variants: [["Sayfada", {}], ["Sayfada, seçili", { secili: true }], ["Üst bantta", { yer: "bant", metin: "Kazanım Haritası" }], ["Üst bantta, açık sayfa", { yer: "bant", metin: "Kazanım Haritası", secili: true }], ["Bantta ayar", { yer: "ayar", metin: "A+" }], ["Bantta ayar, basılı", { yer: "ayar", metin: "A+", secili: true }]]
+  });
+
+  add({ id: "secenek", group: "Eylemler", name: "Seçenek düğmesi", cls: ".opt-group button",
+    desc: "Açıklamalı seçenek. Bir ayarın değerleri arasından biri seçilir.",
+    where: "Öğretmen Masası.",
+    rules: ["En az 64 px yükseklik, en fazla 300 px genişlik.", "Seçili olanda sağ üstte ✓ ve açık lacivert zemin.", "Bir grupta tek seçili seçenek olur; grup <code>.opt-group</code>."],
+    props: [
+      { k: "baslik", l: "Başlık", t: "text", d: "İnternet var" },
+      { k: "aciklama", l: "Açıklama", t: "text", d: "İsteğe bağlı çevrim içi araştırma önerileri gösterilir" },
+      { k: "ikon", l: "İkon", t: "select", d: "", o: [["", "yok"]].concat(iconOpts) },
+      { k: "secili", l: "Seçili", t: "bool", d: true }
+    ],
+    render: function (p) { return '<div class="opt-group"><button type="button" aria-pressed="' + bool(p.secili) + '">' + (p.ikon ? ico(p.ikon) + " " : "") + esc(p.baslik) + (p.aciklama ? '<small>' + esc(p.aciklama) + '</small>' : "") + '</button></div>'; },
+    variants: [["Seçili", {}], ["Seçili değil", { secili: false, baslik: "İnternet yok", aciklama: "Etkinlikler internetsiz yapılır" }], ["İkonlu", { ikon: "ekran", baslik: BD.envs.lab.name, aciklama: BD.envs.lab.desc }], ["Açıklamasız", { aciklama: "", baslik: "Pardus" }]]
+  });
+
+  add({ id: "arama", group: "Formlar", name: "Arama kutusu", cls: ".search",
+    desc: "Ders, hafta ya da kazanım kodu arar. Sonuçlar kutunun altında açılır.",
+    where: "Üst bant (yalnızca öğretmen).",
+    rules: ["48 px, köşe <code>--radius-md</code>. Genişlik 160–230 px.", "Öğrencide gizlidir.", "İpucu haftayı söyler: öğretmen dersi hafta numarasıyla arar.", "Sonuçta ders adı, altında sınıf · hafta · kod · durum. Sonuç yoksa \"Sonuç bulunamadı.\""],
+    props: [
+      { k: "ipucu", l: "İpucu", t: "text", d: "🔍 Ders, hafta, kod" },
+      { k: "durum", l: "Durum", t: "seg", d: "sonuc", o: [["kapali", "Kapalı"], ["sonuc", "Sonuçlar"], ["yok", "Sonuç yok"]] }
+    ],
+    render: function (p) {
+      var res = p.durum === "kapali" ? "" : '<div class="results show">' + (p.durum === "yok" ? '<div>Sonuç bulunamadı.</div>'
+        : '<a href="#ders-5-1-6-dosya-klasor">Dosya ve Klasör Yönetimi<small>5. Sınıf · 7. Hafta · BTY.5.1.6 · Hazır</small></a><a href="#sinif-6-7">Video Düzenleme ve Kurgu<small>6. Sınıf · 7. Hafta · BTY.6.2.8 · Yakında</small></a>') + '</div>';
+      return '<div class="search" role="search"><label for="ds-q" class="sr">Ders ara</label><input id="ds-q" type="search" placeholder="' + esc(p.ipucu) + '" autocomplete="off">' + res + '</div>';
+    },
+    wrap: function (p, h) { return '<div style="min-height:' + (p.durum === "sonuc" ? 190 : p.durum === "yok" ? 120 : 60) + 'px;width:260px">' + h + '</div>'; },
+    variants: [["Kapalı", { durum: "kapali" }], ["Sonuçlar", {}], ["Sonuç yok", { durum: "yok" }]]
+  });
+
+  add({ id: "liste", group: "Formlar", name: "Açılır liste", cls: "select",
+    desc: "Uzun bir seçenek listesinden seçim.",
+    where: "Sanal masaüstü pencereleri.",
+    rules: ["40 px, köşe <code>--radius-md</code>, kenarlık <code>--border-strong</code>.", "Etiketsiz bırakılmaz (<code>label</code> ya da <code>aria-label</code>).", "Üç ya da daha az seçenekte seçim düğmesi tercih edilir."],
+    props: [{ k: "secili", l: "Seçili", t: "seg", d: "Pardus", o: [["Pardus", "Pardus"], ["Windows", "Windows"]] }],
+    render: function (p) { return '<select aria-label="İşletim sistemi"><option' + (p.secili === "Pardus" ? " selected" : "") + '>Pardus</option><option' + (p.secili === "Windows" ? " selected" : "") + '>Windows</option></select>'; },
+    variants: [["Pardus", {}], ["Windows", { secili: "Windows" }]]
+  });
+
+  add({ id: "etiket", group: "Geri bildirim", name: "Etiket", cls: ".tag",
+    desc: "Kısa durum ya da kod bilgisi.",
+    where: "Hafta satırı, Bu hafta kartı, ders planı.",
+    rules: [".75rem, 800 ağırlık, açık zemin ve aynı ailenin koyu yazısı.", "Kazanım kodu <code>.tag.code</code> ile eş aralıklı yazılır.", "Hafta satırında durum etiketi sabit genişliktedir, kodlar aynı sütunda durur."],
+    props: [
+      { k: "metin", l: "Metin", t: "text", d: "BTY.5.1.6" },
+      { k: "tur", l: "Tür", t: "seg", d: "code", o: [["", "Varsayılan"], ["code", "Kod"], ["ready", "Hazır"], ["soon", "Yakında"]] }
+    ],
+    render: function (p) { return '<span class="tag' + (p.tur ? " " + p.tur : "") + '">' + esc(p.metin) + '</span>'; },
+    variants: [["Kazanım kodu", {}], ["Hazır", { tur: "ready", metin: "Hazır" }], ["Yakında", { tur: "soon", metin: "Yakında" }], ["Varsayılan", { tur: "", metin: "Laboratuvar" }]]
+  });
+
+  add({ id: "bilgi-kutusu", group: "Geri bildirim", name: "Bilgi kutusu", cls: ".hook",
+    desc: "Öğretmene derste işine yarayacak kısa bir not.",
+    where: "Sunum altında \"Derse başlarken\", bilgisayarsız sınıf uyarısı.",
+    rules: ["Açık lacivert zemin, kenarlık yok.", "Başlık küçük ve büyük harfle, metin tek paragraf.", "Uyarı için değil, öneri için."],
+    props: [{ k: "baslik", l: "Başlık", t: "text", d: "Derse başlarken" }, { k: "metin", l: "Metin", t: "text", d: L.hook }],
+    render: function (p) { return '<div class="hook"><b>' + esc(p.baslik) + '</b>' + esc(p.metin) + '</div>'; },
+    variants: [["Derse başlarken", {}], ["Bilgisayarsız sınıf", { baslik: "Bilgisayarsız sınıf", metin: "Bu dersin tamamını çalışma kâğıdıyla yapabilirsiniz." }]]
+  });
+
+  add({ id: "bos", group: "Geri bildirim", name: "Boş durum", cls: ".empty",
+    desc: "Gösterilecek bir şey yoksa ne olduğunu ve ne yapılabileceğini söyler.",
+    where: "Bütün dersler, sınıf listeleri.",
+    rules: ["Kesikli kenarlık, ortalı yazı.", "Neden boş olduğunu söyler; mümkünse bir sonraki adımı gösterir."],
+    props: [{ k: "metin", l: "Metin", t: "text", d: "Bu sınıfın hazır dersi henüz yok." }],
+    render: function (p) { return '<div class="empty">' + esc(p.metin) + '</div>'; },
+    variants: [["Varsayılan", {}]]
+  });
+
+  add({ id: "mesaj", group: "Geri bildirim", name: "Sonuç mesajı", cls: ".fb, .finish",
+    desc: "Cevaptan ya da bitirilen etkinlikten sonra gelen kısa mesaj.",
+    where: "Mini test, oyun, bulmaca, etkinlik.",
+    rules: ["Doğru yeşil (<code>.fb.r</code>), yanlış kırmızı (<code>.fb.w</code>). Renk tek başına bilgi taşımaz, mesaj yazılıdır.", "Yanlışta doğru cevabı gösterir.", "Emoji süs olarak kalabilir, görünmese de mesaj anlaşılır."],
+    props: [{ k: "tur", l: "Tür", t: "seg", d: "dogru", o: [["dogru", "Doğru"], ["yanlis", "Yanlış"], ["bitti", "Bitti"]] }],
+    render: function (p) {
+      if (p.tur === "bitti") return '<div class="finish show">🎉 Tebrikler, etkinliği bitirdin!</div>';
+      return p.tur === "dogru" ? '<div class="fb r">Doğru! 👏</div>' : '<div class="fb w">Olmadı. Doğru cevap ✓ işaretli olan.</div>';
+    },
+    variants: [["Doğru", {}], ["Yanlış", { tur: "yanlis" }], ["Etkinlik bitti", { tur: "bitti" }]]
+  });
+
+  add({ id: "onay", group: "Geri bildirim", name: "Silme onayı", cls: ".confirm-box",
+    desc: "Geri alınamayan bir işten önce sorar.",
+    where: "Ders planı: ilerlemeyi sıfırla.",
+    rules: ["Kırmızı kenarlık ve açık kırmızı zemin.", "Ne silineceğini ve geri alınamayacağını söyler.", "\"Evet, …\" düğmesi işin adını taşır, yanında \"Vazgeç\"."],
+    props: [{ k: "metin", l: "Metin", t: "text", d: "Bu bilgisayarda bu dersin öğrenci ilerlemesi silinecek. Bu işlem geri alınamaz." }],
+    render: function (p) { return '<div class="confirm-box"><p style="margin:0 0 8px"><b>Emin misiniz?</b> ' + esc(p.metin) + '</p><div class="row"><button type="button" class="btn primary">Evet, sıfırla</button><button type="button" class="btn">Vazgeç</button></div></div>'; },
+    variants: [["Varsayılan", {}]]
+  });
+
+  add({ id: "kart", group: "Kartlar", name: "Kart", cls: ".card",
+    desc: "İlgili bilgileri bir arada tutan beyaz yüzey.",
+    where: "Ders planı, Öğretmen Masası ayarları.",
+    rules: ["Beyaz zemin, 1 px <code>--border-default</code>, köşe <code>--radius-xl</code>.", "Gölge yok."],
+    props: [{ k: "baslik", l: "Başlık", t: "text", d: "Kazanım: BTY.5.1.6" }, { k: "metin", l: "Metin", t: "text", d: "Dosya ve klasör yönetimi ile ilgili temel işlemlerle çalışabilme" }],
+    render: function (p) { return '<div class="card"><b>' + esc(p.baslik) + '</b><div class="hint">' + esc(p.metin) + '</div></div>'; },
+    variants: [["Varsayılan", {}]]
+  });
+
+  add({ id: "rol-karti", group: "Kartlar", name: "Rol kartı", cls: ".role-card",
+    desc: "Siteyi ilk açışta kimin kullandığını seçer.",
+    where: "Rol seçimi sayfası.",
+    rules: ["Ortalı, 72 px renkli ikon karesi.", "Öğrenci lacivert, öğretmen tema 1 rengi.", "Seçim bu bilgisayarda hatırlanır."],
+    props: [{ k: "rol", l: "Rol", t: "seg", d: "ogrenci", o: [["ogrenci", "Öğrenci"], ["ogretmen", "Öğretmen"]] }],
+    render: function (p) {
+      return p.rol === "ogrenci"
+        ? '<button type="button" class="role-card" data-role="ogrenci"><span class="sq" style="background:var(--action-primary)">' + ico("ogrenci") + '</span><b>Öğrenciyim</b><small>Sunum, defter, etkinlik, test ve bulmaca</small></button>'
+        : '<button type="button" class="role-card" data-role="ogretmen"><span class="sq" style="background:var(--theme-1)">' + ico("ogretmen") + '</span><b>Öğretmenim</b><small>Ders planı, sunum, notlar ve yazdırma</small></button>';
+    },
+    wrap: function (p, h) { return '<div style="width:320px">' + h + '</div>'; },
+    variants: [["Öğrenci", {}], ["Öğretmen", { rol: "ogretmen" }]]
+  });
+
+  add({ id: "sinif-karti", group: "Kartlar", name: "Sınıf kartı", cls: ".grade-card",
+    desc: "5. ya da 6. sınıfı seçer.",
+    where: "Ana sayfa (iki rol).",
+    rules: ["5. sınıf lacivert, 6. sınıf kiremit (<code>.g6</code>).", "Seçili kart dolu renk, sağda beyaz ✓.", "Öğretmende 64 px (ayar), öğrencide 104 px. Yukarıdaki Görünüm düğmesiyle karşılaştırın."],
+    props: [{ k: "sinif", l: "Sınıf", t: "seg", d: "5", o: [["5", "5"], ["6", "6"]] }, { k: "secili", l: "Seçili", t: "bool", d: true }],
+    render: function (p) { return '<button type="button" class="grade-card' + (p.sinif === "6" ? " g6" : "") + '" data-g="' + p.sinif + '" aria-pressed="' + bool(p.secili) + '"><b>' + p.sinif + '</b><span>Sınıf</span></button>'; },
+    wrap: function (p, h) { return '<div class="grade-cards" style="grid-template-columns:1fr;width:420px">' + h + '</div>'; },
+    variants: [["5. sınıf, seçili", {}], ["6. sınıf", { sinif: "6", secili: false }], ["6. sınıf, seçili", { sinif: "6" }]]
+  });
+
+  add({ id: "bu-hafta", group: "Kartlar", name: "Bu hafta kartı", cls: ".wk-hero",
+    desc: "Okul takvimine göre bu haftanın dersi. Ana sayfanın odak noktası.",
+    where: "Ana sayfa (iki rol).",
+    rules: ["Zemin temanın rengi (<code>--theme-N</code>), yazı beyaz.", "Solda büyük hafta numarası. Öğretmende kazanım kodları ve Çalışma kâğıdı düğmesi de var.", "Ders hazır değilse en yakın hazır derse götüren düğme gösterilir."],
+    props: [
+      { k: "tema", l: "Tema", t: "select", d: "1", o: themeOpts },
+      { k: "hafta", l: "Hafta", t: "text", d: "7" },
+      { k: "baslik", l: "Başlık", t: "text", d: "Dosya ve Klasör Yönetimi" },
+      { k: "hazir", l: "Ders hazır", t: "bool", d: true }
+    ],
+    render: function (p) {
+      var w = esc(p.hafta), body = bool(p.hazir)
+        ? '<div class="row"><a class="btn on-color" href="#ders-5-1-6-dosya-klasor">' + (T() ? "Derse git →" : "Başla →") + '</a>' + (T() ? '<a class="btn on-color-line" href="#yazdir-5-1-6-dosya-klasor">' + ico("yazdir") + ' Çalışma kâğıdı</a>' : "") + '</div>'
+        : '<p>Bu haftanın dersi henüz hazır değil.</p><div class="row"><button type="button" class="btn on-color" data-wk="' + (p.hafta - 1) + '">Son hazır ders: ' + (p.hafta - 1) + '. hafta →</button></div>';
+      return '<div class="wk-hero" style="background:var(--theme-' + p.tema + ')"><div class="wk-no" aria-hidden="true"><b>' + w + '</b><small>hafta</small></div><div>' +
+        '<h2><span class="sr">' + w + '. hafta: </span>' + esc(p.baslik) + '</h2>' + (T() ? '<p class="wk-codes"><span class="tag">BTY.5.1.6</span></p>' : "") + body + '</div></div>';
+    },
+    variants: [["Hazır", {}], ["Hazır değil", { hafta: "8", baslik: "Görsel Düzenleme Programları", hazir: false, tema: "2" }]]
+  });
+
+  add({ id: "hafta-oklari", group: "Gezinme", name: "Hafta okları", cls: ".wk-nav",
+    desc: "Bu hafta kartının altında önceki ve sonraki haftaya geçer.",
+    where: "Ana sayfa.",
+    rules: ["56 px, iki eşit sütun.", "Hafta numarası kalın, ders adı soluk ve sığmazsa \"…\" ile kısalır.", "Önceki ya da sonraki hafta yoksa ok görünmez ama yeri kalır."],
+    props: [{ k: "onceki", l: "Önceki ders", t: "text", d: "İşletim Sistemi ve Bilgisayar Sorunları" }, { k: "sonraki", l: "Sonraki ders", t: "text", d: "Görsel Düzenleme Programları" }, { k: "ilk", l: "İlk hafta", t: "bool", d: false }],
+    render: function (p) {
+      var b = function (w, t, dir) { return '<button type="button" data-wk="' + w + '" aria-label="' + (dir < 0 ? "Önceki" : "Sonraki") + ' hafta: ' + w + '. hafta · ' + esc(t) + '">' + (dir < 0 ? "<b>‹ " + w + ". hafta</b><span>" + esc(t) + "</span>" : "<span>" + esc(t) + "</span><b>" + w + ". hafta ›</b>") + '</button>'; };
+      return '<div class="wk-nav">' + (bool(p.ilk) ? '<button type="button" disabled></button>' : b(6, p.onceki, -1)) + b(8, p.sonraki, 1) + '</div>';
+    },
+    wrap: function (p, h) { return '<div style="width:720px;max-width:100%">' + h + '</div>'; },
+    variants: [["Varsayılan", {}], ["İlk hafta", { ilk: true }]]
+  });
+
+  add({ id: "yan-kart", group: "Kartlar", name: "Yan kart", cls: ".side-card",
+    desc: "Bu hafta kartının yanında kısa yol: kaldığın yer, Bütün dersler, Kazanım Haritası.",
+    where: "Ana sayfa.",
+    rules: ["En az 88 px, 2 px kenarlık.", "İkon karesi gri ya da gittiği dersin tema rengi.", "Üstte küçük açıklama, altta kalın hedef adı."],
+    props: [
+      { k: "ust", l: "Açıklama", t: "text", d: "Kaldığınız yer · 7. hafta" },
+      { k: "baslik", l: "Başlık", t: "text", d: "Dosya ve Klasör Yönetimi" },
+      { k: "ikon", l: "İkon", t: "select", d: "clock", o: iconOpts },
+      { k: "renk", l: "Renk", t: "select", d: "1", o: [["", "Gri"]].concat(themeOpts) }
+    ],
+    render: function (p) { return '<a class="side-card" href="#"><span class="sq"' + (p.renk ? ' style="background:var(--theme-' + p.renk + ')"' : "") + '>' + ico(p.ikon) + '</span><span><small>' + esc(p.ust) + '</small>' + esc(p.baslik) + '</span></a>'; },
+    wrap: function (p, h) { return '<div style="width:340px">' + h + '</div>'; },
+    variants: [["Kaldığın yer", {}], ["Kazanım Haritası", { ust: "Süreç bileşenleri", baslik: "Kazanım Haritası", ikon: "harita", renk: "" }], ["Bütün dersler", { ust: "Hepsi", baslik: "Bütün dersler", ikon: "bulmaca", renk: "" }]]
+  });
+
+  add({ id: "ders-karti", group: "Kartlar", name: "Ders kartı", cls: ".all-cards a",
+    desc: "Öğrencinin hazır dersleri, haftasıyla birlikte.",
+    where: "Öğrenci: Bütün dersler.",
+    rules: ["Zemin temanın rengi, en az 110 px.", "Solda hafta numarası karesi.", "Yalnızca hazır dersler listelenir."],
+    props: [{ k: "tema", l: "Tema", t: "select", d: "1", o: themeOpts }, { k: "hafta", l: "Hafta", t: "text", d: "7" }, { k: "baslik", l: "Başlık", t: "text", d: "Dosya ve Klasör Yönetimi" }],
+    render: function (p) { return '<div class="all-cards"><a href="#ders-5-1-6-dosya-klasor" style="background:var(--theme-' + p.tema + ')"><span class="wk-no" aria-hidden="true"><b>' + esc(p.hafta) + '</b><small>hafta</small></span><span><span class="sr">' + esc(p.hafta) + '. hafta: </span>' + esc(p.baslik) + '</span></a></div>'; },
+    wrap: function (p, h) { return '<div style="width:340px">' + h + '</div>'; },
+    variants: [["Tema 1", {}], ["Tema 2", { tema: "2", hafta: "8", baslik: "Görsel Düzenleme Programları" }]]
+  });
+
+  add({ id: "bolum-karti", group: "Kartlar", name: "Bölüm kartı", cls: ".sec-card",
+    desc: "Öğrencinin dersteki bölümleri: Sunum, Deftere yaz, Etkinlik, Oyun, Mini test, Bulmaca.",
+    where: "Öğrenci: ders girişi.",
+    rules: ["Zemin bölümün rengi (<code>--sec-*</code>). Defterde yazı koyu.", "Sağ üstte sıra numarası (%85 opak, en az 4,26:1). Biten bölümde \"Bitti ✓\", ilk bitmeyende \"Sıradaki\" ve kalın çerçeve.", "Kartlar 1000 px üstünde tek sıra, ortada 3'lü, dar ekranda 2'li dizilir."],
+    props: [
+      { k: "bolum", l: "Bölüm", t: "select", d: "etkinlik", o: secOpts },
+      { k: "durum", l: "Durum", t: "seg", d: "", o: [["", "Bekliyor"], ["next", "Sıradaki"], ["done", "Bitti"]] },
+      { k: "no", l: "Sıra", t: "text", d: "3" }
+    ],
+    render: function (p) {
+      var badge = p.durum === "done" ? "Bitti ✓" : p.durum === "next" ? "Sıradaki" : esc(p.no);
+      return '<button type="button" class="sec-card sec-' + p.bolum + (p.durum ? " " + p.durum : "") + '" data-tab="' + p.bolum + '"><span class="sq">' + ico(p.bolum) + '</span><span class="badge" data-n="' + esc(p.no) + '">' + badge + '</span><b>' + SEC[p.bolum] + '</b><small>' + SEC_N[p.bolum] + '</small></button>';
+    },
+    wrap: function (p, h) { return '<div style="width:190px;padding:8px">' + h + '</div>'; },
+    variants: secOpts.map(function (s, i) { return [s[1], { bolum: s[0], no: String(i + 1), durum: i === 0 ? "done" : i === 1 ? "next" : "" }]; })
+  });
+
+  add({ id: "bilgi-karti", group: "Kartlar", name: "Bilgi kartı", cls: ".info-card",
+    desc: "İnternet olmadan araştırma için kısa bilgi.",
+    where: "Etkinlik bölümü.",
+    rules: ["Solda 6 px lacivert şerit.", "Başlık ve en fazla iki cümle."],
+    props: [{ k: "baslik", l: "Başlık", t: "text", d: "Uzantı" }, { k: "metin", l: "Metin", t: "text", d: "Dosya adında noktadan sonra gelen kısımdır. Dosyanın türünü gösterir." }],
+    render: function (p) { return '<div class="info-cards"><div class="info-card"><h3>' + esc(p.baslik) + '</h3><p>' + esc(p.metin) + '</p></div></div>'; },
+    wrap: function (p, h) { return '<div style="width:320px">' + h + '</div>'; },
+    variants: [["Varsayılan", {}]]
+  });
+
+  add({ id: "ayar-karti", group: "Kartlar", name: "Ayar kartı", cls: ".setting.card",
+    desc: "Öğretmen Masası'nda bir ayar ve seçenekleri.",
+    where: "Öğretmen Masası.",
+    rules: ["Başlıkta 40 px renkli ikon karesi (<code>.sq-sm</code>).", "Seçenekler seçenek düğmesidir (<code>.opt-group</code>).", "Her ayar ayrı kart."],
+    props: [{ k: "secili", l: "Seçili", t: "seg", d: "lab", o: Object.keys(BD.envs).map(function (k) { return [k, BD.envs[k].short]; }) }],
+    render: function (p) {
+      return '<div class="setting card"><h3><span class="sq-sm" style="background:var(--theme-1)">' + ico("okul") + '</span>Sınıf ortamı</h3><div class="opt-group">' +
+        Object.keys(BD.envs).map(function (k) { var e = BD.envs[k]; return '<button type="button" data-set="env" data-val="' + k + '" aria-pressed="' + (p.secili === k) + '">' + ico(e.icon) + " " + esc(e.name) + '<small>' + esc(e.desc) + '</small></button>'; }).join("") + '</div></div>';
+    },
+    variants: [["Laboratuvar seçili", {}], ["Bilgisayarsız seçili", { secili: "kagit" }]]
+  });
+
+  add({ id: "ust-bant", group: "Gezinme", name: "Üst bant", cls: ".top",
+    desc: "Her sayfanın üstünde: logo, arama, sayfalar ve ayarlar.",
+    where: "Her sayfa.",
+    rules: ["Açık zemin, altta ince çizgi; sayfa kayınca üstte kalır.", "Öğrencide yalnızca logo ve kilitli \"Öğretmen\" düğmesi.", "1180 px altında düğme iç boşluğu 8 px, arama en az 160 px: 1024 px'te tek satır.", "Görünüm düğmesiyle öğrenci hâline geçin."],
+    props: [
+      { k: "aktif", l: "Açık sayfa", t: "seg", d: "", o: [["", "Ana sayfa"], ["kazanimlar", "Kazanım"], ["kagitlar", "Kâğıtlar"], ["ogretmen", "Masa"]] },
+      { k: "buyuk", l: "A+ açık", t: "bool", d: false }
+    ],
+    render: function (p) {
+      var link = function (h, t) { return '<a class="chip-btn t-only" href="#' + h + '"' + (p.aktif === h ? ' aria-current="page"' : "") + '>' + t + '</a>'; };
+      return '<header class="top"><div class="top-in"><a class="logo" href="#home"><span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>Bilişim Defteri</a>' +
+        '<div class="search" role="search"><label for="ds-q2" class="sr">Ders ara</label><input id="ds-q2" type="search" placeholder="🔍 Ders, hafta, kod" autocomplete="off"></div>' +
+        '<nav aria-label="Ana menü">' + link("kazanimlar", "Kazanım Haritası") + link("kagitlar", "Çalışma Kâğıtları") + link("ogretmen", "Öğretmen Masası") +
+        '<span class="top-set"><button type="button" class="chip-btn">' + (T() ? "Rol: Öğretmen" : ico("lock") + "Öğretmen") + '</button>' +
+        '<button type="button" class="chip-btn t-only" aria-label="Yazıyı büyüt" aria-pressed="' + bool(p.buyuk) + '">A+</button></span></nav></div></header>';
+    },
+    // Bandın sıkı düzeni ekran genişliğine (1180 px) bağlı; önizleme geniş ekrandaki gibi çizilir, sahne yatay kayar
+    wrap: function (p, h) { return '<div style="min-width:1200px">' + h + '</div>'; },
+    width: "full",
+    variants: [["Ana sayfada", {}], ["Kazanım Haritası açık", { aktif: "kazanimlar" }], ["A+ açık", { buyuk: true }]]
+  });
+
+  add({ id: "yol", group: "Gezinme", name: "Yol", cls: ".crumbs",
+    desc: "Ana sayfadan bu sayfaya giden yol.",
+    where: "Kazanım Haritası, Çalışma Kâğıtları, Öğretmen Masası.",
+    rules: ["Küçük ve soluk; sayfa başlığının üstünde.", "Son öğe bağlantı değildir."],
+    props: [{ k: "sayfa", l: "Sayfa", t: "text", d: "Kazanım Haritası" }],
+    render: function (p) { return '<nav class="crumbs"><a href="#home">Ana sayfa</a> › ' + esc(p.sayfa) + '</nav>'; },
+    variants: [["Varsayılan", {}]]
+  });
+
+  add({ id: "hafta-listesi", group: "Gezinme", name: "Hafta listesi", cls: ".unit, .week",
+    desc: "Temalara bölünmüş 34 hafta. Öğretmen dersi hafta numarasıyla bulur.",
+    where: "Öğretmen ana sayfası, Çalışma Kâğıtları.",
+    rules: ["Tema başlığında temanın renginde numara karesi (<code>.tn-sq</code>).", "Satırda \"7. hafta · Ders adı\", sağda kodlar ve sabit genişlikte durum etiketi.", "Öğretmende her satır açılır: kazanım, Derse git ve Çalışma kâğıdı. Çalışma Kâğıtları sayfasında satır doğrudan kâğıdı açan bağlantıdır.", "Yalnızca öğretmende."],
+    props: [{ k: "tur", l: "Tür", t: "seg", d: "liste", o: [["liste", "Ana sayfa"], ["kagit", "Çalışma Kâğıtları"]] }, { k: "acik", l: "Hazır satır açık", t: "bool", d: true }],
+    render: function (p) {
+      var t = TH[0], plan = BD.plan["5"].filter(function (x) { return x.theme === 1; }).slice(4, 7);
+      if (p.tur === "kagit") return '<section class="unit"><div class="unit-h"><h2><span class="tn-sq" style="background:var(--action-primary)">5</span>5. Sınıf</h2></div><ul class="weeks">' +
+        '<li><a class="week" href="#yazdir-5-1-6-dosya-klasor"><span><b class="wk">7. hafta</b> · Dosya ve Klasör Yönetimi</span><span class="row"><span class="tag code">BTY.5.1.6</span><span aria-hidden="true">→</span></span></a></li></ul></section>';
+      var rows = plan.map(function (x) {
+        var tags = '<span class="row"><span class="tag code">' + x.outcome + '</span>' + (x.lesson ? '<span class="tag ready">Hazır</span>' : '<span class="tag soon">Yakında</span>') + '</span>';
+        var body = x.lesson ? '<p><span class="tag code">' + x.outcome + '</span> ' + esc(outcomeTitle(x.outcome)) + '</p><div class="row"><a class="btn primary" href="#ders-' + x.lesson + '">Derse git →</a><a class="btn" href="#yazdir-' + x.lesson + '">' + ico("yazdir") + ' Çalışma kâğıdı</a></div>' : '<p class="hint">Bu haftanın dersi henüz hazır değil.</p>';
+        return '<li data-w="' + x.w + '"><details class="week-d"' + (x.lesson && bool(p.acik) ? " open" : "") + '><summary class="week' + (x.lesson ? "" : " soon") + '"><span><b class="wk">' + x.w + '. hafta</b> · ' + esc(x.title) + '</span>' + tags + '</summary><div class="week-body">' + body + '</div></details></li>';
+      }).join("");
+      return '<details class="unit" open><summary><div class="unit-h"><h2><span class="tn-sq" style="background:var(--theme-1)">1</span>' + esc(t.name) + '</h2><small>1–7. hafta · ' + t.hours + ' ders saati<span class="chev" aria-hidden="true"></span></small></div></summary><ul class="weeks">' + rows + '</ul></details>';
+    },
+    width: "full",
+    variants: [["Satır kapalı", { acik: false }], ["Satır açık", {}], ["Çalışma Kâğıtları", { tur: "kagit" }]]
+  });
+
+  add({ id: "ders-bandi", group: "Gezinme", name: "Ders bandı", cls: ".lesson-band",
+    desc: "Ders sayfasının başı: ders adı, hafta ve geri düğmesi.",
+    where: "Ders sayfası.",
+    rules: ["Zemin temanın rengi.", "Öğrencide sağda ilerleme (\"2 / 6 bitti\"), öğretmende kazanım kodu.", "Öğretmende üst satırda tema ve süre de yazar."],
+    props: [{ k: "tema", l: "Tema", t: "select", d: "1", o: themeOpts }, { k: "biten", l: "Biten bölüm", t: "seg", d: "2", o: [["0", "0"], ["2", "2"], ["6", "6"]] }],
+    render: function (p) {
+      var th = TH[p.tema - 1];
+      return '<div class="lesson-band" style="background:var(--theme-' + p.tema + ')"><a class="back" href="#home" aria-label="Ana sayfa">' + ico("back") + '</a><div><small>5. Sınıf · 7. hafta' + (T() ? ' · Tema ' + p.tema + ': ' + esc(th.name) + ' · ' + esc(L.duration) : "") + '</small><h1>' + esc(L.title) + '</h1></div>' +
+        (T() ? '<span class="band-code">' + L.outcome + '</span></div>' : '<div class="band-prog"><span>' + p.biten + ' / 6 bitti</span><div class="bar"><span style="width:' + Math.round(p.biten / 6 * 100) + '%"></span></div></div></div>');
+    },
+    width: "full",
+    variants: [["Varsayılan", {}], ["Tema 2", { tema: "2" }]]
+  });
+
+  add({ id: "sekmeler", group: "Gezinme", name: "Ders sekmeleri", cls: ".tabs .tab",
+    desc: "Öğretmenin ders bölümleri arasında tek tıkla geçişi.",
+    where: "Öğretmen: ders sayfası. Öğrencide gizli; öğrenci bölüm kartlarını kullanır.",
+    rules: ["Ortak alt çizgide durur, açık olanın çizgisi kalın ve koyu.", "Numara karesi bölümün renginde, ders planı gri; biten bölümde yeşil ✓.", "Sunum açılınca sekmeler üste kayar, slayt büyür."],
+    props: [{ k: "acik", l: "Açık sekme", t: "select", d: "slayt", o: [["akis", "Ders planı"]].concat(secOpts) }, { k: "biten", l: "Sunum bitti", t: "bool", d: true }],
+    render: function (p) {
+      var tabs = [["akis", "Ders planı"]].concat(secOpts);
+      return '<div class="tabs" role="tablist" aria-label="Ders bölümleri">' + tabs.map(function (t, i) {
+        var on = t[0] === p.acik, done = t[0] === "slayt" && bool(p.biten);
+        return '<button type="button" class="tab' + (done ? " done" : "") + '" role="tab" data-tab="' + t[0] + '" aria-selected="' + on + '" tabindex="' + (on ? 0 : -1) + '"><span>' + (done ? "✓" : i + 1) + '</span>' + t[1] + '</button>';
+      }).join("") + '</div>';
+    },
+    width: "full",
+    variants: [["Sunum açık", {}], ["Ders planı açık", { acik: "akis", biten: false }]]
+  });
+
+  add({ id: "bolum-basligi", group: "Gezinme", name: "Bölüm başlığı", cls: ".block-h, .block-hint",
+    desc: "Bölümün içindeki başlık. Öğrencide renkli kare ve Bölümler düğmesi, öğretmende tek satır açıklama.",
+    where: "Ders sayfası, her bölüm.",
+    rules: ["Öğrenci: renkli kare (<code>.sq.sec-*</code>), başlık, açıklama, sağda \"Bölümler\".", "Öğretmen: başlık ekran okuyucuya kalır (<code>.sr</code>), görünen yalnızca açıklama; sekme adı ve rengi zaten gösterir.", "Görünüm düğmesiyle iki hâli karşılaştırın."],
+    props: [{ k: "bolum", l: "Bölüm", t: "select", d: "defter", o: secOpts }, { k: "aciklama", l: "Açıklama", t: "text", d: "Sadece bu maddeleri defterine geçir. Yazdıkça yanındaki kutuyu işaretle." }],
+    render: function (p) {
+      if (T()) return '<h2 class="sr">' + SEC[p.bolum] + '</h2><p class="hint block-hint">' + esc(p.aciklama) + '</p>';
+      return '<div class="block-h"><span class="sq sec-' + p.bolum + '">' + ico(p.bolum) + '</span><div><h2>' + SEC[p.bolum] + '</h2><p>' + esc(p.aciklama) + '</p></div><button type="button" class="btn sec-back" data-tab="hub" style="margin-left:auto">' + ico("back") + ' Bölümler</button></div>';
+    },
+    width: "full",
+    variants: [["Deftere yaz", {}], ["Etkinlik", { bolum: "etkinlik", aciklama: "Adımları sırayla yap. Bitirdiğin adımda \"Yaptım\"a bas." }]]
+  });
+
+  // Slayt: gerçek ders verisi (5-1-6)
+  var slideOf = function (s, i, open) {
+    var num = '<span class="num">' + (i + 1) + '</span>';
+    if (s.type === "title") return '<div class="slide title-slide on"><span class="pill">' + esc(s.pill) + '</span><h3>' + esc(s.h) + '</h3><p>' + esc(s.p) + '</p>' + num + '</div>';
+    return '<div class="slide on">' + (s.emoji ? '<div class="big-emoji" aria-hidden="true">' + s.emoji + '</div>' : "") + '<h3>' + esc(s.h) + '</h3>' + (s.p ? '<p>' + esc(s.p) + '</p>' : "") +
+      (s.list ? '<ul>' + s.list.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' : "") +
+      (s.cols ? '<div class="cols">' + s.cols.map(function (c) { return '<div><b>' + esc(c.h) + '</b>' + esc(c.p) + '</div>'; }).join("") + '</div>' : "") +
+      (s.reveal ? '<button type="button" class="reveal">Cevabı göster</button><p class="reveal-ans"' + (open ? "" : " hidden") + '>' + esc(s.reveal) + '</p>' : "") + num + '</div>';
+  };
+  var q0 = L.quiz[0];
+  var SLIDES = { baslik: [L.slides[0], 0], metin: [L.slides[2], 2], sutun: [L.slides[4], 4], liste: [L.slides[5], 5], tahmin: [{ h: q0.q, p: q0.o.join(" · "), reveal: q0.o[q0.a] }, 3] };
+  add({ id: "slayt", group: "Ders içeriği", name: "Slayt", cls: ".deck, .slide",
+    desc: "Tahtaya yansıtılan ders sunumu. Öğrenci aynı sunumu kendi bilgisayarında açar.",
+    where: "Sunum bölümü.",
+    rules: ["16:9, koyu lacivert zemin, başlık sarı (<code>--highlight</code>).", "Slayt kaydırmadan ekrana sığacak kadar büyür; yazılar slayt genişliğine göre ölçeklenir.", "Tahmin et slaytında cevap düğmeyle açılır.", "Altta önceki/sonraki, sayaç, noktalar ve Tam ekran."],
+    props: [{ k: "tur", l: "Tür", t: "seg", d: "metin", o: [["baslik", "Başlık"], ["metin", "Metin"], ["liste", "Liste"], ["sutun", "Sütun"], ["tahmin", "Tahmin et"]] }, { k: "cevap", l: "Cevap açık", t: "bool", d: false }],
+    render: function (p) {
+      var s = SLIDES[p.tur], n = L.slides.length;
+      return '<div class="deck"><div class="stage" tabindex="0" role="group" aria-label="Ders slaytları">' + slideOf(s[0], s[1], bool(p.cevap)) + '</div>' +
+        '<div class="deck-bar"><button type="button" aria-label="Önceki slayt">← <span class="w">Önceki</span></button><span class="count">' + (s[1] + 1) + ' / ' + n + '</span><button type="button" aria-label="Sonraki slayt"><span class="w">Sonraki</span> →</button>' +
+        '<div class="dots">' + L.slides.map(function (_, i) { return '<button type="button" aria-label="' + (i + 1) + '. slayt" class="' + (i === s[1] ? "on" : "") + '"></button>'; }).join("") + '</div><button type="button">Tam ekran</button></div></div>';
+    },
+    wrap: function (p, h) { return '<div style="width:760px;max-width:100%">' + h + '</div>'; },
+    width: "full",
+    variants: [["Başlık", { tur: "baslik" }], ["Metin", {}], ["Sütunlar", { tur: "sutun" }], ["Tahmin et, cevap açık", { tur: "tahmin", cevap: true }]]
+  });
+
+  add({ id: "defter", group: "Ders içeriği", name: "Defter", cls: ".notebook",
+    desc: "Öğrencinin defterine yazacağı maddeler. Yazdıkça işaretler.",
+    where: "Deftere yaz bölümü.",
+    rules: ["Çizgili kâğıt ve kırmızı kenar çizgisi kalır, sade karta çevrilmez.", "Önemli kelime fosforlu kalemle (<code>mark</code>) vurgulanır.", "İşaretlenen madde üstü çizili ve soluk; altta \"Yazılan: 2 / 5\"."],
+    props: [{ k: "biten", l: "Yazılan", t: "seg", d: "2", o: [["0", "0"], ["2", "2"], ["5", "Hepsi"]] }],
+    render: function (p) {
+      var n = +p.biten, t = L.notebook.length;
+      return '<div class="notebook"><h3>' + esc(L.title) + '</h3><ul class="nb-list">' + L.notebook.map(function (x, i) { var d = i < n; return '<li class="' + (d ? "done" : "") + '"><input type="checkbox" id="ds-nb-' + i + '"' + (d ? " checked" : "") + '><label for="ds-nb-' + i + '">' + x.t + '</label></li>'; }).join("") +
+        '</ul><div class="nb-foot"><span class="progress' + (n === t ? " full" : "") + '">' + (n === t ? "✓ Hepsini yazdın (" + n + "/" + t + ")" : "Yazılan: " + n + " / " + t) + '</span></div></div>';
+    },
+    width: "full",
+    variants: [["Başlarken", { biten: "0" }], ["Yarısı", {}], ["Bitti", { biten: "5" }]]
+  });
+
+  add({ id: "test", group: "Ders içeriği", name: "Test sorusu", cls: ".q, .opts",
+    desc: "Mini testte bir soru ve şıkları.",
+    where: "Mini test bölümü.",
+    rules: ["Şıklar A), B), C) ile başlar.", "Cevaptan sonra şıklar kilitlenir: doğru yeşil ✓, yanlış kırmızı ✕.", "Altında sonuç mesajı (<code>.fb</code>)."],
+    props: [{ k: "durum", l: "Durum", t: "seg", d: "", o: [["", "Cevapsız"], ["dogru", "Doğru"], ["yanlis", "Yanlış"]] }],
+    render: function (p) {
+      var q = q0, pick = p.durum === "dogru" ? q.a : p.durum === "yanlis" ? (q.a + 1) % q.o.length : -1;
+      return '<div class="q"><p>1. ' + esc(q.q) + '</p><div class="opts">' + q.o.map(function (o, i) {
+        var cls = pick < 0 ? "" : i === q.a ? "right" : i === pick ? "wrong" : "";
+        return '<button type="button"' + (cls ? ' class="' + cls + '"' : "") + (pick < 0 ? "" : " disabled") + '>' + String.fromCharCode(65 + i) + ') ' + esc(o) + '</button>';
+      }).join("") + '</div><div class="fb' + (pick < 0 ? "" : pick === q.a ? " r" : " w") + '">' + (pick < 0 ? "" : pick === q.a ? "Doğru! 👏" : "Olmadı. Doğru cevap ✓ işaretli olan.") + '</div></div>';
+    },
+    width: "full",
+    variants: [["Cevapsız", {}], ["Doğru", { durum: "dogru" }], ["Yanlış", { durum: "yanlis" }]]
+  });
+
+  add({ id: "adimlar", group: "Ders içeriği", name: "Etkinlik adımları", cls: ".act-steps",
+    desc: "Bilgisayar ya da sınıf etkinliğinin adımları. Öğrenci bitirdiği adımı işaretler.",
+    where: "Etkinlik bölümü.",
+    rules: ["Numaralı, her adım ayrı kutu; biten adımda yeşil ✓ ve \"Yaptım ✓\".", "Bilgisayar adımında Pardus ve Windows yönergesi ayrı yazılır, seçili işletim sistemi gösterilir.", "Üstte hedef kutusu (<code>.goal</code>)."],
+    props: [{ k: "os", l: "İşletim sistemi", t: "seg", d: "pardus", o: [["pardus", "Pardus"], ["windows", "Windows"]] }, { k: "biten", l: "Biten adım", t: "seg", d: "1", o: [["0", "0"], ["1", "1"], ["3", "3"]] }],
+    render: function (p) {
+      var A = L.activities.lab, n = +p.biten;
+      return '<div class="card activity"><div class="goal"><b>🎯 Hedef:</b> ' + esc(A.goal) + '</div><ol class="act-steps">' + A.steps.slice(0, 3).map(function (st, i) {
+        var t = typeof st === "string" ? { t: st } : st, d = i < n;
+        var os = t.pardus || t.windows ? '<span class="os"><b>' + (p.os === "pardus" ? "Pardus" : "Windows") + ':</b> ' + esc(p.os === "pardus" ? (t.pardus || t.windows) : (t.windows || t.pardus)) + '</span>' : "";
+        return '<li class="' + (d ? "done" : "") + '"><span>' + esc(t.t) + os + '</span><button type="button">' + (d ? "Yaptım ✓" : "Yaptım") + '</button></li>';
+      }).join("") + '</ol></div>';
+    },
+    width: "full",
+    variants: [["Pardus", {}], ["Windows", { os: "windows", biten: "0" }]]
+  });
+
+  add({ id: "siniflandirma", group: "Ders içeriği", name: "Sınıflandırma kartı", cls: ".chip, .sort-cat",
+    desc: "Oyunda doğru kutuya yerleştirilen kart.",
+    where: "Oyun bölümü.",
+    rules: ["Seçilen kart sarı zeminli, kutular laciverte döner.", "Kontrol sonrası doğru yeşil ✓, yanlış kırmızı ✕.", "Kartların sırası ders id'sine göre hep aynı karışıklıkta (<code>shuffleOrder</code>)."],
+    props: [{ k: "durum", l: "Durum", t: "seg", d: "sel", o: [["", "Havuzda"], ["sel", "Seçili"], ["ok", "Doğru"], ["bad", "Yanlış"]] }],
+    render: function (p) {
+      var it = L.sort.items;
+      return '<div class="sort-pool"><button type="button" class="chip' + (p.durum ? " " + p.durum : "") + '">' + esc(it[0].t) + '</button><button type="button" class="chip">' + esc(it[3].t) + '</button></div>' +
+        '<div class="sort-cats" style="margin-top:12px">' + L.sort.cats.map(function (c) { return '<div class="sort-cat' + (p.durum === "sel" ? " target" : "") + '"><h4>' + esc(c) + '</h4></div>'; }).join("") + '</div>';
+    },
+    width: "full",
+    variants: [["Seçili", {}], ["Doğru", { durum: "ok" }], ["Yanlış", { durum: "bad" }]]
+  });
+
+  add({ id: "bulmaca", group: "Ders içeriği", name: "Bulmaca kutusu", cls: ".cw-cell",
+    desc: "Bulmacanın bir harf kutusu.",
+    where: "Bulmaca bölümü.",
+    rules: ["42 px kare, kalın koyu kenarlık.", "Seçili kelime açık sarı, imleçteki kutu sarı.", "Kontrol sonrası doğru harf yeşil, yanlış kutu kırmızı ve ✕."],
+    props: [{ k: "durum", l: "Durum", t: "seg", d: "active", o: [["", "Boş"], ["hl", "Kelimede"], ["active", "İmleçte"], ["ok", "Doğru"], ["bad", "Yanlış"]] }, { k: "harf", l: "Harf", t: "text", d: "D" }],
+    render: function (p) {
+      var cell = function (cls, num, v) { return '<div class="cw-cell' + (cls ? " " + cls : "") + '">' + (num ? '<span class="cw-num">' + num + '</span>' : "") + '<input maxlength="2" aria-label="Satır 1 sütun 1" autocomplete="off" spellcheck="false" value="' + esc(v) + '"></div>'; };
+      return '<div class="cw-board" style="grid-template-columns:repeat(3,var(--cell))">' + cell(p.durum, "1", p.harf) + cell(p.durum === "active" ? "hl" : p.durum, "", "O") + cell(p.durum === "active" ? "hl" : p.durum, "", "") + '</div>';
+    },
+    variants: [["İmleçte", {}], ["Doğru", { durum: "ok" }], ["Yanlış", { durum: "bad" }], ["Boş", { durum: "", harf: "" }]]
+  });
+
+  /* ---------- Temeller ---------- */
+  var COLORS = [
+    ["Eylem", [["--action-primary", "Ana düğme, seçili durum, bağlantı, 5. sınıf"], ["--action-primary-hover", "Üzerine gelince"], ["--action-primary-pressed", "Basılınca"], ["--action-primary-subtle", "Açık lacivert zemin, seçili seçenek"], ["--action-on-primary", "Renkli zemin üstündeki yazı"]]],
+    ["Yazı", [["--text-primary", "Ana yazı"], ["--text-secondary", "Yardımcı yazı"]]],
+    ["Yüzey", [["--surface-default", "Kart"], ["--surface-subtle", "Sayfa zemini"], ["--surface-hover", "Nötr kontrol üzerine gelince"], ["--surface-setting", "Üst banttaki rol ve A+ zemini"]]],
+    ["Kenarlık", [["--border-default", "Kart kenarı"], ["--border-strong", "Kontrol kenarı"], ["--border-focus", "Klavye odağı"]]],
+    ["Geri bildirim", [["--feedback-success", "Doğru, tamamlandı, hazır"], ["--feedback-success-subtle", "Doğru zemini"], ["--feedback-error", "Yanlış, silme onayı"], ["--feedback-error-subtle", "Yanlış zemini"]]],
+    ["Sınıf ve vurgu", [["--grade-6", "6. sınıf"], ["--grade-6-subtle", "6. sınıf açık zemin"], ["--highlight", "Fosforlu kalem, slayt başlığı"], ["--highlight-subtle", "Seçili kelime, seçili kart"]]],
+    ["Defter ve slayt", [["--notebook-line", "Defter çizgisi"], ["--notebook-margin", "Defter kenar çizgisi"], ["--slide-bg", "Slayt zemini"], ["--slide-bg-light", "Başlık slaytı geçişi"]]],
+    ["Temalar", TH.map(function (t) { return ["--theme-" + t.no, t.no + ". tema: " + t.name]; })],
+    ["Ders bölümleri", Object.keys(SEC).map(function (k) { return ["--sec-" + k, SEC[k] + " bölümü"]; })]
+  ];
+  var rgbOf = function (v) {
+    var d = document.createElement("i"); d.style.color = v; document.body.appendChild(d);
+    var m = getComputedStyle(d).color.match(/[\d.]+/g).map(Number); document.body.removeChild(d); return m.slice(0, 3);
+  };
+  var lum = function (c) { var a = c.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2]; };
+  var ratio = function (a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+  var fmt = function (n) { return n.toFixed(2).replace(".", ","); };
+  var hexOf = function (c) { return "#" + c.map(function (v) { return ("0" + v.toString(16)).slice(-2); }).join("").toUpperCase(); };
+
+  var F = {
+    renkler: { group: "Temeller", name: "Renkler", desc: "Bütün renkler <code>assets/style.css</code> içindeki <code>:root</code> token'larıdır. Değerler o dosyadan canlı okunur. Karta basınca <code>var(--…)</code> kopyalanır.",
+      body: function () {
+        var white = [255, 255, 255], dark = rgbOf("var(--text-primary)");
+        return COLORS.map(function (g) {
+          return '<section class="ds-section"><h2>' + g[0] + '</h2><div class="ds-swatches">' + g[1].map(function (c) {
+            var rgb = rgbOf("var(" + c[0] + ")"), w = ratio(rgb, white), k = ratio(rgb, dark), best = w >= k ? ["Beyaz yazı", w] : ["Koyu yazı", k];
+            var ok = best[1] >= 4.5 ? "" : best[1] >= 3 ? " · yalnızca büyük yazı" : " · yazı zemini değil";
+            return '<button type="button" class="ds-sw" data-copy="var(' + c[0] + ')"><i style="background:var(' + c[0] + ')"></i><span><b>' + c[0] + '</b>' + hexOf(rgb) + ' · ' + best[0] + ' ' + fmt(best[1]) + ':1' + ok + '<em>' + esc(c[1]) + '</em></span></button>';
+          }).join("") + '</div></section>';
+        }).join("") + '<p class="ds-note">Kurallar: ana renk eylem ve seçili durum içindir. Sarı yalnızca vurgu içindir, geniş alanda zemin olmaz. Düz metin ve kontrollerde kontrast en az 4,5:1. Renk tek başına bilgi taşımaz.</p>';
+      } },
+    yazi: { group: "Temeller", name: "Yazı", desc: "Yazı tipi siteye gömülü <strong>Mulish</strong> (<code>assets/mulish.css</code>); kodlar eş aralıklı (<code>--font-mono</code>). Taban 17 px, A+ modunda 20 px. Ölçüler aşağıda canlı ölçülür.",
+      body: function () {
+        var rows = [
+          ["Sayfa başlığı", ".hello h1", '<div class="hello"><h1>Merhaba! Sınıfını seç</h1></div>'],
+          ["Ders adı", ".lesson-band h1", '<div class="lesson-band" style="background:var(--theme-1);padding:8px 16px"><div><h1>' + esc(L.title) + '</h1></div></div>'],
+          ["Sayfa başlığı (iç)", ".section-h h1", '<div class="section-h"><h1>Kazanım Haritası</h1></div>'],
+          ["Bölüm başlığı", ".block-h h2", '<div class="block-h"><div><h2>Deftere yaz</h2></div></div>'],
+          ["Tema başlığı", ".unit-h h2", '<div class="unit-h" style="padding:0"><h2>' + esc(TH[0].name) + '</h2></div>'],
+          ["Alan etiketi", ".label-h", '<div class="label-h" style="margin:0">Bu hafta</div>'],
+          ["Gövde", "body", '<p style="margin:0">' + esc(L.slides[2].p) + '</p>'],
+          ["Yardımcı yazı", ".hint", '<p class="hint" style="margin:0">Hafta adları ve dağılımı örnektir, MEB programından gelmez.</p>'],
+          ["Yol", ".crumbs", '<nav class="crumbs"><a href="#home">Ana sayfa</a> › Kazanım Haritası</nav>'],
+          ["Etiket", ".tag", '<span class="tag ready">Hazır</span>'],
+          ["Kod", ".tag.code", '<span class="tag code">BTY.5.1.6</span>']
+        ];
+        return '<div class="ds-type">' + rows.map(function (r) { return '<div><small>' + r[0] + '<br><code>' + r[1] + '</code><br><span class="ds-m"></span></small><div class="ds-sample">' + r[2] + '</div></div>'; }).join("") + '</div>';
+      },
+      after: function (root) {
+        $$(".ds-type > div", root).forEach(function (row) {
+          var el = $(".ds-sample", row), t = el.querySelector("h1,h2,p,.label-h,.crumbs,.tag") || el.firstElementChild, cs = getComputedStyle(t);
+          $(".ds-m", row).textContent = parseFloat(cs.fontSize).toFixed(1).replace(".", ",") + " px · " + cs.fontWeight + " · satır " + (parseFloat(cs.lineHeight) ? parseFloat(cs.lineHeight).toFixed(0) + " px" : cs.lineHeight);
+        });
+      } },
+    olculer: { group: "Temeller", name: "Ölçüler", desc: "Boşluk, köşe, kontrol yüksekliği ve gölge token'ları. Doğrudan px yazmak yerine bunlar kullanılır.",
+      body: function () {
+        var sp = [1, 2, 3, 4, 5, 6, 8, 10], rd = ["sm", "md", "lg", "xl", "pill"];
+        var px = function (v) { var d = document.createElement("i"); d.style.width = v; d.style.display = "block"; document.body.appendChild(d); var w = d.getBoundingClientRect().width; document.body.removeChild(d); return Math.round(w) + " px"; };
+        return '<section class="ds-section"><h2>Boşluk</h2><div class="ds-scale">' + sp.map(function (n) { return '<div><code>--space-' + n + '</code><span style="display:flex;align-items:center;gap:8px"><i class="ds-bar" style="width:var(--space-' + n + ')"></i>' + px("var(--space-" + n + ")") + '</span></div>'; }).join("") + '</div></section>' +
+          '<section class="ds-section"><h2>Köşe</h2><div class="ds-boxes">' + rd.map(function (r) { return '<div class="ds-box"><i style="border-radius:var(--radius-' + r + ')"></i><code>--radius-' + r + '</code><br>' + px("var(--radius-" + r + ")") + '</div>'; }).join("") + '</div></section>' +
+          '<section class="ds-section"><h2>Kontrol yüksekliği</h2><div class="ds-boxes">' +
+            '<div class="ds-box"><i style="height:var(--size-control-sm);border-radius:var(--radius-md)"></i><code>--size-control-sm</code><br>40 px · seçim düğmesi</div>' +
+            '<div class="ds-box"><i style="height:var(--size-control-md);border-radius:var(--radius-lg)"></i><code>--size-control-md</code><br>50 px · düğme</div>' +
+            '<div class="ds-box"><i style="height:48px;border-radius:var(--radius-md)"></i><code>48 px</code><br>üst bant, dokunma alanı</div></div>' +
+            '<p class="ds-note">Bütün dokunma alanları en az 48 px (etkileşimli tahta). Slayt noktaları görünürde 12 px, dokunma alanı 24 px, dokunmatikte 40 px.</p></section>' +
+          '<section class="ds-section"><h2>Gölge</h2><div class="ds-boxes"><div class="ds-box"><i style="background:var(--surface-default);border:0;box-shadow:var(--shadow-sm);border-radius:var(--radius-lg)"></i><code>--shadow-sm</code><br>defter</div><div class="ds-box"><i style="background:var(--surface-default);border:0;box-shadow:var(--shadow-md);border-radius:var(--radius-lg)"></i><code>--shadow-md</code><br>açılır liste, pencere</div></div><p class="ds-note">Kartlarda gölge ve gradyan yok; düz renk ve ince kenarlık.</p></section>' +
+          '<section class="ds-section"><h2>Ekran</h2><p class="ds-note">Esas ölçü 1366×768. Önemli düğmeler 768 px yükseklikte ekranda kalır. İçerik en fazla 1100 px (A+ açıkken 1320 px). Dar ekran sınırları: 1180, 1000, 760, 560 px.</p></section>';
+      } },
+    ikonlar: { group: "Temeller", name: "İkonlar", desc: "Satır içi SVG, 24×24 çizgi. Liste <code>assets/ikonlar.js</code> (<code>BD.icons</code>), sitede <code>icon(\"ad\")</code> ile çizilir. Emoji yerine bunlar kullanılır: Pardus'ta renkli emoji yazı tipi olmayabilir. Basınca <code>icon(\"ad\")</code> kopyalanır.",
+      body: function () { return '<div class="ds-icons">' + Object.keys(BD.icons).map(function (k) { return '<button type="button" data-copy=\'icon("' + k + '")\'>' + ico(k) + k + '</button>'; }).join("") + '</div><p class="ds-note">Yeni ikon önce <code>assets/ikonlar.js</code>\'e eklenir, kendiliğinden burada görünür.</p>'; } }
+  };
+  var FOUND = ["renkler", "yazi", "olculer", "ikonlar"];
+
+  /* ---------- Kod görünümü ---------- */
+  var BLOCK = /^(div|section|ul|ol|li|nav|header|details|summary|p|h1|h2|h3|h4|button|a|select|label)$/;
+  function pretty(html) {
+    html = html.replace(/<svg class="ico"[^>]*data-ico="([^"]+)"[^>]*>[\s\S]*?<\/svg>/g, '<!-- icon("$1") -->');
+    var out = "", depth = 0, stack = [], parts = html.split(/(<[^>]+>)/).filter(Boolean);
+    var pad = function () { return "\n" + new Array(depth + 1).join("  "); };
+    parts.forEach(function (tok) {
+      var m = tok.match(/^<(\/?)([a-z0-9]+)/i);
+      if (!m) { out += tok; return; }
+      var close = m[1] === "/", tag = m[2].toLowerCase(), block = BLOCK.test(tag) && (tag !== "a" && tag !== "button" || / class=/.test(tok) || close);
+      if (!close && block) { if (stack.length) stack[stack.length - 1].kids = true; out += pad() + tok; stack.push({ tag: tag, kids: false }); depth++; return; }
+      if (close && stack.length && stack[stack.length - 1].tag === tag) { var s = stack.pop(); depth--; out += (s.kids ? pad() : "") + tok; return; }
+      out += tok;
+    });
+    return out.replace(/^\n/, "");
+  }
+
+  /* ---------- Görünümler ---------- */
+  var state = {}; // bileşen → özellik değerleri
+  var cur = null, tab = store.get("tab", "onizleme"), bg = store.get("bg", "beyaz");
+  function propsOf(c) { if (!state[c.id]) { state[c.id] = {}; c.props.forEach(function (p) { state[c.id][p.k] = p.d; }); } return state[c.id]; }
+  function merged(c, over) { var o = {}, b = propsOf(c), k; for (k in b) o[k] = b[k]; c.props.forEach(function (p) { o[p.k] = p.d; }); for (k in over) o[k] = over[k]; return o; }
+  function stage(c, p, cls) { var h = c.render(p); return '<div class="ds-stage' + (bg === "gri" ? " gri" : "") + (cls ? " " + cls : "") + '"><div class="ds-in"' + (c.width === "full" ? "" : ' style="display:flex;justify-content:center"') + '>' + (c.wrap ? c.wrap(p, h) : h) + '</div></div>'; }
+
+  function nav(filter) {
+    var f = (filter || "").toLocaleLowerCase("tr"), groups = {}, order = [];
+    var push = function (g, id, name, n) { if (f && name.toLocaleLowerCase("tr").indexOf(f) < 0 && id.indexOf(f) < 0) return; if (!groups[g]) { groups[g] = []; order.push(g); } groups[g].push([id, name, n]); };
+    FOUND.forEach(function (id) { push("Temeller", id, F[id].name, ""); });
+    C.forEach(function (c) { push(c.group, c.id, c.name, c.variants.length); });
+    $("#dsNav").innerHTML = order.length ? order.map(function (g) {
+      return '<div class="ds-group">' + g.toLocaleUpperCase("tr") + '</div>' + groups[g].map(function (x) { return '<a href="#' + x[0] + '"' + (x[0] === cur ? ' aria-current="page"' : "") + '>' + x[1] + (x[2] ? '<small>' + x[2] + '</small>' : "") + '</a>'; }).join("");
+    }).join("") : '<p class="ds-none">"' + esc(filter) + '" ile eşleşen bileşen yok.</p>';
+  }
+
+  function head(eyebrow, name, desc, meta) { return '<div><div class="ds-eyebrow">' + eyebrow.toLocaleUpperCase("tr") + '</div><h1 tabindex="-1">' + name + '</h1><p class="ds-lead">' + desc + '</p>' + (meta ? '<div class="ds-meta" style="margin-top:8px">' + meta + '</div>' : "") + '</div>'; }
+
+  function viewFound(id) {
+    var f = F[id];
+    $("#dsWrap").classList.add("no-props"); $("#dsProps").innerHTML = ""; $("#dsProps").hidden = true;
+    $("#dsMain").innerHTML = head(f.group, f.name, f.desc) + f.body();
+    if (f.after) f.after($("#dsMain"));
+    document.title = f.name + " · Tasarım Sistemi";
+  }
+
+  function viewComp(c) {
+    var p = propsOf(c);
+    $("#dsWrap").classList.remove("no-props"); $("#dsProps").hidden = false;
+    var tabs = [["onizleme", "Önizleme", ""], ["cesitler", "Çeşitler", c.variants.length], ["kod", "Kod", ""]];
+    var body = tab === "cesitler" ? '<div class="ds-vars">' + c.variants.map(function (v) { return '<div class="ds-var"><b>' + esc(v[0]) + '</b>' + stage(c, merged(c, v[1])) + '</div>'; }).join("") + '</div>'
+      : tab === "kod" ? '<div class="ds-codebar"><span class="hint">Sitede bu işaretleme <code>app.js</code> içinde metin olarak üretilir. <code>&lt;!-- icon("ad") --&gt;</code> yerine <code>icon("ad")</code> çağrılır.</span><button type="button" class="btn" id="dsCopy">Kopyala</button></div><pre class="ds-code"><code>' + esc(pretty(c.render(p))) + '</code></pre>'
+      : '<div class="ds-bgsw" role="group" aria-label="Zemin"><button type="button" class="chip-btn" data-bg="beyaz" aria-pressed="' + (bg === "beyaz") + '">Beyaz</button><button type="button" class="chip-btn" data-bg="gri" aria-pressed="' + (bg === "gri") + '">Gri</button><span class="hint">Görünüm: ' + (T() ? "öğretmen" : "öğrenci") + '. Değiştirmek için üstteki düğmeyi kullanın.</span></div>' + stage(c, p, "ds-live");
+    $("#dsMain").innerHTML = head(c.group, c.name, c.desc, '<span class="tag code">' + esc(c.cls) + '</span><span>Sitede: ' + esc(c.where) + '</span>') +
+      '<div class="tabs ds-tabs" role="tablist" aria-label="Bileşen görünümü">' + tabs.map(function (t) { var on = t[0] === tab; return '<button type="button" class="tab" role="tab" data-dstab="' + t[0] + '" aria-selected="' + on + '" tabindex="' + (on ? 0 : -1) + '">' + t[1] + (t[2] ? ' <small>' + t[2] + '</small>' : "") + '</button>'; }).join("") + '</div>' +
+      '<div role="tabpanel">' + body + '</div>' +
+      '<div class="ds-rules"><h2>Kullanım</h2><ul>' + c.rules.map(function (r) { return '<li>' + r + '</li>'; }).join("") + '</ul></div>';
+    // Özellikler
+    $("#dsProps").innerHTML = '<div class="ds-props-h"><h2>Özellikler</h2><button type="button" class="chip-btn" id="dsReset">Sıfırla</button></div>' + c.props.map(function (pr) {
+      var v = p[pr.k], id = "dsp-" + pr.k, lab = esc(pr.l) + '<code>' + pr.k + '</code>';
+      if (pr.t === "bool") return '<label class="ds-prop ds-check"><input type="checkbox" data-k="' + pr.k + '"' + (bool(v) ? " checked" : "") + '>' + lab + '</label>';
+      if (pr.t === "seg") return '<div class="ds-prop"><span id="' + id + '">' + lab + '</span><div class="ds-seg" role="group" aria-labelledby="' + id + '">' + pr.o.map(function (o) { return '<button type="button" class="chip-btn" data-k="' + pr.k + '" data-v="' + esc(o[0]) + '" aria-pressed="' + (String(v) === o[0]) + '">' + esc(o[1]) + '</button>'; }).join("") + '</div></div>';
+      if (pr.t === "select") return '<label class="ds-prop"><span>' + lab + '</span><select data-k="' + pr.k + '">' + pr.o.map(function (o) { return '<option value="' + esc(o[0]) + '"' + (String(v) === o[0] ? " selected" : "") + '>' + esc(o[1]) + '</option>'; }).join("") + '</select></label>';
+      return '<label class="ds-prop"><span>' + lab + '</span><input type="text" data-k="' + pr.k + '" value="' + esc(v) + '"></label>';
+    }).join("");
+    document.title = c.name + " · Tasarım Sistemi";
+  }
+
+  // Önizlemeyi yalnızca sahnede yeniler; özellik panelindeki odak kaybolmaz
+  function refresh(c) {
+    var live = $(".ds-live");
+    if (live && tab === "onizleme") { var p = propsOf(c), h = c.render(p); $(".ds-in", live).innerHTML = c.wrap ? c.wrap(p, h) : h; }
+    else if (tab === "kod") $(".ds-code code").textContent = pretty(c.render(propsOf(c)));
+  }
+
+  function route(focus) {
+    var id = location.hash.slice(1) || "renkler";
+    var c = C.filter(function (x) { return x.id === id; })[0];
+    if (!c && !F[id]) id = "renkler";
+    cur = id; nav($("#dsFilter").value);
+    if (c) viewComp(c); else viewFound(id);
+    if (focus) { var h1 = $("#dsMain h1"); if (h1) h1.focus(); window.scrollTo(0, 0); }
+  }
+
+  function setRole(r) {
+    role = r; store.set("role", r);
+    document.documentElement.classList.toggle("role-ogrenci", r === "ogrenci");
+    $$(".ds-role [data-role]").forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-role") === r); });
+  }
+
+  function toast(t) { var el = $("#dsToast"); el.textContent = t; el.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(function () { el.classList.remove("show"); }, 1600); }
+  // file:// altında Clipboard API olmayabilir: eski yöntemle dene
+  function copy(text) {
+    var done = function () { toast("Kopyalandı: " + (text.length > 40 ? text.slice(0, 40) + "…" : text)); };
+    var old = function () { var ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); done(); } catch (e) { toast("Kopyalanamadı"); } document.body.removeChild(ta); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, old); else old();
+  }
+
+  /* ---------- Olaylar ---------- */
+  $(".ds-role").addEventListener("click", function (e) { var b = e.target.closest("[data-role]"); if (!b) return; setRole(b.getAttribute("data-role")); route(false); });
+  $("#dsFilter").addEventListener("input", function () { nav(this.value); });
+  $("#dsMain").addEventListener("click", function (e) {
+    var t = e.target.closest("[data-dstab]"), b = e.target.closest("[data-bg]"), cp = e.target.closest("[data-copy]");
+    if (t) { tab = t.getAttribute("data-dstab"); store.set("tab", tab); route(false); $('[data-dstab="' + tab + '"]').focus(); return; }
+    if (b) { bg = b.getAttribute("data-bg"); store.set("bg", bg); route(false); return; }
+    if (cp) { copy(cp.getAttribute("data-copy")); return; }
+    if (e.target.id === "dsCopy") { copy($(".ds-code code").textContent); return; }
+    // Önizlemedeki bağlantılar sayfadan çıkarmasın; slaytta cevabı göster çalışsın
+    var a = e.target.closest(".ds-stage a"); if (a) e.preventDefault();
+    var rv = e.target.closest(".ds-stage .reveal"); if (rv) { var ans = rv.nextElementSibling; if (ans) ans.hidden = !ans.hidden; }
+  });
+  $("#dsMain").addEventListener("keydown", function (e) {
+    var t = e.target.closest("[data-dstab]"); if (!t || (e.key !== "ArrowRight" && e.key !== "ArrowLeft")) return;
+    var all = $$("[data-dstab]"), i = all.indexOf(t), n = all[(i + (e.key === "ArrowRight" ? 1 : -1) + all.length) % all.length];
+    n.click();
+  });
+  $("#dsProps").addEventListener("click", function (e) {
+    var c = C.filter(function (x) { return x.id === cur; })[0]; if (!c) return;
+    if (e.target.id === "dsReset") { delete state[c.id]; route(false); return; }
+    var b = e.target.closest(".ds-seg [data-k]"); if (!b) return;
+    propsOf(c)[b.getAttribute("data-k")] = b.getAttribute("data-v");
+    $$('.ds-seg [data-k="' + b.getAttribute("data-k") + '"]').forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+    refresh(c);
+  });
+  $("#dsProps").addEventListener("input", function (e) {
+    var c = C.filter(function (x) { return x.id === cur; })[0], k = e.target.getAttribute("data-k"); if (!c || !k) return;
+    propsOf(c)[k] = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    refresh(c);
+  });
+  $("#dsProps").addEventListener("change", function (e) { if (e.target.type === "checkbox" || e.target.tagName === "SELECT") { var ev = document.createEvent("Event"); ev.initEvent("input", true, true); e.target.dispatchEvent(ev); } });
+  window.addEventListener("hashchange", function () { route(true); });
+
+  setRole(role);
+  route(false);
+})();
+</script>
+</body>
+</html>
