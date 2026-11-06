@@ -134,7 +134,11 @@
     if (at == null) at = idx - Math.floor(STRIP / 2);
     at = stripAt[g] = Math.max(t[0], Math.min(at, t[1] - STRIP));
     var term = t[2];
-    var page = function (dir) { var off = dir < 0 ? at === 0 : at + STRIP >= n; return '<button type="button" class="wk-page" data-page="' + dir + '" aria-label="' + (dir < 0 ? "Önceki" : "Sonraki") + ' haftalar"' + (off ? " disabled" : "") + '>' + (dir < 0 ? "‹" : "›") + '</button>'; };
+    // Dönemin ucundaki düğme öbür döneme geçer: mavi dolu, altında dönemin adı
+    var page = function (dir) {
+      var off = dir < 0 ? at === 0 : at + STRIP >= n, cross = dir < 0 ? at === t[0] && t[0] > 0 : at + STRIP >= t[1] && t[1] < n, to = dir < 0 ? "1. dönem" : "2. dönem";
+      return '<button type="button" class="wk-page' + (cross ? ' term' : '') + '" data-page="' + dir + '" aria-label="' + (cross ? to + 'e geç' : (dir < 0 ? "Önceki" : "Sonraki") + ' haftalar') + '"' + (off ? " disabled" : "") + '><b>' + (dir < 0 ? "‹" : "›") + '</b>' + (cross ? '<small>' + to + '</small>' : '') + '</button>';
+    };
     return (term ? '<div class="wk-term">' + term + '</div>' : "") + '<div class="wk-strip" role="group" aria-label="' + (term ? term + " haftaları" : "Haftalar") + '">' + page(-1) + plan.slice(at, Math.min(at + STRIP, t[1])).map(function (x) {
       var ready = x.lesson && lessonById(x.lesson), now = x.w === nowW;
       return '<button type="button" class="wk-chip' + (ready ? "" : x.event ? " event" : " soon") + (now ? " now" : "") + '" data-wk="' + x.w + '" aria-pressed="' + (x.w === sel) + '"' + (ready ? ' style="--c:var(--theme-' + x.theme + ')"' : "") +

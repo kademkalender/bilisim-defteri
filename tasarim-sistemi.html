@@ -360,20 +360,20 @@ body{background:var(--surface-subtle)}
   add({ id: "hafta-seridi", group: "Gezinme", name: "Hafta şeridi", cls: ".wk-strip, .wk-chip",
     desc: "Bu hafta kartının altında 11 hafta. Öğretmenin söylediği haftaya tek tıkla gidilir.",
     where: "Ana sayfa (iki rol).",
-    rules: ["Açılışta takvimdeki hafta seçili ve ortada; kutusunda \"takvim\" yazar. Site sınıfın hangi haftada olduğunu bilmez, takvimi söyler.", "Seçili hafta dolu mavi. Takvim haftası başka bir hafta seçilince de mavi çerçevesini korur.", "Hazır dersi olan haftanın alt çizgisi tema renginde; hazır olmayan gri ama tıklanabilir. Etkinlik haftasının (5. ve 18.) alt çizgisi koyu, kutusunda \"etkinlik\" yazar.", "‹ › kaydırmaz, 11 haftalık sayfa geçer. Uçta düğme görünmez ama yeri kalır.", "Sayfa dönem sınırını geçmez: üstte \"1. dönem\" ya da \"2. dönem\" yazar, 1. dönemin son sayfasından › 2. dönemin ilk haftasına geçer. 2. dönemin başlangıcı <code>BD.calendar.term2</code>.", "Hafta şerit dışından seçilirse (Son hazır ders) şerit o haftaya ortalanır."],
-    props: [{ k: "secili", l: "Seçili hafta", t: "text", d: "8" }, { k: "sayfa", l: "Sayfa", t: "seg", d: "orta", o: [["bas", "1–11"], ["orta", "3–13"], ["d2", "19–29"], ["son", "26–36"]] }],
+    rules: ["Açılışta takvimdeki hafta seçili ve ortada; kutusunda \"takvim\" yazar. Site sınıfın hangi haftada olduğunu bilmez, takvimi söyler.", "Seçili hafta dolu mavi. Takvim haftası başka bir hafta seçilince de mavi çerçevesini korur.", "Hazır dersi olan haftanın alt çizgisi tema renginde; hazır olmayan gri ama tıklanabilir. Etkinlik haftasının (5. ve 18.) alt çizgisi koyu, kutusunda \"etkinlik\" yazar.", "‹ › kaydırmaz, 11 haftalık sayfa geçer. Uçta düğme görünmez ama yeri kalır.", "Sayfa dönem sınırını geçmez: üstte \"1. dönem\" ya da \"2. dönem\" yazar, 1. dönemin son sayfasındaki › mavi dolu ve altında \"2. dönem\" yazar, 2. dönemin ilk sayfasındaki ‹ da \"1. dönem\" der: dönem değiştiği görünür. Dönem adı şeridin üstünde koyu ve büyük. 2. dönemin başlangıcı <code>BD.calendar.term2</code>.", "Hafta şerit dışından seçilirse (Son hazır ders) şerit o haftaya ortalanır."],
+    props: [{ k: "secili", l: "Seçili hafta", t: "text", d: "8" }, { k: "sayfa", l: "Sayfa", t: "seg", d: "orta", o: [["bas", "1–11"], ["orta", "3–13"], ["d1", "8–18"], ["d2", "19–29"], ["son", "26–36"]] }],
     render: function (p) {
-      var plan = BD.plan["5"], at = { bas: 0, orta: 2, d2: 18, son: plan.length - 11 }[p.sayfa], sel = +p.secili;
-      var page = function (dir, off) { return '<button type="button" class="wk-page" aria-label="' + (dir < 0 ? "Önceki" : "Sonraki") + ' haftalar"' + (off ? " disabled" : "") + '>' + (dir < 0 ? "‹" : "›") + '</button>'; };
+      var plan = BD.plan["5"], at = { bas: 0, orta: 2, d1: 7, d2: 18, son: plan.length - 11 }[p.sayfa], sel = +p.secili;
+      var page = function (dir, off, cross) { var to = dir < 0 ? "1. dönem" : "2. dönem"; return '<button type="button" class="wk-page' + (cross ? ' term' : '') + '" aria-label="' + (cross ? to + 'e geç' : (dir < 0 ? "Önceki" : "Sonraki") + ' haftalar') + '"' + (off ? " disabled" : "") + '><b>' + (dir < 0 ? "‹" : "›") + '</b>' + (cross ? '<small>' + to + '</small>' : '') + '</button>'; };
       var term = at >= 18 ? "2. dönem" : "1. dönem";
-      return '<div class="wk-term">' + term + '</div><div class="wk-strip" role="group" aria-label="' + term + ' haftaları">' + page(-1, at === 0) + plan.slice(at, at + 11).map(function (x) {
+      return '<div class="wk-term">' + term + '</div><div class="wk-strip" role="group" aria-label="' + term + ' haftaları">' + page(-1, at === 0, at === 18) + plan.slice(at, at + 11).map(function (x) {
         var now = x.w === 8;
         return '<button type="button" class="wk-chip' + (x.lesson ? "" : x.event ? " event" : " soon") + (now ? " now" : "") + '" aria-pressed="' + (x.w === sel) + '"' + (x.lesson ? ' style="--c:var(--theme-' + x.theme + ')"' : "") + '><b>' + x.w + '</b><small>' + (now ? "takvim" : x.event ? "etkinlik" : "hafta") + '</small></button>';
-      }).join("") + page(1, at + 11 >= plan.length) + '</div>';
+      }).join("") + page(1, at + 11 >= plan.length, at + 11 === 18) + '</div>';
     },
     wrap: function (p, h) { return '<div style="width:100%">' + h + '</div>'; },
     width: "full",
-    variants: [["Açılış: takvim haftası", {}], ["Başka hafta seçili", { secili: "3" }], ["İlk sayfa", { sayfa: "bas", secili: "3" }], ["2. dönemin ilk sayfası", { sayfa: "d2", secili: "19" }], ["Son sayfa", { sayfa: "son", secili: "30" }], ["Code Week seçili", { sayfa: "orta", secili: "5" }]]
+    variants: [["Açılış: takvim haftası", {}], ["Başka hafta seçili", { secili: "3" }], ["İlk sayfa", { sayfa: "bas", secili: "3" }], ["1. dönemin son sayfası", { sayfa: "d1", secili: "18" }], ["2. dönemin ilk sayfası", { sayfa: "d2", secili: "19" }], ["Son sayfa", { sayfa: "son", secili: "30" }], ["Code Week seçili", { sayfa: "orta", secili: "5" }]]
   });
 
   add({ id: "ders-karti", group: "Kartlar", name: "Ders kartı", cls: ".all-cards a",

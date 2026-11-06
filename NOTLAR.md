@@ -32,6 +32,7 @@ Kayıt şablonu:
 - Code.org tarzı hafta listesi (tema başlığı + bölüm baloncukları) denendi, kullanıcı beğenmedi, geri alındı (commit yok).
 - `cb0aafc` Ana sayfada hafta okları yerine 11 haftalık hafta şeridi: ‹ › kaydırmadan sayfa geçer, açılışta takvim haftası seçili ve "takvim" yazar, kart başlığı "Takvime göre bu hafta". 8'den 3. haftanın dersine 6 tık yerine 2 tık. Yan kartlar kaldırıldı (öğrenci ve öğretmen). Katalogda Hafta okları ve Yan kart yerine Hafta şeridi. Testler 33/33, dogrula 0, `file://` sentetik koşular hatasız.
 - `2530f00` Takvime 2. dönem başlangıcı (`term2`, 19. hafta); hafta şeridi dönem sınırını geçmez, üstünde "1. dönem"/"2. dönem" yazar. İki sınıfta 5. hafta Code Week, 18. hafta dönem sonu etkinlik haftası (`event: true`, tema/kazanım/ders yok, `note` gösterilir); sonraki haftalar kaydı, plan 36 hafta. Hazır 5. sınıf dersleri 6, 7, 8. haftaya geçti. Şeritte "etkinlik", kartta koyu zemin; dogrula etkinlik haftasını denetler. Sentetik test tarihi 13 Kasım (9. hafta). Testler 33/33, dogrula 0.
+- Dönem geçişi belli olsun diye şeritte dönemin ucundaki ‹ › mavi dolu ve öbür dönemin adını taşır ("2. dönem", "1. dönem"); şeridin üstündeki dönem adı büyüdü ve koyulaştı. Katalogda "1. dönemin son sayfası" çeşidi.
 
 **Kararlar**
 - 2. dönem 19. haftada başlar; 5. hafta Code Week, 18. hafta dönem sonu etkinlik haftası, iki sınıfta da (kullanıcı kararı). Plandaki ders başlıkları ve kazanım dağılımı yine örnek.
