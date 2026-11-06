@@ -28,6 +28,9 @@ Kayıt şablonu:
 - `5b924ee` Yazım rehberi `YAZIM-REHBERI.md` (ses tonu ve arayüz metni, Senin UI ses tonu rehberi örnek alındı) ve katalogda "Ses ve yazım" sayfası. Kararlar kullanıcıya örnekli sorularla soruldu. CLAUDE.md, README, ICERIK-REHBERI ve TASARIM-SISTEMI rehbere bağlandı.
 - `a8f081d` Yazım rehberi siteye uygulandı: düğmelerde ok yok, sayfa adları cümle düzeninde, öğrenciye görev dili, kutlama dışında emoji yok, "tıkla", öğretmene ayrı bölüm açıklamaları. Mini testte iki deneme: ilk yanlışta ipucu (`hint`), ikincide neden (`why`) ve doğru cevap; sonuç ilk denemedeki doğruları sayar. 8 dersteki 37 soruya `hint`/`why` yazıldı, `dogrula.js` eksikte uyarır, eski test kayıtları okunur. Testler 33/33, dogrula 0, `file://` konsolu temiz.
 - `99da9d9` Sentetik kullanılabilirlik testi `tools/ux-test/` (paketsiz: başsız Chrome + Node). Betiklenmiş persona 4 görevi 768 px düzeltmeleri öncesinde (`995abb4`) ve sonrasında yaptı, 1366×657, tarih 8. haftaya sabit. 8/8 koşu başarılı. Tıklama eşit (14 ve 14); eski sürümde 4 kaydırma adımı ve 1 dolayım vardı, yenide yok (Sunum'da "Sonraki" düğmesi ve sanal masaüstündeki boş yer artık ekranda). "Son hazır ders" düğmesi bu testte tıklama kazandırmadı, çünkü hazır ders bir hafta gerideydi. Rapor `tools/ux-test/results/report.html`, git dışı.
+- Öğrencinin 3. hafta görevi için sentetik replay (3 persona, tahmin) ve benchmark (Code.org, Khan Academy, takvim uygulamaları). HMW: "Öğretmenin tahtada söylediği hafta numarasıyla dersi arayan öğrencinin, o haftanın dersini haftaları tek tek gezmeden açma ihtiyacını, site öğrenciyi her zaman takvimin haftasında karşılıyor, sınıf ise çoğu zaman başka bir haftayı işliyor gerçeğine rağmen nasıl karşılayabiliriz?" İçgörünün ikinci yarısı varsayım, görüşmeyle doğrulanmadı.
+- Code.org tarzı hafta listesi (tema başlığı + bölüm baloncukları) denendi, kullanıcı beğenmedi, geri alındı (commit yok).
+- `cb0aafc` Ana sayfada hafta okları yerine 11 haftalık hafta şeridi: ‹ › kaydırmadan sayfa geçer, açılışta takvim haftası seçili ve "takvim" yazar, kart başlığı "Takvime göre bu hafta". 8'den 3. haftanın dersine 6 tık yerine 2 tık. Yan kartlar kaldırıldı (öğrenci ve öğretmen). Katalogda Hafta okları ve Yan kart yerine Hafta şeridi. Testler 33/33, dogrula 0, `file://` sentetik koşular hatasız.
 
 **Kararlar**
 - Oturum başında GitHub'daki yeni commit'ler çekilir (CLAUDE.md "Oturum başı").
@@ -42,6 +45,8 @@ Kayıt şablonu:
 - Başlık ve sayfa adları cümle düzeninde; düğme fiil ve okusuz; ekranla ilgili fiil "tıkla".
 - Ders, tema ve kazanım adları gibi resmî adlar cümle düzenine çevrilmez, MEB'deki gibi kalır (kullanıcı kararı).
 - Yazı tipi Mulish kalır (Atkinson Hyperlegible ve Lexend ile karşılaştırıldı); dosya adı ve kod eş aralıklı yazılır.
+- Site sınıfın hangi haftada olduğunu bilmez (internet ve ortak kayıt yok); şerit takvim haftasını "takvim" diye işaretler, "bu hafta" demez. Asıl kaynak öğretmenin söylediği hafta.
+- Ana sayfada yan kart yok; şerit "Bu haftaya dön" ve "Bütün dersler"in işini görüyor (kullanıcı kararı).
 - Sentetik test sonuçları kullanıcı araştırması diye sunulmaz; aracın çıktıları (`results/`) git'e girmez, `package.json` eklenmez.
 - Geri bildirim ve etkinlik etiketlerindeki emoji (🎉 👏 🌟 🎯 📋 🌐 📇) süs olarak kaldı; yalnızca ikon görevindekiler SVG oldu.
 
@@ -51,6 +56,10 @@ Kayıt şablonu:
 - [ ] 37 test sorusunun ipucu ve neden metinleri Claude'un yazdığı ilk taslak; ekipte biri içerik olarak gözden geçirmeli.
 - [ ] Kadem yazım rehberini ve test değişikliğini görmedi.
 - [ ] Kadem bölüm kartı dizilişi ve öğretmen bölüm başlığı değişikliklerini görmedi.
+- [ ] Öğretmen ana sayfasında "Kaldığınız yer" kartı da kalktı; öğretmen isterse geri eklenebilir.
+- [ ] `#dersler` (Bütün dersler) sayfasına ana sayfadan bağlantı kalmadı; sayfa kaldırılmalı mı karar verilmeli.
+- [ ] Hafta şeridi telefon genişliğinde (375 px) çok sıkışıyor; telefon öncelik değil ama bakılmadı.
+- [ ] "Öğretmen takvimden ne sıklıkla sapıyor" ve "haftayı öğrenciye nasıl söylüyor" soruları bir öğretmene sorulmalı.
 - [ ] Pardus ayarında sanal masaüstünün sağ tık menüsü "Yeni › Klasör" gösteriyor; ders yönergesi Pardus için "Klasör Oluştur…" diyor. Hangisinin doğru olduğuna bakılmalı.
 - [ ] Sentetik test yalnızca bir haftalık boşlukla denendi; hazır derse uzak bir haftada (ör. 12. hafta) "Son hazır ders" düğmesi ölçülmedi.
 - [ ] `tools/sim-tarayici.test.js` içindeki "eski kayıt baştan başlar" testi tüm testlerle birlikte koşunca ara sıra düşüyor. Süre sınırına ya da bekleme süresine bakılmalı.
@@ -132,7 +141,7 @@ Kayıt şablonu:
 
 **Yarım kalan işler**
 - [ ] Gelen `program.js` metni MEB programıyla elle karşılaştırılmadı.
-- [ ] `BD.calendar` her yıl yeni MEB takvimiyle güncellenmeli. Okul bilgisayarlarının saati yanlışsa "Bu hafta" yanlış çıkar, oklar ve "Bütün dersler" yedek yol.
+- [ ] `BD.calendar` her yıl yeni MEB takvimiyle güncellenmeli. Okul bilgisayarlarının saati yanlışsa takvim haftası yanlış çıkar, hafta şeridi yedek yol.
 - [ ] İçerikteki emojiler (etkinlikte 🎯 🧰, ortam seçiminde 💻 🖥️ ✏️, bulmaca ve oyun mesajları) Pardus'ta kutu olarak görünebilir, denenmedi.
 - [ ] Yeni tasarım Firefox 78 ve gerçek Pardus makinesinde denenmedi (sadece macOS'ta Chrome 156).
 
