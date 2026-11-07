@@ -32,6 +32,7 @@ Kayıt şablonu:
 - Görsel kimlik: kullanıcının uygulama logosu (mavi defter karakteri) maskot oldu. Beyaz arka plan saydam yapıldı, `assets/maskot.webp` (420 px, 34 KB) ve sekme simgesi `assets/maskot-64.png`. Logoda 46 px, hafta kartının sağında 150 px (760 px ve altında gizli), ders bitti mesajında ve boş durumlarda 110 px. Katalogda Maskot bileşeni. Testler 33/33, dogrula 0.
 
 - Ana sayfa başlığı: öğrencide "Merhaba! Sınıfını seç" yerine "Merhaba!" (1.5rem, eskiden 2.2rem) ve sınıf kartlarının üstünde "Sınıfın" etiketi. Sayfanın en büyük yazısı artık hafta kartındaki ders adı (1.9rem). Öğretmen başlığı da 1.5rem. Sentetik G1/G3 OK, dogrula 0.
+- Sınıf seçici küçülür (Gestalt 1): sınıf bir kez seçilince (`S.gradeSet`, `BD.defaults`'ta false) kartlar 52 px'e iner ve başlıkla aynı satırda sağa geçer ("Sınıfın" etiketiyle); telefonda başlığın altında. İlk açılışta büyük kartlar. 1366×768'de şerit 689 → 534 px, telefonda ana sayfa tek ekrana sığar. İki rol, 5/6 geçişi ve odak denendi. Testler 33/33, G1/G3 OK.
 
 **Kararlar**
 - Görsel kimlik için maskot yönü seçildi (desen ve konu çizimi yerine); maskot ders içeriğine girmez.
