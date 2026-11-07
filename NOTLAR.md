@@ -28,11 +28,18 @@ Kayıt şablonu:
 
 - Bölüm sayfasına Gestalt değerlendirmesi ve düzeltmeleri: Başla düğmesinde sıradaki bölümün renkli ikon karesi (`.cta-sq`, kartla bağ); kartların üstünde görünür "Bölümler" başlığı (bant ile kartlar iki grup; her temanın bant rengi bir bölüm rengine yakın olduğu için renk değiştirilmedi); kart numarası 1.1rem ve tam opak (en az 5,29:1); monitörde ders adı 1.7rem ve ilerleme çubuğu 140 px, ad tek satır, sayfa ekrana sığar (901/900); dizüstünde kart 260 px, alt boşluk 167 → 104 px. Testler 33/33, dogrula 0.
 
+- Siteye bütüncül outsider-design-review: eksik his görsel kimlik yokluğu ve ana sayfada ilerleme izi olmamasından geliyor.
+- Görsel kimlik: kullanıcının uygulama logosu (mavi defter karakteri) maskot oldu. Beyaz arka plan saydam yapıldı, `assets/maskot.webp` (420 px, 34 KB) ve sekme simgesi `assets/maskot-64.png`. Logoda 46 px, hafta kartının sağında 150 px (760 px ve altında gizli), ders bitti mesajında ve boş durumlarda 110 px. Katalogda Maskot bileşeni. Testler 33/33, dogrula 0.
+
 **Kararlar**
+- Görsel kimlik için maskot yönü seçildi (desen ve konu çizimi yerine); maskot ders içeriğine girmez.
 - Başla düğmesi kaldırılmadı, banda taşındı (kullanıcı "tüm bulguları çöz" dedi, yer kararı Claude'un).
 
 **Yarım kalan işler**
 - [ ] Dizüstünde (1366×657) kartların altında 104 px boşluk kaldı.
+- [ ] Ana sayfada ilerleme izi (hafta kartında "Devam et", şeritte ✓).
+- [ ] Mavi temada (Tema 3) maskot zemine yakın; istenirse beyaz hale.
+- [ ] Pencere daraltılıp genişletilince hafta şeridi 5 haftada kalıyor (yenileyince düzelir).
 - [ ] Gestalt 1 (sınıf seçimi seçildikten sonra küçülsün) ve 4 (hafta kartının boş sağ tarafı).
 
 ---
