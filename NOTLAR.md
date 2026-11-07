@@ -36,8 +36,18 @@ Kayıt şablonu:
 - Kullanıcı küçük seçiciden sonra altın boş kaldığını söyledi: öğrencide açılan yeri Bu hafta kartı alıyor (761 px ve üstü: 310 px, ders adı 2.5rem, maskot 250 px, büyük Başla). 1366×768'de sayfa 648 px'te biter, 1880×900'de ekrana tam oturur.
 - Marka kimliği tamamlama: maskot ders sonlarında 64 px (`.end-msg`, `endMsg()`): etkinlik bitti, test sonucu, oyun "Hepsi doğru!", bulmaca tamam, sanal masaüstü "Tebrikler!". Maskotun açık mavisi token oldu (`--accent-light: #5BC2F7`, görselden ölçüldü) ve "Sıradaki" etiketinde kullanıldı (koyu yazıyla 7,8:1). İlerleme çubuğunda kullanılmadı: tema bantlarının üstünde 2,7–3,9:1, beyaz dolgu daha net. Katalogda Maskot "Bitiş mesajı" çeşidi, Geri bildirim "Bitti" çeşidi ve Renkler güncel.
 - Üst bant beyaz oldu (`--surface-default`, altta ince çizgi ve `--shadow-sm`); gri sayfa zemininden ayrılır. Açık mavi (`#E3F4FD`, altta `--accent-light` çizgi) denendi, kullanıcı beğenmedi; lacivertte maskot zeminde kayboldu. Rol ve A+ bej zeminde kaldı.
+- Yeni skill'ler: `cognitive-walkthrough` projeye göre yeniden yazıldı (dört soru, persona, adım tablosu); mastepanoski/claude-skills deposundan `ui-design-review`, `wcag-accessibility-audit`, `don-norman-principles-audit`, `information-architecture-audit`, `ux-audit-rethink` okunup kuruldu. Walkthrough (öğrenci, bu haftanın testi): görev 4 adımda tamamlanıyor; bulgular "Testi yeniden çöz" test bitmeden çıkıyor, Sunum'a çeken "Sıradaki", sonuç cümlesi "bitti" demiyor.
+- UI tasarım incelemesi (ui-design-review, 69/100) ve altı önerinin hepsi:
+  1. Yazı ölçeği: `--fs-xs` … `--fs-4xl` (8 basamak); CSS'teki ~50 farklı rem boyutu bu basamaklara bağlandı. Kalınlık 400/700/900 (600 ve 800 kalktı). Slayt, sanal masaüstü, yazdırma, bulmaca hücresi ve ikon kareleri kendi ölçüsünde.
+  2. Bölüm içi: öğrencide bölüm başlığı bölüm renginde dolu şerit (`section.block[data-sec]`, `--c`; defterde koyu yazı). Kullanıcı ince çizgi ile dolu şerit arasından dolu şeridi seçti. Test sorusu `--fs-lg`, şıklar beyaz, 2 px `--border-strong`, 400 kalınlık. Şerit yükselttiği için sunum `100vh - 24rem`'e göre boyutlanır, 1366×768'de düğmeler ekranda (765/768).
+  3. Boşluk: margin, padding ve gap'teki ham px değerleri `--space-*` tokenlarına (yaklaşık 45 yer); ortalama için kullanılan eksi değerler px kaldı.
+  4. Emoji kaldırıldı (kullanıcı onayı): "✓ Doğru!", bitişte kutlamayı maskot ve konfeti taşır; YAZIM-REHBERI güncellendi. İkonlar zaten 2,2 çizgi ve yuvarlak uç, değişmedi.
+  5. Köşe: `--radius-lg` (14 px) kalktı, yerine `--radius-md` (12); içerikteki 6 px köşeler `--radius-sm`.
+  6. Ders girişinde kartların altında dersin `hook` sorusu "Düşün" kutusunda (var olan Bilgi kutusu bileşeni, `--fs-lg`). 1366×768'de alt boşluk 252 → yaklaşık 90 px. Okul monitöründe kartlar yeniden tek sıra (312 px), sayfa ekrana sığar.
+  Telefon (375) ve monitör (1880×900) denendi, yatay taşma yok.
 
 **Kararlar**
+- Bölüm içi renk: dolu şerit (kullanıcı seçimi). Arayüzde emoji yok (kullanıcı seçimi). Ders girişi boşluğu "Düşün" sorusuyla doldu (kullanıcı seçimi).
 - Görsel kimlik için maskot yönü seçildi (desen ve konu çizimi yerine).
 - Maskot ders içinde yalnızca sonda çıkar (bitiş ve sonuç mesajları); çalışırken görünmez. Selam balonu ve maskot adı şimdilik yok (kullanıcı kararı).
 - Maskotun tek pozu var; sevinen, düşünen gibi pozlar raster görselden üretilemez, çizerden gelirse eklenir.
@@ -45,7 +55,8 @@ Kayıt şablonu:
 - Başla düğmesi kaldırılmadı, banda taşındı (kullanıcı "tüm bulguları çöz" dedi, yer kararı Claude'un).
 
 **Yarım kalan işler**
-- [ ] Dizüstünde (1366×657) kartların altında 104 px boşluk kaldı.
+- [x] Dizüstünde kartların altındaki boşluk: "Düşün" kutusuyla doldu.
+- [ ] Walkthrough bulguları: "Testi yeniden çöz" yalnızca test bitince ya da onayla; sonuç cümlesine "Testi bitirdin!".
 - [ ] Mavi temada (Tema 3) maskot zemine yakın; istenirse beyaz hale.
 - [ ] Pencere daraltılıp genişletilince hafta şeridi 5 haftada kalıyor (yenileyince düzelir).
 - [x] Gestalt 1 (sınıf seçimi seçildikten sonra küçülsün) ve 4 (hafta kartının boş sağ tarafı): yapıldı.
