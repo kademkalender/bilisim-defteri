@@ -31,6 +31,8 @@ Kayıt şablonu:
 - Siteye bütüncül outsider-design-review: eksik his görsel kimlik yokluğu ve ana sayfada ilerleme izi olmamasından geliyor.
 - Görsel kimlik: kullanıcının uygulama logosu (mavi defter karakteri) maskot oldu. Beyaz arka plan saydam yapıldı, `assets/maskot.webp` (420 px, 34 KB) ve sekme simgesi `assets/maskot-64.png`. Logoda 46 px, hafta kartının sağında 150 px (760 px ve altında gizli), ders bitti mesajında ve boş durumlarda 110 px. Katalogda Maskot bileşeni. Testler 33/33, dogrula 0.
 
+- Ana sayfa başlığı: öğrencide "Merhaba! Sınıfını seç" yerine "Merhaba!" (1.5rem, eskiden 2.2rem) ve sınıf kartlarının üstünde "Sınıfın" etiketi. Sayfanın en büyük yazısı artık hafta kartındaki ders adı (1.9rem). Öğretmen başlığı da 1.5rem. Sentetik G1/G3 OK, dogrula 0.
+
 **Kararlar**
 - Görsel kimlik için maskot yönü seçildi (desen ve konu çizimi yerine); maskot ders içeriğine girmez.
 - Başla düğmesi kaldırılmadı, banda taşındı (kullanıcı "tüm bulguları çöz" dedi, yer kararı Claude'un).
