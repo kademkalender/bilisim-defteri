@@ -27,7 +27,7 @@ Claude Code ile çalışıyorsanız oturum başı kontrolü otomatiktir. Her otu
 - **Kazanım haritası** sayfası hangi süreç bileşeninin hangi derste işlendiğini, hangilerinin eksik kaldığını otomatik gösterir.
 
 ### 2. Her okul aynı şartlarda değil
-Öğretmen, **Öğretmen masası**'ndan okulunun şartlarını bir kez seçer:
+Öğretmen, **Sınıf ayarları**'ndan okulunun şartlarını bir kez seçer:
 
 | Ayar | Seçenekler | Ne değişir? |
 |---|---|---|
@@ -55,7 +55,7 @@ Ders sayfası sekmelidir, aynı anda tek bölüm görünür. **Öğrencinin** se
 
 Biten bölümün sekmesinde numara yerine ✓ görünür. Tarayıcının geri tuşu önceki sekmeye döner.
 
-**Öğretmen** derse ilk sekme olan "Ders planı" ile başlar. Bu sekmede öğrenme çıktısını, 80 dakikalık ders akışını, ölçme aracını, notları, yazdırılacak kâğıdı ve cevap anahtarını görür. Kazanım haritası, Çalışma kâğıtları ve Öğretmen masası ayrı sayfalardır ve yalnızca öğretmen görünümündedir.
+**Öğretmen** derse ilk sekme olan "Ders planı" ile başlar. Bu sekmede öğrenme çıktısını, 80 dakikalık ders akışını, ölçme aracını, notları, yazdırılacak kâğıdı ve cevap anahtarını görür. Kazanım haritası, Çalışma kâğıtları ve Sınıf ayarları ayrı sayfalardır ve yalnızca öğretmen görünümündedir.
 
 Ana sayfada sınıf seçilir, haftalar temalara bölünmüş listede numarası ve ders adıyla görünür (`7. hafta · Dosya ve Klasör Yönetimi`). Öğrenci tema adı görmez, haftalar 1. dönem (1–18) ve 2. dönem (19–36) altında sırayla listelenir; hazır haftaya basınca "Derse gir" düğmesi açılır. Öğretmen temalara bölünmüş listede satıra basınca kazanım, çalışma kâğıdı ve ders akışı açılır. Listenin üstünde o bilgisayarda son açılan ders "Kaldığın yer" olarak durur. Arama kutusu hafta numarasını da anlar (`7`, `7. hafta`); aramadan seçilen hafta açılır ve ekrana gelir.
 

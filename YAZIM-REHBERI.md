@@ -130,7 +130,7 @@ Kalıp: **Ne bitti + sırada ne var.**
 
 Kalıp: **Neden boş + ilk adım.**
 
-✗ Sonuç bulunamadı.  ✓ "klasor" için sonuç yok. Ders adı ya da hafta numarası yaz.
+✗ Sonuç bulunamadı.  ✓ "klasor" için sonuç yok. Ders adı ya da hafta numarası yazın.
 ✗ Ders yok.  ✓ Bu sınıfın hazır dersi henüz yok. Ana sayfadan başka bir sınıf seçebilirsiniz.
 
 ### Uyarı ve onay
@@ -150,7 +150,7 @@ Kalıp: **Neden boş + ilk adım.**
 
 | Konu | Kural | Örnek |
 |---|---|---|
-| Büyük harf | Cümle düzeni; özel adlar ve resmî adlar (ders, tema, kazanım) MEB'deki gibi | Öğretmen masası · Pardus · Dosya ve Klasör Yönetimi |
+| Büyük harf | Cümle düzeni; özel adlar ve resmî adlar (ders, tema, kazanım) MEB'deki gibi | Sınıf ayarları · Pardus · Dosya ve Klasör Yönetimi |
 | Büyük/küçük dönüşüm | Kodda `toLocaleUpperCase("tr")` | İ, ı doğru çıkar |
 | Hafta | Sayı + nokta + "hafta" | 7. hafta (✗ Hafta 7) |
 | Sınıf | Sayı + nokta + "sınıf" | 5. sınıf |

@@ -193,7 +193,7 @@ BD.lesson({
   ],
 
   teacherNotes: [
-    "Okulda bilgisayar yoksa Öğretmen masası'ndan Bilgisayarsız ortamı seçin ve çalışma kâğıdını önceden yazdırın.",
+    "Okulda bilgisayar yoksa Sınıf ayarları'ndan Bilgisayarsız ortamı seçin ve çalışma kâğıdını önceden yazdırın.",
     "Etkileşimli tahtalarda (ETAP) Pardus yüklüdür. İşletim sistemi örneği olarak tahtanın kendisini gösterebilirsiniz.",
     "Bit ve bayt konusu bu derste sadece tanıtılır. Piksel ve sıkıştırma örnekleri Dosya ve Klasör Yönetimi dersinde tekrar edilir.",
     "Kasa açılarak iç parçalar gösterilecekse öğretmen gözetiminde ve elektrik bağlantısı kesik olarak yapılmalıdır."

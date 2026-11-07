@@ -213,7 +213,7 @@ body{background:var(--surface-subtle)}
 
   add({ id: "secenek", group: "Eylemler", name: "Seçenek düğmesi", cls: ".opt-group button",
     desc: "Açıklamalı seçenek. Bir ayarın değerleri arasından biri seçilir.",
-    where: "Öğretmen masası.",
+    where: "Sınıf ayarları.",
     rules: ["En az 64 px yükseklik, en fazla 300 px genişlik.", "Seçili olanda sağ üstte ✓ ve açık lacivert zemin.", "Bir grupta tek seçili seçenek olur; grup <code>.opt-group</code>."],
     props: [
       { k: "baslik", l: "Başlık", t: "text", d: "İnternet var" },
@@ -228,13 +228,13 @@ body{background:var(--surface-subtle)}
   add({ id: "arama", group: "Formlar", name: "Arama kutusu", cls: ".search",
     desc: "Ders, hafta ya da kazanım kodu arar. Sonuçlar kutunun altında açılır.",
     where: "Üst bant (yalnızca öğretmen).",
-    rules: ["48 px, köşe <code>--radius-md</code>. Genişlik 160–230 px.", "Öğrencide gizlidir.", "İpucu ne aranabileceğini söyler: öğretmen dersi hafta numarasıyla arar. Emoji yok.", "Sonuçta ders adı, altında sınıf · hafta · kod · durum. Sonuç yoksa \"Sonuç bulunamadı.\""],
+    rules: ["48 px, köşe <code>--radius-md</code>. Genişlik 160–230 px.", "Öğrencide gizlidir.", "İpucu ne aranabileceğini söyler: öğretmen dersi hafta numarasıyla arar. Emoji yok.", "Sonuçta ders adı, altında sınıf · hafta · kod · durum. Sonuç yoksa aranan kelime ve ne yazılacağı: <i>\"zip\" için sonuç yok. Ders adı ya da hafta numarası yazın.</i>", "Eş anlamlılar aranır (kodlama → programlama, zip → sıkıştır, word → kelime işlemci…); liste <code>initSearch</code> içinde <code>SYN</code>.", "En çok 8 sonuç; fazlası varsa altta \"İlk 8 sonuç. Daha fazlası için aramayı daraltın.\""],
     props: [
       { k: "ipucu", l: "İpucu", t: "text", d: "Ders, hafta, kod" },
       { k: "durum", l: "Durum", t: "seg", d: "sonuc", o: [["kapali", "Kapalı"], ["sonuc", "Sonuçlar"], ["yok", "Sonuç yok"]] }
     ],
     render: function (p) {
-      var res = p.durum === "kapali" ? "" : '<div class="results show">' + (p.durum === "yok" ? '<div>Sonuç bulunamadı.</div>'
+      var res = p.durum === "kapali" ? "" : '<div class="results show">' + (p.durum === "yok" ? '<div>"zip" için sonuç yok. Ders adı ya da hafta numarası yazın.</div>'
         : '<a href="#ders-5-1-6-dosya-klasor">Dosya ve Klasör Yönetimi<small>5. sınıf · 8. hafta · BTY.5.1.6 · Hazır</small></a><a href="#sinif-6-7">Video Düzenleme ve Kurgu<small>6. sınıf · 7. hafta · BTY.6.2.8 · Yakında</small></a>') + '</div>';
       return '<div class="search" role="search"><label for="ds-q" class="sr">Ders ara</label><input id="ds-q" type="search" placeholder="' + esc(p.ipucu) + '" autocomplete="off">' + res + '</div>';
     },
@@ -304,7 +304,7 @@ body{background:var(--surface-subtle)}
 
   add({ id: "kart", group: "Kartlar", name: "Kart", cls: ".card",
     desc: "İlgili bilgileri bir arada tutan beyaz yüzey.",
-    where: "Ders planı, Öğretmen masası ayarları.",
+    where: "Ders planı, Sınıf ayarları.",
     rules: ["Beyaz zemin, 1 px <code>--border-default</code>, köşe <code>--radius-xl</code>.", "Gölge yok."],
     props: [{ k: "baslik", l: "Başlık", t: "text", d: "Kazanım: BTY.5.1.6" }, { k: "metin", l: "Metin", t: "text", d: "Dosya ve klasör yönetimi ile ilgili temel işlemlerle çalışabilme" }],
     render: function (p) { return '<div class="card"><b>' + esc(p.baslik) + '</b><div class="hint">' + esc(p.metin) + '</div></div>'; },
@@ -357,7 +357,7 @@ body{background:var(--surface-subtle)}
       { k: "hafta", l: "Hafta", t: "text", d: "8" },
       { k: "baslik", l: "Başlık", t: "text", d: "Dosya ve Klasör Yönetimi" },
       { k: "hazir", l: "Ders hazır", t: "bool", d: true },
-      { k: "etkinlik", l: "Etkinlik haftası", t: "bool", d: false }
+      { k: "etkinlik", l: "Özel hafta", t: "bool", d: false }
     ],
     render: function (p) {
       var w = esc(p.hafta), ev = bool(p.etkinlik), body = ev
@@ -368,13 +368,13 @@ body{background:var(--surface-subtle)}
       return '<div class="wk-hero" style="background:var(' + (ev ? "--text-primary" : "--theme-" + p.tema) + ')"><div class="wk-no" aria-hidden="true"><b>' + w + '</b><small>hafta</small></div><div>' +
         '<h2><span class="sr">' + w + '. hafta: </span>' + esc(p.baslik) + '</h2>' + (T() && !ev ? '<p class="wk-codes"><span class="tag">BTY.5.1.6</span></p>' : "") + body + '</div><img class="mascot wk-mascot" src="assets/maskot.webp" alt=""></div>';
     },
-    variants: [["Hazır", {}], ["Hazır değil", { hafta: "9", baslik: "Görsel Düzenleme Programları", hazir: false, tema: "2" }], ["Etkinlik haftası", { hafta: "5", baslik: "Code Week", etkinlik: true }]]
+    variants: [["Hazır", {}], ["Hazır değil", { hafta: "9", baslik: "Görsel Düzenleme Programları", hazir: false, tema: "2" }], ["Özel hafta", { hafta: "5", baslik: "Code Week", etkinlik: true }]]
   });
 
   add({ id: "hafta-seridi", group: "Gezinme", name: "Hafta şeridi", cls: ".wk-strip, .wk-chip",
     desc: "Bu hafta kartının altında 11 hafta. Öğretmenin söylediği haftaya tek tıkla gidilir.",
     where: "Ana sayfa (iki rol).",
-    rules: ["Açılışta takvimdeki hafta seçili ve ortada; kutusunda \"takvim\" yazar. Site sınıfın hangi haftada olduğunu bilmez, takvimi söyler.", "Seçili hafta dolu mavi; üstündeki küçük mavi üçgen yukarıdaki hafta kartını gösterir, kutu ile kart birbirine bağlanır.", "Takvim haftasının çerçevesi kesikli mavi; başka bir hafta seçilince de böyle kalır.", "Hazır dersi olan haftanın alt çizgisi tema renginde; hazır olmayan gri ama tıklanabilir. Etkinlik haftasının (5. ve 18.) alt çizgisi koyu, kutusunda \"etkinlik\" yazar.", "‹ › kaydırmaz, 11 haftalık sayfa geçer (560 px ve altında 5 hafta). Çerçevesiz ve zemine gömülüdür, haftalardan biri gibi okunmaz; üzerine gelince beyaz zemin alır. Uçta düğme görünmez ama yeri kalır.", "Sayfa dönem sınırını geçmez: üstte \"1. dönem\" ya da \"2. dönem\" yazar, 1. dönemin son sayfasındaki › mavi dolu ve altında \"2. dönem\" yazar, 2. dönemin ilk sayfasındaki ‹ da \"1. dönem\" der: dönem değiştiği görünür. Dönem adı şeridin üstünde koyu ve büyük. 2. dönemin başlangıcı <code>BD.calendar.term2</code>.", "Hafta şerit dışından seçilirse (Son hazır ders) şerit o haftaya ortalanır."],
+    rules: ["Açılışta takvimdeki hafta seçili ve ortada; kutusunda \"takvim\" yazar. Site sınıfın hangi haftada olduğunu bilmez, takvimi söyler.", "Seçili hafta dolu mavi; üstündeki küçük mavi üçgen yukarıdaki hafta kartını gösterir, kutu ile kart birbirine bağlanır.", "Takvim haftasının çerçevesi kesikli mavi; başka bir hafta seçilince de böyle kalır.", "Hazır dersi olan haftanın alt çizgisi tema renginde; hazır olmayan gri ama tıklanabilir. Özel haftanın (5. Code Week ve 18. dönem sonu) alt çizgisi koyu, kutusunda \"özel\" yazar. \"Etkinlik\" kelimesi ders bölümüne ayrıldığı için kullanılmaz.", "‹ › kaydırmaz, 11 haftalık sayfa geçer (560 px ve altında 5 hafta). Çerçevesiz ve zemine gömülüdür, haftalardan biri gibi okunmaz; üzerine gelince beyaz zemin alır. Uçta düğme görünmez ama yeri kalır.", "Sayfa dönem sınırını geçmez: üstte \"1. dönem\" ya da \"2. dönem\" yazar, 1. dönemin son sayfasındaki › mavi dolu ve altında \"2. dönem\" yazar, 2. dönemin ilk sayfasındaki ‹ da \"1. dönem\" der: dönem değiştiği görünür. Dönem adı şeridin üstünde koyu ve büyük. 2. dönemin başlangıcı <code>BD.calendar.term2</code>.", "Hafta şerit dışından seçilirse (Son hazır ders) şerit o haftaya ortalanır."],
     props: [{ k: "secili", l: "Seçili hafta", t: "text", d: "8" }, { k: "sayfa", l: "Sayfa", t: "seg", d: "orta", o: [["bas", "1–11"], ["orta", "3–13"], ["d1", "8–18"], ["d2", "19–29"], ["son", "26–36"]] }],
     render: function (p) {
       var plan = BD.plan["5"], at = { bas: 0, orta: 2, d1: 7, d2: 18, son: plan.length - 11 }[p.sayfa], sel = +p.secili;
@@ -382,7 +382,7 @@ body{background:var(--surface-subtle)}
       var term = at >= 18 ? "2. dönem" : "1. dönem";
       return '<div class="wk-term">' + term + '</div><div class="wk-strip" role="group" aria-label="' + term + ' haftaları">' + page(-1, at === 0, at === 18) + plan.slice(at, at + 11).map(function (x) {
         var now = x.w === 8;
-        return '<button type="button" class="wk-chip' + (x.lesson ? "" : x.event ? " event" : " soon") + (now ? " now" : "") + '" aria-pressed="' + (x.w === sel) + '"' + (x.lesson ? ' style="--c:var(--theme-' + x.theme + ')"' : "") + '><b>' + x.w + '</b><small>' + (now ? "takvim" : x.event ? "etkinlik" : "hafta") + '</small></button>';
+        return '<button type="button" class="wk-chip' + (x.lesson ? "" : x.event ? " event" : " soon") + (now ? " now" : "") + '" aria-pressed="' + (x.w === sel) + '"' + (x.lesson ? ' style="--c:var(--theme-' + x.theme + ')"' : "") + '><b>' + x.w + '</b><small>' + (now ? "takvim" : x.event ? "özel" : "hafta") + '</small></button>';
       }).join("") + page(1, at + 11 >= plan.length, at + 11 === 18) + '</div>';
     },
     wrap: function (p, h) { return '<div style="width:100%">' + h + '</div>'; },
@@ -428,8 +428,8 @@ body{background:var(--surface-subtle)}
   });
 
   add({ id: "ayar-karti", group: "Kartlar", name: "Ayar kartı", cls: ".setting.card",
-    desc: "Öğretmen masası'nda bir ayar ve seçenekleri.",
-    where: "Öğretmen masası.",
+    desc: "Sınıf ayarları'nda bir ayar ve seçenekleri.",
+    where: "Sınıf ayarları.",
     rules: ["Başlıkta 40 px renkli ikon karesi (<code>.sq-sm</code>).", "Seçenekler seçenek düğmesidir (<code>.opt-group</code>).", "Her ayar ayrı kart."],
     props: [{ k: "secili", l: "Seçili", t: "seg", d: "lab", o: Object.keys(BD.envs).map(function (k) { return [k, BD.envs[k].short]; }) }],
     render: function (p) {
@@ -451,7 +451,7 @@ body{background:var(--surface-subtle)}
       var link = function (h, t) { return '<a class="chip-btn t-only" href="#' + h + '"' + (p.aktif === h ? ' aria-current="page"' : "") + '>' + t + '</a>'; };
       return '<header class="top"><div class="top-in"><a class="logo" href="#home"><img class="logo-img" src="assets/maskot.webp" alt="">Bilişim Defteri</a>' +
         '<div class="search" role="search"><label for="ds-q2" class="sr">Ders ara</label><input id="ds-q2" type="search" placeholder="Ders, hafta, kod" autocomplete="off"></div>' +
-        '<nav aria-label="Ana menü">' + link("kazanimlar", "Kazanım haritası") + link("kagitlar", "Çalışma kâğıtları") + link("ogretmen", "Öğretmen masası") +
+        '<nav aria-label="Ana menü">' + link("kazanimlar", "Kazanım haritası") + link("kagitlar", "Çalışma kâğıtları") + link("ogretmen", "Sınıf ayarları") +
         '<span class="top-set"><button type="button" class="chip-btn">' + (T() ? "Rol: Öğretmen" : ico("lock") + "Öğretmen") + '</button>' +
         '<button type="button" class="chip-btn t-only" aria-label="Yazıyı büyüt" aria-pressed="' + bool(p.buyuk) + '">A+</button></span></nav></div></header>';
     },
@@ -463,7 +463,7 @@ body{background:var(--surface-subtle)}
 
   add({ id: "yol", group: "Gezinme", name: "Yol", cls: ".crumbs",
     desc: "Ana sayfadan bu sayfaya giden yol.",
-    where: "Kazanım haritası, Çalışma kâğıtları, Öğretmen masası.",
+    where: "Kazanım haritası, Çalışma kâğıtları, Sınıf ayarları.",
     rules: ["Küçük ve soluk; sayfa başlığının üstünde.", "Son öğe bağlantı değildir."],
     props: [{ k: "sayfa", l: "Sayfa", t: "text", d: "Kazanım haritası" }],
     render: function (p) { return '<nav class="crumbs"><a href="#home">Ana sayfa</a> › ' + esc(p.sayfa) + '</nav>'; },
@@ -471,21 +471,21 @@ body{background:var(--surface-subtle)}
   });
 
   add({ id: "hafta-listesi", group: "Gezinme", name: "Hafta listesi", cls: ".unit, .week",
-    desc: "Temalara bölünmüş 36 hafta. Etkinlik haftası bir önceki haftanın temasında, açılmayan gri satır olarak durur. Öğretmen dersi hafta numarasıyla bulur.",
+    desc: "Temalara bölünmüş 36 hafta. Özel hafta bir önceki haftanın temasında, açılmayan gri satır olarak durur. Öğretmen dersi hafta numarasıyla bulur.",
     where: "Öğretmen ana sayfası, Çalışma kâğıtları.",
-    rules: ["Tema başlığında temanın renginde numara karesi (<code>.tn-sq</code>).", "Satırda \"7. hafta · Ders adı\", sağda kodlar ve sabit genişlikte durum etiketi.", "Etkinlik haftası (Code Week, dönem sonu) açılmayan gri satır: kod yok, etiketi \"Etkinlik haftası\". Bir önceki haftanın temasında durur, temanın hafta aralığına girmez.", "Öğretmende her satır açılır: kazanım, Derse git ve Çalışma kâğıdı. Çalışma kâğıtları sayfasında satır doğrudan kâğıdı açan bağlantıdır.", "Yalnızca öğretmende."],
+    rules: ["Tema başlığında temanın renginde numara karesi (<code>.tn-sq</code>, <code>aria-hidden</code>); ekran okuyucu için başlığın başında gizli \"Tema 1: \" yazar.", "Satırda \"7. hafta · Ders adı\", sağda kodlar ve sabit genişlikte durum etiketi.", "Özel hafta (Code Week, dönem sonu) açılmayan gri satır: kod yok, etiketi \"Özel hafta\". Bir önceki haftanın temasında durur, temanın hafta aralığına girmez.", "Öğretmende her satır açılır: kazanım, Derse git ve Çalışma kâğıdı. Çalışma kâğıtları sayfasında satır doğrudan kâğıdı açan bağlantıdır.", "Yalnızca öğretmende."],
     props: [{ k: "tur", l: "Tür", t: "seg", d: "liste", o: [["liste", "Ana sayfa"], ["kagit", "Çalışma kâğıtları"]] }, { k: "acik", l: "Hazır satır açık", t: "bool", d: true }],
     render: function (p) {
       var t = TH[0], plan = BD.plan["5"].filter(function (x) { return x.w >= 4 && x.w <= 7; });
-      if (p.tur === "kagit") return '<section class="unit"><div class="unit-h"><h2><span class="tn-sq" style="background:var(--action-primary)">5</span>5. sınıf</h2></div><ul class="weeks">' +
+      if (p.tur === "kagit") return '<section class="unit"><div class="unit-h"><h2><span class="tn-sq" aria-hidden="true" style="background:var(--action-primary)">5</span>5. sınıf</h2></div><ul class="weeks">' +
         '<li><a class="week" href="#yazdir-5-1-6-dosya-klasor"><span><b class="wk">8. hafta</b> · Dosya ve Klasör Yönetimi</span><span class="row"><span class="tag code">BTY.5.1.6</span><span aria-hidden="true">→</span></span></a></li></ul></section>';
       var rows = plan.map(function (x) {
-        if (x.event) return '<li data-w="' + x.w + '"><div class="week soon"><span><b class="wk">' + x.w + '. hafta</b> · ' + esc(x.title) + '</span><span class="row"><span class="tag">Etkinlik haftası</span></span></div></li>';
+        if (x.event) return '<li data-w="' + x.w + '"><div class="week soon"><span><b class="wk">' + x.w + '. hafta</b> · ' + esc(x.title) + '</span><span class="row"><span class="tag">Özel hafta</span></span></div></li>';
         var tags = '<span class="row"><span class="tag code">' + x.outcome + '</span>' + (x.lesson ? '<span class="tag ready">Hazır</span>' : '<span class="tag soon">Yakında</span>') + '</span>';
         var body = x.lesson ? '<p><span class="tag code">' + x.outcome + '</span> ' + esc(outcomeTitle(x.outcome)) + '</p><div class="row"><a class="btn primary" href="#ders-' + x.lesson + '">Derse git</a><a class="btn" href="#yazdir-' + x.lesson + '">' + ico("yazdir") + ' Çalışma kâğıdı</a></div>' : '<p class="hint">Bu haftanın dersi henüz hazır değil.</p>';
         return '<li data-w="' + x.w + '"><details class="week-d"' + (x.lesson && bool(p.acik) ? " open" : "") + '><summary class="week' + (x.lesson ? "" : " soon") + '"><span><b class="wk">' + x.w + '. hafta</b> · ' + esc(x.title) + '</span>' + tags + '</summary><div class="week-body">' + body + '</div></details></li>';
       }).join("");
-      return '<details class="unit" open><summary><div class="unit-h"><h2><span class="tn-sq" style="background:var(--theme-1)">1</span>' + esc(t.name) + '</h2><small>1–8. hafta · ' + t.hours + ' ders saati<span class="chev" aria-hidden="true"></span></small></div></summary><ul class="weeks">' + rows + '</ul></details>';
+      return '<details class="unit" open><summary><div class="unit-h"><h2><span class="tn-sq" aria-hidden="true" style="background:var(--theme-1)">1</span><span class="sr">Tema 1: </span>' + esc(t.name) + '</h2><small>1–8. hafta · ' + t.hours + ' ders saati<span class="chev" aria-hidden="true"></span></small></div></summary><ul class="weeks">' + rows + '</ul></details>';
     },
     width: "full",
     variants: [["Satır kapalı", { acik: false }], ["Satır açık", {}], ["Çalışma kâğıtları", { tur: "kagit" }]]
