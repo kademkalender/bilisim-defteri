@@ -238,8 +238,8 @@ html.role-ogrenci .tabs{display:none}
 .sec-cards{display:grid;grid-template-columns:repeat(2,1fr);grid-gap:var(--space-4)}
 @media (min-width:561px){.sec-cards{grid-template-columns:repeat(3,1fr)}}
 @media (min-width:1000px){.sec-cards{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:1fr}}
-.sec-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:230px;padding:var(--space-5);border:0;border-radius:var(--radius-xl);color:var(--action-on-primary);font:inherit;text-align:left}
-.sec-card .sq{width:64px;height:64px;border-radius:var(--radius-lg);background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:2.1rem}
+.sec-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:calc(230px * var(--k));padding:var(--space-5);border:0;border-radius:var(--radius-xl);color:var(--action-on-primary);font:inherit;text-align:left}
+.sec-card .sq{width:calc(64px * var(--k));height:calc(64px * var(--k));border-radius:var(--radius-lg);background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:2.1rem}
 .sec-card b{font-size:1.35rem;margin-top:auto}
 .sec-card small{font-weight:700;font-size:.95rem;margin-top:2px}
 .sec-card .badge{position:absolute;right:var(--space-4);top:var(--space-5);font-weight:900;font-size:1.4rem;opacity:.85}
@@ -248,8 +248,15 @@ html.role-ogrenci .tabs{display:none}
 .sec-slayt{background:var(--sec-slayt)}.sec-etkinlik{background:var(--sec-etkinlik)}.sec-test{background:var(--sec-test)}.sec-bulmaca{background:var(--sec-bulmaca)}.sec-oyun{background:var(--sec-oyun)}
 .sec-defter{background:var(--sec-defter);color:var(--text-primary)}
 .sec-defter .sq{background:rgba(0,0,0,.08)}
+/* Biten bölüm: beyaz zemin, bölüm renginde kalın kenar ve ikon karesi; bitmeyenler renkli kalır, ayrım ilk bakışta görünür */
+.sec-slayt{--c:var(--sec-slayt)}.sec-defter{--c:var(--sec-defter)}.sec-etkinlik{--c:var(--sec-etkinlik)}.sec-test{--c:var(--sec-test)}.sec-bulmaca{--c:var(--sec-bulmaca)}.sec-oyun{--c:var(--sec-oyun)}
+.sec-card.done{background:var(--surface-default);color:var(--text-primary);box-shadow:inset 0 0 0 4px var(--c)}
+.sec-card.done .sq{background:var(--c);color:var(--action-on-primary)}
+.sec-defter.done .sq{color:var(--text-primary)}
+.sec-card.done .badge{background:var(--c);color:var(--action-on-primary)}
+.sec-defter.done .badge{color:var(--text-primary)}
 .sec-cta{display:flex;justify-content:center}
-.sec-cta .btn{min-height:60px;font-size:1.2rem;padding:0 var(--space-10)}
+.sec-cta .btn{min-height:calc(60px * var(--k));font-size:1.2rem;padding:0 var(--space-10)}
 /* Bölümün içinde: geri düğmesi ve renkli kare başlık */
 .sec-back{min-height:48px}
 .block-h .sq{flex:none;width:52px;height:52px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--action-on-primary)}
@@ -393,7 +400,7 @@ section.block > .block-hint + *{margin-top:var(--space-3)}
 .notebook{background-color:var(--surface-default);border-radius:6px 16px 16px 6px;padding:22px 22px 18px 64px;position:relative;
   background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 39px,var(--notebook-line) 39px,var(--notebook-line) 40px);background-position:0 54px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)}
 .notebook:before{content:"";position:absolute;left:46px;top:0;bottom:0;width:2px;background:var(--notebook-margin)}
-.notebook h3{font-size:1.5rem;line-height:40px;height:40px;font-weight:800}
+.notebook h3{font-size:1.5rem;line-height:40px;min-height:40px;font-weight:800}
 .nb-list{list-style:none;margin:0;padding:0}
 .nb-list li{display:flex;gap:10px;align-items:flex-start;min-height:40px}
 .nb-list input{margin-top:12px;width:18px;height:18px;flex:none}
@@ -585,6 +592,26 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
   .lesson-band{padding:var(--space-4)}
   .lesson-band h1{font-size:1.5rem}
   .sheet .who{grid-template-columns:1fr}
+  /* Telefon: üst menü iki satır (logo ve arama, altında kaydırılan menü), sekmeler tek satırda kaydırılır */
+  .search{flex:1;min-width:0;max-width:none}
+  .top nav{order:3;width:100%;margin-left:0;flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px}
+  .top .chip-btn{flex:none;white-space:nowrap;min-height:44px}
+  .top-set{flex:none}
+  html.role-ogrenci .top nav{order:0;width:auto;margin-left:auto}
+  .tabs{flex-wrap:nowrap;overflow-x:auto}
+  .tab{flex:none;white-space:nowrap}
+  /* Bölüm başlığı: Bölümler düğmesi sığmazsa alt satıra iner, açıklama daralmaz */
+  .block-h{flex-wrap:wrap}
+  .block-h > div{flex:1 1 180px;min-width:0}
+  .grade-card[aria-pressed="true"]:after{top:var(--space-2);right:var(--space-2);margin-top:0;width:28px;height:28px;font-size:1rem}
+  .wk-strip{gap:6px}
+  .wk-page{width:32px}
+  .wk-chip small{font-size:.68rem}
+  .cov-table th,.cov-table td{padding:var(--space-2);font-size:.85rem;overflow-wrap:anywhere}
+  /* Bölüm kartları kısa: altısı ve Başla düğmesi telefonda bir buçuk ekrana sığar */
+  .sec-card{min-height:140px;padding:var(--space-4)}
+  .sec-card .sq{width:48px;height:48px;font-size:1.6rem}
+  .sec-card .badge{top:var(--space-4)}
 }
 
 /* Kutlama konfetisi: hareket kapalıysa ve yazdırırken hiç görünmez */
