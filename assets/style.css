@@ -155,7 +155,8 @@ html.role-ogrenci .t-only{display:none}
 .role-card small{color:var(--text-secondary);font-size:.92rem}
 
 /* ---------- Ana sayfa ---------- */
-.hello h1{font-size:2.2rem}
+.hello h1{font-size:1.5rem} /* hafta kartındaki ders adından (1.9rem) küçük */
+.hello + .label-h{margin-top:var(--space-5)}
 .hello p{margin:6px 0 0;color:var(--text-secondary);max-width:62ch}
 main > #wkList{margin-top:var(--space-3)}
 main > #wkList{margin-top:var(--space-8)}
@@ -605,7 +606,7 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
   .notebook:before{left:38px}
   .act-steps li{grid-template-columns:40px 1fr}
   .act-steps li button{grid-column:2;justify-self:start}
-  .hello h1{font-size:1.8rem}
+  .hello h1{font-size:1.3rem}
   .grade-cards{grid-gap:var(--space-3)}
   .grade-card{padding:var(--space-3) var(--space-4);min-height:84px}
   .grade-card b{font-size:2.6rem}

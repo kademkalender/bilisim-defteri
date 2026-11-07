@@ -199,7 +199,8 @@
   }
   function viewHome() {
     var last = lastLesson();
-    if (isStudent()) return '<div class="hello"><h1>Merhaba! Sınıfını seç</h1></div>' + gradeCards() +
+    // Selam küçük, sayfanın en büyük yazısı hafta kartındaki ders adı; sınıf seçimi etiketli bir alan
+    if (isStudent()) return '<div class="hello"><h1>Merhaba!</h1></div><div class="label-h">Sınıfın</div>' + gradeCards() +
       '<div id="wkList">' + weekList(S.grade) + '</div>';
     return '<div class="hello"><h1>Hangi dersi işleyeceksiniz?</h1></div>' + gradeCards() +
       '<div id="wkList">' + weekList(S.grade) + '</div>' +
