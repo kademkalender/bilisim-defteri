@@ -63,7 +63,10 @@
   :root .top-in,:root main{max-width:1440px}
   /* Bölüm kartları monitörde 3x2: altı kart ekranı doldurur, altta boşluk kalmaz */
   :root .sec-cards{grid-template-columns:repeat(3,1fr);grid-auto-flow:row}
-  :root .sec-card{min-height:calc(200px * var(--k))}
+  :root .sec-card{min-height:calc(185px * var(--k))}
+  /* Ders adı bantta tek satıra sığsın: başlık biraz küçük, ilerleme çubuğu dar */
+  :root .lesson-band h1{font-size:1.7rem}
+  :root .band-prog .bar{width:140px}
 }
 
 *{box-sizing:border-box}
@@ -240,17 +243,19 @@ html:not(.role-ogrenci) .grade-card[aria-pressed="true"]:after{width:32px;height
 .band-prog .bar{width:180px;height:12px;border-radius:var(--radius-pill);background:rgba(255,255,255,.28);margin-top:6px;overflow:hidden}
 .band-prog .bar span{display:block;height:100%;background:var(--surface-default)}
 /* Öğrencide Başla düğmesi bantta, ilerlemenin yanında: sıradaki bölümü açar */
-.band-cta{margin-left:var(--space-6)}
-.band-cta .btn{min-height:var(--size-control-md);font-size:1.15rem;padding:0 var(--space-6)}
+.band-cta{margin-left:var(--space-4)}
+.band-cta .btn{display:flex;align-items:center;justify-content:center;min-height:var(--size-control-md);font-size:1.15rem;padding:0 var(--space-5) 0 var(--space-2)}
+.cta-sq{flex:none;width:calc(40px * var(--k));height:calc(40px * var(--k));border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;margin-right:var(--space-3);font-size:1.3rem;color:var(--action-on-primary)}
+.cta-sq.sec-defter{color:var(--text-primary)}
 html.role-ogrenci .tabs{display:none}
 .sec-cards{display:grid;grid-template-columns:repeat(2,1fr);grid-gap:var(--space-4)}
 @media (min-width:561px){.sec-cards{grid-template-columns:repeat(3,1fr)}}
 @media (min-width:1000px){.sec-cards{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:1fr}}
-.sec-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:calc(230px * var(--k));padding:var(--space-5);border:0;border-radius:var(--radius-xl);color:var(--action-on-primary);font:inherit;text-align:left}
+.sec-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:calc(260px * var(--k));padding:var(--space-5);border:0;border-radius:var(--radius-xl);color:var(--action-on-primary);font:inherit;text-align:left}
 .sec-card .sq{width:calc(64px * var(--k));height:calc(64px * var(--k));border-radius:var(--radius-lg);background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:2.1rem}
 .sec-card b{font-size:1.35rem;margin-top:auto}
 .sec-card small{font-weight:700;font-size:.95rem;margin-top:2px}
-.sec-card .badge{position:absolute;right:var(--space-4);top:var(--space-5);font-weight:900;font-size:1.4rem;opacity:.85}
+.sec-card .badge{position:absolute;right:var(--space-4);top:var(--space-5);font-weight:800;font-size:1.1rem}
 .sec-card.done .badge,.sec-card.next .badge{opacity:1;background:var(--surface-default);color:var(--text-primary);border-radius:var(--radius-pill);padding:3px 12px;font-size:.9rem;font-weight:800}
 .sec-card.next{outline:4px solid var(--text-primary);outline-offset:4px}
 .sec-slayt{background:var(--sec-slayt)}.sec-etkinlik{background:var(--sec-etkinlik)}.sec-test{background:var(--sec-test)}.sec-bulmaca{background:var(--sec-bulmaca)}.sec-oyun{background:var(--sec-oyun)}
@@ -334,6 +339,8 @@ summary.week::-webkit-details-marker{display:none}
 section.block{scroll-margin-top:90px}
 section.block > * + *{margin-top:var(--space-6)}
 section.block > .block-h + *{margin-top:var(--space-3)}
+.hub-h{margin-top:var(--space-6)}
+section.block > .hub-h + *{margin-top:var(--space-3)}
 section.block > .deck + .hint{margin-top:var(--space-2)}
 .block-h{display:flex;align-items:center;gap:var(--space-3)}
 .block-h h2{font-size:1.4rem}

@@ -345,7 +345,12 @@
     });
     var cta = $("#secNext");
     cta.hidden = !next; $("#secDone").hidden = !!next;
-    if (next) { cta.setAttribute("data-tab", next.getAttribute("data-tab")); cta.textContent = "Başla: " + $("b", next).textContent; }
+    if (next) {
+      var nk = next.getAttribute("data-tab");
+      cta.setAttribute("data-tab", nk);
+      cta.innerHTML = '<span class="cta-sq sec-' + nk + '">' + icon(nk) + '</span><span></span>';
+      cta.lastChild.textContent = "Başla: " + $("b", next).textContent;
+    }
     var bp = $("#bandProg");
     if (bp) { $("span", bp).textContent = done + " / " + cards.length + " bitti"; $(".bar span", bp).style.width = Math.round(done / cards.length * 100) + "%"; }
   }
@@ -366,7 +371,7 @@
     var active = tabs.some(function (t) { return t[0] === lessonTab[id]; }) ? lessonTab[id] : firstTab();
     var panel = function (key, title, text, body) {
       var i = tabs.map(function (t) { return t[0]; }).indexOf(key), nx = key === "hub" ? null : tabs[i + 1];
-      var head = key === "hub" ? '<h2 class="sr">' + title + '</h2>'
+      var head = key === "hub" ? '<h2 class="label-h hub-h">' + title + '</h2>'
         : T ? '<h2 class="sr">' + title + '</h2>' + (text ? '<p class="hint block-hint">' + text + '</p>' : "")
         : '<div class="block-h"><span class="sq sec-' + key + '">' + icon(key) + '</span><div><h2>' + title + '</h2><p>' + text + '</p></div>' +
           '<button type="button" class="btn sec-back" data-tab="hub" style="margin-left:auto">' + icon("back") + ' Bölümler</button></div>';

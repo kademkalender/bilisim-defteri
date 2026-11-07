@@ -389,7 +389,7 @@ body{background:var(--surface-subtle)}
   add({ id: "bolum-karti", group: "Kartlar", name: "Bölüm kartı", cls: ".sec-card",
     desc: "Öğrencinin dersteki bölümleri: Sunum, Deftere yaz, Etkinlik, Oyun, Mini test, Bulmaca.",
     where: "Öğrenci: ders girişi.",
-    rules: ["Zemin bölümün rengi (<code>--sec-*</code>). Defterde yazı koyu.", "Sağ üstte sıra numarası (%85 opak, en az 4,26:1). Biten bölümde \"Bitti ✓\", ilk bitmeyende \"Sıradaki\" ve kalın çerçeve.", "Biten kartın zemini beyaz; kenar, ikon karesi ve etiket bölümün renginde (<code>--c</code>). Bitmeyenler renkli kalır, ayrım ilk bakışta görünür.", "Kartlar 1000 px üstünde tek sıra, ortada 3'lü, dar ekranda 2'li dizilir. Okul monitöründe 3×2 dizilir (kart 260 px), ikon karesi <code>--k</code> ile büyür; telefonda kart 140 px, ikon karesi 48 px.", "Numara ekran okuyucuya okunmaz (<code>aria-hidden</code>); kartın adı bölüm, miktar ve durumdur: \"Sunum, 11 slayt, tamamlandı\"."],
+    rules: ["Zemin bölümün rengi (<code>--sec-*</code>). Defterde yazı koyu.", "Sağ üstte sıra numarası, küçük ve tam opak (en az 4,5:1); \"Sıradaki\" etiketinden sönük kalır. Biten bölümde \"Bitti ✓\", ilk bitmeyende \"Sıradaki\" ve kalın çerçeve.", "Biten kartın zemini beyaz; kenar, ikon karesi ve etiket bölümün renginde (<code>--c</code>). Bitmeyenler renkli kalır, ayrım ilk bakışta görünür.", "Kartların üstünde görünür \"Bölümler\" başlığı (<code>.label-h</code>) bandı kartlardan ayırır.", "Kartlar 1000 px üstünde tek sıra, ortada 3'lü, dar ekranda 2'li dizilir. Dizüstünde kart 260 px. Okul monitöründe 3×2 dizilir (kart 240 px), ikon karesi <code>--k</code> ile büyür; telefonda kart 140 px, ikon karesi 48 px.", "Numara ekran okuyucuya okunmaz (<code>aria-hidden</code>); kartın adı bölüm, miktar ve durumdur: \"Sunum, 11 slayt, tamamlandı\"."],
     props: [
       { k: "bolum", l: "Bölüm", t: "select", d: "etkinlik", o: secOpts },
       { k: "durum", l: "Durum", t: "seg", d: "", o: [["", "Bekliyor"], ["next", "Sıradaki"], ["done", "Bitti"]] },
@@ -480,13 +480,13 @@ body{background:var(--surface-subtle)}
   add({ id: "ders-bandi", group: "Gezinme", name: "Ders bandı", cls: ".lesson-band",
     desc: "Ders sayfasının başı: ders adı, hafta ve geri düğmesi.",
     where: "Ders sayfası.",
-    rules: ["Zemin temanın rengi.", "Öğrencide sağda ilerleme (\"2 / 6 bitti\"), öğretmende kazanım kodu.", "Öğrencide ilerlemenin yanında beyaz Başla düğmesi (<code>.band-cta</code>, <code>.btn.on-color</code>) sıradaki bölümü açar; yalnız Bölümler açıkken görünür, hepsi bitince kalkar. 760 px ve altında alt satırda tam genişlik.", "Öğretmende üst satırda tema ve süre de yazar."],
+    rules: ["Zemin temanın rengi.", "Öğrencide sağda ilerleme (\"2 / 6 bitti\"), öğretmende kazanım kodu.", "Öğrencide ilerlemenin yanında beyaz Başla düğmesi (<code>.band-cta</code>, <code>.btn.on-color</code>) sıradaki bölümü açar; düğmede o bölümün renkli ikon karesi (<code>.cta-sq</code>) kartla bağ kurar; yalnız Bölümler açıkken görünür, hepsi bitince kalkar. 760 px ve altında alt satırda tam genişlik.", "Öğretmende üst satırda tema ve süre de yazar."],
     props: [{ k: "tema", l: "Tema", t: "select", d: "1", o: themeOpts }, { k: "biten", l: "Biten bölüm", t: "seg", d: "2", o: [["0", "0"], ["2", "2"], ["6", "6"]] }],
     render: function (p) {
       var th = TH[p.tema - 1];
       return '<div class="lesson-band" style="background:var(--theme-' + p.tema + ')"><a class="back" href="#home" aria-label="Ana sayfa">' + ico("back") + '</a><div><small>5. sınıf · 7. hafta' + (T() ? ' · Tema ' + p.tema + ': ' + esc(th.name) + ' · ' + esc(L.duration) : "") + '</small><h1>' + esc(L.title) + '</h1></div>' +
         (T() ? '<span class="band-code">' + L.outcome + '</span></div>' : '<div class="band-prog"><span>' + p.biten + ' / 6 bitti</span><div class="bar"><span style="width:' + Math.round(p.biten / 6 * 100) + '%"></span></div></div>' +
-        (p.biten === "6" ? "" : '<div class="band-cta"><button type="button" class="btn on-color">Başla: ' + (p.biten === "0" ? "Sunum" : "Etkinlik") + '</button></div>') + '</div>');
+        (p.biten === "6" ? "" : '<div class="band-cta"><button type="button" class="btn on-color">' + (p.biten === "0" ? '<span class="cta-sq sec-slayt">' + ico("slayt") + '</span>Başla: Sunum' : '<span class="cta-sq sec-etkinlik">' + ico("etkinlik") + '</span>Başla: Etkinlik') + '</button></div>') + '</div>');
     },
     width: "full",
     variants: [["Varsayılan", {}], ["Tema 2", { tema: "2" }]]
