@@ -45,6 +45,12 @@ Kayıt şablonu:
   5. Köşe: `--radius-lg` (14 px) kalktı, yerine `--radius-md` (12); içerikteki 6 px köşeler `--radius-sm`.
   6. Ders girişinde kartların altında dersin `hook` sorusu "Düşün" kutusunda (var olan Bilgi kutusu bileşeni, `--fs-lg`). 1366×768'de alt boşluk 252 → yaklaşık 90 px. Okul monitöründe kartlar yeniden tek sıra (312 px), sayfa ekrana sığar.
   Telefon (375) ve monitör (1880×900) denendi, yatay taşma yok.
+- Don Norman ilkeleri denetimi (don-norman-principles-audit, 7,5/10; öğrenci testi, oyun, sanal masaüstü ve öğretmen araması 1366×768'de denendi). Dokuz bulgudan kullanıcının seçtiği dördü yapıldı:
+  - Sınıflandırma oyununa sürükle-bırak (pointer olayları, fare ve dokunma; 6 px altı kayma tıklama sayılır). Dokunarak taşıma kaldı. Kart alanı da hedef: kart sürükleyerek ya da dokunarak geri konabilir (kullanıcı seçimi). Yönerge: "Kartı doğru kutuya sürükle ya da önce karta, sonra kutuya dokun."
+  - Kart taşınınca eski "Kontrol et" mesajı silinir.
+  - Testte klavyeyle seçilen şık kilitlenince odak aynı sorunun açık şıkkına, sonra sıradaki soruya, test bitince sonuç kutusuna geçer (fareyle seçimde odak değişmez).
+  - Sonuç cümlesi "Testi bitirdin! 4 sorudan 2'si ilk denemede doğru."; sıfır doğruda "Testi bitirdin! Doğru cevapları gördün. Bir daha çözmek ister misin?" (kullanıcı seçimi). Hepsi doğru cümlesi değişmedi.
+  Katalog (Sınıflandırma kartı, Test sorusu) ve YAZIM-REHBERI güncel. Testler 33/33, dogrula 0.
 
 **Kararlar**
 - Bölüm içi renk: dolu şerit (kullanıcı seçimi). Arayüzde emoji yok (kullanıcı seçimi). Ders girişi boşluğu "Düşün" sorusuyla doldu (kullanıcı seçimi).
@@ -56,7 +62,8 @@ Kayıt şablonu:
 
 **Yarım kalan işler**
 - [x] Dizüstünde kartların altındaki boşluk: "Düşün" kutusuyla doldu.
-- [ ] Walkthrough bulguları: "Testi yeniden çöz" yalnızca test bitince ya da onayla; sonuç cümlesine "Testi bitirdin!".
+- [ ] Walkthrough bulgusu: "Testi yeniden çöz" yalnızca test bitince ya da onayla. ("Testi bitirdin!" yapıldı.)
+- [ ] Norman bulguları (yapılmadı): öğretmende "Ders planı" 1 numara olduğu için bölüm numaraları öğrenciyle kayıyor; sanal masaüstünde yeni klasörde simgeler yer değiştiriyor; ders başlığındaki "‹" ile "‹ Bölümler" farklı yere gidiyor; öğrencide "Öğretmen" düğmesindeki kilit simgesi; ilk açılışta sınıf seçilmeden 5 işaretli.
 - [ ] Mavi temada (Tema 3) maskot zemine yakın; istenirse beyaz hale.
 - [ ] Pencere daraltılıp genişletilince hafta şeridi 5 haftada kalıyor (yenileyince düzelir).
 - [x] Gestalt 1 (sınıf seçimi seçildikten sonra küçülsün) ve 4 (hafta kartının boş sağ tarafı): yapıldı.
