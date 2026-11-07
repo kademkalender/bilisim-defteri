@@ -26,11 +26,13 @@ Kayıt şablonu:
 - Testler 33/33, dogrula 0 hata, konsol temiz.
 - Kalan bulgular: "Başla" düğmesi ders bandına, ilerlemenin yanına taşındı (`.band-cta`, beyaz `.btn.on-color`, yalnız Bölümler açıkken; telefonda bandın altında tam genişlik, 315. pikselde, ilk ekranda). Okul monitöründe kartlar 3×2 (260 px), alt boşluk kalmadı. Kartın ekran okuyucu adı "Sunum, 11 slayt, sıradaki"; numara `aria-hidden`. Bant başlığı kalan yeri alır, dar ekranda kendi satırında. Testler 33/33, dogrula 0, sentetik G1/G3 yeni sürüm OK.
 
+- Bölüm sayfasına Gestalt değerlendirmesi ve düzeltmeleri: Başla düğmesinde sıradaki bölümün renkli ikon karesi (`.cta-sq`, kartla bağ); kartların üstünde görünür "Bölümler" başlığı (bant ile kartlar iki grup; her temanın bant rengi bir bölüm rengine yakın olduğu için renk değiştirilmedi); kart numarası 1.1rem ve tam opak (en az 5,29:1); monitörde ders adı 1.7rem ve ilerleme çubuğu 140 px, ad tek satır, sayfa ekrana sığar (901/900); dizüstünde kart 260 px, alt boşluk 167 → 104 px. Testler 33/33, dogrula 0.
+
 **Kararlar**
 - Başla düğmesi kaldırılmadı, banda taşındı (kullanıcı "tüm bulguları çöz" dedi, yer kararı Claude'un).
 
 **Yarım kalan işler**
-- [ ] Dizüstünde (1366×657) kartların altında 167 px boşluk var (Başla düğmesinin eski yeri).
+- [ ] Dizüstünde (1366×657) kartların altında 104 px boşluk kaldı.
 - [ ] Gestalt 1 (sınıf seçimi seçildikten sonra küçülsün) ve 4 (hafta kartının boş sağ tarafı).
 
 ---
