@@ -350,7 +350,7 @@ body{background:var(--surface-subtle)}
   add({ id: "bu-hafta", group: "Kartlar", name: "Bu hafta kartı", cls: ".wk-hero",
     desc: "Seçili haftanın dersi; açılışta takvime göre bu hafta. Ana sayfanın odak noktası.",
     where: "Ana sayfa (iki rol).",
-    rules: ["Zemin temanın rengi (<code>--theme-N</code>), yazı beyaz. Sağda maskot (150 px); 760 px ve altında gizli.", "Solda büyük hafta numarası. Öğretmende kazanım kodları ve Çalışma kâğıdı düğmesi de var.", "Ders hazır değilse en yakın hazır derse götüren düğme gösterilir.", "Etkinlik haftasında (Code Week, dönem sonu) zemin koyu (<code>--text-primary</code>), kod yok; ders yerine plandaki not yazar.", "Üstteki başlık takvim haftasında \"Takvime göre bu hafta\" (2. dönemin ilk haftasında \"Takvime göre 2. dönemin ilk haftası\"), başka haftada \"Seçtiğin hafta\". Kart tam genişlikte, altında hafta şeridi."],
+    rules: ["Zemin temanın rengi (<code>--theme-N</code>), yazı beyaz. Sağda maskot (150 px); 760 px ve altında gizli.", "Öğrencide sınıf seçici küçülünce açılan yeri bu kart alır: 310 px yükseklik, ders adı 2.5rem, maskot 250 px, büyük düğme (761 px ve üstü).", "Solda büyük hafta numarası. Öğretmende kazanım kodları ve Çalışma kâğıdı düğmesi de var.", "Ders hazır değilse en yakın hazır derse götüren düğme gösterilir.", "Etkinlik haftasında (Code Week, dönem sonu) zemin koyu (<code>--text-primary</code>), kod yok; ders yerine plandaki not yazar.", "Üstteki başlık takvim haftasında \"Takvime göre bu hafta\" (2. dönemin ilk haftasında \"Takvime göre 2. dönemin ilk haftası\"), başka haftada \"Seçtiğin hafta\". Kart tam genişlikte, altında hafta şeridi."],
     props: [
       { k: "tema", l: "Tema", t: "select", d: "1", o: themeOpts },
       { k: "hafta", l: "Hafta", t: "text", d: "8" },

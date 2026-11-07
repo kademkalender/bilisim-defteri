@@ -167,6 +167,15 @@ html.role-ogrenci .t-only{display:none}
 .grade-cards.compact .grade-card b{font-size:1.6rem;margin-right:var(--space-2)}
 .grade-cards.compact .grade-card span{font-size:1rem}
 .grade-cards.compact .grade-card[aria-pressed="true"]:after{position:static;margin:0 0 0 var(--space-3);width:24px;height:24px;font-size:.85rem}
+/* Öğrencide sınıf küçülünce açılan yeri hafta kartı alır: sayfanın odağı büyür, altta boşluk kalmaz */
+@media (min-width:761px){
+  html.role-ogrenci .hello-row + #wkList .wk-hero{min-height:calc(310px * var(--k));padding-top:var(--space-8);padding-bottom:var(--space-8)}
+  html.role-ogrenci .hello-row + #wkList .wk-hero h2{font-size:2.5rem}
+  html.role-ogrenci .hello-row + #wkList .wk-no{width:calc(124px * var(--k));height:calc(124px * var(--k))}
+  html.role-ogrenci .hello-row + #wkList .wk-no b{font-size:3.6rem}
+  html.role-ogrenci .hello-row + #wkList .wk-mascot{height:calc(250px * var(--k))}
+  html.role-ogrenci .hello-row + #wkList .wk-hero .btn{min-height:var(--size-control-md);font-size:1.2rem;padding:0 var(--space-8)}
+}
 .hello p{margin:6px 0 0;color:var(--text-secondary);max-width:62ch}
 main > #wkList{margin-top:var(--space-3)}
 main > #wkList{margin-top:var(--space-8)}
