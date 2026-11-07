@@ -51,6 +51,12 @@ Kayıt şablonu:
   - Testte klavyeyle seçilen şık kilitlenince odak aynı sorunun açık şıkkına, sonra sıradaki soruya, test bitince sonuç kutusuna geçer (fareyle seçimde odak değişmez).
   - Sonuç cümlesi "Testi bitirdin! 4 sorudan 2'si ilk denemede doğru."; sıfır doğruda "Testi bitirdin! Doğru cevapları gördün. Bir daha çözmek ister misin?" (kullanıcı seçimi). Hepsi doğru cümlesi değişmedi.
   Katalog (Sınıflandırma kartı, Test sorusu) ve YAZIM-REHBERI güncel. Testler 33/33, dogrula 0.
+- Bilgi mimarisi denetimi (information-architecture-audit, 72/100: düzen 4, gezinme 4, etiketler 3, arama 3). Sekiz bulgudan kullanıcının seçtiği dördü yapıldı:
+  - "Etkinlik" kelimesi ders bölümüne ayrıldı: Code Week ve dönem sonu haftası artık "Özel hafta" (çipte "özel", listede ve aramada "Özel hafta"; kullanıcı seçimi). Haftanın kendi adı değişmedi.
+  - "Öğretmen masası" → "Sınıf ayarları" (kullanıcı seçimi). Adres `#ogretmen` aynı kaldı; menü, sayfa başlığı, ders içi yönergeler, katalog, README ve rehberler güncel.
+  - Arama: eş anlamlılar (`SYN`: kodlama → programlama/algoritma, zip/rar → sıkıştır, word/writer → kelime işlemci, powerpoint/impress/slayt → sunu, şifre ↔ parola, virüs → zararlı, photoshop/gimp → görsel düzenleme, scratch → blok). Sonuç yoksa "\"zip\" için sonuç yok. Ders adı ya da hafta numarası yazın." 8'den fazla sonuçta altta "İlk 8 sonuç. Daha fazlası için aramayı daraltın.", ekran okuyucu toplam sayıyı duyar.
+  - Tema ve sınıf başlıklarındaki numara kutusu `aria-hidden`; tema başlığında gizli "Tema 1: " (önceden "1Bilişim…", "55. sınıf" okunuyordu).
+  Testler 33/33, dogrula 0.
 
 **Kararlar**
 - Bölüm içi renk: dolu şerit (kullanıcı seçimi). Arayüzde emoji yok (kullanıcı seçimi). Ders girişi boşluğu "Düşün" sorusuyla doldu (kullanıcı seçimi).
@@ -63,6 +69,7 @@ Kayıt şablonu:
 **Yarım kalan işler**
 - [x] Dizüstünde kartların altındaki boşluk: "Düşün" kutusuyla doldu.
 - [ ] Walkthrough bulgusu: "Testi yeniden çöz" yalnızca test bitince ya da onayla. ("Testi bitirdin!" yapıldı.)
+- [ ] Bilgi mimarisi bulguları (yapılmadı): kâğıt başlıkları sekme adlarıyla aynı değil ("Kendimi değerlendiriyorum" / Mini test, "Defterime yazıyorum" / Deftere yaz); `#dersler` sayfasına hiçbir yerden bağlantı yok (kaldırılsın mı, bağlansın mı?); öğretmen ders sayfasında önceki/sonraki hafta yok; "Yazdırılacak kâğıt ve cevap anahtarı" → "Çalışma kâğıdı".
 - [ ] Norman bulguları (yapılmadı): öğretmende "Ders planı" 1 numara olduğu için bölüm numaraları öğrenciyle kayıyor; sanal masaüstünde yeni klasörde simgeler yer değiştiriyor; ders başlığındaki "‹" ile "‹ Bölümler" farklı yere gidiyor; öğrencide "Öğretmen" düğmesindeki kilit simgesi; ilk açılışta sınıf seçilmeden 5 işaretli.
 - [ ] Mavi temada (Tema 3) maskot zemine yakın; istenirse beyaz hale.
 - [ ] Pencere daraltılıp genişletilince hafta şeridi 5 haftada kalıyor (yenileyince düzelir).
