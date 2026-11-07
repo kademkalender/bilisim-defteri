@@ -6,6 +6,7 @@
 <title>Tasarım Sistemi · Bilişim Defteri</title>
 <meta name="description" content="Bilişim Defteri sitesinin renkleri, ölçüleri, ikonları ve bileşenleri. Bileşenler sitenin kendi stil dosyasıyla çizilir.">
 <!-- Sitenin kendi stilleri: katalogdaki her bileşen sitede nasıl görünüyorsa öyle görünür. -->
+<link rel="icon" href="assets/maskot-64.png">
 <link rel="stylesheet" href="assets/mulish.css">
 <link rel="stylesheet" href="assets/style.css">
 <style>
@@ -120,7 +121,7 @@ body{background:var(--surface-subtle)}
 <body>
 <a class="skip" href="#dsMain">İçeriğe geç</a>
 <header class="ds-top">
-  <a class="logo" href="#renkler"><span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>Bilişim Defteri<small>Tasarım sistemi</small></a>
+  <a class="logo" href="#renkler"><img class="logo-img" src="assets/maskot.webp" alt="">Bilişim Defteri<small>Tasarım sistemi</small></a>
   <div class="ds-role" role="group" aria-label="Görünüm">
     <span>Görünüm:</span>
     <button type="button" class="chip-btn" data-role="ogretmen" aria-pressed="true">Öğretmen</button>
@@ -274,9 +275,9 @@ body{background:var(--surface-subtle)}
   add({ id: "bos", group: "Geri bildirim", name: "Boş durum", cls: ".empty",
     desc: "Gösterilecek bir şey yoksa ne olduğunu ve ne yapılabileceğini söyler.",
     where: "Bütün dersler, sınıf listeleri.",
-    rules: ["Kesikli kenarlık, ortalı yazı.", "Neden boş olduğunu söyler; mümkünse bir sonraki adımı gösterir."],
+    rules: ["Kesikli kenarlık, ortalı yazı; üstte maskot (110 px).", "Neden boş olduğunu söyler; mümkünse bir sonraki adımı gösterir."],
     props: [{ k: "metin", l: "Metin", t: "text", d: "Bu sınıfın hazır dersi henüz yok." }],
-    render: function (p) { return '<div class="empty">' + esc(p.metin) + '</div>'; },
+    render: function (p) { return '<div class="empty"><img class="mascot" src="assets/maskot.webp" alt="">' + esc(p.metin) + '</div>'; },
     variants: [["Varsayılan", {}]]
   });
 
@@ -334,10 +335,22 @@ body{background:var(--surface-subtle)}
     variants: [["5. sınıf, seçili", {}], ["6. sınıf", { sinif: "6", secili: false }], ["6. sınıf, seçili", { sinif: "6" }]]
   });
 
+  add({ id: "maskot", group: "Geri bildirim", name: "Maskot", cls: ".mascot, .logo-img",
+    desc: "Logodaki defter karakteri. Sitenin yüzü: logoda, sekme simgesinde ve öğrenciyle konuştuğu anlarda görünür.",
+    where: "Üst banttaki logo, Bu hafta kartı, ders bitti mesajı, boş durumlar, sayfa bulunamadı.",
+    rules: ["Dosya <code>assets/maskot.webp</code> (420 px, saydam); sekme simgesi <code>assets/maskot-64.png</code>.", "Süstür: <code>alt=\"\"</code>, yanındaki metin anlamı taşır.", "Boyutlar: logo 46 px, boş durum ve kutlama 110 px, hafta kartı 150 px (monitörde <code>--k</code> ile büyür).", "Logo dışında her ekranda en fazla bir maskot. Ders içeriğine (slayt, test, bulmaca) girmez; dikkati dağıtmasın.", "Biçimi değiştirilmez: döndürme, kırpma, renk değişimi yok."],
+    props: [{ k: "yer", l: "Yer", t: "seg", d: "kutlama", o: [["kutlama", "Kutlama"], ["bos", "Boş durum"]] }],
+    render: function (p) {
+      return p.yer === "bos" ? '<div class="empty"><img class="mascot" src="assets/maskot.webp" alt="">Bu sınıfın hazır dersi henüz yok.</div>'
+        : '<div class="sec-done"><img class="mascot" src="assets/maskot.webp" alt=""><p class="progress full">Bu dersin bütün görevlerini bitirdin! 🎉 İstediğin bölüme tekrar bakabilirsin.</p></div>';
+    },
+    variants: [["Kutlama", {}], ["Boş durum", { yer: "bos" }]]
+  });
+
   add({ id: "bu-hafta", group: "Kartlar", name: "Bu hafta kartı", cls: ".wk-hero",
     desc: "Seçili haftanın dersi; açılışta takvime göre bu hafta. Ana sayfanın odak noktası.",
     where: "Ana sayfa (iki rol).",
-    rules: ["Zemin temanın rengi (<code>--theme-N</code>), yazı beyaz.", "Solda büyük hafta numarası. Öğretmende kazanım kodları ve Çalışma kâğıdı düğmesi de var.", "Ders hazır değilse en yakın hazır derse götüren düğme gösterilir.", "Etkinlik haftasında (Code Week, dönem sonu) zemin koyu (<code>--text-primary</code>), kod yok; ders yerine plandaki not yazar.", "Üstteki başlık takvim haftasında \"Takvime göre bu hafta\" (2. dönemin ilk haftasında \"Takvime göre 2. dönemin ilk haftası\"), başka haftada \"Seçtiğin hafta\". Kart tam genişlikte, altında hafta şeridi."],
+    rules: ["Zemin temanın rengi (<code>--theme-N</code>), yazı beyaz. Sağda maskot (150 px); 760 px ve altında gizli.", "Solda büyük hafta numarası. Öğretmende kazanım kodları ve Çalışma kâğıdı düğmesi de var.", "Ders hazır değilse en yakın hazır derse götüren düğme gösterilir.", "Etkinlik haftasında (Code Week, dönem sonu) zemin koyu (<code>--text-primary</code>), kod yok; ders yerine plandaki not yazar.", "Üstteki başlık takvim haftasında \"Takvime göre bu hafta\" (2. dönemin ilk haftasında \"Takvime göre 2. dönemin ilk haftası\"), başka haftada \"Seçtiğin hafta\". Kart tam genişlikte, altında hafta şeridi."],
     props: [
       { k: "tema", l: "Tema", t: "select", d: "1", o: themeOpts },
       { k: "hafta", l: "Hafta", t: "text", d: "8" },
@@ -352,7 +365,7 @@ body{background:var(--surface-subtle)}
         ? '<div class="row"><a class="btn on-color" href="#ders-5-1-6-dosya-klasor">' + (T() ? "Derse git" : "Başla") + '</a>' + (T() ? '<a class="btn on-color-line" href="#yazdir-5-1-6-dosya-klasor">' + ico("yazdir") + ' Çalışma kâğıdı</a>' : "") + '</div>'
         : '<p>Bu haftanın dersi henüz hazır değil.</p><div class="row"><button type="button" class="btn on-color" data-wk="' + (p.hafta - 1) + '">Son hazır ders: ' + (p.hafta - 1) + '. hafta</button></div>';
       return '<div class="wk-hero" style="background:var(' + (ev ? "--text-primary" : "--theme-" + p.tema) + ')"><div class="wk-no" aria-hidden="true"><b>' + w + '</b><small>hafta</small></div><div>' +
-        '<h2><span class="sr">' + w + '. hafta: </span>' + esc(p.baslik) + '</h2>' + (T() && !ev ? '<p class="wk-codes"><span class="tag">BTY.5.1.6</span></p>' : "") + body + '</div></div>';
+        '<h2><span class="sr">' + w + '. hafta: </span>' + esc(p.baslik) + '</h2>' + (T() && !ev ? '<p class="wk-codes"><span class="tag">BTY.5.1.6</span></p>' : "") + body + '</div><img class="mascot wk-mascot" src="assets/maskot.webp" alt=""></div>';
     },
     variants: [["Hazır", {}], ["Hazır değil", { hafta: "9", baslik: "Görsel Düzenleme Programları", hazir: false, tema: "2" }], ["Etkinlik haftası", { hafta: "5", baslik: "Code Week", etkinlik: true }]]
   });
@@ -435,7 +448,7 @@ body{background:var(--surface-subtle)}
     ],
     render: function (p) {
       var link = function (h, t) { return '<a class="chip-btn t-only" href="#' + h + '"' + (p.aktif === h ? ' aria-current="page"' : "") + '>' + t + '</a>'; };
-      return '<header class="top"><div class="top-in"><a class="logo" href="#home"><span class="logo-mark" aria-hidden="true">&lt;/&gt;</span>Bilişim Defteri</a>' +
+      return '<header class="top"><div class="top-in"><a class="logo" href="#home"><img class="logo-img" src="assets/maskot.webp" alt="">Bilişim Defteri</a>' +
         '<div class="search" role="search"><label for="ds-q2" class="sr">Ders ara</label><input id="ds-q2" type="search" placeholder="Ders, hafta, kod" autocomplete="off"></div>' +
         '<nav aria-label="Ana menü">' + link("kazanimlar", "Kazanım haritası") + link("kagitlar", "Çalışma kâğıtları") + link("ogretmen", "Öğretmen masası") +
         '<span class="top-set"><button type="button" class="chip-btn">' + (T() ? "Rol: Öğretmen" : ico("lock") + "Öğretmen") + '</button>' +

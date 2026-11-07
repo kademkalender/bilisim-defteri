@@ -89,7 +89,7 @@ button{font:inherit;cursor:pointer}
 .top{position:sticky;top:0;z-index:20;background:var(--surface-subtle);color:var(--text-primary);border-bottom:1px solid var(--border-default)}
 .top-in{max-width:1100px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:var(--space-3) var(--space-4);flex-wrap:wrap}
 .logo{display:flex;align-items:center;gap:var(--space-3);text-decoration:none;color:var(--text-primary);font-weight:800;font-size:1.25rem}
-.logo-mark{width:38px;height:38px;border-radius:var(--radius-md);background:var(--action-primary);display:flex;align-items:center;justify-content:center;color:var(--action-on-primary);font-size:1rem;font-family:var(--font-mono);font-weight:700}
+.logo-img{height:46px;width:auto;flex:none}
 .top nav{display:flex;gap:var(--space-2);margin-left:auto;flex-wrap:wrap}
 .chip-btn{display:inline-flex;align-items:center;justify-content:center;min-height:var(--size-control-sm);border:1px solid var(--border-default);background:var(--surface-default);color:var(--text-primary);padding:0 var(--space-4);border-radius:var(--radius-md);font-weight:700;font-size:.9rem;text-decoration:none}
 .chip-btn:hover{background:var(--surface-hover);border-color:var(--border-strong)}
@@ -193,6 +193,12 @@ html:not(.role-ogrenci) .grade-card[aria-pressed="true"]:after{width:32px;height
 .wk-no small{font-size:.85rem;font-weight:700;margin-top:4px}
 .wk-hero h2{font-size:1.9rem;margin:2px 0 var(--space-4)}
 .wk-hero p{margin:0 0 var(--space-3)}
+/* Maskot hafta kartının boş sağ tarafında selam verir */
+.wk-mascot{flex:none;margin-left:auto;height:calc(150px * var(--k));width:auto}
+.empty .mascot{display:block;height:110px;width:auto;margin:0 auto var(--space-4)}
+.sec-done{display:flex;align-items:center;justify-content:center}
+.sec-done .mascot{flex:none;height:110px;width:auto;margin-right:var(--space-4)}
+.sec-done p{margin:0;max-width:420px}
 .btn.on-color{background:var(--surface-default);border-color:var(--surface-default);color:var(--text-primary);min-height:52px;font-size:1.1rem}
 .btn.on-color:hover{background:var(--surface-hover)}
 .btn.on-color-line{background:transparent;border:2px solid var(--action-on-primary);color:var(--action-on-primary);min-height:52px}
@@ -605,6 +611,7 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
   .grade-card b{font-size:2.6rem}
   .grade-card[aria-pressed="true"]:after{right:var(--space-3)}
   .wk-hero{padding:var(--space-5);flex-direction:column;align-items:flex-start}
+  .wk-mascot{display:none}
   .wk-no{margin:0 0 var(--space-3)}
   .lesson-band{padding:var(--space-4)}
   .lesson-band h1{font-size:1.5rem}

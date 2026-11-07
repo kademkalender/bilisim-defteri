@@ -150,9 +150,11 @@
     }).join("") + page(1) + '</div>';
   }
   function nowWeek() { return BD.calendar && window.schoolWeek ? window.schoolWeek(new Date(), BD.calendar) : { w: 1, state: "once" }; }
+  // Maskot (logodaki defter): selam, kutlama ve boş durumda. Süs, ekran okuyucuya okunmaz.
+  function mascot(cls) { return '<img class="mascot' + (cls ? " " + cls : "") + '" src="assets/maskot.webp" alt="">'; }
   function weekHero(g) {
     var plan = (BD.plan[g] || []).slice().sort(function (a, b) { return a.w - b.w; });
-    if (!plan.length) return '<div class="empty">Bu sınıfın dersleri henüz eklenmedi.</div>';
+    if (!plan.length) return '<div class="empty">' + mascot() + 'Bu sınıfın dersleri henüz eklenmedi.</div>';
     var now = nowWeek(), nowW = Math.min(now.w, plan[plan.length - 1].w);
     var ws = plan.map(function (x) { return x.w; }), i = ws.indexOf(shownWeek[g] || nowW);
     // Planda olmayan hafta (#sinif-5-99) sessizce 1. haftaya düşmesin: takvim haftası gösterilir
@@ -168,7 +170,7 @@
         '<h2><span class="sr">' + p.w + '. hafta: </span>' + esc(p.title) + '</h2>' +
         (T && !p.event ? '<p class="wk-codes">' + planCodes(p).map(function (c) { return '<span class="tag">' + c + '</span>'; }).join(" ") + '</p>' : "") +
         (L ? '<div class="row"><a class="btn on-color" href="#ders-' + L.id + '">' + (T ? "Derse git" : "Başla") + '</a>' + (T ? '<a class="btn on-color-line" href="#yazdir-' + L.id + '">' + icon("yazdir") + ' Çalışma kâğıdı</a>' : "") + '</div>' : '<p>' + (p.event ? esc(p.note) : "Bu haftanın dersi henüz hazır değil.") + '</p>' + (fb ? '<div class="row"><button type="button" class="btn on-color" data-wk="' + fb.w + '">' + (fb.w < p.w ? "Son hazır ders: " : "İlk hazır ders: ") + fb.w + '. hafta</button></div>' : "")) +
-      '</div></div>' + weekStrip(g, plan, p.w, nowW);
+      '</div>' + mascot("wk-mascot") + '</div>' + weekStrip(g, plan, p.w, nowW);
   }
   function weekList(g) {
     var last = lastLesson();
@@ -230,7 +232,7 @@
     return '<div class="hello"><h1>Bütün dersler</h1><p>' + g + '. sınıfın hazır dersleri. Öğretmeninin söylediği haftaya tıkla.</p></div>' +
       (ready.length ? '<div class="all-cards">' + ready.map(function (x) {
         return '<a href="#ders-' + x.lesson + '" style="background:var(--theme-' + x.theme + ')"><span class="wk-no" aria-hidden="true"><b>' + x.w + '</b><small>hafta</small></span><span><span class="sr">' + x.w + '. hafta: </span>' + esc(x.title) + '</span></a>';
-      }).join("") + '</div>' : '<div class="empty">Bu sınıfın hazır dersi henüz yok.</div>') +
+      }).join("") + '</div>' : '<div class="empty">' + mascot() + 'Bu sınıfın hazır dersi henüz yok.</div>') +
       (plan.length > ready.length ? '<p class="hint">' + (plan.length - ready.length) + ' ders daha hazırlanıyor.</p>' : "") +
       '<div class="row"><a class="btn" href="#home">← Ana sayfa</a></div>';
   }
@@ -388,7 +390,7 @@
         panel("hub", "Bölümler", "", '<div class="sec-cards">' + tabs.slice(1).map(function (t, i) {
           var n = { slayt: L.slides.length + " slayt", defter: L.notebook.length + " madde", etkinlik: L.sim ? L.sim.tasks.length + " görev" : L.activities.lab.steps.length + " görev", oyun: hasSort ? L.sort.items.length + " kart" : "", test: L.quiz.length + " soru", bulmaca: hasCw ? L.crossword.length + " kelime" : "" }[t[0]];
           return '<button type="button" class="sec-card sec-' + t[0] + '" data-tab="' + t[0] + '"><span class="sq">' + icon(t[0]) + '</span><span class="badge" aria-hidden="true" data-n="' + (i + 1) + '">' + (i + 1) + '</span><b>' + t[1] + '</b><small>' + n + '</small></button>';
-        }).join("") + '</div><div class="sec-cta"><p id="secDone" class="progress full" hidden>Bu dersin bütün görevlerini bitirdin! 🎉 İstediğin bölüme tekrar bakabilirsin.</p></div>')) +
+        }).join("") + '</div><div class="sec-cta"><div id="secDone" class="sec-done" hidden>' + mascot() + '<p class="progress full">Bu dersin bütün görevlerini bitirdin! 🎉 İstediğin bölüme tekrar bakabilirsin.</p></div></div>')) +
 
       '<div class="tabs" id="tabs" role="tablist" aria-label="Ders bölümleri">' + tabs.map(function (t, i) {
         var on = t[0] === active;
@@ -904,7 +906,7 @@
     $("#roleBtn").setAttribute("aria-label", isStudent() ? "Öğretmen girişi" : "Rol: " + name + ". Değiştirmek için tıklayın.");
   }
 
-  function viewNotFound() { return '<div class="empty"><h2>Bu sayfa bulunamadı</h2><p>' + (isStudent() ? "Ana sayfaya dönüp sınıfını seçebilirsin." : "Ana sayfadan sınıf ve hafta seçebilirsiniz.") + '</p><a class="btn" href="#home">Ana sayfaya dön</a></div>'; }
+  function viewNotFound() { return '<div class="empty">' + mascot() + '<h2>Bu sayfa bulunamadı</h2><p>' + (isStudent() ? "Ana sayfaya dönüp sınıfını seçebilirsin." : "Ana sayfadan sınıf ve hafta seçebilirsiniz.") + '</p><a class="btn" href="#home">Ana sayfaya dön</a></div>'; }
 
   /* ---------- Arama ---------- */
   function initSearch() {
