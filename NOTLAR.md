@@ -24,9 +24,13 @@ Kayıt şablonu:
 - Telefon (560 px ve altı): üst çubuk iki satır (logo ve arama, altında kaydırılan menü), ders sekmeleri tek satır kaydırılır, bölüm başlığı sarar, defter başlığı uzarsa alta iner, sınıf kartındaki ✓ küçüldü, hafta şeridi ve kazanım tablosu 375 px'e sığar, bölüm kartları 140 px (Başla 1145 → 875 px). 375 px'te ana sayfa, ders girişi, defter, kazanımlar ve öğretmen ders sayfası yatay kaymadan denendi; 1366 px değişmedi.
 - Katalogdaki "Ekran" notunda kaçırılmamış kesme işareti (`px'ten`, a244162) katalog betiğini kırıyordu, düzeltildi.
 - Testler 33/33, dogrula 0 hata, konsol temiz.
+- Kalan bulgular: "Başla" düğmesi ders bandına, ilerlemenin yanına taşındı (`.band-cta`, beyaz `.btn.on-color`, yalnız Bölümler açıkken; telefonda bandın altında tam genişlik, 315. pikselde, ilk ekranda). Okul monitöründe kartlar 3×2 (260 px), alt boşluk kalmadı. Kartın ekran okuyucu adı "Sunum, 11 slayt, sıradaki"; numara `aria-hidden`. Bant başlığı kalan yeri alır, dar ekranda kendi satırında. Testler 33/33, dogrula 0, sentetik G1/G3 yeni sürüm OK.
+
+**Kararlar**
+- Başla düğmesi kaldırılmadı, banda taşındı (kullanıcı "tüm bulguları çöz" dedi, yer kararı Claude'un).
 
 **Yarım kalan işler**
-- [ ] "Başla" düğmesinin hizası ya da kaldırılması (kullanıcıya soruldu, karar yok).
+- [ ] Dizüstünde (1366×657) kartların altında 167 px boşluk var (Başla düğmesinin eski yeri).
 - [ ] Gestalt 1 (sınıf seçimi seçildikten sonra küçülsün) ve 4 (hafta kartının boş sağ tarafı).
 
 ---
