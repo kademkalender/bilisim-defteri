@@ -33,6 +33,7 @@ Kayıt şablonu:
 
 - Ana sayfa başlığı: öğrencide "Merhaba! Sınıfını seç" yerine "Merhaba!" (1.5rem, eskiden 2.2rem) ve sınıf kartlarının üstünde "Sınıfın" etiketi. Sayfanın en büyük yazısı artık hafta kartındaki ders adı (1.9rem). Öğretmen başlığı da 1.5rem. Sentetik G1/G3 OK, dogrula 0.
 - Sınıf seçici küçülür (Gestalt 1): sınıf bir kez seçilince (`S.gradeSet`, `BD.defaults`'ta false) kartlar 52 px'e iner ve başlıkla aynı satırda sağa geçer ("Sınıfın" etiketiyle); telefonda başlığın altında. İlk açılışta büyük kartlar. 1366×768'de şerit 689 → 534 px, telefonda ana sayfa tek ekrana sığar. İki rol, 5/6 geçişi ve odak denendi. Testler 33/33, G1/G3 OK.
+- Kullanıcı küçük seçiciden sonra altın boş kaldığını söyledi: öğrencide açılan yeri Bu hafta kartı alıyor (761 px ve üstü: 310 px, ders adı 2.5rem, maskot 250 px, büyük Başla). 1366×768'de sayfa 648 px'te biter, 1880×900'de ekrana tam oturur.
 
 **Kararlar**
 - Görsel kimlik için maskot yönü seçildi (desen ve konu çizimi yerine); maskot ders içeriğine girmez.
