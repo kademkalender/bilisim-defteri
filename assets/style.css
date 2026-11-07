@@ -157,6 +157,16 @@ html.role-ogrenci .t-only{display:none}
 /* ---------- Ana sayfa ---------- */
 .hello h1{font-size:1.5rem} /* hafta kartındaki ders adından (1.9rem) küçük */
 .hello + .label-h{margin-top:var(--space-5)}
+/* Sınıf seçildikten sonra: başlık solda, küçük sınıf seçici sağda */
+.hello-row{display:flex;align-items:center;flex-wrap:wrap;margin-bottom:var(--space-5)}
+.grade-pick{margin-left:auto;display:flex;align-items:center}
+.grade-pick .label-h{margin:0 var(--space-3) 0 0}
+.grade-cards.compact{display:flex}
+.grade-cards.compact .grade-card{min-height:calc(52px * var(--k));padding:0 var(--space-4);border-width:3px;border-radius:var(--radius-lg)}
+.grade-cards.compact .grade-card + .grade-card{margin-left:var(--space-2)}
+.grade-cards.compact .grade-card b{font-size:1.6rem;margin-right:var(--space-2)}
+.grade-cards.compact .grade-card span{font-size:1rem}
+.grade-cards.compact .grade-card[aria-pressed="true"]:after{position:static;margin:0 0 0 var(--space-3);width:24px;height:24px;font-size:.85rem}
 .hello p{margin:6px 0 0;color:var(--text-secondary);max-width:62ch}
 main > #wkList{margin-top:var(--space-3)}
 main > #wkList{margin-top:var(--space-8)}
@@ -607,6 +617,9 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
   .act-steps li{grid-template-columns:40px 1fr}
   .act-steps li button{grid-column:2;justify-self:start}
   .hello h1{font-size:1.3rem}
+  .grade-pick{width:100%;margin:var(--space-3) 0 0}
+  .grade-cards.compact{flex:1}
+  .grade-cards.compact .grade-card{flex:1}
   .grade-cards{grid-gap:var(--space-3)}
   .grade-card{padding:var(--space-3) var(--space-4);min-height:84px}
   .grade-card b{font-size:2.6rem}

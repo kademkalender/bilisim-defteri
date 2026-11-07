@@ -109,6 +109,7 @@ BD.calendar = {
 BD.defaults = {
   role: null,        // ogrenci | ogretmen; boşsa ilk açılışta sorulur
   grade: "5",       // Ana sayfada seçili sınıf
+  gradeSet: false,  // Sınıf bir kez seçildi mi; seçilince ana sayfada küçük seçici
   env: "lab",       // lab | tahta | kagit
   os: "pardus",     // pardus | windows
   internet: true,

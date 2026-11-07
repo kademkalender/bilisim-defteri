@@ -328,11 +328,11 @@ body{background:var(--surface-subtle)}
   add({ id: "sinif-karti", group: "Kartlar", name: "Sınıf kartı", cls: ".grade-card",
     desc: "5. ya da 6. sınıfı seçer.",
     where: "Ana sayfa (iki rol).",
-    rules: ["Seçili olmayan kart beyaz, gri çerçeveli; sınıfın rengi yalnızca numarada (5 lacivert, 6 kiremit, <code>.g6</code>).", "Seçili kart iki sınıfta da dolu mavi (<code>--action-primary</code>), sağda beyaz ✓. Hafta şeridindeki seçili hafta ile aynı dil: sitede seçili olan her şey dolu mavi.", "Öğretmende 64 px (ayar), öğrencide 104 px. Yukarıdaki Görünüm düğmesiyle karşılaştırın."],
-    props: [{ k: "sinif", l: "Sınıf", t: "seg", d: "5", o: [["5", "5"], ["6", "6"]] }, { k: "secili", l: "Seçili", t: "bool", d: true }],
+    rules: ["İlk açılışta iki büyük kart. Sınıf bir kez seçilince (<code>S.gradeSet</code>) kartlar küçülür (<code>.grade-cards.compact</code>, 52 px) ve başlığın sağına, \"Sınıfın\" etiketinin yanına geçer; 560 px ve altında başlığın altında tam genişlik.", "Seçili olmayan kart beyaz, gri çerçeveli; sınıfın rengi yalnızca numarada (5 lacivert, 6 kiremit, <code>.g6</code>).", "Seçili kart iki sınıfta da dolu mavi (<code>--action-primary</code>), sağda beyaz ✓. Hafta şeridindeki seçili hafta ile aynı dil: sitede seçili olan her şey dolu mavi.", "Öğretmende 64 px (ayar), öğrencide 104 px. Yukarıdaki Görünüm düğmesiyle karşılaştırın."],
+    props: [{ k: "sinif", l: "Sınıf", t: "seg", d: "5", o: [["5", "5"], ["6", "6"]] }, { k: "secili", l: "Seçili", t: "bool", d: true }, { k: "kucuk", l: "Küçük", t: "bool", d: false }],
     render: function (p) { return '<button type="button" class="grade-card' + (p.sinif === "6" ? " g6" : "") + '" data-g="' + p.sinif + '" aria-pressed="' + bool(p.secili) + '"><b>' + p.sinif + '</b><span>Sınıf</span></button>'; },
-    wrap: function (p, h) { return '<div class="grade-cards" style="grid-template-columns:1fr;width:420px">' + h + '</div>'; },
-    variants: [["5. sınıf, seçili", {}], ["6. sınıf", { sinif: "6", secili: false }], ["6. sınıf, seçili", { sinif: "6" }]]
+    wrap: function (p, h) { return bool(p.kucuk) ? '<div class="grade-cards compact">' + h + '</div>' : '<div class="grade-cards" style="grid-template-columns:1fr;width:420px">' + h + '</div>'; },
+    variants: [["5. sınıf, seçili", {}], ["6. sınıf", { sinif: "6", secili: false }], ["6. sınıf, seçili", { sinif: "6" }], ["Küçük, seçili", { kucuk: true }]]
   });
 
   add({ id: "maskot", group: "Geri bildirim", name: "Maskot", cls: ".mascot, .logo-img",

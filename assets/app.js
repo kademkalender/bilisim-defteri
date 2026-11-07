@@ -194,22 +194,29 @@
     }).join("");
     return hero + '<div class="label-h all-h">Bütün haftalar <span class="hint">Hafta adları ve dağılımı örnektir, MEB programından gelmez. Bir haftaya tıklayınca kazanım ve ders akışı açılır.</span></div>' + units;
   }
-  function gradeCards() {
-    return '<div class="grade-cards" id="wkGrades" role="group" aria-label="Sınıf seçimi">' + ["5", "6"].map(function (g) { return '<button type="button" class="grade-card' + (g === "6" ? " g6" : "") + '" data-g="' + g + '" aria-pressed="' + (S.grade === g) + '"><b>' + g + '</b><span>Sınıf</span></button>'; }).join("") + '</div>';
+  // Sınıf bir kez seçilince (S.gradeSet) kartlar küçülür ve başlığın yanına geçer
+  function gradeCards(small) {
+    return '<div class="grade-cards' + (small ? " compact" : "") + '" id="wkGrades" role="group" aria-label="Sınıf seçimi">' + ["5", "6"].map(function (g) { return '<button type="button" class="grade-card' + (g === "6" ? " g6" : "") + '" data-g="' + g + '" aria-pressed="' + (S.grade === g) + '"><b>' + g + '</b><span>Sınıf</span></button>'; }).join("") + '</div>';
   }
   function viewHome() {
     var last = lastLesson();
     // Selam küçük, sayfanın en büyük yazısı hafta kartındaki ders adı; sınıf seçimi etiketli bir alan
-    if (isStudent()) return '<div class="hello"><h1>Merhaba!</h1></div><div class="label-h">Sınıfın</div>' + gradeCards() +
-      '<div id="wkList">' + weekList(S.grade) + '</div>';
-    return '<div class="hello"><h1>Hangi dersi işleyeceksiniz?</h1></div>' + gradeCards() +
+    var title = isStudent() ? "Merhaba!" : "Hangi dersi işleyeceksiniz?";
+    var head = S.gradeSet
+      ? '<div class="hello hello-row"><h1>' + title + '</h1><div class="grade-pick"><span class="label-h">' + (isStudent() ? "Sınıfın" : "Sınıf") + '</span>' + gradeCards(true) + '</div></div>'
+      : '<div class="hello"><h1>' + title + '</h1></div>' + (isStudent() ? '<div class="label-h">Sınıfın</div>' : "") + gradeCards();
+    if (isStudent()) return head + '<div id="wkList">' + weekList(S.grade) + '</div>';
+    return head +
       '<div id="wkList">' + weekList(S.grade) + '</div>' +
       '<div class="env-banner"><span><b>Sınıf ortamı:</b> ' + envLabel() + ' · ' + osLabel() + ' · ' + (S.internet ? "İnternet var" : "İnternet yok") + '</span><span class="hint">Etkinlikler okulunuzun şartlarına göre gösterilir.</span><a class="btn" href="#ogretmen">Değiştir</a></div>';
   }
   function bindHome() {
     $("#wkGrades").onclick = function (e) {
       var b = e.target.closest("button"); if (!b) return;
-      S.grade = b.getAttribute("data-g"); saveSettings();
+      S.grade = b.getAttribute("data-g");
+      // İlk seçimde sayfa küçük seçiciyle yeniden çizilir, odak seçilen sınıfta kalır
+      if (!S.gradeSet) { S.gradeSet = true; saveSettings(); render(true); var sel = $('#wkGrades [aria-pressed="true"]'); if (sel) sel.focus(); return; }
+      saveSettings();
       $$("button", this).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
       $("#wkList").innerHTML = weekList(S.grade);
     };
@@ -949,7 +956,7 @@
     if (isStudent() && /^(kazanimlar$|kagitlar$|ogretmen$|yazdir-)/.test(h)) h = "home";
     // #sinif-5: dersteki yol bilgisinden gelinir, ana sayfayı o sınıfla açar. #sinif-5-8: aramadan gelinir, 8. haftayı da gösterir
     var showW = 0;
-    if ((m = h.match(/^sinif-(5|6)(?:-(\d+))?$/))) { S.grade = m[1]; showW = +m[2] || 0; saveSettings(); h = "home"; try { history.replaceState(null, "", "#home"); } catch (e) {} }
+    if ((m = h.match(/^sinif-(5|6)(?:-(\d+))?$/))) { S.grade = m[1]; S.gradeSet = true; showW = +m[2] || 0; saveSettings(); h = "home"; try { history.replaceState(null, "", "#home"); } catch (e) {} }
     if (showW) { shownWeek[S.grade] = showW; if (isStudent()) showW = 0; }
     if (!S.role) { app.innerHTML = viewRole(); bindRole(); }
     else if (h === "home" || h === "") { app.innerHTML = viewHome(); bindHome(); }
