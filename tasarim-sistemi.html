@@ -580,7 +580,7 @@ body{background:var(--surface-subtle)}
   add({ id: "test", group: "Ders içeriği", name: "Test sorusu", cls: ".q, .opts",
     desc: "Mini testte bir soru ve şıkları.",
     where: "Mini test bölümü.",
-    rules: ["Soru <code>--fs-lg</code> ve kalın. Şıklar beyaz, 2 px <code>--border-strong</code> kenarlıklı, normal kalınlıkta (400), en az 50 px; boş kutu gibi değil düğme gibi görünür.", "Şıklar A), B), C) ile başlar.", "İki deneme: ilk yanlış şık kırmızı ✕ ve kilitli, diğerleri açık kalır, altında ipucu. İkinci yanlışta bütün şıklar kilitlenir, doğru şık yeşil ✓.", "Sonuç ilk denemedeki doğruları sayar: \"5 sorudan 4'ü ilk denemede doğru.\""],
+    rules: ["Soru <code>--fs-lg</code> ve kalın. Şıklar beyaz, 2 px <code>--border-strong</code> kenarlıklı, normal kalınlıkta (400), en az 50 px; boş kutu gibi değil düğme gibi görünür.", "Şıklar A), B), C) ile başlar.", "İki deneme: ilk yanlış şık kırmızı ✕ ve kilitli, diğerleri açık kalır, altında ipucu. İkinci yanlışta bütün şıklar kilitlenir, doğru şık yeşil ✓.", "Sonuç ilk denemedeki doğruları sayar: \"Testi bitirdin! 5 sorudan 4'ü ilk denemede doğru.\" Hiç doğru yoksa sayı verilmez: \"Testi bitirdin! Doğru cevapları gördün. Bir daha çözmek ister misin?\"", "Klavyeyle seçilen şık kilitlenince odak kaybolmaz: aynı sorunun açık şıkkına, soru bittiyse sıradaki soruya, test bittiyse sonuç kutusuna geçer."],
     props: [{ k: "durum", l: "Durum", t: "seg", d: "", o: [["", "Cevapsız"], ["dogru", "Doğru"], ["ipucu", "İlk yanlış"], ["yanlis", "İkinci yanlış"]] }],
     render: function (p) {
       var q = q0, w1 = (q.a + 1) % q.o.length, w2 = (q.a + 2) % q.o.length, d = p.durum;
@@ -614,7 +614,7 @@ body{background:var(--surface-subtle)}
   add({ id: "siniflandirma", group: "Ders içeriği", name: "Sınıflandırma kartı", cls: ".chip, .sort-cat",
     desc: "Oyunda doğru kutuya yerleştirilen kart.",
     where: "Oyun bölümü.",
-    rules: ["Seçilen kart sarı zeminli, kutular laciverte döner.", "Kontrol sonrası doğru yeşil ✓, yanlış kırmızı ✕.", "Kartların sırası ders id'sine göre hep aynı karışıklıkta (<code>shuffleOrder</code>)."],
+    rules: ["Kart iki yolla taşınır: sürükle-bırak (fare ve dokunma) ya da önce karta, sonra kutuya dokunma. Yönerge ikisini de söyler.", "Seçilen kart sarı zeminli, gidebileceği kutular laciverte döner; kart alanı da hedeftir, kart oraya geri konabilir.", "Sürüklerken kart gölgeli, altındaki kutu 2 px lacivert kenarlıklı.", "Kart taşınınca önceki \"Kontrol et\" mesajı silinir.", "Kontrol sonrası doğru yeşil ✓, yanlış kırmızı ✕.", "Kartların sırası ders id'sine göre hep aynı karışıklıkta (<code>shuffleOrder</code>)."],
     props: [{ k: "durum", l: "Durum", t: "seg", d: "sel", o: [["", "Havuzda"], ["sel", "Seçili"], ["ok", "Doğru"], ["bad", "Yanlış"]] }],
     render: function (p) {
       var it = L.sort.items;

@@ -323,8 +323,8 @@
   function sortHtml(L) {
     var s = L.sort;
     return '<div class="card" id="sort">' + (s.b ? '<span class="tag code t-only">' + L.outcome + '.' + s.b + '</span>' : "") +
-      '<h3 style="margin:8px 0 4px;font-size:var(--fs-lg)">' + esc(s.title) + '</h3><p class="hint" style="margin:0 0 10px">' + esc(s.intro) + ' Önce bir karta, sonra doğru kutuya dokun.</p>' +
-      '<div class="sort-pool" id="sortPool"></div><div class="sort-cats" style="margin-top:10px">' +
+      '<h3 style="margin:8px 0 4px;font-size:var(--fs-lg)">' + esc(s.title) + '</h3><p class="hint" style="margin:0 0 10px">' + esc(s.intro) + ' Kartı doğru kutuya sürükle ya da önce karta, sonra kutuya dokun.</p>' +
+      '<div class="sort-pool" id="sortPool" role="button" tabindex="0" aria-label="Kart alanı"></div><div class="sort-cats" style="margin-top:10px">' +
       s.cats.map(function (c, i) { return '<div class="sort-cat" data-c="' + i + '" role="button" tabindex="0" aria-label="' + esc(c) + ' kutusu"><h4>' + esc(c) + '</h4><div class="in"></div></div>'; }).join("") +
       '</div><div class="row" style="margin-top:10px"><button type="button" class="btn primary" id="sortCheck">Kontrol et</button><button type="button" class="btn" id="sortReset">Baştan başla</button><span class="fb" id="sortMsg"></span></div></div>';
   }
@@ -447,7 +447,7 @@
         '<div id="quiz">' + L.quiz.map(function (q, qi) {
           return '<div class="q" data-q="' + qi + '"><p>' + (qi + 1) + '. ' + esc(q.q) + '</p><div class="opts">' +
             q.o.map(function (o, oi) { return '<button type="button" data-o="' + oi + '">' + String.fromCharCode(65 + oi) + ') ' + esc(o) + '</button>'; }).join("") + '</div><div class="fb"></div></div>';
-        }).join("") + '</div><div class="score" id="score" aria-live="polite"></div><div class="row"><button type="button" class="btn" id="quizAgain" hidden>' + icon("tekrar") + ' Testi yeniden çöz</button></div>') +
+        }).join("") + '</div><div class="score" id="score" aria-live="polite" tabindex="-1"></div><div class="row"><button type="button" class="btn" id="quizAgain" hidden>' + icon("tekrar") + ' Testi yeniden çöz</button></div>') +
 
       (hasCw ? panel("bulmaca", "Haftanın bulmacası", T ? "Bulmaca dersin anahtar kelimeleriyle kurulur. Boş hâli çalışma kâğıdında da var." : "Bir kutuya tıkla ve yaz. Aynı kutuya tekrar tıklarsan yön değişir. İpucuna tıklayınca o kelimeye gidersin.", '<div class="cw" id="cw"></div>') : "") +
 
@@ -569,7 +569,7 @@
       var n = L.quiz.length, done = L.quiz.filter(function (q, i) { return finished(i); }).length, all = done === n;
       var first = L.quiz.filter(function (q, i) { return picks[i] && picks[i][0] === q.a; }).length;
       var sc = $("#score"); sc.classList.toggle("end-msg", all);
-      sc.innerHTML = !all ? "" : endMsg(first === n ? n + " sorunun " + ek(n) + " de ilk denemede doğru!" : n + " sorudan " + ek(first) + " ilk denemede doğru.");
+      sc.innerHTML = !all ? "" : endMsg(first === n ? n + " sorunun " + ek(n) + " de ilk denemede doğru!" : first ? "Testi bitirdin! " + n + " sorudan " + ek(first) + " ilk denemede doğru." : "Testi bitirdin! Doğru cevapları gördün. Bir daha çözmek ister misin?");
       $("#quizAgain").hidden = !Object.keys(picks).length;
       setTabDone("test", all);
       if (live && all && first === n) celebrate($("#score"));
@@ -581,6 +581,12 @@
         var b = e.target.closest("button"); if (!b || b.disabled) return;
         (picks[qi] = picks[qi] || []).push(+b.getAttribute("data-o")); store.set(quizKey, picks);
         showAnswer(qEl, true); quizState(true);
+        // Klavyeyle seçildiyse (detail 0) kilitlenen şıkta odak kaybolmasın: aynı sorunun, sonra sıradaki sorunun şıkkına, test bittiyse sonuca
+        if (e.detail === 0) {
+          var open = $$(".q .opts button").filter(function (x) { return !x.disabled; });
+          var nx = open.filter(function (x) { return qEl.contains(x); })[0] || open.filter(function (x) { return qEl.compareDocumentPosition(x) & 4; })[0] || open[0];
+          if (nx) nx.focus(); else $("#score").focus();
+        }
       });
     });
     $("#quizAgain").onclick = function () {
@@ -635,13 +641,51 @@
       $$(".sort-cat .in").forEach(function (x) { x.innerHTML = ""; });
       $("#sortMsg").textContent = ""; sel = null; mark();
     };
-    var mark = function () { $$(".sort-cat").forEach(function (c) { c.classList.toggle("target", !!sel); }); };
+    // Hedefler: kutular ve kartın geri konabildiği kart alanı. Seçili kartın zaten durduğu yer hedef sayılmaz.
+    var spots = function () { return $$(".sort-cat").concat([pool]); };
+    var home = function (chip) { return chip.parentNode === pool ? pool : chip.parentNode.parentNode; };
+    var mark = function () { spots().forEach(function (c) { c.classList.toggle("target", !!sel && home(sel) !== c); }); };
+    var moveTo = function (chip, dest) {
+      chip.classList.remove("sel", "ok", "bad");
+      if (dest !== home(chip)) { (dest === pool ? pool : $(".in", dest)).appendChild(chip); flash(chip, "land"); }
+      $("#sortMsg").textContent = ""; $("#sortMsg").className = "fb"; // eski "Kontrol et" sonucu artık geçerli değil
+    };
+    var dragged = false;
     $("#sort").addEventListener("click", function (e) {
-      var chip = e.target.closest(".chip"), cat = e.target.closest(".sort-cat");
+      if (dragged) { dragged = false; return; }
+      var chip = e.target.closest(".chip"), dest = e.target.closest(".sort-cat") || e.target.closest(".sort-pool");
       if (chip) { $$(".chip", $("#sort")).forEach(function (c) { c.classList.remove("sel", "land"); }); if (sel === chip) { sel = null; } else { sel = chip; chip.classList.add("sel"); } chip.classList.remove("ok", "bad"); mark(); e.stopPropagation(); return; }
-      if (cat && sel) { sel.classList.remove("sel"); $(".in", cat).appendChild(sel); flash(sel, "land"); sel = null; mark(); }
+      if (dest && sel) { moveTo(sel, dest); sel = null; mark(); }
     });
-    $$(".sort-cat").forEach(function (c) { c.addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === " ") && sel) { e.preventDefault(); c.click(); } }); });
+    spots().forEach(function (c) { c.addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === " ") && sel && e.target === c) { e.preventDefault(); c.click(); } }); });
+    // Sürükle-bırak: fare ve dokunma (pointer olayları). 6 px'ten az kayma tıklama sayılır.
+    var drag = null;
+    var under = function (x, y) { return spots().filter(function (c) { var r = c.getBoundingClientRect(); return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom; })[0] || null; };
+    var over = function (t) { spots().forEach(function (c) { c.classList.toggle("over", c === t); }); };
+    $("#sort").addEventListener("pointerdown", function (e) {
+      var chip = e.target.closest(".chip"); if (!chip || e.button !== 0) return;
+      drag = { chip: chip, x: e.clientX, y: e.clientY, on: false };
+      chip.setPointerCapture(e.pointerId);
+    });
+    $("#sort").addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (!drag.on && Math.abs(dx) + Math.abs(dy) < 6) return;
+      if (!drag.on) { drag.on = true; drag.chip.classList.add("drag"); $("#sort").classList.add("dragging"); if (sel) sel.classList.remove("sel"); sel = null; mark(); }
+      drag.chip.style.transform = "translate(" + dx + "px," + dy + "px)";
+      var t = under(e.clientX, e.clientY); over(t && t !== home(drag.chip) ? t : null);
+    });
+    var drop = function (e, cancel) {
+      if (!drag) return;
+      var d = drag; drag = null; over(null); $("#sort").classList.remove("dragging");
+      if (!d.on) return;
+      dragged = true; setTimeout(function () { dragged = false; }, 0);
+      d.chip.classList.remove("drag"); d.chip.style.transform = "";
+      var t = cancel ? null : under(e.clientX, e.clientY);
+      if (t) moveTo(d.chip, t);
+    };
+    $("#sort").addEventListener("pointerup", function (e) { drop(e, false); });
+    $("#sort").addEventListener("pointercancel", function (e) { drop(e, true); });
     $("#sortCheck").onclick = function () {
       var placed = 0, ok = 0;
       $$(".sort-cat").forEach(function (cat) {

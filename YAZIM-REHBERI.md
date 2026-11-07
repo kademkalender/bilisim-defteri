@@ -111,12 +111,13 @@ Kalıp: **Sonuç + neden.** Yanlışta öğrenci bir kez daha dener.
 | İlk yanlış | Az kaldı! Uzantıya bak: noktadan sonra gelen kısım dosyanın türünü söyler. Bir daha dene. |
 | İkinci yanlış | Bu sefer olmadı. .ogg bir ses dosyasıdır. .png resim, .odt yazı dosyasıdır. Doğru cevap: kayit.ogg ✓ |
 | Test bitti, hepsi doğru | 5 sorunun 5'i de ilk denemede doğru! |
-| Test bitti | 5 sorudan 4'ü ilk denemede doğru. |
+| Test bitti | Testi bitirdin! 5 sorudan 4'ü ilk denemede doğru. |
+| Test bitti, ilk denemede doğru yok | Testi bitirdin! Doğru cevapları gördün. Bir daha çözmek ister misin? |
 
 - İpucu cevabı söylemez, nereye bakacağını söyler.
 - Yanlışta suçlama yok: "Yanlış!" değil, "Az kaldı!" ya da "Bu sefer olmadı."
 - İpucu (`hint`) ve neden (`why`) ders dosyasında her soru için yazılır; eksikse `dogrula.js` uyarır.
-- Test sonucu ilk denemedeki doğruları sayar.
+- Test sonucu ilk denemedeki doğruları sayar. Sıfır doğruda sayı verilmez ("0'ı doğru" cesaret kırar).
 
 ### Kutlama ve bitirme
 
