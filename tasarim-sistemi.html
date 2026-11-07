@@ -70,7 +70,7 @@ body{background:var(--surface-subtle)}
 .ds-section h2{font-size:1.25rem;margin-bottom:var(--space-3)}
 .ds-section + .ds-section{margin-top:var(--space-8)}
 .ds-swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:var(--space-3)}
-.ds-sw{background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-lg);overflow:hidden;text-align:left;font:inherit;color:inherit;padding:0;cursor:pointer}
+.ds-sw{background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-md);overflow:hidden;text-align:left;font:inherit;color:inherit;padding:0;cursor:pointer}
 .ds-sw:hover{border-color:var(--action-primary)}
 .ds-sw i{display:block;height:64px;border-bottom:1px solid var(--border-default)}
 .ds-sw span{display:block;padding:var(--space-2) var(--space-3) var(--space-3);font-size:.82rem}
@@ -90,7 +90,7 @@ body{background:var(--surface-subtle)}
 .ds-box i{display:block;height:80px;margin-bottom:var(--space-2);background:var(--action-primary-subtle);border:2px solid var(--action-primary)}
 .ds-box code{font-family:var(--font-mono)}
 .ds-icons{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:var(--space-3)}
-.ds-icons button{display:flex;flex-direction:column;align-items:center;gap:var(--space-2);padding:var(--space-4) var(--space-2);background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-lg);font:inherit;font-size:.82rem;font-weight:700;color:var(--text-primary)}
+.ds-icons button{display:flex;flex-direction:column;align-items:center;gap:var(--space-2);padding:var(--space-4) var(--space-2);background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-md);font:inherit;font-size:.82rem;font-weight:700;color:var(--text-primary)}
 .ds-icons button:hover{border-color:var(--action-primary)}
 .ds-icons .ico{width:32px;height:32px;color:var(--action-primary)}
 .ds-note{font-size:.9rem;color:var(--text-secondary);max-width:75ch}
@@ -180,7 +180,7 @@ body{background:var(--surface-subtle)}
   add({ id: "dugme", group: "Eylemler", name: "Düğme", cls: ".btn",
     desc: "Bir işi başlatır: derse gitmek, yazdırmak, sıfırlamak.",
     where: "Bu hafta kartı, ders planı, bölüm sonu, çalışma kâğıdı.",
-    rules: ["50 px yükseklik, köşe <code>--radius-lg</code>.", "Bir görünümde tek birincil düğme olur.", "<code>on-color</code> ve <code>on-color-line</code> yalnızca tema renkli kartın (Bu hafta) üstünde kullanılır.", "İkon <code>icon(\"ad\")</code> ile eklenir, emoji değil."],
+    rules: ["50 px yükseklik, köşe <code>--radius-md</code>.", "Bir görünümde tek birincil düğme olur.", "<code>on-color</code> ve <code>on-color-line</code> yalnızca tema renkli kartın (Bu hafta) üstünde kullanılır.", "İkon <code>icon(\"ad\")</code> ile eklenir, emoji değil."],
     props: [
       { k: "metin", l: "Metin", t: "text", d: "Derse git" },
       { k: "tur", l: "Tür", t: "seg", d: "primary", o: [["", "Varsayılan"], ["primary", "Birincil"], ["on-color", "Renkli üstü"], ["on-color-line", "Renkli üstü çizgi"]] },
@@ -264,12 +264,12 @@ body{background:var(--surface-subtle)}
   });
 
   add({ id: "bilgi-kutusu", group: "Geri bildirim", name: "Bilgi kutusu", cls: ".hook",
-    desc: "Öğretmene derste işine yarayacak kısa bir not.",
-    where: "Sunum altında \"Derse başlarken\", bilgisayarsız sınıf uyarısı.",
+    desc: "Kısa bir not: öğretmene derste işine yarayacak öneri, öğrenciye derse girerken düşüneceği soru.",
+    where: "Öğretmende sunum altında \"Derse başlarken\" ve bilgisayarsız sınıf uyarısı; öğrencide ders girişinde bölüm kartlarının altında \"Düşün\" (dersin <code>hook</code> sorusu).",
     rules: ["Açık lacivert zemin, kenarlık yok.", "Başlık küçük ve büyük harfle, metin tek paragraf.", "Uyarı için değil, öneri için."],
     props: [{ k: "baslik", l: "Başlık", t: "text", d: "Derse başlarken" }, { k: "metin", l: "Metin", t: "text", d: L.hook }],
     render: function (p) { return '<div class="hook"><b>' + esc(p.baslik) + '</b>' + esc(p.metin) + '</div>'; },
-    variants: [["Derse başlarken", {}], ["Bilgisayarsız sınıf", { baslik: "Bilgisayarsız sınıf", metin: "Bu dersin tamamını çalışma kâğıdıyla yapabilirsiniz." }]]
+    variants: [["Derse başlarken", {}], ["Bilgisayarsız sınıf", { baslik: "Bilgisayarsız sınıf", metin: "Bu dersin tamamını çalışma kâğıdıyla yapabilirsiniz." }], ["Düşün (öğrenci)", { baslik: "Düşün" }]]
   });
 
   add({ id: "bos", group: "Geri bildirim", name: "Boş durum", cls: ".empty",
@@ -284,11 +284,11 @@ body{background:var(--surface-subtle)}
   add({ id: "mesaj", group: "Geri bildirim", name: "Sonuç mesajı", cls: ".fb, .finish",
     desc: "Cevaptan ya da bitirilen etkinlikten sonra gelen kısa mesaj.",
     where: "Mini test, oyun, bulmaca, etkinlik.",
-    rules: ["Doğru yeşil (<code>.fb.r</code>), ilk yanlışta ipucu lacivert (<code>.fb.h</code>), ikinci yanlış kırmızı (<code>.fb.w</code>). Renk tek başına bilgi taşımaz, mesaj yazılıdır.", "İlk yanlışta \"Az kaldı!\" + ipucu (<code>hint</code>); ikincide \"Bu sefer olmadı.\" + neden (<code>why</code>) + doğru cevap.", "Emoji yalnızca kutlamada.", "Bitişte (etkinlik bitti, test sonucu, oyun hepsi doğru, bulmaca tamam) solda 64 px maskot: <code>.end-msg</code>, <code>endMsg()</code>.", "Emoji süs olarak kalabilir, görünmese de mesaj anlaşılır."],
+    rules: ["Doğru yeşil (<code>.fb.r</code>), ilk yanlışta ipucu lacivert (<code>.fb.h</code>), ikinci yanlış kırmızı (<code>.fb.w</code>). Renk tek başına bilgi taşımaz, mesaj yazılıdır.", "İlk yanlışta \"Az kaldı!\" + ipucu (<code>hint</code>); ikincide \"Bu sefer olmadı.\" + neden (<code>why</code>) + doğru cevap.", "Emoji yok (Pardus'ta renkli emoji yazı tipi olmayabilir). Doğru cevapta ✓, kutlamayı bitişte maskot ve konfeti taşır.", "Bitişte (etkinlik bitti, test sonucu, oyun hepsi doğru, bulmaca tamam) solda 64 px maskot: <code>.end-msg</code>, <code>endMsg()</code>."],
     props: [{ k: "tur", l: "Tür", t: "seg", d: "dogru", o: [["dogru", "Doğru"], ["ipucu", "İlk yanlış"], ["yanlis", "İkinci yanlış"], ["bitti", "Bitti"]] }],
     render: function (p) {
-      if (p.tur === "bitti") return '<div class="finish show end-msg"><img class="mascot" src="assets/maskot.webp" alt=""><span>Görev tamam! 🎉 Etkinliği bitirdin.</span></div>';
-      return p.tur === "dogru" ? '<div class="fb r">Doğru! 👏</div>' : p.tur === "ipucu" ? '<div class="fb h">' + esc(quizFb(q0, 1)) + '</div>' : '<div class="fb w">' + esc(quizFb(q0, 2)) + '</div>';
+      if (p.tur === "bitti") return '<div class="finish show end-msg"><img class="mascot" src="assets/maskot.webp" alt=""><span>Görev tamam! Etkinliği bitirdin.</span></div>';
+      return p.tur === "dogru" ? '<div class="fb r">✓ Doğru!</div>' : p.tur === "ipucu" ? '<div class="fb h">' + esc(quizFb(q0, 1)) + '</div>' : '<div class="fb w">' + esc(quizFb(q0, 2)) + '</div>';
     },
     variants: [["Doğru", {}], ["İlk yanlış: ipucu", { tur: "ipucu" }], ["İkinci yanlış: neden", { tur: "yanlis" }], ["Etkinlik bitti", { tur: "bitti" }]]
   });
@@ -341,9 +341,9 @@ body{background:var(--surface-subtle)}
     rules: ["Dosya <code>assets/maskot.webp</code> (420 px, saydam); sekme simgesi <code>assets/maskot-64.png</code>.", "Süstür: <code>alt=\"\"</code>, yanındaki metin anlamı taşır.", "Boyutlar: logo 46 px, bitiş mesajı 64 px (<code>.end-msg</code>), boş durum ve ders bitti 110 px, hafta kartı 150 px (monitörde <code>--k</code> ile büyür).", "Logo dışında her ekranda en fazla bir maskot. Ders içinde yalnızca sonda çıkar (etkinlik bitti, test sonucu, oyun ve bulmaca tamam, sanal masaüstü tebrik); çalışırken (slayt, soru, kart) görünmez, dikkati dağıtmasın.", "Tek poz var. Başka poz (sevinen, düşünen) için görselin çizeri yeni çizim verir; görsel bilgisayarda değiştirilmez.", "Biçimi değiştirilmez: döndürme, kırpma, renk değişimi yok."],
     props: [{ k: "yer", l: "Yer", t: "seg", d: "kutlama", o: [["kutlama", "Kutlama"], ["son", "Bitiş mesajı"], ["bos", "Boş durum"]] }],
     render: function (p) {
-      if (p.yer === "son") return '<div class="score end-msg"><img class="mascot" src="assets/maskot.webp" alt=""><span>5 sorunun 5\'i de ilk denemede doğru! 🎉</span></div>';
+      if (p.yer === "son") return '<div class="score end-msg"><img class="mascot" src="assets/maskot.webp" alt=""><span>5 sorunun 5\'i de ilk denemede doğru!</span></div>';
       return p.yer === "bos" ? '<div class="empty"><img class="mascot" src="assets/maskot.webp" alt="">Bu sınıfın hazır dersi henüz yok.</div>'
-        : '<div class="sec-done"><img class="mascot" src="assets/maskot.webp" alt=""><p class="progress full">Bu dersin bütün görevlerini bitirdin! 🎉 İstediğin bölüme tekrar bakabilirsin.</p></div>';
+        : '<div class="sec-done"><img class="mascot" src="assets/maskot.webp" alt=""><p class="progress full">Bu dersin bütün görevlerini bitirdin! İstediğin bölüme tekrar bakabilirsin.</p></div>';
     },
     variants: [["Kutlama", {}], ["Bitiş mesajı", { yer: "son" }], ["Boş durum", { yer: "bos" }]]
   });
@@ -403,7 +403,7 @@ body{background:var(--surface-subtle)}
   add({ id: "bolum-karti", group: "Kartlar", name: "Bölüm kartı", cls: ".sec-card",
     desc: "Öğrencinin dersteki bölümleri: Sunum, Deftere yaz, Etkinlik, Oyun, Mini test, Bulmaca.",
     where: "Öğrenci: ders girişi.",
-    rules: ["Zemin bölümün rengi (<code>--sec-*</code>). Defterde yazı koyu.", "Sağ üstte sıra numarası, küçük ve tam opak (en az 4,5:1); \"Sıradaki\" etiketinden sönük kalır. Biten bölümde \"Bitti ✓\", ilk bitmeyende \"Sıradaki\" ve kalın çerçeve. \"Sıradaki\" etiketi maskotun açık mavisinde (<code>--accent-light</code>), yazı koyu (7,8:1).", "Biten kartın zemini beyaz; kenar, ikon karesi ve etiket bölümün renginde (<code>--c</code>). Bitmeyenler renkli kalır, ayrım ilk bakışta görünür.", "Kartların üstünde görünür \"Bölümler\" başlığı (<code>.label-h</code>) bandı kartlardan ayırır.", "Kartlar 1000 px üstünde tek sıra, ortada 3'lü, dar ekranda 2'li dizilir. Dizüstünde kart 260 px. Okul monitöründe 3×2 dizilir (kart 240 px), ikon karesi <code>--k</code> ile büyür; telefonda kart 140 px, ikon karesi 48 px.", "Numara ekran okuyucuya okunmaz (<code>aria-hidden</code>); kartın adı bölüm, miktar ve durumdur: \"Sunum, 11 slayt, tamamlandı\"."],
+    rules: ["Zemin bölümün rengi (<code>--sec-*</code>). Defterde yazı koyu.", "Sağ üstte sıra numarası, küçük ve tam opak (en az 4,5:1); \"Sıradaki\" etiketinden sönük kalır. Biten bölümde \"Bitti ✓\", ilk bitmeyende \"Sıradaki\" ve kalın çerçeve. \"Sıradaki\" etiketi maskotun açık mavisinde (<code>--accent-light</code>), yazı koyu (7,8:1).", "Biten kartın zemini beyaz; kenar, ikon karesi ve etiket bölümün renginde (<code>--c</code>). Bitmeyenler renkli kalır, ayrım ilk bakışta görünür.", "Kartların üstünde görünür \"Bölümler\" başlığı (<code>.label-h</code>) bandı kartlardan ayırır.", "Kartlar 1000 px üstünde tek sıra, ortada 3'lü, dar ekranda 2'li dizilir. Dizüstünde kart 260 px. Okul monitöründe de tek sıra (kart 312 px), altında \"Düşün\" kutusu; ikon karesi <code>--k</code> ile büyür; telefonda kart 140 px, ikon karesi 48 px.", "Numara ekran okuyucuya okunmaz (<code>aria-hidden</code>); kartın adı bölüm, miktar ve durumdur: \"Sunum, 11 slayt, tamamlandı\"."],
     props: [
       { k: "bolum", l: "Bölüm", t: "select", d: "etkinlik", o: secOpts },
       { k: "durum", l: "Durum", t: "seg", d: "", o: [["", "Bekliyor"], ["next", "Sıradaki"], ["done", "Bitti"]] },
@@ -523,16 +523,16 @@ body{background:var(--surface-subtle)}
   });
 
   add({ id: "bolum-basligi", group: "Gezinme", name: "Bölüm başlığı", cls: ".block-h, .block-hint",
-    desc: "Bölümün içindeki başlık. Öğrencide renkli kare ve Bölümler düğmesi, öğretmende tek satır açıklama.",
+    desc: "Bölümün içindeki başlık. Öğrencide bölüm renginde dolu şerit ve Bölümler düğmesi, öğretmende tek satır açıklama.",
     where: "Ders sayfası, her bölüm.",
-    rules: ["Öğrenci: renkli kare (<code>.sq.sec-*</code>), başlık, açıklama, sağda \"Bölümler\".", "Öğretmen: başlık ekran okuyucuya kalır (<code>.sr</code>), görünen yalnızca açıklama; sekme adı ve rengi zaten gösterir.", "Görünüm düğmesiyle iki hâli karşılaştırın."],
+    rules: ["Öğrenci: şerit bölümün renginde (<code>section.block</code> üstünde <code>data-sec</code> ve <code>--c</code>), yazı beyaz; defter sarısında koyu. İkon karesi yarı saydam beyaz, sağda beyaz \"Bölümler\". Kartlardaki renk bölümün içinde sürer.", "Öğretmen: başlık ekran okuyucuya kalır (<code>.sr</code>), görünen yalnızca açıklama; sekme adı ve rengi zaten gösterir.", "Görünüm düğmesiyle iki hâli karşılaştırın."],
     props: [{ k: "bolum", l: "Bölüm", t: "select", d: "defter", o: secOpts }, { k: "aciklama", l: "Açıklama", t: "text", d: "Sadece bu maddeleri defterine geçir. Yazdıkça yanındaki kutuyu işaretle." }],
     render: function (p) {
       if (T()) return '<h2 class="sr">' + SEC[p.bolum] + '</h2><p class="hint block-hint">' + esc(p.aciklama) + '</p>';
-      return '<div class="block-h"><span class="sq sec-' + p.bolum + '">' + ico(p.bolum) + '</span><div><h2>' + SEC[p.bolum] + '</h2><p>' + esc(p.aciklama) + '</p></div><button type="button" class="btn sec-back" data-tab="hub" style="margin-left:auto">' + ico("back") + ' Bölümler</button></div>';
+      return '<section class="block" data-sec="' + p.bolum + '" style="--c:var(--sec-' + p.bolum + ')"><div class="block-h"><span class="sq sec-' + p.bolum + '">' + ico(p.bolum) + '</span><div><h2>' + SEC[p.bolum] + '</h2><p>' + esc(p.aciklama) + '</p></div><button type="button" class="btn sec-back" data-tab="hub" style="margin-left:auto">' + ico("back") + ' Bölümler</button></div></section>';
     },
     width: "full",
-    variants: [["Deftere yaz", {}], ["Etkinlik", { bolum: "etkinlik", aciklama: "Görevleri sırayla yap. Bitirdiğin adımda \"Yaptım\"a tıkla." }]]
+    variants: [["Deftere yaz", {}], ["Mini test", { bolum: "test", aciklama: "4 soru. Ne kadar öğrendiğini kontrol et." }], ["Etkinlik", { bolum: "etkinlik", aciklama: "Görevleri sırayla yap. Bitirdiğin adımda \"Yaptım\"a tıkla." }]]
   });
 
   // Slayt: gerçek ders verisi (5-1-6)
@@ -580,7 +580,7 @@ body{background:var(--surface-subtle)}
   add({ id: "test", group: "Ders içeriği", name: "Test sorusu", cls: ".q, .opts",
     desc: "Mini testte bir soru ve şıkları.",
     where: "Mini test bölümü.",
-    rules: ["Şıklar A), B), C) ile başlar.", "İki deneme: ilk yanlış şık kırmızı ✕ ve kilitli, diğerleri açık kalır, altında ipucu. İkinci yanlışta bütün şıklar kilitlenir, doğru şık yeşil ✓.", "Sonuç ilk denemedeki doğruları sayar: \"5 sorudan 4'ü ilk denemede doğru.\""],
+    rules: ["Soru <code>--fs-lg</code> ve kalın. Şıklar beyaz, 2 px <code>--border-strong</code> kenarlıklı, normal kalınlıkta (400), en az 50 px; boş kutu gibi değil düğme gibi görünür.", "Şıklar A), B), C) ile başlar.", "İki deneme: ilk yanlış şık kırmızı ✕ ve kilitli, diğerleri açık kalır, altında ipucu. İkinci yanlışta bütün şıklar kilitlenir, doğru şık yeşil ✓.", "Sonuç ilk denemedeki doğruları sayar: \"5 sorudan 4'ü ilk denemede doğru.\""],
     props: [{ k: "durum", l: "Durum", t: "seg", d: "", o: [["", "Cevapsız"], ["dogru", "Doğru"], ["ipucu", "İlk yanlış"], ["yanlis", "İkinci yanlış"]] }],
     render: function (p) {
       var q = q0, w1 = (q.a + 1) % q.o.length, w2 = (q.a + 2) % q.o.length, d = p.durum;
@@ -588,7 +588,7 @@ body{background:var(--surface-subtle)}
       return '<div class="q"><p>1. ' + esc(q.q) + '</p><div class="opts">' + q.o.map(function (o, i) {
         var cls = picks.indexOf(i) >= 0 && i !== q.a ? "wrong" : (locked && i === q.a ? "right" : "");
         return '<button type="button"' + (cls ? ' class="' + cls + '"' : "") + (locked || cls ? " disabled" : "") + '>' + String.fromCharCode(65 + i) + ') ' + esc(o) + '</button>';
-      }).join("") + '</div><div class="fb' + (d === "dogru" ? " r" : d === "ipucu" ? " h" : d === "yanlis" ? " w" : "") + '">' + (d === "dogru" ? "Doğru! 👏" : d ? esc(quizFb(q, picks.length)) : "") + '</div></div>';
+      }).join("") + '</div><div class="fb' + (d === "dogru" ? " r" : d === "ipucu" ? " h" : d === "yanlis" ? " w" : "") + '">' + (d === "dogru" ? "✓ Doğru!" : d ? esc(quizFb(q, picks.length)) : "") + '</div></div>';
     },
     width: "full",
     variants: [["Cevapsız", {}], ["Doğru", { durum: "dogru" }], ["İlk yanlış", { durum: "ipucu" }], ["İkinci yanlış", { durum: "yanlis" }]]
@@ -670,7 +670,7 @@ body{background:var(--surface-subtle)}
           }).join("") + '</div></section>';
         }).join("") + '<p class="ds-note">Kurallar: ana renk eylem ve seçili durum içindir. Sarı yalnızca vurgu içindir, geniş alanda zemin olmaz. Düz metin ve kontrollerde kontrast en az 4,5:1. Renk tek başına bilgi taşımaz.</p>';
       } },
-    yazi: { group: "Temeller", name: "Yazı", desc: "Yazı tipi siteye gömülü <strong>Mulish</strong> (<code>assets/mulish.css</code>); kodlar eş aralıklı (<code>--font-mono</code>). Taban 17 px, A+ modunda 20 px. Ölçüler aşağıda canlı ölçülür.",
+    yazi: { group: "Temeller", name: "Yazı", desc: "Yazı tipi siteye gömülü <strong>Mulish</strong> (<code>assets/mulish.css</code>); kodlar eş aralıklı (<code>--font-mono</code>). Taban 17 px, A+ modunda 20 px. Boyutlar 8 basamaklı ölçekten (<code>--fs-*</code>), kalınlık yalnızca 400, 700 ve 900. Ölçüler aşağıda canlı ölçülür.",
       body: function () {
         var rows = [
           ["Sayfa başlığı", ".hello h1", '<div class="hello"><h1>Merhaba!</h1></div>'],
@@ -685,7 +685,9 @@ body{background:var(--surface-subtle)}
           ["Etiket", ".tag", '<span class="tag ready">Hazır</span>'],
           ["Kod", ".tag.code", '<span class="tag code">BTY.5.1.6</span>']
         ];
-        return '<div class="ds-type">' + rows.map(function (r) { return '<div><small>' + r[0] + '<br><code>' + r[1] + '</code><br><span class="ds-m"></span></small><div class="ds-sample">' + r[2] + '</div></div>'; }).join("") + '</div>';
+        var fsz = [["xs", "Küçük etiket, kod"], ["sm", "Yardımcı yazı, düğme, geri bildirim"], ["md", "Gövde"], ["lg", "Kart ve alan başlığı"], ["xl", "Bölüm başlığı, sayfa başlığı"], ["2xl", "Ders adı"], ["3xl", "Büyük hafta kartı"], ["4xl", "Hafta ve sınıf rakamı"]];
+        var scale = '<section class="ds-section"><h2>Ölçek</h2><p class="hint">Yeni yazı boyutu yazılmaz; bu basamaklardan biri seçilir. Slayt (<code>em</code>), sanal masaüstü ve yazdırma sayfası kendi ölçüsünü kullanır.</p><div class="ds-scale">' + fsz.map(function (f) { return '<div style="grid-template-columns:150px 170px minmax(0,1fr)"><code>--fs-' + f[0] + '</code><span style="font-size:var(--fs-' + f[0] + ');font-weight:700;line-height:1.2">Bilişim</span><small>' + f[1] + '</small></div>'; }).join("") + '</div></section>';
+        return scale + '<div class="ds-type">' + rows.map(function (r) { return '<div><small>' + r[0] + '<br><code>' + r[1] + '</code><br><span class="ds-m"></span></small><div class="ds-sample">' + r[2] + '</div></div>'; }).join("") + '</div>';
       },
       after: function (root) {
         $$(".ds-type > div", root).forEach(function (row) {
@@ -695,16 +697,16 @@ body{background:var(--surface-subtle)}
       } },
     olculer: { group: "Temeller", name: "Ölçüler", desc: "Boşluk, köşe, kontrol yüksekliği ve gölge token'ları. Doğrudan px yazmak yerine bunlar kullanılır.",
       body: function () {
-        var sp = [1, 2, 3, 4, 5, 6, 8, 10], rd = ["sm", "md", "lg", "xl", "pill"];
+        var sp = [1, 2, 3, 4, 5, 6, 8, 10], rd = ["sm", "md", "xl", "pill"];
         var px = function (v) { var d = document.createElement("i"); d.style.width = v; d.style.display = "block"; document.body.appendChild(d); var w = d.getBoundingClientRect().width; document.body.removeChild(d); return Math.round(w) + " px"; };
         return '<section class="ds-section"><h2>Boşluk</h2><div class="ds-scale">' + sp.map(function (n) { return '<div><code>--space-' + n + '</code><span style="display:flex;align-items:center;gap:8px"><i class="ds-bar" style="width:var(--space-' + n + ')"></i>' + px("var(--space-" + n + ")") + '</span></div>'; }).join("") + '</div></section>' +
           '<section class="ds-section"><h2>Köşe</h2><div class="ds-boxes">' + rd.map(function (r) { return '<div class="ds-box"><i style="border-radius:var(--radius-' + r + ')"></i><code>--radius-' + r + '</code><br>' + px("var(--radius-" + r + ")") + '</div>'; }).join("") + '</div></section>' +
           '<section class="ds-section"><h2>Kontrol yüksekliği</h2><div class="ds-boxes">' +
             '<div class="ds-box"><i style="height:var(--size-control-sm);border-radius:var(--radius-md)"></i><code>--size-control-sm</code><br>40 px · seçim düğmesi</div>' +
-            '<div class="ds-box"><i style="height:var(--size-control-md);border-radius:var(--radius-lg)"></i><code>--size-control-md</code><br>50 px · düğme</div>' +
+            '<div class="ds-box"><i style="height:var(--size-control-md);border-radius:var(--radius-md)"></i><code>--size-control-md</code><br>50 px · düğme</div>' +
             '<div class="ds-box"><i style="height:48px;border-radius:var(--radius-md)"></i><code>48 px</code><br>üst bant, dokunma alanı</div></div>' +
             '<p class="ds-note">Bütün dokunma alanları en az 48 px (etkileşimli tahta). Slayt noktaları görünürde 12 px, dokunma alanı 24 px, dokunmatikte 40 px.</p></section>' +
-          '<section class="ds-section"><h2>Gölge</h2><div class="ds-boxes"><div class="ds-box"><i style="background:var(--surface-default);border:0;box-shadow:var(--shadow-sm);border-radius:var(--radius-lg)"></i><code>--shadow-sm</code><br>defter</div><div class="ds-box"><i style="background:var(--surface-default);border:0;box-shadow:var(--shadow-md);border-radius:var(--radius-lg)"></i><code>--shadow-md</code><br>açılır liste, pencere</div></div><p class="ds-note">Kartlarda gölge ve gradyan yok; düz renk ve ince kenarlık.</p></section>' +
+          '<section class="ds-section"><h2>Gölge</h2><div class="ds-boxes"><div class="ds-box"><i style="background:var(--surface-default);border:0;box-shadow:var(--shadow-sm);border-radius:var(--radius-md)"></i><code>--shadow-sm</code><br>defter</div><div class="ds-box"><i style="background:var(--surface-default);border:0;box-shadow:var(--shadow-md);border-radius:var(--radius-md)"></i><code>--shadow-md</code><br>açılır liste, pencere</div></div><p class="ds-note">Kartlarda gölge ve gradyan yok; düz renk ve ince kenarlık.</p></section>' +
           '<section class="ds-section"><h2>Ekran</h2><p class="ds-note">Esas ölçü 1366×768. Önemli düğmeler 768 px yükseklikte ekranda kalır. İçerik en fazla 1100 px (A+ açıkken 1320 px). Okul monitöründe (1500 px\'ten geniş ve 880 px\'ten yüksek, ör. 1920×1080) içerik 1440 px, yazı 22 px, boşluklar ve px ile verilen bileşen ölçüleri <code>--k</code> çarpanıyla %30 büyür. Dar ekran sınırları: 1180, 1000, 760, 560 px. Telefon (560 px ve altı, 375 px denendi): üst çubukta logo ve arama yan yana, menü altında tek satır kaydırılır; ders sekmeleri tek satır kaydırılır; bölüm başlığındaki &quot;Bölümler&quot; düğmesi sığmazsa alt satıra iner; bölüm kartları 140 px; defter başlığı satıra sığmazsa alta uzar; sayfa yatay kaymaz.</p></section>';
       } },
     ikonlar: { group: "Temeller", name: "İkonlar", desc: "Satır içi SVG, 24×24 çizgi. Liste <code>assets/ikonlar.js</code> (<code>BD.icons</code>), sitede <code>icon(\"ad\")</code> ile çizilir. Emoji yerine bunlar kullanılır: Pardus'ta renkli emoji yazı tipi olmayabilir. Basınca <code>icon(\"ad\")</code> kopyalanır.",
@@ -715,10 +717,10 @@ body{background:var(--surface-subtle)}
       var pairs = function (rows) { return '<div class="ds-dd">' + rows.map(function (r) { return '<div><span class="ds-x">✗ ' + esc(r[0]) + '</span><span class="ds-v">✓ ' + esc(r[1]) + '</span></div>'; }).join("") + '</div>'; };
       var sec = function (h, note, rows) { return '<section class="ds-section"><h2>' + h + '</h2>' + (note ? '<p class="ds-note" style="margin:0 0 12px">' + note + '</p>' : "") + pairs(rows) + '</section>'; };
       return '<section class="ds-section"><div class="ds-voices">' +
-        '<div class="card"><h3><span class="sq-sm" style="background:var(--action-primary)">' + ico("ogrenci") + '</span>Öğrenciye: oyun arkadaşı</h3><ul><li>"sen" der, görev verir, bitince kutlar.</li><li>Puan, seviye, rozet yok; ilerleme sayıyla görünür.</li><li>Ünlem: kutlamada ve göreve çağıran tek cümlede.</li><li>Emoji yalnızca kutlamada.</li></ul></div>' +
+        '<div class="card"><h3><span class="sq-sm" style="background:var(--action-primary)">' + ico("ogrenci") + '</span>Öğrenciye: oyun arkadaşı</h3><ul><li>"sen" der, görev verir, bitince kutlar.</li><li>Puan, seviye, rozet yok; ilerleme sayıyla görünür.</li><li>Ünlem: kutlamada ve göreve çağıran tek cümlede.</li><li>Emoji yok; kutlamayı maskot ve konfeti taşır.</li></ul></div>' +
         '<div class="card"><h3><span class="sq-sm" style="background:var(--theme-1)">' + ico("ogretmen") + '</span>Öğretmene: yardımcı asistan</h3><ul><li>"siz" der; ne yapacağını, gerekirse nedenini söyler.</li><li>Somut: süre, slayt numarası, sayfa adı.</li><li>Ünlem ve emoji yok.</li><li>En fazla iki cümle.</li></ul></div>' +
         '</div><p class="ds-note">Site kendinden "biz" diye söz etmez. Yazı tipi Mulish; dosya adı ve kod eş aralıklı yazılır (Mulish\'te I ile l benzer).</p></section>' +
-        sec("Öğrenci metni", "", [["Etkinlik tamamlandı.", "Görev tamam! 🎉 Sırada Oyun var."], ["Bu derste dosya işlemleri öğretilecektir.", "Dağınık masaüstünü toparla!"], ["Başarı oranınız %80.", "5 sorudan 4'ü doğru."], ["Hadi bakalım minik dostum!", "Görev: Kendi klasörünü oluştur."]]) +
+        sec("Öğrenci metni", "", [["Etkinlik tamamlandı.", "Görev tamam! Sırada Oyun var."], ["Bu derste dosya işlemleri öğretilecektir.", "Dağınık masaüstünü toparla!"], ["Başarı oranınız %80.", "5 sorudan 4'ü doğru."], ["Hadi bakalım minik dostum!", "Görev: Kendi klasörünü oluştur."]]) +
         sec("Öğretmen metni", "", [["Bu haftanın dersi üzerinde çalışıyoruz.", "Bu haftanın dersi henüz hazır değil. 7. haftanın dersini kullanabilirsiniz."], ["Giriş yapılır.", "Giriş · 5 dk: 2. slayttaki soruyu sorun. Konuya merak uyandırır."], ["Ayarlarınız başarıyla kaydedilmiştir!", "Ayarlar kaydedildi. Dersler artık Pardus yönergeleriyle açılır."]]) +
         sec("Yanlış cevap", "Sonuç + neden. İlk yanlışta ipucu ve bir hak daha, ikincide doğru cevap.", [["Yanlış!", "Az kaldı! Uzantıya bak: noktadan sonra gelen kısım dosyanın türünü söyler. Bir daha dene."], ["Olmadı. Doğru cevap ✓ işaretli olan.", "Bu sefer olmadı. .ogg bir ses dosyasıdır. Doğru cevap: kayit.ogg ✓"]]) +
         sec("Düğme", "Fiille başlar; ok, ünlem, emoji yok. Ok yalnızca slayt ve hafta oklarında.", [["Başla →", "Başla"], ["Tamam", "Kontrol et"], ["Evet", "Evet, sıfırla"]]) +

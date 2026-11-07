@@ -55,34 +55,50 @@ Beyaz yazıyla en düşük kontrast 5,29:1 (bulmaca), defter sarısında koyu ya
 
 - **Mulish**, siteye gömülü: `assets/mulish.css`. Firefox `file://` altında ayrı font dosyası yüklemediği için dosya base64 olarak CSS'in içindedir. Lisans: `assets/mulish-OFL.txt`.
 - Kod ve kazanım kodları sistemin eş aralıklı yazı tipiyle yazılır (`--font-mono`).
-- Taban boyut `--base` (17 px, A+ modunda 20 px). Başlıklar 800 ağırlığındadır.
+- Taban boyut `--base` (17 px, A+ modunda 20 px).
+- Yazı ölçeği 8 basamak, yeni boyut yazılmaz:
+
+| Token | Değer | Kullanım |
+|---|---|---|
+| `--fs-xs` | .8rem | Küçük etiket, kod, şerit alt yazısı |
+| `--fs-sm` | .9rem | Yardımcı yazı, düğme, geri bildirim, kart alt yazısı |
+| `--fs-md` | 1rem | Gövde |
+| `--fs-lg` | 1.2rem | Kart ve alan başlığı, büyük düğme |
+| `--fs-xl` | 1.5rem | Bölüm ve sayfa başlığı |
+| `--fs-2xl` | 1.9rem | Ders adı, hafta kartı başlığı |
+| `--fs-3xl` | 2.5rem | Büyük hafta kartı başlığı, rakam kutusu |
+| `--fs-4xl` | 3.6rem | Hafta ve sınıf rakamı |
+
+- Kalınlık yalnızca üç: 400 gövde ve açıklama, 700 vurgu, düğme ve başlık, 900 büyük rakam. 600 ve 800 kullanılmaz.
+- Slayt içi (`em`), sanal masaüstü (`.sim-*`), yazdırma sayfası (`.sheet`), bulmaca hücresi ve ikon kareleri kendi ölçülerini kullanır.
 
 ## Ölçüler
 
 | Grup | Tokenlar |
 |---|---|
 | Boşluk | `--space-1` 4, `-2` 8, `-3` 12, `-4` 16, `-5` 20, `-6` 24, `-8` 32, `-10` 40 px |
-| Köşe | `--radius-sm` 8, `-md` 12, `-lg` 14, `-xl` 18 px, `-pill` 999 px |
+| Köşe | `--radius-sm` 8 (küçük iç öğe), `-md` 12 (düğme, kontrol, ikon karesi), `-xl` 18 px (kart), `-pill` 999 px (rozet). 14 px (`-lg`) 12 ile ayırt edilmediği için kaldırıldı |
 | Kontrol | `--size-control-sm` 40, `-md` 50 px |
 | Gölge | `--shadow-sm`, `--shadow-md` |
 
 ## Bileşenler
 
-- **Düğme (`.btn`):** 50 px, `--radius-lg`. Varsayılanı beyaz zemin ve lacivert kenarlıktır, `.primary` dolu laciverttir. Bir görünümde tek birincil düğme hedeflenir.
+- **Düğme (`.btn`):** 50 px, `--radius-md`. Varsayılanı beyaz zemin ve lacivert kenarlıktır, `.primary` dolu laciverttir. Bir görünümde tek birincil düğme hedeflenir.
 - **Üst bant (`.top`):** İki rolde de beyaz zeminde (`--surface-default`), altta ince çizgi ve hafif gölge (`--shadow-sm`); gri sayfa zemininden ayrılır. Logo maskot.
 - **Seçim düğmesi (`.chip-btn`):** 40 px, `--radius-md`. Seçilince dolu lacivert olur. Üst bantta 48 px, beyaz zemin ve ince kenarlık; açık olan sayfa dolu lacivert. Rol ve A+ ayar olduğu için ince ayraçla ayrılır, bej zeminli ve kenarlıksızdır. A+ yalnızca öğretmende görünür, basılıyken lacivert. A+ açıkken sayfa genişliği 1320 px olur. 1180 px'in altında bant düğmelerinin iç boşluğu 8 px, arama kutusu en az 160 px: öğretmen bandı 1024 px'te de tek satırdır.
 - **Kart (`.card`):** Beyaz zemin, 1 px `--border-default`, `--radius-xl`.
 - **Etiket (`.tag`):** Açık zemin ve aynı ailenin koyu yazısı.
 - **Hafta satırı (`.week`):** Hafta numarası ve ders adı aynı satırda (`7. hafta · Dosya ve Klasör Yönetimi`). Durum etiketi sabit genişliktedir, kodlar aynı sütunda durur. Öğrencide hazır olmayan satır soluktur ve açılmaz. Öğretmende her satır açılır, bu yüzden yazı soluk değildir; durumu etiket söyler. Çalışma kâğıtları sayfasında satır bağlantıdır, doğrudan kâğıdı açar. Etkinlik haftası (Code Week, dönem sonu) iki rolde de açılmayan soluk satırdır, kodu yoktur, etiketi "Etkinlik haftası"; bir önceki haftanın temasında durur.
 - **Ders sekmesi (`.tab`, öğretmen):** Ortak alt çizgide durur, etkin olanın çizgisi kalın ve koyu. Numara karesi bölümün renginde (`--sec-*`, ders planı gri), biten bölümde yeşil ✓ olur. Öğretmen bölüm kartlarını kullanmaz: derste sık bölüm değiştirdiği için her bölüm tek tıkla açılır. Öğretmende bölümün içinde renkli başlık yoktur, sekme adı ve rengi zaten gösterir; yerinde tek satır açıklama durur (`.block-hint`). Sunum sekmesi açılınca sekmeler üste kayar, slayt ekrana sığacak kadar büyür.
-- **Renkli kartlar (iki rol):** Tasarım seçimi `mockups/` içindeki B yönü. Düz renkli büyük kartlar, gölge ve gradyan yok, ikonlar satır içi SVG, emoji değil. Liste `assets/ikonlar.js` içinde (`BD.icons`), `app.js` onları `icon()` ile çizer. Düğme ve ortam ikonları da bu listeden gelir; geri bildirim mesajlarındaki emoji (🎉, 👏) süs olarak kalır.
+- **Renkli kartlar (iki rol):** Tasarım seçimi `mockups/` içindeki B yönü. Düz renkli büyük kartlar, gölge ve gradyan yok, ikonlar satır içi SVG, emoji değil. Liste `assets/ikonlar.js` içinde (`BD.icons`), `app.js` onları `icon()` ile çizer. Düğme ve ortam ikonları da bu listeden gelir. Arayüzde emoji yok: doğru cevapta ✓, kutlamayı bitişte maskot ve konfeti taşır (slayt içeriğindeki emojiler hariç).
   - Üst bant beyaz zeminde: logo ve kilit ikonlu "Öğretmen" düğmesi. Arama öğrencide yok.
   - Okul monitörü: 1500 px'ten geniş ve 880 px'ten yüksek ekranda (ör. 1920×1080) içerik 1440 px, temel yazı 22 px, boşluk tokenları ve px ile verilen bileşen ölçüleri (`calc(Npx * var(--k))`) %30 büyür. Dizüstü (1366×768) ve 5:4 monitör (1280×1024) değişmez. Yeni bileşende sabit px ölçü varsa `var(--k)` ile çarpılır.
   - Telefon (560 px ve altı, 375 px denendi): üst çubukta logo ve arama yan yana, menü altında tek satır kaydırılır; ders sekmeleri tek satır kaydırılır; bölüm başlığındaki "Bölümler" düğmesi sığmazsa alt satıra iner; bölüm kartları 140 px; defter başlığı satıra sığmazsa alta uzar; sayfa yatay kaymaz.
   - Maskot: logodaki defter karakteri (`assets/maskot.webp`, sekme simgesi `assets/maskot-64.png`). Logoda 46 px, Bu hafta kartının sağında 150 px (760 px ve altında gizli), ders bitti mesajında ve boş durumlarda 110 px, bitiş mesajlarında 64 px (`.end-msg`: etkinlik bitti, test sonucu, oyun ve bulmaca tamam, sanal masaüstü tebrik). Süstür (`alt=""`); ders içinde yalnızca sonda çıkar, logo dışında ekranda en fazla bir tane. Tek poz var; yeni poz çizerden gelir.
   - Ana sayfa başlığı (`.hello h1`) 1.5rem: öğrencide "Merhaba!" selamı, öğretmende "Hangi dersi işleyeceksiniz?". Sayfanın en büyük yazısı hafta kartındaki ders adı (1.9rem). Öğrencide sınıf kartlarının üstünde "Sınıfın" etiketi (`.label-h`). Sınıf bir kez seçilince (`S.gradeSet`) kartlar küçülür (`.grade-cards.compact`, 52 px) ve başlıkla aynı satırda sağa geçer (`.hello-row`, `.grade-pick`); telefonda başlığın altında. Öğrencide açılan yeri Bu hafta kartı alır (761 px ve üstünde 310 px, ders adı 2.5rem, maskot 250 px), altta boşluk kalmaz.
   - Ana sayfa: iki sınıf kartı (`.grade-card`; seçili olan iki sınıfta da dolu mavi, sınıfın rengi yalnızca seçili olmayan kartın numarasında), "Bu hafta" kartı (`.wk-hero`, temanın renginde, büyük hafta numarası), altında 11 haftalık (560 px ve altında 5 haftalık) hafta şeridi (`.wk-strip`, ‹ › ile sayfa geçer, sayfa dönem sınırını geçmez ve üstünde dönem yazar, dönemin ucundaki ‹ › mavi dolu ve öbür dönemin adını taşır; takvim haftasında kesikli mavi çerçeve ve "takvim", seçili haftanın üstünde karta bakan küçük mavi üçgen, etkinlik haftasında (5. Code Week, 18. dönem sonu) "etkinlik" yazar; etkinlik haftasının kartı koyu zeminde not gösterir). Haftanın dersi hazır değilse kart en yakın hazır derse götüren düğmeyi gösterir ("Son hazır ders: 7. hafta").
-  - Ders: temanın renginde bant (`.lesson-band`) ve ilerleme. Girişte bölüm kartları (`.sec-card`): 1000 px üstünde tek sıra, ortada 3'lü, dar ekranda 2'li. Kartların üstünde görünür "Bölümler" başlığı bandı kartlardan ayırır (bant rengi her temada bir bölüm rengine yakın). Sıradaki bölümü açan Başla düğmesi bantta, ilerlemenin yanında (`.band-cta`, beyaz `.btn.on-color`), içinde o bölümün renkli ikon karesi (`.cta-sq`); yalnız Bölümler açıkken görünür, telefonda bandın altında tam genişlik. Okul monitöründe kartlar 3×2. Kartın ekran okuyucu adı bölüm, miktar ve durum; numara okunmaz. Kart numarası küçük ve tam opak, en az 4,5:1; "Sıradaki" etiketinden sönük. Kart dizüstünde 260 px, monitörde 240 px; monitörde ders adı 1.7rem, ilerleme çubuğu 140 px. Biten kart beyaz zeminli, kenarı ve ikon karesi bölüm renginde. İkon karesi geniş monitörde `--k` ile büyür. Bölümün içinde renkli kare başlık ve "Bölümler" düğmesi. Sekme çubuğu öğrencide gizli.
+  - Bölümün içinde başlık bölümün renginde dolu şerit (`section.block[data-sec]`, `--c`; defterde yazı koyu). Test şıkları beyaz, 2 px `--border-strong`, normal kalınlık; soru `--fs-lg`. Ders girişinde kartların altında dersin `hook` sorusu "Düşün" kutusunda (`.hook`, `--fs-lg`).
+  - Ders: temanın renginde bant (`.lesson-band`) ve ilerleme. Girişte bölüm kartları (`.sec-card`): 1000 px üstünde tek sıra, ortada 3'lü, dar ekranda 2'li. Kartların üstünde görünür "Bölümler" başlığı bandı kartlardan ayırır (bant rengi her temada bir bölüm rengine yakın). Sıradaki bölümü açan Başla düğmesi bantta, ilerlemenin yanında (`.band-cta`, beyaz `.btn.on-color`), içinde o bölümün renkli ikon karesi (`.cta-sq`); yalnız Bölümler açıkken görünür, telefonda bandın altında tam genişlik. Okul monitöründe de tek sıra (kart 312 px); altlarında dersin "Düşün" sorusu. Kartın ekran okuyucu adı bölüm, miktar ve durum; numara okunmaz. Kart numarası küçük ve tam opak, en az 4,5:1; "Sıradaki" etiketinden sönük. Kart dizüstünde 260 px, monitörde 240 px; monitörde ders adı 1.7rem, ilerleme çubuğu 140 px. Biten kart beyaz zeminli, kenarı ve ikon karesi bölüm renginde. İkon karesi geniş monitörde `--k` ile büyür. Bölümün içinde renkli kare başlık ve "Bölümler" düğmesi. Sekme çubuğu öğrencide gizli.
   - Öğretmen: ana sayfada aynı sınıf kartları (öğretmende 64 px, kısa) ve "Bu hafta" kartı (kazanım kodu, "Derse git" ve "Çalışma kâğıdı"), altında temalara bölünmüş hafta listesi. Tema başlıklarında temanın renginde numara karesi (`.tn-sq`). Ders bandında tema, süre ve kazanım kodu.
   - Öğretmen masası: her ayar ayrı kart, başlıkta renkli ikon karesi (`.sq-sm`), seçili seçenekte ✓.
   - Slayt kaydırmadan ekrana sığacak kadar büyür (`.deck` genişliği ekran yüksekliğinden hesaplanır, en az 520 px).

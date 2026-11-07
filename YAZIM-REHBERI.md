@@ -14,7 +14,7 @@ Site iki kişiyle konuşur. İkisi de kısa ve nettir, ama aynı sesle konuşmaz
 | Hitap | "sen" | "siz" |
 | Ders dili | Görev: "Görev: Kendi klasörünü oluştur." | Bölüm ve etkinlik: "Etkinlik: Öğrenciler kendi klasörünü oluşturur." |
 | Ünlem | Kutlamada ve göreve çağıran tek cümlede | Hiç yok |
-| Emoji | Yalnızca kutlamada (🎉 👏) | Hiç yok |
+| Emoji | Yok. Kutlamayı bitişte maskot ve konfeti taşır (Pardus'ta renkli emoji yazı tipi olmayabilir) | Hiç yok |
 | Uzunluk | Bir cümlede bir bilgi | Nedenini de söyleyebilir, en fazla iki cümle |
 
 **Site kendinden "biz" diye söz etmez.** Siteyi farklı kişiler yazıyor, "biz" belirsiz kalır. Durumu söyle, özne okuyan ya da içerik olsun.
@@ -31,8 +31,8 @@ Bölümler ve adımlar öğrenciye **görev** olarak anlatılır. Puan, seviye v
 | Ders girişi | Bu derste dosya ve klasör işlemleri öğretilecektir. | Dağınık masaüstünü toparla! |
 | Etkinlik başlığı | Etkinlik yönergeleri | Görev: Kendi klasörünü oluştur ve dosyaları yerleştir. |
 | Bölüm kartı | 8 adım | 8 görev |
-| Bölüm bitti | Etkinlik tamamlandı. | Görev tamam! 🎉 Sırada Oyun var. |
-| Doğru cevap | Doğru. | Doğru! 👏 |
+| Bölüm bitti | Etkinlik tamamlandı. | Görev tamam! Sırada Oyun var. |
+| Doğru cevap | Doğru. | ✓ Doğru! |
 | Test sonucu | Başarı oranınız %80. | 5 sorudan 4'ü doğru. |
 
 Yapma: çocuksulaştırma ("Hadi bakalım minik dostum"), alay ya da baskı ("Bu kadar kolay soruyu bilemedin mi?"), olmayan bir şeyi vaat etme ("+10 puan").
@@ -107,10 +107,10 @@ Kalıp: **Sonuç + neden.** Yanlışta öğrenci bir kez daha dener.
 
 | Durum | Metin |
 |---|---|
-| Doğru | Doğru! 👏 |
+| Doğru | ✓ Doğru! |
 | İlk yanlış | Az kaldı! Uzantıya bak: noktadan sonra gelen kısım dosyanın türünü söyler. Bir daha dene. |
 | İkinci yanlış | Bu sefer olmadı. .ogg bir ses dosyasıdır. .png resim, .odt yazı dosyasıdır. Doğru cevap: kayit.ogg ✓ |
-| Test bitti, hepsi doğru | 5 sorunun 5'i de ilk denemede doğru! 🎉 |
+| Test bitti, hepsi doğru | 5 sorunun 5'i de ilk denemede doğru! |
 | Test bitti | 5 sorudan 4'ü ilk denemede doğru. |
 
 - İpucu cevabı söylemez, nereye bakacağını söyler.
@@ -122,8 +122,8 @@ Kalıp: **Sonuç + neden.** Yanlışta öğrenci bir kez daha dener.
 
 Kalıp: **Ne bitti + sırada ne var.**
 
-✗ Tebrikler!!! 🎉🎉🎉  ✓ Görev tamam! 🎉 Sırada Oyun var.
-✗ Tüm bölümler başarıyla tamamlanmıştır.  ✓ Bu dersin bütün görevlerini bitirdin! 🎉 Bitirince öğretmenine göster.
+✗ Tebrikler!!! 🎉🎉🎉 (emoji yok)  ✓ Görev tamam! Sırada Oyun var.
+✗ Tüm bölümler başarıyla tamamlanmıştır.  ✓ Bu dersin bütün görevlerini bitirdin! Bitirince öğretmenine göster.
 
 ### Boş durum
 

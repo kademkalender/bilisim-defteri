@@ -310,7 +310,7 @@
       '<div class="goal"><b>' + (isStudent() ? "Görev:" : "Hedef:") + '</b> ' + esc(A.goal) + '</div>' +
       (A.needs ? '<div class="needs">' + A.needs.map(function (n) { return '<span>' + esc(n) + '</span>'; }).join("") + '</div>' : "") +
       '<ol class="act-steps" data-key="' + key + '" data-total="' + A.steps.length + '">' + A.steps.map(function (st, i) { return stepHtml(st, i, done.indexOf(i) >= 0, key); }).join("") + '</ol>' +
-      '<div class="finish' + (done.length === A.steps.length ? " show" : "") + ' end-msg">' + endMsg("Görev tamam! 🎉 Etkinliği bitirdin.") + '</div>';
+      '<div class="finish' + (done.length === A.steps.length ? " show" : "") + ' end-msg">' + endMsg("Görev tamam! Etkinliği bitirdin.") + '</div>';
     if (A.online) html += S.internet
       ? '<div class="goal"><b>İnternet varsa:</b> ' + esc(A.online) + '</div>'
       : '<div class="goal"><b>İnternet yok:</b> Bu etkinlik için internete gerek yok. ' + (isStudent() ? "Araştırma için yukarıdaki bilgi kartlarını kullan." : "Öğrenciler araştırma için yukarıdaki bilgi kartlarını kullanır.") + '</div>';
@@ -323,7 +323,7 @@
   function sortHtml(L) {
     var s = L.sort;
     return '<div class="card" id="sort">' + (s.b ? '<span class="tag code t-only">' + L.outcome + '.' + s.b + '</span>' : "") +
-      '<h3 style="margin:8px 0 4px;font-size:1.15rem">' + esc(s.title) + '</h3><p class="hint" style="margin:0 0 10px">' + esc(s.intro) + ' Önce bir karta, sonra doğru kutuya dokun.</p>' +
+      '<h3 style="margin:8px 0 4px;font-size:var(--fs-lg)">' + esc(s.title) + '</h3><p class="hint" style="margin:0 0 10px">' + esc(s.intro) + ' Önce bir karta, sonra doğru kutuya dokun.</p>' +
       '<div class="sort-pool" id="sortPool"></div><div class="sort-cats" style="margin-top:10px">' +
       s.cats.map(function (c, i) { return '<div class="sort-cat" data-c="' + i + '" role="button" tabindex="0" aria-label="' + esc(c) + ' kutusu"><h4>' + esc(c) + '</h4><div class="in"></div></div>'; }).join("") +
       '</div><div class="row" style="margin-top:10px"><button type="button" class="btn primary" id="sortCheck">Kontrol et</button><button type="button" class="btn" id="sortReset">Baştan başla</button><span class="fb" id="sortMsg"></span></div></div>';
@@ -387,7 +387,7 @@
         : T ? '<h2 class="sr">' + title + '</h2>' + (text ? '<p class="hint block-hint">' + text + '</p>' : "")
         : '<div class="block-h"><span class="sq sec-' + key + '">' + icon(key) + '</span><div><h2>' + title + '</h2><p>' + text + '</p></div>' +
           '<button type="button" class="btn sec-back" data-tab="hub" style="margin-left:auto">' + icon("back") + ' Bölümler</button></div>';
-      return '<section class="block" id="b-' + key + '" role="tabpanel" aria-labelledby="t-' + key + '"' + (key === active ? "" : " hidden") + '>' +
+      return '<section class="block"' + (key === "hub" ? "" : ' data-sec="' + key + '" style="--c:var(--sec-' + key + ')"') + ' id="b-' + key + '" role="tabpanel" aria-labelledby="t-' + key + '"' + (key === active ? "" : " hidden") + '>' +
         head + body +
         (nx ? '<div class="tab-next"><button type="button" class="btn primary" data-tab="' + nx[0] + '">Sonraki bölüm: ' + nx[1] + '</button></div>' : "") +
       '</section>';
@@ -400,7 +400,7 @@
         panel("hub", "Bölümler", "", '<div class="sec-cards">' + tabs.slice(1).map(function (t, i) {
           var n = { slayt: L.slides.length + " slayt", defter: L.notebook.length + " madde", etkinlik: L.sim ? L.sim.tasks.length + " görev" : L.activities.lab.steps.length + " görev", oyun: hasSort ? L.sort.items.length + " kart" : "", test: L.quiz.length + " soru", bulmaca: hasCw ? L.crossword.length + " kelime" : "" }[t[0]];
           return '<button type="button" class="sec-card sec-' + t[0] + '" data-tab="' + t[0] + '"><span class="sq">' + icon(t[0]) + '</span><span class="badge" aria-hidden="true" data-n="' + (i + 1) + '">' + (i + 1) + '</span><b>' + t[1] + '</b><small>' + n + '</small></button>';
-        }).join("") + '</div><div class="sec-cta"><div id="secDone" class="sec-done" hidden>' + mascot() + '<p class="progress full">Bu dersin bütün görevlerini bitirdin! 🎉 İstediğin bölüme tekrar bakabilirsin.</p></div></div>')) +
+        }).join("") + '</div>' + (L.hook ? '<div class="hook"><b>Düşün</b>' + esc(L.hook) + '</div>' : "") + '<div class="sec-cta"><div id="secDone" class="sec-done" hidden>' + mascot() + '<p class="progress full">Bu dersin bütün görevlerini bitirdin! İstediğin bölüme tekrar bakabilirsin.</p></div></div>')) +
 
       '<div class="tabs" id="tabs" role="tablist" aria-label="Ders bölümleri">' + tabs.map(function (t, i) {
         var on = t[0] === active;
@@ -438,7 +438,7 @@
       panel("etkinlik", "Etkinlik", T ? (L.sim && envNow() === "lab" ? "Öğrenciler görevleri önce sanal masaüstünde yapar, site her adımı kontrol eder. Ardından aynı adımları gerçek bilgisayarda dener." : "Yönergeler seçtiğiniz sınıf ortamına göre değişir. Ortamı Öğretmen masası'ndan değiştirebilirsiniz.") : L.sim && envNow() === "lab" ? "Sanal masaüstünde görevleri sırayla yap, site her adımı kontrol eder. Sonra gerçek bilgisayarında dene." : 'Görevleri sırayla yap. Bitirdiğin adımda "Yaptım"a tıkla.',
         (T ? '<div class="env-switch"><span class="lbl">Sınıf ortamı:</span>' + envBtns + '<span class="hint">Seçime göre etkinlik değişir.</span></div>' +
           (S.env === "kagit" ? '<div class="hook"><b>Bilgisayarsız sınıf</b>Bu dersin tamamını çalışma kâğıdıyla yapabilirsiniz. <a href="#yazdir-' + id + '">Çalışma kâğıdını aç</a></div>' : "") : "") +
-        (L.infoCards ? '<h3 style="font-size:1.1rem">Bilgi kartları <span class="hint" style="font-weight:400">internet olmadan araştırma için</span></h3><div class="info-cards">' + L.infoCards.map(function (c) { return '<div class="info-card"><h3>' + esc(c.h) + '</h3><p>' + esc(c.p) + '</p></div>'; }).join("") + '</div>' : "") +
+        (L.infoCards ? '<h3 style="font-size:var(--fs-lg)">Bilgi kartları <span class="hint" style="font-weight:400">internet olmadan araştırma için</span></h3><div class="info-cards">' + L.infoCards.map(function (c) { return '<div class="info-card"><h3>' + esc(c.h) + '</h3><p>' + esc(c.p) + '</p></div>'; }).join("") + '</div>' : "") +
         '<div id="actWrap">' + activityHtml(L) + '</div>') +
 
       (hasSort ? panel("oyun", "Sınıflandırma oyunu", T ? "Öğrenciler etkinlikte öğrendiklerini sınıflandırarak pekiştirir. Tahtada sınıfça da oynanabilir." : "Kartları doğru kutulara yerleştir!", sortHtml(L)) : "") +
@@ -555,7 +555,7 @@
       p.forEach(function (o) { if (o !== q.a) { btns[o].classList.add("wrong"); btns[o].disabled = true; } });
       if (last === q.a) {
         btns.forEach(function (x) { x.disabled = true; }); b.classList.add("right");
-        fb.textContent = "Doğru! 👏"; fb.className = "fb r"; if (live) flash(b, "hop");
+        fb.textContent = "✓ Doğru!"; fb.className = "fb r"; if (live) flash(b, "hop");
       } else if (p.length < 2) {
         fb.textContent = "Az kaldı! " + (q.hint || "Soruyu bir daha oku.") + " Bir daha dene."; fb.className = "fb h"; if (live) flash(b, "shake");
       } else {
@@ -569,7 +569,7 @@
       var n = L.quiz.length, done = L.quiz.filter(function (q, i) { return finished(i); }).length, all = done === n;
       var first = L.quiz.filter(function (q, i) { return picks[i] && picks[i][0] === q.a; }).length;
       var sc = $("#score"); sc.classList.toggle("end-msg", all);
-      sc.innerHTML = !all ? "" : endMsg(first === n ? n + " sorunun " + ek(n) + " de ilk denemede doğru! 🎉" : n + " sorudan " + ek(first) + " ilk denemede doğru.");
+      sc.innerHTML = !all ? "" : endMsg(first === n ? n + " sorunun " + ek(n) + " de ilk denemede doğru!" : n + " sorudan " + ek(first) + " ilk denemede doğru.");
       $("#quizAgain").hidden = !Object.keys(picks).length;
       setTabDone("test", all);
       if (live && all && first === n) celebrate($("#score"));
@@ -650,7 +650,7 @@
       });
       var m = $("#sortMsg");
       if (!placed) { m.textContent = "Önce kartları kutulara yerleştir."; m.className = "fb w"; }
-      else if (ok === s.items.length) { m.innerHTML = endMsg("🎉 Hepsi doğru!"); m.className = "fb r end-msg"; celebrate(m); store.set("sort:" + L.id, true); setTabDone("oyun", true); }
+      else if (ok === s.items.length) { m.innerHTML = endMsg("Hepsi doğru!"); m.className = "fb r end-msg"; celebrate(m); store.set("sort:" + L.id, true); setTabDone("oyun", true); }
       else { m.textContent = ok + " / " + s.items.length + " doğru. " + (placed < s.items.length ? "Yerleştirilmemiş kartlar var. " : "") + "✕ işaretli kartları başka kutuya taşı."; m.className = "fb w"; }
     };
     $("#sortReset").onclick = reset;
@@ -717,7 +717,7 @@
       i.addEventListener("input", function () {
         var ch = window.cwClean(i.value).slice(-1);
         i.value = ch; el.classList.remove("ok", "bad"); persist(); $("#cwMsg").textContent = "";
-        if (solved()) msg("🎉 Harika! Bulmacayı tamamen çözdün.", true, true);
+        if (solved()) msg("Harika! Bulmacayı tamamen çözdün.", true, true);
         if (ch) { flash(i, "pop"); step(1); }
       });
       i.addEventListener("keydown", function (e) {
@@ -735,7 +735,7 @@
         var v = $("input", el).value; el.classList.remove("ok", "bad"); if (!v) return; filled++;
         if (v === X.cells[el.getAttribute("data-k")]) el.classList.add("ok"); else { el.classList.add("bad"); wrong++; }
       });
-      if (solved()) msg("🎉 Harika! Bulmacayı tamamen çözdün.", true, true);
+      if (solved()) msg("Harika! Bulmacayı tamamen çözdün.", true, true);
       else if (!filled) msg("Önce birkaç kutuyu doldur.", false);
       else if (wrong) msg(wrong + " harf yanlış, ✕ işaretli kutulara tekrar bak.", false);
       else msg("Şimdiye kadar hepsi doğru! " + (total - filled) + " kutu kaldı.", true);
@@ -743,7 +743,7 @@
     $("#cwHint").onclick = function () {
       var t = cur && inp(cur).value !== X.cells[cur] ? cur : Object.keys(X.cells).filter(function (k) { return inp(k).value !== X.cells[k]; })[0];
       if (!t) return; inp(t).value = X.cells[t]; cellEl(t).classList.add("ok"); persist(); select(t);
-      if (solved()) msg("🎉 Harika! Bulmacayı tamamen çözdün.", true, true);
+      if (solved()) msg("Harika! Bulmacayı tamamen çözdün.", true, true);
     };
     $("#cwClear").onclick = function () { $$(".cw-cell", root).forEach(function (el) { $("input", el).value = ""; el.classList.remove("ok", "bad"); }); persist(); solved(); $("#cwMsg").textContent = ""; };
     solved(); ready = true;
