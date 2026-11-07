@@ -16,6 +16,21 @@ Kayıt şablonu:
 
 ---
 
+## 2026-11-07 · efee7946-cmd + Claude Code (Opus 5.5)
+
+**Ne yapıldı**
+- Öğrencinin bölüm seçme sayfasına (ders girişi) outsider-design-review (1880×900, 1366×657, 375×740). Kontrast ve dokunma alanında sorun yok. Bulgular: okul monitöründe altta 312 px (%35) boşluk, biten kart bitmeyenden ayırt edilmiyor, "Başla" düğmesi sıradaki kartın hizasında değil, telefonda Başla düğmesi ekranın 345 px altında.
+- Bölüm kartları: geniş monitörde kart (230 px), ikon karesi (64 px) ve Başla düğmesi (60 px) `--k` ile büyür; alt boşluk 312 → 225 px. Biten kart beyaz zeminli, kenarı, ikon karesi ve etiketi bölüm renginde (`--c`); yazı kontrastı en az 5,36:1.
+- Telefon (560 px ve altı): üst çubuk iki satır (logo ve arama, altında kaydırılan menü), ders sekmeleri tek satır kaydırılır, bölüm başlığı sarar, defter başlığı uzarsa alta iner, sınıf kartındaki ✓ küçüldü, hafta şeridi ve kazanım tablosu 375 px'e sığar, bölüm kartları 140 px (Başla 1145 → 875 px). 375 px'te ana sayfa, ders girişi, defter, kazanımlar ve öğretmen ders sayfası yatay kaymadan denendi; 1366 px değişmedi.
+- Katalogdaki "Ekran" notunda kaçırılmamış kesme işareti (`px'ten`, a244162) katalog betiğini kırıyordu, düzeltildi.
+- Testler 33/33, dogrula 0 hata, konsol temiz.
+
+**Yarım kalan işler**
+- [ ] "Başla" düğmesinin hizası ya da kaldırılması (kullanıcıya soruldu, karar yok).
+- [ ] Gestalt 1 (sınıf seçimi seçildikten sonra küçülsün) ve 4 (hafta kartının boş sağ tarafı).
+
+---
+
 ## 2026-11-06 · efee7946-cmd + Claude Code (Opus 5.5)
 
 **Ne yapıldı**
