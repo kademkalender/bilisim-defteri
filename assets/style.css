@@ -39,6 +39,8 @@
   --slide-bg-light:#1E4FA3;
   /* Öğrenci görünümü: tema ve ders bölümü renkleri. Hepsi beyaz yazıyla en az 5,2:1, defter sarısı koyu yazıyla 10,7:1 */
   --theme-1:#0B7169;--theme-2:#6B3FA0;--theme-3:#1D5FA8;--theme-4:#B0263A;--theme-5:#2E6B30;--theme-6:#A8460F;
+  /* Maskotun açık mavisi (ayraç, yanak, kalem). Yalnızca koyu yazının zemini ya da süs: beyaz yazıyla 2:1, koyu yazıyla 7,8:1 */
+  --accent-light:#5BC2F7;
   --sec-slayt:#1E4FA3;--sec-defter:#FFD23F;--sec-etkinlik:#157A4C;--sec-test:#5B3FB5;--sec-bulmaca:#B8480A;--sec-oyun:#B0263A;
   /* Yazı tipi */
   --font-family:"Mulish","Segoe UI","Noto Sans","DejaVu Sans",Ubuntu,"Liberation Sans",Arial,sans-serif;
@@ -86,7 +88,7 @@ button{font:inherit;cursor:pointer}
 .btn,.chip-btn,.chip,.card,.role-card,.opts button,.opt-group button,.deck-bar button,.act-steps button,.tab,a.week,.cw-clues li{transition:background-color .15s,border-color .15s,color .15s}
 
 /* ---------- Başlık ---------- */
-.top{position:sticky;top:0;z-index:20;background:var(--surface-subtle);color:var(--text-primary);border-bottom:1px solid var(--border-default)}
+.top{position:sticky;top:0;z-index:20;background:var(--surface-default);color:var(--text-primary);border-bottom:1px solid var(--border-default);box-shadow:var(--shadow-sm)}
 .top-in{max-width:1100px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:var(--space-3) var(--space-4);flex-wrap:wrap}
 .logo{display:flex;align-items:center;gap:var(--space-3);text-decoration:none;color:var(--text-primary);font-weight:800;font-size:1.25rem}
 .logo-img{height:46px;width:auto;flex:none}
@@ -219,6 +221,10 @@ html:not(.role-ogrenci) .grade-card[aria-pressed="true"]:after{width:32px;height
 .sec-done{display:flex;align-items:center;justify-content:center}
 .sec-done .mascot{flex:none;height:110px;width:auto;margin-right:var(--space-4)}
 .sec-done p{margin:0;max-width:420px}
+/* Bitiş mesajları (etkinlik, test, oyun, bulmaca, sanal masaüstü): solda küçük maskot */
+.end-msg{display:flex;align-items:center}
+.end-msg .mascot,.sim-done .mascot{flex:none;height:calc(64px * var(--k));width:auto;margin-right:var(--space-3)}
+.sim-done{display:flex;align-items:center}
 .btn.on-color{background:var(--surface-default);border-color:var(--surface-default);color:var(--text-primary);min-height:52px;font-size:1.1rem}
 .btn.on-color:hover{background:var(--surface-hover)}
 .btn.on-color-line{background:transparent;border:2px solid var(--action-on-primary);color:var(--action-on-primary);min-height:52px}
@@ -294,6 +300,7 @@ html.role-ogrenci .tabs{display:none}
 .sec-defter.done .sq{color:var(--text-primary)}
 .sec-card.done .badge{background:var(--c);color:var(--action-on-primary)}
 .sec-defter.done .badge{color:var(--text-primary)}
+.sec-card.next .badge{background:var(--accent-light);color:var(--text-primary)}
 .sec-cta{display:flex;justify-content:center}
 /* Bölümün içinde: geri düğmesi ve renkli kare başlık */
 .sec-back{min-height:48px}
@@ -469,7 +476,7 @@ section.block > .block-hint + *{margin-top:var(--space-3)}
 .act-steps button{min-height:var(--size-control-sm);border:1.5px solid var(--action-primary);background:var(--surface-default);color:var(--action-primary);border-radius:var(--radius-md);padding:0 var(--space-3);font-weight:800;font-size:.85rem}
 .act-steps li.done button{border-color:var(--feedback-success);color:var(--feedback-success)}
 .finish{border-radius:var(--radius-md);padding:var(--space-4);background:var(--feedback-success-subtle);color:var(--feedback-success);font-weight:800;display:none}
-.finish.show{display:block}
+.finish.show{display:flex}
 
 /* Açılır bölüm */
 .fold{background:var(--surface-default);border:1px solid var(--border-default);border-radius:var(--radius-xl)}

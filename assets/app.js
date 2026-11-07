@@ -152,6 +152,8 @@
   function nowWeek() { return BD.calendar && window.schoolWeek ? window.schoolWeek(new Date(), BD.calendar) : { w: 1, state: "once" }; }
   // Maskot (logodaki defter): selam, kutlama ve boş durumda. Süs, ekran okuyucuya okunmaz.
   function mascot(cls) { return '<img class="mascot' + (cls ? " " + cls : "") + '" src="assets/maskot.webp" alt="">'; }
+  // Bitiş mesajı: solda küçük maskot, sağda metin (metin güvenli, kodun içinden gelir)
+  function endMsg(t) { return mascot() + '<span>' + t + '</span>'; }
   function weekHero(g) {
     var plan = (BD.plan[g] || []).slice().sort(function (a, b) { return a.w - b.w; });
     if (!plan.length) return '<div class="empty">' + mascot() + 'Bu sınıfın dersleri henüz eklenmedi.</div>';
@@ -308,7 +310,7 @@
       '<div class="goal"><b>' + (isStudent() ? "Görev:" : "Hedef:") + '</b> ' + esc(A.goal) + '</div>' +
       (A.needs ? '<div class="needs">' + A.needs.map(function (n) { return '<span>' + esc(n) + '</span>'; }).join("") + '</div>' : "") +
       '<ol class="act-steps" data-key="' + key + '" data-total="' + A.steps.length + '">' + A.steps.map(function (st, i) { return stepHtml(st, i, done.indexOf(i) >= 0, key); }).join("") + '</ol>' +
-      '<div class="finish' + (done.length === A.steps.length ? " show" : "") + '">Görev tamam! 🎉 Etkinliği bitirdin.</div>';
+      '<div class="finish' + (done.length === A.steps.length ? " show" : "") + ' end-msg">' + endMsg("Görev tamam! 🎉 Etkinliği bitirdin.") + '</div>';
     if (A.online) html += S.internet
       ? '<div class="goal"><b>İnternet varsa:</b> ' + esc(A.online) + '</div>'
       : '<div class="goal"><b>İnternet yok:</b> Bu etkinlik için internete gerek yok. ' + (isStudent() ? "Araştırma için yukarıdaki bilgi kartlarını kullan." : "Öğrenciler araştırma için yukarıdaki bilgi kartlarını kullanır.") + '</div>';
@@ -566,7 +568,8 @@
     var quizState = function (live) {
       var n = L.quiz.length, done = L.quiz.filter(function (q, i) { return finished(i); }).length, all = done === n;
       var first = L.quiz.filter(function (q, i) { return picks[i] && picks[i][0] === q.a; }).length;
-      $("#score").textContent = !all ? "" : first === n ? n + " sorunun " + ek(n) + " de ilk denemede doğru! 🎉" : n + " sorudan " + ek(first) + " ilk denemede doğru.";
+      var sc = $("#score"); sc.classList.toggle("end-msg", all);
+      sc.innerHTML = !all ? "" : endMsg(first === n ? n + " sorunun " + ek(n) + " de ilk denemede doğru! 🎉" : n + " sorudan " + ek(first) + " ilk denemede doğru.");
       $("#quizAgain").hidden = !Object.keys(picks).length;
       setTabDone("test", all);
       if (live && all && first === n) celebrate($("#score"));
@@ -647,7 +650,7 @@
       });
       var m = $("#sortMsg");
       if (!placed) { m.textContent = "Önce kartları kutulara yerleştir."; m.className = "fb w"; }
-      else if (ok === s.items.length) { m.textContent = "🎉 Hepsi doğru!"; m.className = "fb r"; celebrate(m); store.set("sort:" + L.id, true); setTabDone("oyun", true); }
+      else if (ok === s.items.length) { m.innerHTML = endMsg("🎉 Hepsi doğru!"); m.className = "fb r end-msg"; celebrate(m); store.set("sort:" + L.id, true); setTabDone("oyun", true); }
       else { m.textContent = ok + " / " + s.items.length + " doğru. " + (placed < s.items.length ? "Yerleştirilmemiş kartlar var. " : "") + "✕ işaretli kartları başka kutuya taşı."; m.className = "fb w"; }
     };
     $("#sortReset").onclick = reset;
@@ -676,7 +679,7 @@
     var saveKey = "cw:" + L.id, saved = store.get(saveKey, {});
     Object.keys(saved).forEach(function (k) { var i = inp(k); if (i) i.value = saved[k]; });
     var persist = function () { var o = {}; $$(".cw-cell", root).forEach(function (el) { var v = $("input", el).value; if (v) o[el.getAttribute("data-k")] = v; }); store.set(saveKey, o); };
-    var msg = function (t, good) { var m = $("#cwMsg"); m.textContent = t; m.className = "cw-msg " + (good ? "r" : "w"); };
+    var msg = function (t, good, end) { var m = $("#cwMsg"); if (end) m.innerHTML = endMsg(t); else m.textContent = t; m.className = "cw-msg " + (good ? "r" : "w") + (end ? " end-msg" : ""); };
     var cur = null, curWord = null;
     function select(k, w) {
       var opts = wordsAt(k);
@@ -714,7 +717,7 @@
       i.addEventListener("input", function () {
         var ch = window.cwClean(i.value).slice(-1);
         i.value = ch; el.classList.remove("ok", "bad"); persist(); $("#cwMsg").textContent = "";
-        if (solved()) msg("🎉 Harika! Bulmacayı tamamen çözdün.", true);
+        if (solved()) msg("🎉 Harika! Bulmacayı tamamen çözdün.", true, true);
         if (ch) { flash(i, "pop"); step(1); }
       });
       i.addEventListener("keydown", function (e) {
@@ -732,7 +735,7 @@
         var v = $("input", el).value; el.classList.remove("ok", "bad"); if (!v) return; filled++;
         if (v === X.cells[el.getAttribute("data-k")]) el.classList.add("ok"); else { el.classList.add("bad"); wrong++; }
       });
-      if (solved()) msg("🎉 Harika! Bulmacayı tamamen çözdün.", true);
+      if (solved()) msg("🎉 Harika! Bulmacayı tamamen çözdün.", true, true);
       else if (!filled) msg("Önce birkaç kutuyu doldur.", false);
       else if (wrong) msg(wrong + " harf yanlış, ✕ işaretli kutulara tekrar bak.", false);
       else msg("Şimdiye kadar hepsi doğru! " + (total - filled) + " kutu kaldı.", true);
@@ -740,7 +743,7 @@
     $("#cwHint").onclick = function () {
       var t = cur && inp(cur).value !== X.cells[cur] ? cur : Object.keys(X.cells).filter(function (k) { return inp(k).value !== X.cells[k]; })[0];
       if (!t) return; inp(t).value = X.cells[t]; cellEl(t).classList.add("ok"); persist(); select(t);
-      if (solved()) msg("🎉 Harika! Bulmacayı tamamen çözdün.", true);
+      if (solved()) msg("🎉 Harika! Bulmacayı tamamen çözdün.", true, true);
     };
     $("#cwClear").onclick = function () { $$(".cw-cell", root).forEach(function (el) { $("input", el).value = ""; el.classList.remove("ok", "bad"); }); persist(); solved(); $("#cwMsg").textContent = ""; };
     solved(); ready = true;

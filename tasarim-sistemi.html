@@ -284,10 +284,10 @@ body{background:var(--surface-subtle)}
   add({ id: "mesaj", group: "Geri bildirim", name: "Sonuç mesajı", cls: ".fb, .finish",
     desc: "Cevaptan ya da bitirilen etkinlikten sonra gelen kısa mesaj.",
     where: "Mini test, oyun, bulmaca, etkinlik.",
-    rules: ["Doğru yeşil (<code>.fb.r</code>), ilk yanlışta ipucu lacivert (<code>.fb.h</code>), ikinci yanlış kırmızı (<code>.fb.w</code>). Renk tek başına bilgi taşımaz, mesaj yazılıdır.", "İlk yanlışta \"Az kaldı!\" + ipucu (<code>hint</code>); ikincide \"Bu sefer olmadı.\" + neden (<code>why</code>) + doğru cevap.", "Emoji yalnızca kutlamada.", "Emoji süs olarak kalabilir, görünmese de mesaj anlaşılır."],
+    rules: ["Doğru yeşil (<code>.fb.r</code>), ilk yanlışta ipucu lacivert (<code>.fb.h</code>), ikinci yanlış kırmızı (<code>.fb.w</code>). Renk tek başına bilgi taşımaz, mesaj yazılıdır.", "İlk yanlışta \"Az kaldı!\" + ipucu (<code>hint</code>); ikincide \"Bu sefer olmadı.\" + neden (<code>why</code>) + doğru cevap.", "Emoji yalnızca kutlamada.", "Bitişte (etkinlik bitti, test sonucu, oyun hepsi doğru, bulmaca tamam) solda 64 px maskot: <code>.end-msg</code>, <code>endMsg()</code>.", "Emoji süs olarak kalabilir, görünmese de mesaj anlaşılır."],
     props: [{ k: "tur", l: "Tür", t: "seg", d: "dogru", o: [["dogru", "Doğru"], ["ipucu", "İlk yanlış"], ["yanlis", "İkinci yanlış"], ["bitti", "Bitti"]] }],
     render: function (p) {
-      if (p.tur === "bitti") return '<div class="finish show">Görev tamam! 🎉 Etkinliği bitirdin.</div>';
+      if (p.tur === "bitti") return '<div class="finish show end-msg"><img class="mascot" src="assets/maskot.webp" alt=""><span>Görev tamam! 🎉 Etkinliği bitirdin.</span></div>';
       return p.tur === "dogru" ? '<div class="fb r">Doğru! 👏</div>' : p.tur === "ipucu" ? '<div class="fb h">' + esc(quizFb(q0, 1)) + '</div>' : '<div class="fb w">' + esc(quizFb(q0, 2)) + '</div>';
     },
     variants: [["Doğru", {}], ["İlk yanlış: ipucu", { tur: "ipucu" }], ["İkinci yanlış: neden", { tur: "yanlis" }], ["Etkinlik bitti", { tur: "bitti" }]]
@@ -337,14 +337,15 @@ body{background:var(--surface-subtle)}
 
   add({ id: "maskot", group: "Geri bildirim", name: "Maskot", cls: ".mascot, .logo-img",
     desc: "Logodaki defter karakteri. Sitenin yüzü: logoda, sekme simgesinde ve öğrenciyle konuştuğu anlarda görünür.",
-    where: "Üst banttaki logo, Bu hafta kartı, ders bitti mesajı, boş durumlar, sayfa bulunamadı.",
-    rules: ["Dosya <code>assets/maskot.webp</code> (420 px, saydam); sekme simgesi <code>assets/maskot-64.png</code>.", "Süstür: <code>alt=\"\"</code>, yanındaki metin anlamı taşır.", "Boyutlar: logo 46 px, boş durum ve kutlama 110 px, hafta kartı 150 px (monitörde <code>--k</code> ile büyür).", "Logo dışında her ekranda en fazla bir maskot. Ders içeriğine (slayt, test, bulmaca) girmez; dikkati dağıtmasın.", "Biçimi değiştirilmez: döndürme, kırpma, renk değişimi yok."],
-    props: [{ k: "yer", l: "Yer", t: "seg", d: "kutlama", o: [["kutlama", "Kutlama"], ["bos", "Boş durum"]] }],
+    where: "Üst banttaki logo, Bu hafta kartı, ders bitti mesajı, bitiş mesajları (etkinlik, test sonucu, oyun, bulmaca, sanal masaüstü), boş durumlar, sayfa bulunamadı.",
+    rules: ["Dosya <code>assets/maskot.webp</code> (420 px, saydam); sekme simgesi <code>assets/maskot-64.png</code>.", "Süstür: <code>alt=\"\"</code>, yanındaki metin anlamı taşır.", "Boyutlar: logo 46 px, bitiş mesajı 64 px (<code>.end-msg</code>), boş durum ve ders bitti 110 px, hafta kartı 150 px (monitörde <code>--k</code> ile büyür).", "Logo dışında her ekranda en fazla bir maskot. Ders içinde yalnızca sonda çıkar (etkinlik bitti, test sonucu, oyun ve bulmaca tamam, sanal masaüstü tebrik); çalışırken (slayt, soru, kart) görünmez, dikkati dağıtmasın.", "Tek poz var. Başka poz (sevinen, düşünen) için görselin çizeri yeni çizim verir; görsel bilgisayarda değiştirilmez.", "Biçimi değiştirilmez: döndürme, kırpma, renk değişimi yok."],
+    props: [{ k: "yer", l: "Yer", t: "seg", d: "kutlama", o: [["kutlama", "Kutlama"], ["son", "Bitiş mesajı"], ["bos", "Boş durum"]] }],
     render: function (p) {
+      if (p.yer === "son") return '<div class="score end-msg"><img class="mascot" src="assets/maskot.webp" alt=""><span>5 sorunun 5\'i de ilk denemede doğru! 🎉</span></div>';
       return p.yer === "bos" ? '<div class="empty"><img class="mascot" src="assets/maskot.webp" alt="">Bu sınıfın hazır dersi henüz yok.</div>'
         : '<div class="sec-done"><img class="mascot" src="assets/maskot.webp" alt=""><p class="progress full">Bu dersin bütün görevlerini bitirdin! 🎉 İstediğin bölüme tekrar bakabilirsin.</p></div>';
     },
-    variants: [["Kutlama", {}], ["Boş durum", { yer: "bos" }]]
+    variants: [["Kutlama", {}], ["Bitiş mesajı", { yer: "son" }], ["Boş durum", { yer: "bos" }]]
   });
 
   add({ id: "bu-hafta", group: "Kartlar", name: "Bu hafta kartı", cls: ".wk-hero",
@@ -402,7 +403,7 @@ body{background:var(--surface-subtle)}
   add({ id: "bolum-karti", group: "Kartlar", name: "Bölüm kartı", cls: ".sec-card",
     desc: "Öğrencinin dersteki bölümleri: Sunum, Deftere yaz, Etkinlik, Oyun, Mini test, Bulmaca.",
     where: "Öğrenci: ders girişi.",
-    rules: ["Zemin bölümün rengi (<code>--sec-*</code>). Defterde yazı koyu.", "Sağ üstte sıra numarası, küçük ve tam opak (en az 4,5:1); \"Sıradaki\" etiketinden sönük kalır. Biten bölümde \"Bitti ✓\", ilk bitmeyende \"Sıradaki\" ve kalın çerçeve.", "Biten kartın zemini beyaz; kenar, ikon karesi ve etiket bölümün renginde (<code>--c</code>). Bitmeyenler renkli kalır, ayrım ilk bakışta görünür.", "Kartların üstünde görünür \"Bölümler\" başlığı (<code>.label-h</code>) bandı kartlardan ayırır.", "Kartlar 1000 px üstünde tek sıra, ortada 3'lü, dar ekranda 2'li dizilir. Dizüstünde kart 260 px. Okul monitöründe 3×2 dizilir (kart 240 px), ikon karesi <code>--k</code> ile büyür; telefonda kart 140 px, ikon karesi 48 px.", "Numara ekran okuyucuya okunmaz (<code>aria-hidden</code>); kartın adı bölüm, miktar ve durumdur: \"Sunum, 11 slayt, tamamlandı\"."],
+    rules: ["Zemin bölümün rengi (<code>--sec-*</code>). Defterde yazı koyu.", "Sağ üstte sıra numarası, küçük ve tam opak (en az 4,5:1); \"Sıradaki\" etiketinden sönük kalır. Biten bölümde \"Bitti ✓\", ilk bitmeyende \"Sıradaki\" ve kalın çerçeve. \"Sıradaki\" etiketi maskotun açık mavisinde (<code>--accent-light</code>), yazı koyu (7,8:1).", "Biten kartın zemini beyaz; kenar, ikon karesi ve etiket bölümün renginde (<code>--c</code>). Bitmeyenler renkli kalır, ayrım ilk bakışta görünür.", "Kartların üstünde görünür \"Bölümler\" başlığı (<code>.label-h</code>) bandı kartlardan ayırır.", "Kartlar 1000 px üstünde tek sıra, ortada 3'lü, dar ekranda 2'li dizilir. Dizüstünde kart 260 px. Okul monitöründe 3×2 dizilir (kart 240 px), ikon karesi <code>--k</code> ile büyür; telefonda kart 140 px, ikon karesi 48 px.", "Numara ekran okuyucuya okunmaz (<code>aria-hidden</code>); kartın adı bölüm, miktar ve durumdur: \"Sunum, 11 slayt, tamamlandı\"."],
     props: [
       { k: "bolum", l: "Bölüm", t: "select", d: "etkinlik", o: secOpts },
       { k: "durum", l: "Durum", t: "seg", d: "", o: [["", "Bekliyor"], ["next", "Sıradaki"], ["done", "Bitti"]] },
@@ -441,7 +442,7 @@ body{background:var(--surface-subtle)}
   add({ id: "ust-bant", group: "Gezinme", name: "Üst bant", cls: ".top",
     desc: "Her sayfanın üstünde: logo, arama, sayfalar ve ayarlar.",
     where: "Her sayfa.",
-    rules: ["Açık zemin, altta ince çizgi; sayfa kayınca üstte kalır.", "Öğrencide yalnızca logo ve kilitli \"Öğretmen\" düğmesi.", "1180 px altında düğme iç boşluğu 8 px, arama en az 160 px: 1024 px'te tek satır.", "Görünüm düğmesiyle öğrenci hâline geçin."],
+    rules: ["Beyaz zemin (<code>--surface-default</code>), altta ince çizgi ve hafif gölge (<code>--shadow-sm</code>); sayfa kayınca üstte kalır. Gri sayfa zemininden ayrı durur.", "Öğrencide yalnızca logo ve kilitli \"Öğretmen\" düğmesi.", "1180 px altında düğme iç boşluğu 8 px, arama en az 160 px: 1024 px'te tek satır.", "Görünüm düğmesiyle öğrenci hâline geçin."],
     props: [
       { k: "aktif", l: "Açık sayfa", t: "seg", d: "", o: [["", "Ana sayfa"], ["kazanimlar", "Kazanım"], ["kagitlar", "Kâğıtlar"], ["ogretmen", "Masa"]] },
       { k: "buyuk", l: "A+ açık", t: "bool", d: false }
@@ -643,7 +644,7 @@ body{background:var(--surface-subtle)}
     ["Yüzey", [["--surface-default", "Kart"], ["--surface-subtle", "Sayfa zemini"], ["--surface-hover", "Nötr kontrol üzerine gelince"], ["--surface-setting", "Üst banttaki rol ve A+ zemini"]]],
     ["Kenarlık", [["--border-default", "Kart kenarı"], ["--border-strong", "Kontrol kenarı"], ["--border-focus", "Klavye odağı"]]],
     ["Geri bildirim", [["--feedback-success", "Doğru, tamamlandı, hazır"], ["--feedback-success-subtle", "Doğru zemini"], ["--feedback-error", "Yanlış, silme onayı"], ["--feedback-error-subtle", "Yanlış zemini"]]],
-    ["Sınıf ve vurgu", [["--grade-6", "6. sınıf"], ["--grade-6-subtle", "6. sınıf açık zemin"], ["--highlight", "Fosforlu kalem, slayt başlığı"], ["--highlight-subtle", "Seçili kelime, seçili kart"]]],
+    ["Sınıf ve vurgu", [["--grade-6", "6. sınıf"], ["--grade-6-subtle", "6. sınıf açık zemin"], ["--highlight", "Fosforlu kalem, slayt başlığı"], ["--highlight-subtle", "Seçili kelime, seçili kart"], ["--accent-light", "Maskotun açık mavisi: Sıradaki etiketi. Üstünde yazı koyu"]]],
     ["Defter ve slayt", [["--notebook-line", "Defter çizgisi"], ["--notebook-margin", "Defter kenar çizgisi"], ["--slide-bg", "Slayt zemini"], ["--slide-bg-light", "Başlık slaytı geçişi"]]],
     ["Temalar", TH.map(function (t) { return ["--theme-" + t.no, t.no + ". tema: " + t.name]; })],
     ["Ders bölümleri", Object.keys(SEC).map(function (k) { return ["--sec-" + k, SEC[k] + " bölümü"]; })]

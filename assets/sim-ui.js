@@ -266,7 +266,7 @@
       var head;
       if (!t) {
         var used = hints;
-        head = '<div class="sim-done' + (msg && msg.pop ? " pop" : "") + '"><b>Tebrikler!</b><p>' + n + ' görevi tamamladın, ' + (used ? used + " kez ipucu kullandın." : "hiç ipucu kullanmadın.") + '</p><p class="hint">' + (doneAt ? esc(new Date(doneAt).toLocaleString("tr")) + ' · ' : "") + 'Bu ekranı öğretmenine gösterebilirsin.</p></div>';
+        head = '<div class="sim-done' + (msg && msg.pop ? " pop" : "") + '"><img class="mascot" src="assets/maskot.webp" alt=""><div><b>Tebrikler!</b><p>' + n + ' görevi tamamladın, ' + (used ? used + " kez ipucu kullandın." : "hiç ipucu kullanmadın.") + '</p><p class="hint">' + (doneAt ? esc(new Date(doneAt).toLocaleString("tr")) + ' · ' : "") + 'Bu ekranı öğretmenine gösterebilirsin.</p></div></div>';
       } else {
         var c = t.check, q = c.type === "answer" ? '<div class="sim-opts" role="group" aria-label="Cevaplar">' + c.options.map(function (op, i) { return '<button type="button" class="btn" data-ans="' + i + '" data-f="a|' + i + '">' + esc(op) + '</button>'; }).join("") + '</div>' : "";
         head = '<div class="sim-now' + (msg && msg.pop ? " pop" : "") + '"><small>Görev ' + (idx + 1) + ' / ' + n + '</small><div class="sim-now-t">' + svg(TASK_ICON[C.expected(t)[0]] || "look", "si big") + '<b>' + esc(txt(t.text)) + '</b></div>' + q + '</div>';
