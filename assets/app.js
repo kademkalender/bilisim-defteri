@@ -341,6 +341,7 @@
       var isNext = !d && !next; if (isNext) next = c;
       c.classList.toggle("done", d); c.classList.toggle("next", isNext);
       b.textContent = d ? "Bitti ✓" : isNext ? "Sıradaki" : b.getAttribute("data-n");
+      c.setAttribute("aria-label", $("b", c).textContent + ", " + $("small", c).textContent + (d ? ", tamamlandı" : isNext ? ", sıradaki" : ""));
     });
     var cta = $("#secNext");
     cta.hidden = !next; $("#secDone").hidden = !!next;
@@ -377,11 +378,12 @@
 
     return '' +
       '<div class="lesson-band" style="background:var(--theme-' + L.theme + ')"><a class="back" href="#home" aria-label="Ana sayfa">' + icon("back") + '</a><div><small>' + L.grade + '. sınıf · ' + L.week + '. hafta' + (T ? ' · Tema ' + L.theme + ': ' + esc(Th.name) + ' · ' + esc(L.duration) : "") + '</small><h1>' + esc(L.title) + '</h1></div>' +
-        (T ? '<span class="band-code">' + L.outcome + '</span></div>' : '<div class="band-prog" id="bandProg"><span></span><div class="bar"><span></span></div></div></div>' +
+        (T ? '<span class="band-code">' + L.outcome + '</span></div>' : '<div class="band-prog" id="bandProg"><span></span><div class="bar"><span></span></div></div>' +
+        '<div class="band-cta" id="bandCta"' + (active === "hub" ? "" : " hidden") + '><button type="button" class="btn on-color" id="secNext" data-tab="slayt">Başla: Sunum</button></div></div>' +
         panel("hub", "Bölümler", "", '<div class="sec-cards">' + tabs.slice(1).map(function (t, i) {
           var n = { slayt: L.slides.length + " slayt", defter: L.notebook.length + " madde", etkinlik: L.sim ? L.sim.tasks.length + " görev" : L.activities.lab.steps.length + " görev", oyun: hasSort ? L.sort.items.length + " kart" : "", test: L.quiz.length + " soru", bulmaca: hasCw ? L.crossword.length + " kelime" : "" }[t[0]];
-          return '<button type="button" class="sec-card sec-' + t[0] + '" data-tab="' + t[0] + '"><span class="sq">' + icon(t[0]) + '</span><span class="badge" data-n="' + (i + 1) + '">' + (i + 1) + '</span><b>' + t[1] + '</b><small>' + n + '</small></button>';
-        }).join("") + '</div><div class="sec-cta"><button type="button" class="btn primary" id="secNext" data-tab="slayt">Başla: Sunum</button><p id="secDone" class="progress full" hidden>Bu dersin bütün görevlerini bitirdin! 🎉 İstediğin bölüme tekrar bakabilirsin.</p></div>')) +
+          return '<button type="button" class="sec-card sec-' + t[0] + '" data-tab="' + t[0] + '"><span class="sq">' + icon(t[0]) + '</span><span class="badge" aria-hidden="true" data-n="' + (i + 1) + '">' + (i + 1) + '</span><b>' + t[1] + '</b><small>' + n + '</small></button>';
+        }).join("") + '</div><div class="sec-cta"><p id="secDone" class="progress full" hidden>Bu dersin bütün görevlerini bitirdin! 🎉 İstediğin bölüme tekrar bakabilirsin.</p></div>')) +
 
       '<div class="tabs" id="tabs" role="tablist" aria-label="Ders bölümleri">' + tabs.map(function (t, i) {
         var on = t[0] === active;
@@ -496,6 +498,7 @@
       });
       if (focus && isStudent()) { var hd = $("#b-" + key + " h2"); hd.tabIndex = -1; hd.focus({ preventScroll: true }); }
       if (key === "slayt") fit(); // gizliyken genişliği sıfırdı
+      var bc = $("#bandCta"); if (bc) bc.hidden = key !== "hub"; // bölümün içinde kendi Sonraki bölüm düğmesi var
       var bar = $(".top"), top = $(isStudent() ? ".lesson-band" : "#tabs").getBoundingClientRect().top - (getComputedStyle(bar).position === "sticky" ? bar.offsetHeight : 0) - 12;
       if (top < 0 || (key === "slayt" && !isStudent())) window.scrollBy(0, top);
     };
