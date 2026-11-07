@@ -34,17 +34,21 @@ Kayıt şablonu:
 - Ana sayfa başlığı: öğrencide "Merhaba! Sınıfını seç" yerine "Merhaba!" (1.5rem, eskiden 2.2rem) ve sınıf kartlarının üstünde "Sınıfın" etiketi. Sayfanın en büyük yazısı artık hafta kartındaki ders adı (1.9rem). Öğretmen başlığı da 1.5rem. Sentetik G1/G3 OK, dogrula 0.
 - Sınıf seçici küçülür (Gestalt 1): sınıf bir kez seçilince (`S.gradeSet`, `BD.defaults`'ta false) kartlar 52 px'e iner ve başlıkla aynı satırda sağa geçer ("Sınıfın" etiketiyle); telefonda başlığın altında. İlk açılışta büyük kartlar. 1366×768'de şerit 689 → 534 px, telefonda ana sayfa tek ekrana sığar. İki rol, 5/6 geçişi ve odak denendi. Testler 33/33, G1/G3 OK.
 - Kullanıcı küçük seçiciden sonra altın boş kaldığını söyledi: öğrencide açılan yeri Bu hafta kartı alıyor (761 px ve üstü: 310 px, ders adı 2.5rem, maskot 250 px, büyük Başla). 1366×768'de sayfa 648 px'te biter, 1880×900'de ekrana tam oturur.
+- Marka kimliği tamamlama: maskot ders sonlarında 64 px (`.end-msg`, `endMsg()`): etkinlik bitti, test sonucu, oyun "Hepsi doğru!", bulmaca tamam, sanal masaüstü "Tebrikler!". Maskotun açık mavisi token oldu (`--accent-light: #5BC2F7`, görselden ölçüldü) ve "Sıradaki" etiketinde kullanıldı (koyu yazıyla 7,8:1). İlerleme çubuğunda kullanılmadı: tema bantlarının üstünde 2,7–3,9:1, beyaz dolgu daha net. Katalogda Maskot "Bitiş mesajı" çeşidi, Geri bildirim "Bitti" çeşidi ve Renkler güncel.
+- Üst bant beyaz oldu (`--surface-default`, altta ince çizgi ve `--shadow-sm`); gri sayfa zemininden ayrılır. Açık mavi (`#E3F4FD`, altta `--accent-light` çizgi) denendi, kullanıcı beğenmedi; lacivertte maskot zeminde kayboldu. Rol ve A+ bej zeminde kaldı.
 
 **Kararlar**
-- Görsel kimlik için maskot yönü seçildi (desen ve konu çizimi yerine); maskot ders içeriğine girmez.
+- Görsel kimlik için maskot yönü seçildi (desen ve konu çizimi yerine).
+- Maskot ders içinde yalnızca sonda çıkar (bitiş ve sonuç mesajları); çalışırken görünmez. Selam balonu ve maskot adı şimdilik yok (kullanıcı kararı).
+- Maskotun tek pozu var; sevinen, düşünen gibi pozlar raster görselden üretilemez, çizerden gelirse eklenir.
+- Ana sayfada ilerleme izi yapılmayacak (kullanıcı: öğrenciler geriye bakmak isteyebilir, öğretmenler plandan geride olabilir).
 - Başla düğmesi kaldırılmadı, banda taşındı (kullanıcı "tüm bulguları çöz" dedi, yer kararı Claude'un).
 
 **Yarım kalan işler**
 - [ ] Dizüstünde (1366×657) kartların altında 104 px boşluk kaldı.
-- [ ] Ana sayfada ilerleme izi (hafta kartında "Devam et", şeritte ✓).
 - [ ] Mavi temada (Tema 3) maskot zemine yakın; istenirse beyaz hale.
 - [ ] Pencere daraltılıp genişletilince hafta şeridi 5 haftada kalıyor (yenileyince düzelir).
-- [ ] Gestalt 1 (sınıf seçimi seçildikten sonra küçülsün) ve 4 (hafta kartının boş sağ tarafı).
+- [x] Gestalt 1 (sınıf seçimi seçildikten sonra küçülsün) ve 4 (hafta kartının boş sağ tarafı): yapıldı.
 
 ---
 
