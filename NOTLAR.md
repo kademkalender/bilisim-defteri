@@ -23,6 +23,18 @@ Kayıt şablonu:
 - Gelenler: site review düzeltmeleri ve SVG ikonlar (`assets/ikonlar.js`), tasarım sistemi kataloğu (`tasarim-sistemi.html`), yazım rehberi (`YAZIM-REHBERI.md`), sentetik kullanılabilirlik testi (`tools/ux-test/`), hafta şeridi, dönemler ve özel haftalar (`content/plan.js`), telefon ve okul monitörü düzeni, maskot (`assets/maskot.webp`, `assets/maskot-64.png`), yazı/boşluk/köşe tokenları, emojisiz arayüz, oyunda sürükle-bırak, "Sınıf ayarları" adı, aramada eş anlamlılar. CLAUDE.md'ye 7. kural (arayüz katalogdan yapılır).
 - Değişen dosyalar: `assets/app.js`, `assets/style.css`, `assets/sim-ui.js`, `content/plan.js`, 8 ders dosyası ve `_SABLON.js`, `index.html`, `tools/dogrula.js`, README, CLAUDE.md, ICERIK-REHBERI, TASARIM-SISTEMI, NOTLAR, `.gitignore`; yeniler yukarıda.
 - `node tools/dogrula.js`: 0 hata, 0 uyarı. `node --test tools/*.test.js`: 33/33.
+- `cef98e3` Öğrenciye "Sınav çalışma soruları" sayfası (`#sinav`, öğrenci menüsünde). Sınıfın hazır derslerindeki mini test soruları dönemlere göre (2. dönem `BD.calendar.term2` haftasından başlar), her ders bir `details.unit` kutusunda. İki deneme, ipucu ve sonuç dersteki testle aynı: test kodu `quizHtml()` / `bindQuiz(root, sorular, anahtar, onState)` olarak ortaklaştı, ders sayfası da bunu kullanıyor (`#quiz`, `#score`, `#quizAgain` kimlikleri kalktı, yerine `.quiz`, `.score`, `.quiz-again`). Çözümler `bd:sinav:<id>`, dersteki testten ayrı; `clearProgress` bunu da siler. Katalog (Üst bant, Test sorusu, Hafta listesi), README, CLAUDE.md ve YAZIM-REHBERI sözlüğü güncel.
+- Başsız Chrome'da denendi: öğrenci 1366 ve 375 px (yatay taşma yok), yanlış şıkta ipucu, sonuç cümlesi, ders sayfasındaki test etkilenmiyor, "Testi yeniden çöz" odağı. Konsol ve katalog hatasız. Testler 33/33, dogrula 0.
+
+**Kararlar**
+- Sayfa her zaman açık, takvimde sınav haftası tanımlanmadı (kullanıcı kararı). MEB'in Bilişim için sabit sınav haftası olup olmadığı doğrulanmadı.
+- Sorular yeni yazılmadı, derslerin `quiz` alanından geliyor. Ayrı soru havuzu ancak öğretmen onayıyla eklenir.
+- Bağlantı yalnızca öğrenci menüsünde (`.s-only`): öğretmen bandına eklenince 1024 px'te iki satıra çıkıyordu (73 → 133 px). Öğretmen sayfayı adresle (`#sinav`) açabilir.
+
+**Yarım kalan işler**
+- [ ] Sınav çalışma soruları için yazdırılabilir kâğıt yok.
+- [ ] Açılır kutunun başlığında dersin soruları bitince ✓ görünmüyor.
+- [ ] Ders başına 4-5 soru var; sınav çalışması için az kalabilir. Daha fazla soru istenirse önce öğretmen onayı.
 
 ---
 
