@@ -55,7 +55,7 @@ Ders sayfası sekmelidir, aynı anda tek bölüm görünür. **Öğrencinin** se
 
 Biten bölümün sekmesinde numara yerine ✓ görünür. Tarayıcının geri tuşu önceki sekmeye döner.
 
-Öğrenci menüsündeki **Sınav çalışma soruları** (`#sinav`) her zaman açıktır. Sınıfın hazır derslerindeki mini test sorularını dönemlere göre, her dersi açılır bir kutuda toplar. Çözümler dersteki testten ayrı saklanır (`bd:sinav:<id>`). Yeni soru yazılmaz, sorular derslerin `quiz` alanından gelir.
+Öğrenci menüsündeki **Sınav çalışma soruları** (`#sinav`) her zaman açıktır. Sınıfın hazır derslerindeki mini test sorularını dönemlere göre, her dersi açılır bir kutuda toplar. Çözümler dersteki testten ayrı saklanır (`bd:sinav:<id>`). Yeni soru yazılmaz, sorular derslerin `quiz` alanından gelir. Soruların üstünde "Hatırla" bilgi kartları dersin `notebook` maddeleridir. "PDF olarak kaydet" düğmesi (tek ders ya da bütün dersler) tarayıcının yazdırma penceresini açar, kâğıtta kartlar, sorular ve cevap anahtarı vardır.
 
 **Öğretmen** derse ilk sekme olan "Ders planı" ile başlar. Bu sekmede öğrenme çıktısını, 80 dakikalık ders akışını, ölçme aracını, notları, yazdırılacak kâğıdı ve cevap anahtarını görür. Kazanım haritası, Çalışma kâğıtları ve Sınıf ayarları ayrı sayfalardır ve yalnızca öğretmen görünümündedir.
 

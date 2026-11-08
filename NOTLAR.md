@@ -31,8 +31,11 @@ Kayıt şablonu:
 - Sorular yeni yazılmadı, derslerin `quiz` alanından geliyor. Ayrı soru havuzu ancak öğretmen onayıyla eklenir.
 - Bağlantı yalnızca öğrenci menüsünde (`.s-only`): öğretmen bandına eklenince 1024 px'te iki satıra çıkıyordu (73 → 133 px). Öğretmen sayfayı adresle (`#sinav`) açabilir.
 
+- Sınav çalışma sorularına "Hatırla" bilgi kartları ve PDF: her dersin kutusunda soruların üstünde dersin 5 defter maddesi (`notebook`) başlıksız Bilgi kartı olarak (yeni içerik yazılmadı). "Bütün dersleri PDF olarak kaydet" ve her derste "Bu dersi PDF olarak kaydet" düğmesi tarayıcının yazdırma penceresini açar (kütüphane yok, internetsiz). Kâğıt (`#examSheet`, `html.print-exam` iken basılır): kartlar madde listesi, vurgular kalın, sorular, en altta "Cevaplar". Her ders ayrı sayfada; 5. sınıfta bütün dersler 7 sayfa. Chrome'da PDF üretilip okundu, 375 px taşma yok, konsol temiz.
+
 **Yarım kalan işler**
-- [ ] Sınav çalışma soruları için yazdırılabilir kâğıt yok.
+- [x] Sınav çalışma soruları için yazdırılabilir kâğıt (PDF düğmesi).
+- [ ] PDF düğmesi Firefox'ta ve gerçek Pardus'ta denenmedi.
 - [ ] Açılır kutunun başlığında dersin soruları bitince ✓ görünmüyor.
 - [ ] Ders başına 4-5 soru var; sınav çalışması için az kalabilir. Daha fazla soru istenirse önce öğretmen onayı.
 

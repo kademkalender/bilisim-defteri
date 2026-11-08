@@ -419,8 +419,8 @@ body{background:var(--surface-subtle)}
 
   add({ id: "bilgi-karti", group: "Kartlar", name: "Bilgi kartı", cls: ".info-card",
     desc: "İnternet olmadan araştırma için kısa bilgi.",
-    where: "Etkinlik bölümü.",
-    rules: ["Solda 6 px lacivert şerit.", "Başlık ve en fazla iki cümle."],
+    where: "Etkinlik bölümü. Sınav çalışma soruları: \"Hatırla\" başlığı altında dersin defter maddeleri (<code>.exam-cards</code>).",
+    rules: ["Solda 6 px lacivert şerit.", "Başlık ve en fazla iki cümle.", "Sınav çalışma sorularında başlıksız: metin dersin <code>notebook</code> maddesidir, vurgular (<code>mark</code>) sarı alt çizgi; yazdırılan kâğıtta kalın."],
     props: [{ k: "baslik", l: "Başlık", t: "text", d: "Uzantı" }, { k: "metin", l: "Metin", t: "text", d: "Dosya adında noktadan sonra gelen kısımdır. Dosyanın türünü gösterir." }],
     render: function (p) { return '<div class="info-cards"><div class="info-card"><h3>' + esc(p.baslik) + '</h3><p>' + esc(p.metin) + '</p></div></div>'; },
     wrap: function (p, h) { return '<div style="width:320px">' + h + '</div>'; },

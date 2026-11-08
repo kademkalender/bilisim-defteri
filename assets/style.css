@@ -351,6 +351,15 @@ summary.week::-webkit-details-marker{display:none}
 /* Sınav çalışma soruları: dönem başlığı ve açılan dersin soruları */
 .label-h.exam-term{margin-top:var(--space-6)}
 .exam-body{padding:var(--space-4) var(--space-5);background:var(--surface-subtle)}
+.exam-body > .label-h{font-size:var(--fs-md)}
+.exam-body > .label-h + *{margin-bottom:var(--space-5)}
+.exam-cards .info-card p{margin:0}
+.exam-pdf{margin-top:var(--space-4)}
+.nb-list mark,.exam-cards mark{background:linear-gradient(transparent 55%,var(--highlight) 55%);color:inherit;padding:0 2px}
+/* Yazıcı arka planı basmaz: kâğıtta vurgu kalın yazı */
+.exam-sheet mark{background:none;color:inherit;font-weight:700}
+.exam-sheet{display:none}
+.exam-sheet .exam-key{margin:12px 0 0;font-size:.9rem}
 
 /* ---------- Ders sayfası ---------- */
 .outcome{display:grid;gap:var(--space-2)}
@@ -467,7 +476,6 @@ section.block > .block-hint + *{margin-top:var(--space-3)}
 .nb-list li{display:flex;gap:var(--space-3);align-items:flex-start;min-height:40px}
 .nb-list input{margin-top:var(--space-3);width:18px;height:18px;flex:none}
 .nb-list label{cursor:pointer;line-height:1.6;padding:var(--space-2) 0}
-.nb-list mark{background:linear-gradient(transparent 55%,var(--highlight) 55%);color:inherit;padding:0 2px}
 .nb-list li.done label{color:var(--text-secondary);text-decoration:line-through;text-decoration-color:rgba(91,98,112,.5)}
 .nb-foot{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap;line-height:40px}
 .progress{font-weight:700}
@@ -622,6 +630,11 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
   .sheet{border:0;padding:0;max-width:none}
   .sheet h2{break-after:avoid}
   .keep{break-inside:avoid}
+  /* Sınav çalışma soruları: sayfa gizlenir, yalnızca hazırlanan kâğıt basılır */
+  .print-exam #app > :not(.exam-sheet){display:none!important}
+  .print-exam .exam-sheet{display:block}
+  .exam-sheet h1{break-before:page}
+  .exam-sheet h1:first-of-type{break-before:auto}
 }
 
 @media (max-width:760px){

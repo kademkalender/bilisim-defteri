@@ -253,19 +253,40 @@
     var g = S.grade, t2 = term2Week() || 99;
     var ready = (BD.plan[g] || []).filter(function (x) { var L = x.lesson && lessonById(x.lesson); return L && L.quiz && L.quiz.length; }).sort(function (a, b) { return a.w - b.w; });
     var terms = [["1. dönem", ready.filter(function (x) { return x.w < t2; })], ["2. dönem", ready.filter(function (x) { return x.w >= t2; })]].filter(function (t) { return t[1].length; });
-    var intro = isStudent() ? "Sınavdan önce çalışmak istediğin dersi aç, soruları çöz." : g + ". sınıfın hazır derslerindeki mini test soruları, dönemlere göre. Öğrencinin buradaki çözümleri dersteki testten ayrı saklanır.";
+    var intro = isStudent() ? "Sınavdan önce çalışmak istediğin dersi aç. Önce bilgi kartlarını oku, sonra soruları çöz." : g + ". sınıfın hazır derslerindeki defter maddeleri ve mini test soruları, dönemlere göre. Öğrencinin buradaki çözümleri dersteki testten ayrı saklanır.";
+    var pdfHint = isStudent() ? "Açılan pencerede Hedef olarak \"PDF olarak kaydet\"i seç." : "Açılan pencerede Hedef olarak \"PDF olarak kaydet\"i seçin.";
+    var pdfBtn = function (id, label) { return '<button type="button" class="btn" data-pdf="' + (id || "") + '">' + icon("yazdir") + ' ' + label + '</button>'; };
     return '<div class="hello"><h1>Sınav çalışma soruları</h1><p>' + intro + '</p></div>' +
-      (terms.length ? terms.map(function (t) {
+      (terms.length ? '<div class="row">' + pdfBtn("", "Bütün dersleri PDF olarak kaydet") + '<span class="hint">' + pdfHint + '</span></div>' + terms.map(function (t) {
         return '<h2 class="label-h exam-term">' + t[0] + '</h2>' + t[1].map(function (x) {
           var L = lessonById(x.lesson);
           return '<details class="unit" data-id="' + L.id + '"><summary><div class="unit-h"><h3><span class="tn-sq" aria-hidden="true" style="background:var(--theme-' + x.theme + ')">' + x.w + '</span><span class="sr">' + x.w + '. hafta: </span>' + esc(L.title) + '</h3><small>' + L.quiz.length + ' soru' + CHEV + '</small></div></summary>' +
-            '<div class="exam-body">' + quizHtml(L.quiz) + '</div></details>';
+            '<div class="exam-body"><h4 class="label-h">Hatırla</h4><div class="info-cards exam-cards">' + L.notebook.map(function (n) { return '<div class="info-card"><p>' + n.t + '</p></div>'; }).join("") + '</div>' +
+            '<h4 class="label-h">Sorular</h4>' + quizHtml(L.quiz) + '<div class="row exam-pdf">' + pdfBtn(L.id, "Bu dersi PDF olarak kaydet") + '</div></div></details>';
         }).join("");
-      }).join("") : '<div class="empty">' + mascot() + 'Bu sınıfın soruları henüz hazır değil.</div>');
+      }).join("") + '<div class="sheet exam-sheet" id="examSheet"></div>' : '<div class="empty">' + mascot() + 'Bu sınıfın soruları henüz hazır değil.</div>');
+  }
+  // Yazdırılacak kâğıt: kartlar, sorular, en altta cevap anahtarı. Ekranda görünmez, yalnızca html.print-exam iken yazdırılır.
+  function examSheet(ids) {
+    return '<div class="row" style="justify-content:space-between"><b>Bilişim Teknolojileri ve Yazılım · ' + S.grade + '. sınıf</b><span>Sınav çalışma soruları</span></div>' +
+      ids.map(function (id) {
+        var L = lessonById(id);
+        return '<h1 style="margin-top:16px">' + L.week + '. hafta · ' + esc(L.title) + '</h1><h2>Hatırla</h2><ul>' + L.notebook.map(function (n) { return '<li>' + n.t + '</li>'; }).join("") + '</ul>' +
+          '<h2>Sorular</h2>' + L.quiz.map(function (q, i) { return '<div class="q-print keep"><b>' + (i + 1) + '. ' + esc(q.q) + '</b><br>' + q.o.map(function (o, oi) { return '<span>' + String.fromCharCode(65 + oi) + ') ' + esc(o) + '</span>'; }).join("") + '</div>'; }).join("") +
+          '<p class="exam-key"><b>Cevaplar:</b> ' + L.quiz.map(function (q, i) { return (i + 1) + ") " + String.fromCharCode(65 + q.a); }).join(" · ") + '</p>';
+      }).join("");
   }
   function bindExam() {
     $$("#app details.unit[data-id]").forEach(function (d) { var id = d.getAttribute("data-id"); bindQuiz(d, BD.lessons[id].quiz, "sinav:" + id); });
+    $("#app").onclick = function (e) {
+      var b = e.target.closest("[data-pdf]"); if (!b) return;
+      var id = b.getAttribute("data-pdf");
+      $("#examSheet").innerHTML = examSheet(id ? [id] : $$("#app details.unit[data-id]").map(function (d) { return d.getAttribute("data-id"); }));
+      document.documentElement.classList.add("print-exam");
+      window.print();
+    };
   }
+  window.addEventListener("afterprint", function () { document.documentElement.classList.remove("print-exam"); });
 
   /* ---------- Ders sayfası ---------- */
   var imgSrc = function (id, file) { return "content/img/" + id + "/" + file; };
