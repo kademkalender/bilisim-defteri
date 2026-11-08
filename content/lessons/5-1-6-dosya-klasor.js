@@ -22,9 +22,9 @@ BD.lesson({
     ], b: "a" },
     { h: "Temel işlemler", list: ["Oluştur: yeni klasör aç", "Yeniden adlandır: adını değiştir (F2)", "Kopyala: aynısından bir tane daha yap", "Taşı: yerini değiştir", "Sil: Çöp Kutusu'na gönder", "Ara: adını yazarak bul"], b: "a" },
     { h: "Düzenli bir klasör örneği", p: "İpucu: Kısa ve anlaşılır isim ver. Boşluk yerine _ kullanabilirsin.", side: "ornek-02.png", alt: "Düzenli bir klasör ağacı: üstte 5A_Ayse ana klasörü, altında Resimler, Yazilar ve Sesler adında üç alt klasör (geçici örnek görsel).", b: "b" },
-    { emoji: "🎒", h: "Sıkıştırma nedir?", p: "Kıyafetleri çantaya katlayarak koyarsak daha az yer kaplar. Sıkıştırma da dosyaların kapladığı alanı küçültür ve birçok dosyayı tek bir .zip dosyasında toplar.", b: "c" },
+    { emoji: "🎒", h: "Sıkıştırma nedir?", p: "Kıyafetleri çantaya katlayarak koyarsak daha az yer kaplar. Sıkıştırma da dosyaların kapladığı alanı küçültür. Birçok dosyayı tek bir .zip dosyasında toplar.", b: "c" },
     { h: "Ne zaman sıkıştırmalıyız?", cols: [
-      { h: "Sıkıştır 👍", p: "Çok sayıda dosyayı tek seferde göndereceksen, yer azaldıysa, eski dosyaları saklayacaksan." },
+      { h: "Sıkıştır 👍", p: "Birçok dosyayı birlikte göndereceğin zaman. Bilgisayarda yer azaldığında. Eski dosyaları saklarken." },
       { h: "Sıkıştırma 👎", p: "Her gün kullandığın bir dosyayı. Her seferinde açmak zaman kaybettirir." }
     ], b: "c" },
     { emoji: "✏️", h: "Sıra sende!", p: "Deftere Yaz kısmını defterine geçir, sonra etkinliğe başla.", end: true }
@@ -35,7 +35,7 @@ BD.lesson({
     { t: "<mark>Uzantı</mark>: Dosya adında noktadan sonra gelen kısımdır. Dosyanın türünü gösterir. Örnek: .odt yazı, .png resim, .mp3 ses.", b: "a" },
     { t: "Temel işlemler: <mark>oluştur, yeniden adlandır, kopyala, taşı, sil, ara</mark>. Kopyalayınca dosya iki tane olur, taşıyınca yeri değişir.", b: "a" },
     { t: "Dosyalara <mark>kısa ve anlaşılır</mark> isimler veririz. Örnek: 5A_Ayse_Odev1.odt", b: "b" },
-    { t: "<mark>Sıkıştırma</mark> dosyaların kapladığı alanı küçültür (.zip). Göndermek ve saklamak için kullanılır, her gün kullandığımız dosyalar için gerekmez.", b: "c" }
+    { t: "<mark>Sıkıştırma</mark> dosyaların kapladığı alanı küçültür (.zip). Göndermek ve saklamak için kullanılır. Her gün kullandığımız dosyalar için gerekmez.", b: "c" }
   ],
 
   sort: {
@@ -114,7 +114,7 @@ BD.lesson({
         check: { type: "answer", options: ["Resimler (.png .jpg)", "Düz yazı dosyaları (.txt)", "Ses dosyaları (.mp3 .ogg)"], correct: 1 },
         hint: "Zip dosyasını çift tıkla. Tablonun son sütunundaki \"% küçüldü\" yazısına bak.",
         show: "Masaüstü/{ana}.zip",
-        success: "Doğru! Düz yazı çok küçülür. Resim ve ses dosyaları zaten sıkıştırılmış biçimlerdir, pek küçülmez. Sıkıştırma en çok, çok sayıda dosyayı tek seferde gönderirken işe yarar." }
+        success: "Doğru! Düz yazı çok küçülür. Resim ve ses dosyaları zaten sıkıştırılmış biçimlerdir, pek küçülmez. Sıkıştırma en çok, birçok dosyayı birlikte gönderirken işe yarar." }
     ],
     // Testler ve doğrulayıcı bu adımları oynatıp bütün görevlerin bittiğini kontrol eder.
     solution: [
@@ -144,7 +144,7 @@ BD.lesson({
         { t: "Bir resim programında basit bir çizim yap ve Resimler klasörüne kaydet.", pardus: "LibreOffice Draw kullan, PNG olarak dışa aktar.", windows: "Paint kullan, PNG olarak kaydet." },
         "Resminin adını 5A_Adin_Resim1 olarak değiştir. Kısayol: dosyayı seç ve F2'ye bas.",
         "Yazı dosyanın bir kopyasını oluştur: Dosyayı seç, Ctrl + C, sonra Ctrl + V. Kaç dosya oldu?",
-        "Kopyayı Sesler klasörüne yanlışlıkla taşımışsın gibi düşün: Taşı, sonra fark edip Çöp Kutusu'na gönder.",
+        "Kopyayı Sesler klasörüne taşı. Sonra kopyayı Çöp Kutusu'na gönder.",
         { t: "Ana klasörünü sıkıştır. Sonra iki dosyanın boyutunu karşılaştır: hangisi daha küçük?", pardus: "Klasöre sağ tıkla → Sıkıştır (ya da Arşiv Oluştur) → .zip seç. Boyut için: sağ tık → Özellikler", windows: "Klasöre sağ tıkla → Gönder → Sıkıştırılmış (zip) klasör (Windows 11: ZIP dosyasına sıkıştır). Boyut için: sağ tık → Özellikler" },
         "Öğretmenine klasörünü göster."
       ]
@@ -194,6 +194,7 @@ BD.lesson({
     { q: "Aşağıdakilerden hangisi bir ses dosyasıdır?", o: ["tatil.png", "kayit.ogg", "odev.odt"], a: 1, b: "a", hint: "Uzantıya bak: noktadan sonra gelen kısım dosyanın türünü söyler.", why: ".ogg bir ses dosyasıdır. .png resim, .odt yazı dosyasıdır." },
     { q: "Bir dosyayı kopyalayınca ne olur?", o: ["Dosya silinir", "Dosyanın aynısından bir tane daha oluşur", "Dosyanın yeri değişir"], a: 1, b: "a", hint: "Kopyalamak ile kesmek arasındaki farkı düşün.", why: "Kopyalayınca dosya yerinde kalır ve aynısından bir tane daha oluşur." },
     { q: "Hangisi daha iyi bir dosya adıdır?", o: ["asdfgh.png", "yeni yeni son1.png", "5A_Ali_Resim1.png"], a: 2, b: "b", hint: "Dosyanın içinde ne olduğu adından anlaşılmalı.", why: "5A_Ali_Resim1.png kimin ve ne olduğunu söyler. Diğer adlar bir şey anlatmaz." },
+    { q: "Odev1.odt dosyası Masaüstünde duruyor. Onu Yazilar klasörüne koymak istiyorsun. Masaüstünde kalmamalı. Hangi işlemi yaparsın?", o: ["Taşı", "Kopyala", "Yeniden adlandır"], a: 0, b: "b", hint: "Dosya iki tane mi olmalı, yoksa sadece yeri mi değişmeli? Deftere yaz bölümünün 3. maddesine bak.", why: "Taşıyınca dosyanın yeri değişir ve Masaüstünde kalmaz. Kopyalasaydın iki tane olurdu." },
     { q: "Hangi durumda dosyaları sıkıştırmak en çok işe yarar?", o: ["Her gün açtığımız bir dosyada", "Çok sayıda dosyayı tek seferde gönderirken", "Dosyanın adını değiştirirken"], a: 1, b: "c", why: "Sıkıştırma göndermeyi ve saklamayı kolaylaştırır. Sık kullanılan dosyada ise her seferinde açmak zaman kaybettirir.", hint: "Sıkıştırınca birçok dosya tek bir dosyaya dönüşür." }
   ],
 
