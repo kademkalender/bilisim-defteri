@@ -16,6 +16,22 @@ Kayıt şablonu:
 
 ---
 
+## 2026-11-08 · Kadem Kalender + Claude Code (Opus 5.5) · Alt ajanlar
+
+**Ne yapıldı**
+- `msitarzewski/agency-agents` (commit `b859c51`, MIT) `/tmp` altına klonlandı, `install.sh` çalıştırılmadı. Dört ajan okundu ve gizli karakter, HTML yorumu, base64 ve dış komut için tarandı. Gizli talimat çıkmadı.
+- Üçü `.claude/agents/` altına alındı: `reality-checker`, `accessibility-auditor`, `ui-finish-gate`. Asıl metin değişmedi. Frontmatter'da `name` kısa ada çevrildi, `tools: Read, Grep, Glob, Bash` eklendi (Edit ve Write yok), uizze.com `services` satırı çıkarıldı. Her birinin başına "Bu projede" bölümü kondu: CLAUDE.md önceliği, hedef kitle, dosya değiştirmez, npx/localhost/Playwright yerine `file://`, başsız Chrome ve `tools/` testleri, kaynak ve lisans.
+- Projeye özel üç yeni ajan yazıldı: `ogrenci-5-sinif` (10 yaş, rapor), `bt-ogretmeni` (80 dk, Pardus laboratuvarı, tahta, kâğıt, çalışma kâğıdı), `kazanim-denetcisi` (`program.js` ile bileşen izleme, program dışı içerik, yaş uyumu; sadece okuma araçları).
+- CLAUDE.md'ye "Alt ajanlar" bölümü: hangi ajan ne zaman, sadece istenince çalıştırılır, rapor veren ajanlar kod değiştirmez.
+- `node tools/dogrula.js`: 0 hata, 0 uyarı.
+
+**Kararlar**
+- Persona Walkthrough Specialist alınmadı (kullanıcı kararı): satış dönüşümü (LIFT, Cialdini, kıtlık/aciliyet) odaklı, çocuk gözü işini `ogrenci-5-sinif` yapıyor.
+- Ajanlar sadece kullanıcı isteyince çalışır (token tasarrufu).
+
+**Yarım kalan işler**
+- [ ] Ajanlar henüz gerçek bir derste denenmedi.
+
 ## 2026-11-08 · Kadem Kalender + Claude Code (Opus 5.5)
 
 **Ne yapıldı**

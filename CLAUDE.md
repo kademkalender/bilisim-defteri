@@ -78,6 +78,22 @@ Hook gelen commit bildirirse:
 - `shortcut:` yorumları Türkçe yazılabilir.
 - Bir Ponytail önerisi bu dosyadaki değişmez kurallarla çakışırsa bu dosya kazanır.
 
+## Alt ajanlar
+
+`.claude/agents/` altında yedi ajan var. Hepsi rapor verir, dosya değiştirmez ve git komutu çalıştırmaz. Düzeltmeyi ana oturum yapar.
+
+| Ajan | Ne zaman |
+|---|---|
+| `kazanim-denetcisi` | Yeni ya da değişen bir dersin `program.js` ile uyumu: eksik süreç bileşeni, program dışı içerik, yaşa uygun olmayan ifade |
+| `bt-ogretmeni` | Bir dersin 80 dakikada, Pardus laboratuvarında, sadece tahtalı sınıfta ve kâğıtla uygulanabilirliği, çalışma kâğıdı |
+| `ogrenci-5-sinif` | Bir sayfa ya da akış 10 yaşında bir çocuk için anlaşılır mı: bilinmeyen kelime, bulunamayan düğme, sıkıcı yer |
+| `accessibility-auditor` | Klavye, odak, alt metin, kontrast, büyük yazı modu. Yeni bileşenden ya da arayüz değişikliğinden sonra |
+| `ui-finish-gate` | Arayüz değişikliği yayına girmeden önce: katalogla uyum ve ekran ölçüleri (PASS / HOLD) |
+| `reality-checker` | "Bitti" denilen büyük bir işin kanıtla son kontrolü (`dogrula.js`, testler, kontrol listeleri) |
+
+- Ajanlar sadece kullanıcı isteyince çalıştırılır. Her ajan sıfırdan başlar ve çok token harcar, kendiliğinden başlatma.
+- Son üç ajan `msitarzewski/agency-agents` reposundan alındı (MIT). Başlarındaki "Bu projede" bölümü asıl metinle çakışırsa (npx, localhost, uizze.com) o bölüm ve bu dosya kazanır. Asıl metne dokunulmadı, güncellemek için repodaki yeni sürümle karşılaştırılır.
+
 ## Git güvenliği
 
 - Şu komutları benden açıkça izin almadan ASLA çalıştırma: `git reset --hard`, `git checkout -- <dosya>`, `git restore`, `git clean`, `git stash drop`, `git push --force`, `git rebase`, `git branch -D`, `rm -rf`.
