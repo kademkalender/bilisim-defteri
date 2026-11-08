@@ -178,6 +178,7 @@ Aynı şeye her yerde bu ad verilir.
 | Sunum | slaytlar, PowerPoint | Bölüm adı; içindeki tek sayfa "slayt" |
 | Deftere yaz | not al | Bölüm adı |
 | Mini test | quiz, sınav | Bölüm adı |
+| Sınav çalışma soruları | sınav hazırlık, soru bankası | Öğrenci menüsündeki sayfa. "Sınav" yalnızca okul sınavı için, dersteki test hep "Mini test" |
 | kazanım | öğrenme çıktısı (arayüzde) | MEB metninde "öğrenme çıktısı" aynen kalır |
 | çalışma kâğıdı | föy, etkinlik kâğıdı | Yazdırılan sayfa |
 | Laboratuvar, Etkileşimli tahta, Bilgisayarsız | lab, akıllı tahta, kâğıt modu | Sınıf ortamları (`BD.envs`) |

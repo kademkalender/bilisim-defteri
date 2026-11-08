@@ -40,7 +40,7 @@ Hook gelen commit bildirirse:
 ## Yapı
 
 - `index.html`: Giriş dosyası, tüm script sıralaması burada.
-- `assets/app.js`: Tek bir IIFE. Hash tabanlı yönlendirme: `#home`, `#sinif-5`, `#ders-<id>`, `#yazdir-<id>`, `#sinif-5-<hafta>`, `#dersler` (öğrencinin hazır dersleri), `#kazanimlar`, `#kagitlar`, `#ogretmen`. Görünümler `viewX()` ile HTML döndürür, olaylar `bindX()` ile bağlanır.
+- `assets/app.js`: Tek bir IIFE. Hash tabanlı yönlendirme: `#home`, `#sinif-5`, `#ders-<id>`, `#yazdir-<id>`, `#sinif-5-<hafta>`, `#dersler` (öğrencinin hazır dersleri), `#sinav` (öğrencinin sınav çalışma soruları), `#kazanimlar`, `#kagitlar`, `#ogretmen`. Görünümler `viewX()` ile HTML döndürür, olaylar `bindX()` ile bağlanır.
 - `assets/ikonlar.js`: `BD.icons`, arayüzün SVG ikonları. `app.js` içindeki `icon(ad)` bunları çizer. Yeni ikon önce buraya eklenir.
 - `assets/crossword.js`: `buildCrossword(entries)` fonksiyonu. Kelime + ipucu listesinden ızgara kurar. Harf temizleme tek yerde: `cwClean(s)`.
 - `assets/shuffle.js`: `shuffleOrder(n, dersId)`. Sınıflandırma kartlarını ders id'sine göre hep aynı, karışık sırada verir.

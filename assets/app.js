@@ -1,7 +1,7 @@
 /* =====================================================================
    Bilişim Defteri — uygulama
    - İnternetsiz çalışır: tüm içerik content/ klasöründeki .js dosyalarından gelir (fetch yok).
-   - Sayfalar adres çubuğundaki # ile seçilir: #home, #sinif-5, #ders-<id>, #kazanimlar, #kagitlar, #ogretmen, #yazdir-<id>
+   - Sayfalar adres çubuğundaki # ile seçilir: #home, #sinif-5, #ders-<id>, #sinav, #kazanimlar, #kagitlar, #ogretmen, #yazdir-<id>
    - Ayarlar (rol, sınıf, sınıf ortamı, işletim sistemi, internet) tarayıcıda saklanır.
    - Rol: öğretmen ve öğrenci aynı siteyi farklı görür. Şifre yok, bu bir güvenlik değil düzen ayrımıdır.
    ===================================================================== */
@@ -41,13 +41,13 @@
   };
   var norm = function (s) { return String(s).toLocaleLowerCase("tr").replace(/ı/g, "i").normalize("NFD").replace(/[̀-ͯ]/g, ""); };
 
-  // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>, quiz:<id>, sim:<id>, sort:<id>, son açılan ders (last). lessonId yoksa tüm dersler.
+  // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>, quiz:<id>, sinav:<id>, sim:<id>, sort:<id>, son açılan ders (last). lessonId yoksa tüm dersler.
   // Ayarlar (settings, big, printOpts) bu öneklerle başlamadığı için hiç dokunulmaz.
   function clearProgress(lessonId) {
     var keys = [];
     try {
       for (var i = 0; i < localStorage.length; i++) {
-        var k = localStorage.key(i) || "", m = /^bd:(act|nb|cw|quiz|sim|sort):(.+)$/.exec(k);
+        var k = localStorage.key(i) || "", m = /^bd:(act|nb|cw|quiz|sinav|sim|sort):(.+)$/.exec(k);
         if (k === "bd:last" && (!lessonId || store.get("last") === lessonId)) keys.push(k);
         if (!m) continue;
         var id = m[1] === "act" ? m[2].replace(/:[^:]*$/, "") : m[2];
@@ -247,6 +247,26 @@
       '<div class="row"><a class="btn" href="#home">← Ana sayfa</a></div>';
   }
 
+  /* Sınav çalışma soruları: hazır derslerin mini test soruları, dönemlere göre. Her zaman açık.
+     Çözümler sinav:<id> anahtarında, dersteki testten (quiz:<id>) ayrı saklanır. */
+  function viewExam() {
+    var g = S.grade, t2 = term2Week() || 99;
+    var ready = (BD.plan[g] || []).filter(function (x) { var L = x.lesson && lessonById(x.lesson); return L && L.quiz && L.quiz.length; }).sort(function (a, b) { return a.w - b.w; });
+    var terms = [["1. dönem", ready.filter(function (x) { return x.w < t2; })], ["2. dönem", ready.filter(function (x) { return x.w >= t2; })]].filter(function (t) { return t[1].length; });
+    var intro = isStudent() ? "Sınavdan önce çalışmak istediğin dersi aç, soruları çöz." : g + ". sınıfın hazır derslerindeki mini test soruları, dönemlere göre. Öğrencinin buradaki çözümleri dersteki testten ayrı saklanır.";
+    return '<div class="hello"><h1>Sınav çalışma soruları</h1><p>' + intro + '</p></div>' +
+      (terms.length ? terms.map(function (t) {
+        return '<h2 class="label-h exam-term">' + t[0] + '</h2>' + t[1].map(function (x) {
+          var L = lessonById(x.lesson);
+          return '<details class="unit" data-id="' + L.id + '"><summary><div class="unit-h"><h3><span class="tn-sq" aria-hidden="true" style="background:var(--theme-' + x.theme + ')">' + x.w + '</span><span class="sr">' + x.w + '. hafta: </span>' + esc(L.title) + '</h3><small>' + L.quiz.length + ' soru' + CHEV + '</small></div></summary>' +
+            '<div class="exam-body">' + quizHtml(L.quiz) + '</div></details>';
+        }).join("");
+      }).join("") : '<div class="empty">' + mascot() + 'Bu sınıfın soruları henüz hazır değil.</div>');
+  }
+  function bindExam() {
+    $$("#app details.unit[data-id]").forEach(function (d) { var id = d.getAttribute("data-id"); bindQuiz(d, BD.lessons[id].quiz, "sinav:" + id); });
+  }
+
   /* ---------- Ders sayfası ---------- */
   var imgSrc = function (id, file) { return "content/img/" + id + "/" + file; };
   var imgBlock = function (id, file, alt, imgClass) {
@@ -444,14 +464,76 @@
       (hasSort ? panel("oyun", "Sınıflandırma oyunu", T ? "Öğrenciler etkinlikte öğrendiklerini sınıflandırarak pekiştirir. Tahtada sınıfça da oynanabilir." : "Kartları doğru kutulara yerleştir!", sortHtml(L)) : "") +
 
       panel("test", "Mini test", T ? L.quiz.length + " soru. Yanlış cevapta öğrenci önce ipucu görür, ikinci yanlışta doğru cevabı ve nedenini." : L.quiz.length + " soru. Ne kadar öğrendiğini kontrol et.",
-        '<div id="quiz">' + L.quiz.map(function (q, qi) {
-          return '<div class="q" data-q="' + qi + '"><p>' + (qi + 1) + '. ' + esc(q.q) + '</p><div class="opts">' +
-            q.o.map(function (o, oi) { return '<button type="button" data-o="' + oi + '">' + String.fromCharCode(65 + oi) + ') ' + esc(o) + '</button>'; }).join("") + '</div><div class="fb"></div></div>';
-        }).join("") + '</div><div class="score" id="score" aria-live="polite" tabindex="-1"></div><div class="row"><button type="button" class="btn" id="quizAgain" hidden>' + icon("tekrar") + ' Testi yeniden çöz</button></div>') +
+        quizHtml(L.quiz)) +
 
       (hasCw ? panel("bulmaca", "Haftanın bulmacası", T ? "Bulmaca dersin anahtar kelimeleriyle kurulur. Boş hâli çalışma kâğıdında da var." : "Bir kutuya tıkla ve yaz. Aynı kutuya tekrar tıklarsan yön değişir. İpucuna tıklayınca o kelimeye gidersin.", '<div class="cw" id="cw"></div>') : "") +
 
       (T ? '<div class="pager"><a class="btn" href="#sinif-' + L.grade + '">' + L.grade + '. sınıf dersleri</a></div>' : "");
+  }
+
+  /* ---------- Test ----------
+     Her soruda iki deneme. İlk yanlışta ipucu (hint), ikincide doğru cevap ve neden (why).
+     Ders sayfası ve Sınav çalışma soruları aynı kodu kullanır. Bir sayfada birden çok test olabilir, bu yüzden her şey root içinde aranır. */
+  function quizHtml(qs) {
+    return '<div class="quiz">' + qs.map(function (q, qi) {
+      return '<div class="q" data-q="' + qi + '"><p>' + (qi + 1) + '. ' + esc(q.q) + '</p><div class="opts">' +
+        q.o.map(function (o, oi) { return '<button type="button" data-o="' + oi + '">' + String.fromCharCode(65 + oi) + ') ' + esc(o) + '</button>'; }).join("") + '</div><div class="fb"></div></div>';
+    }).join("") + '</div><div class="score" aria-live="polite" tabindex="-1"></div><div class="row"><button type="button" class="btn quiz-again" hidden>' + icon("tekrar") + ' Testi yeniden çöz</button></div>';
+  }
+  // "4'ü", "2'si": sayıdan sonra gelen iyelik eki (yalnızca 0-10, test en fazla 5 soru)
+  var ek = function (n) { return n + "'" + ["ı", "i", "si", "ü", "ü", "i", "sı", "si", "i", "u", "u"][n]; };
+  // picks[soru] = seçilen şıklar dizisi; eski kayıtlardaki tek sayı diziye çevrilir. onState(bitti mi) her değişiklikte çağrılır.
+  function bindQuiz(root, qs, key, onState) {
+    var picks = store.get(key, {}), sc = $(".score", root), again = $(".quiz-again", root);
+    Object.keys(picks).forEach(function (k) { if (typeof picks[k] === "number") picks[k] = [picks[k]]; });
+    var finished = function (qi) { var p = picks[qi] || []; return p.length > 0 && (p[p.length - 1] === qs[qi].a || p.length >= 2); };
+    var showAnswer = function (qEl, live) {
+      var qi = +qEl.getAttribute("data-q"), q = qs[qi], p = picks[qi] || [], btns = $$(".opts button", qEl), fb = $(".fb", qEl), last = p[p.length - 1], b = btns[last];
+      p.forEach(function (o) { if (o !== q.a) { btns[o].classList.add("wrong"); btns[o].disabled = true; } });
+      if (last === q.a) {
+        btns.forEach(function (x) { x.disabled = true; }); b.classList.add("right");
+        fb.textContent = "✓ Doğru!"; fb.className = "fb r"; if (live) flash(b, "hop");
+      } else if (p.length < 2) {
+        fb.textContent = "Az kaldı! " + (q.hint || "Soruyu bir daha oku.") + " Bir daha dene."; fb.className = "fb h"; if (live) flash(b, "shake");
+      } else {
+        btns.forEach(function (x) { x.disabled = true; }); btns[q.a].classList.add("right");
+        fb.textContent = "Bu sefer olmadı. " + (q.why ? q.why + " " : "") + "Doğru cevap: " + q.o[q.a] + " ✓"; fb.className = "fb w"; if (live) flash(b, "shake");
+      }
+    };
+    var quizState = function (live) {
+      var n = qs.length, done = qs.filter(function (q, i) { return finished(i); }).length, all = done === n;
+      var first = qs.filter(function (q, i) { return picks[i] && picks[i][0] === q.a; }).length;
+      sc.classList.toggle("end-msg", all);
+      sc.innerHTML = !all ? "" : endMsg(first === n ? n + " sorunun " + ek(n) + " de ilk denemede doğru!" : first ? "Testi bitirdin! " + n + " sorudan " + ek(first) + " ilk denemede doğru." : "Testi bitirdin! Doğru cevapları gördün. Bir daha çözmek ister misin?");
+      again.hidden = !Object.keys(picks).length;
+      if (onState) onState(all);
+      if (live && all && first === n) celebrate(sc);
+    };
+    $$(".q", root).forEach(function (qEl) {
+      var qi = qEl.getAttribute("data-q");
+      if (picks[qi] && picks[qi].length) showAnswer(qEl, false);
+      $(".opts", qEl).addEventListener("click", function (e) {
+        var b = e.target.closest("button"); if (!b || b.disabled) return;
+        (picks[qi] = picks[qi] || []).push(+b.getAttribute("data-o")); store.set(key, picks);
+        showAnswer(qEl, true); quizState(true);
+        // Klavyeyle seçildiyse (detail 0) kilitlenen şıkta odak kaybolmasın: aynı sorunun, sonra sıradaki sorunun şıkkına, test bittiyse sonuca
+        if (e.detail === 0) {
+          var open = $$(".q .opts button", root).filter(function (x) { return !x.disabled; });
+          var nx = open.filter(function (x) { return qEl.contains(x); })[0] || open.filter(function (x) { return qEl.compareDocumentPosition(x) & 4; })[0] || open[0];
+          if (nx) nx.focus(); else sc.focus();
+        }
+      });
+    });
+    again.onclick = function () {
+      picks = {}; store.set(key, picks);
+      $$(".q", root).forEach(function (qEl) {
+        $$(".opts button", qEl).forEach(function (x) { x.disabled = false; x.classList.remove("right", "wrong", "hop", "shake"); });
+        var fb = $(".fb", qEl); fb.textContent = ""; fb.className = "fb";
+      });
+      quizState(false);
+      $(".q .opts button", root).focus();
+    };
+    quizState(false);
   }
 
   function bindLesson(id) {
@@ -545,60 +627,7 @@
 
     bindActivity(L);
 
-    // Test: her soruda iki deneme. İlk yanlışta ipucu (hint), ikincide doğru cevap ve neden (why).
-    // picks[soru] = seçilen şıklar dizisi; eski kayıtlardaki tek sayı diziye çevrilir.
-    var quizKey = "quiz:" + id, picks = store.get(quizKey, {});
-    Object.keys(picks).forEach(function (k) { if (typeof picks[k] === "number") picks[k] = [picks[k]]; });
-    var finished = function (qi) { var p = picks[qi] || []; return p.length > 0 && (p[p.length - 1] === L.quiz[qi].a || p.length >= 2); };
-    var showAnswer = function (qEl, live) {
-      var qi = +qEl.getAttribute("data-q"), q = L.quiz[qi], p = picks[qi] || [], btns = $$(".opts button", qEl), fb = $(".fb", qEl), last = p[p.length - 1], b = btns[last];
-      p.forEach(function (o) { if (o !== q.a) { btns[o].classList.add("wrong"); btns[o].disabled = true; } });
-      if (last === q.a) {
-        btns.forEach(function (x) { x.disabled = true; }); b.classList.add("right");
-        fb.textContent = "✓ Doğru!"; fb.className = "fb r"; if (live) flash(b, "hop");
-      } else if (p.length < 2) {
-        fb.textContent = "Az kaldı! " + (q.hint || "Soruyu bir daha oku.") + " Bir daha dene."; fb.className = "fb h"; if (live) flash(b, "shake");
-      } else {
-        btns.forEach(function (x) { x.disabled = true; }); btns[q.a].classList.add("right");
-        fb.textContent = "Bu sefer olmadı. " + (q.why ? q.why + " " : "") + "Doğru cevap: " + q.o[q.a] + " ✓"; fb.className = "fb w"; if (live) flash(b, "shake");
-      }
-    };
-    // "4'ü", "2'si": sayıdan sonra gelen iyelik eki (yalnızca 0-10, test en fazla 5 soru)
-    var ek = function (n) { return n + "'" + ["ı", "i", "si", "ü", "ü", "i", "sı", "si", "i", "u", "u"][n]; };
-    var quizState = function (live) {
-      var n = L.quiz.length, done = L.quiz.filter(function (q, i) { return finished(i); }).length, all = done === n;
-      var first = L.quiz.filter(function (q, i) { return picks[i] && picks[i][0] === q.a; }).length;
-      var sc = $("#score"); sc.classList.toggle("end-msg", all);
-      sc.innerHTML = !all ? "" : endMsg(first === n ? n + " sorunun " + ek(n) + " de ilk denemede doğru!" : first ? "Testi bitirdin! " + n + " sorudan " + ek(first) + " ilk denemede doğru." : "Testi bitirdin! Doğru cevapları gördün. Bir daha çözmek ister misin?");
-      $("#quizAgain").hidden = !Object.keys(picks).length;
-      setTabDone("test", all);
-      if (live && all && first === n) celebrate($("#score"));
-    };
-    $$(".q").forEach(function (qEl) {
-      var qi = qEl.getAttribute("data-q");
-      if (picks[qi] && picks[qi].length) showAnswer(qEl, false);
-      $(".opts", qEl).addEventListener("click", function (e) {
-        var b = e.target.closest("button"); if (!b || b.disabled) return;
-        (picks[qi] = picks[qi] || []).push(+b.getAttribute("data-o")); store.set(quizKey, picks);
-        showAnswer(qEl, true); quizState(true);
-        // Klavyeyle seçildiyse (detail 0) kilitlenen şıkta odak kaybolmasın: aynı sorunun, sonra sıradaki sorunun şıkkına, test bittiyse sonuca
-        if (e.detail === 0) {
-          var open = $$(".q .opts button").filter(function (x) { return !x.disabled; });
-          var nx = open.filter(function (x) { return qEl.contains(x); })[0] || open.filter(function (x) { return qEl.compareDocumentPosition(x) & 4; })[0] || open[0];
-          if (nx) nx.focus(); else $("#score").focus();
-        }
-      });
-    });
-    $("#quizAgain").onclick = function () {
-      picks = {}; store.set(quizKey, picks);
-      $$(".q").forEach(function (qEl) {
-        $$(".opts button", qEl).forEach(function (x) { x.disabled = false; x.classList.remove("right", "wrong", "hop", "shake"); });
-        var fb = $(".fb", qEl); fb.textContent = ""; fb.className = "fb";
-      });
-      quizState(false);
-      $(".q .opts button").focus();
-    };
-    quizState(false);
+    bindQuiz($("#b-test"), L.quiz, "quiz:" + id, function (all) { setTabDone("test", all); });
 
     if (L.crossword && L.crossword.length) bindCrossword(L);
 
@@ -1014,6 +1043,7 @@
     else if (h === "kazanimlar") app.innerHTML = viewMap();
     else if (h === "kagitlar") app.innerHTML = viewSheets();
     else if (h === "dersler") app.innerHTML = viewAll();
+    else if (h === "sinav") { app.innerHTML = viewExam(); bindExam(); }
     else if (h === "ogretmen") { app.innerHTML = viewTeacher(); bindTeacher(); }
     else app.innerHTML = viewNotFound();
     $$(".top nav a").forEach(function (a) { if (a.getAttribute("href") === "#" + h) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });

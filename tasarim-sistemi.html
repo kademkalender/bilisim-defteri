@@ -442,7 +442,7 @@ body{background:var(--surface-subtle)}
   add({ id: "ust-bant", group: "Gezinme", name: "Üst bant", cls: ".top",
     desc: "Her sayfanın üstünde: logo, arama, sayfalar ve ayarlar.",
     where: "Her sayfa.",
-    rules: ["Beyaz zemin (<code>--surface-default</code>), altta ince çizgi ve hafif gölge (<code>--shadow-sm</code>); sayfa kayınca üstte kalır. Gri sayfa zemininden ayrı durur.", "Öğrencide yalnızca logo ve kilitli \"Öğretmen\" düğmesi.", "1180 px altında düğme iç boşluğu 8 px, arama en az 160 px: 1024 px'te tek satır.", "Görünüm düğmesiyle öğrenci hâline geçin."],
+    rules: ["Beyaz zemin (<code>--surface-default</code>), altta ince çizgi ve hafif gölge (<code>--shadow-sm</code>); sayfa kayınca üstte kalır. Gri sayfa zemininden ayrı durur.", "Öğrencide logo, \"Sınav çalışma soruları\" bağlantısı (<code>.s-only</code>) ve kilitli \"Öğretmen\" düğmesi. Öğretmen menüsüne yeni bağlantı eklenmez, 1024 px'te ikinci satıra taşar.", "1180 px altında düğme iç boşluğu 8 px, arama en az 160 px: 1024 px'te tek satır.", "Görünüm düğmesiyle öğrenci hâline geçin."],
     props: [
       { k: "aktif", l: "Açık sayfa", t: "seg", d: "", o: [["", "Ana sayfa"], ["kazanimlar", "Kazanım"], ["kagitlar", "Kâğıtlar"], ["ogretmen", "Masa"]] },
       { k: "buyuk", l: "A+ açık", t: "bool", d: false }
@@ -451,7 +451,7 @@ body{background:var(--surface-subtle)}
       var link = function (h, t) { return '<a class="chip-btn t-only" href="#' + h + '"' + (p.aktif === h ? ' aria-current="page"' : "") + '>' + t + '</a>'; };
       return '<header class="top"><div class="top-in"><a class="logo" href="#home"><img class="logo-img" src="assets/maskot.webp" alt="">Bilişim Defteri</a>' +
         '<div class="search" role="search"><label for="ds-q2" class="sr">Ders ara</label><input id="ds-q2" type="search" placeholder="Ders, hafta, kod" autocomplete="off"></div>' +
-        '<nav aria-label="Ana menü">' + link("kazanimlar", "Kazanım haritası") + link("kagitlar", "Çalışma kâğıtları") + link("ogretmen", "Sınıf ayarları") +
+        '<nav aria-label="Ana menü"><a class="chip-btn s-only" href="#sinav">Sınav çalışma soruları</a>' + link("kazanimlar", "Kazanım haritası") + link("kagitlar", "Çalışma kâğıtları") + link("ogretmen", "Sınıf ayarları") +
         '<span class="top-set"><button type="button" class="chip-btn">' + (T() ? "Rol: Öğretmen" : ico("lock") + "Öğretmen") + '</button>' +
         '<button type="button" class="chip-btn t-only" aria-label="Yazıyı büyüt" aria-pressed="' + bool(p.buyuk) + '">A+</button></span></nav></div></header>';
     },
@@ -472,8 +472,8 @@ body{background:var(--surface-subtle)}
 
   add({ id: "hafta-listesi", group: "Gezinme", name: "Hafta listesi", cls: ".unit, .week",
     desc: "Temalara bölünmüş 36 hafta. Özel hafta bir önceki haftanın temasında, açılmayan gri satır olarak durur. Öğretmen dersi hafta numarasıyla bulur.",
-    where: "Öğretmen ana sayfası, Çalışma kâğıtları.",
-    rules: ["Tema başlığında temanın renginde numara karesi (<code>.tn-sq</code>, <code>aria-hidden</code>); ekran okuyucu için başlığın başında gizli \"Tema 1: \" yazar.", "Satırda \"7. hafta · Ders adı\", sağda kodlar ve sabit genişlikte durum etiketi.", "Özel hafta (Code Week, dönem sonu) açılmayan gri satır: kod yok, etiketi \"Özel hafta\". Bir önceki haftanın temasında durur, temanın hafta aralığına girmez.", "Öğretmende her satır açılır: kazanım, Derse git ve Çalışma kâğıdı. Çalışma kâğıtları sayfasında satır doğrudan kâğıdı açan bağlantıdır.", "Yalnızca öğretmende."],
+    where: "Öğretmen ana sayfası, Çalışma kâğıtları. Öğrencide yalnızca Sınav çalışma soruları: her ders bir <code>details.unit</code>, numara karesinde hafta, sağda soru sayısı, açılınca gri zeminde (<code>.exam-body</code>) dersin soruları; üstünde dönem başlığı (<code>.label-h.exam-term</code>).",
+    rules: ["Tema başlığında temanın renginde numara karesi (<code>.tn-sq</code>, <code>aria-hidden</code>); ekran okuyucu için başlığın başında gizli \"Tema 1: \" yazar.", "Satırda \"7. hafta · Ders adı\", sağda kodlar ve sabit genişlikte durum etiketi.", "Özel hafta (Code Week, dönem sonu) açılmayan gri satır: kod yok, etiketi \"Özel hafta\". Bir önceki haftanın temasında durur, temanın hafta aralığına girmez.", "Öğretmende her satır açılır: kazanım, Derse git ve Çalışma kâğıdı. Çalışma kâğıtları sayfasında satır doğrudan kâğıdı açan bağlantıdır.", "Hafta satırları yalnızca öğretmende; öğrenci bu kutuyu yalnızca Sınav çalışma soruları sayfasında görür."],
     props: [{ k: "tur", l: "Tür", t: "seg", d: "liste", o: [["liste", "Ana sayfa"], ["kagit", "Çalışma kâğıtları"]] }, { k: "acik", l: "Hazır satır açık", t: "bool", d: true }],
     render: function (p) {
       var t = TH[0], plan = BD.plan["5"].filter(function (x) { return x.w >= 4 && x.w <= 7; });
@@ -579,7 +579,7 @@ body{background:var(--surface-subtle)}
 
   add({ id: "test", group: "Ders içeriği", name: "Test sorusu", cls: ".q, .opts",
     desc: "Mini testte bir soru ve şıkları.",
-    where: "Mini test bölümü.",
+    where: "Mini test bölümü, Sınav çalışma soruları (aynı işaretleme: <code>quizHtml()</code>, <code>bindQuiz()</code>).",
     rules: ["Soru <code>--fs-lg</code> ve kalın. Şıklar beyaz, 2 px <code>--border-strong</code> kenarlıklı, normal kalınlıkta (400), en az 50 px; boş kutu gibi değil düğme gibi görünür.", "Şıklar A), B), C) ile başlar.", "İki deneme: ilk yanlış şık kırmızı ✕ ve kilitli, diğerleri açık kalır, altında ipucu. İkinci yanlışta bütün şıklar kilitlenir, doğru şık yeşil ✓.", "Sonuç ilk denemedeki doğruları sayar: \"Testi bitirdin! 5 sorudan 4'ü ilk denemede doğru.\" Hiç doğru yoksa sayı verilmez: \"Testi bitirdin! Doğru cevapları gördün. Bir daha çözmek ister misin?\"", "Klavyeyle seçilen şık kilitlenince odak kaybolmaz: aynı sorunun açık şıkkına, soru bittiyse sıradaki soruya, test bittiyse sonuç kutusuna geçer."],
     props: [{ k: "durum", l: "Durum", t: "seg", d: "", o: [["", "Cevapsız"], ["dogru", "Doğru"], ["ipucu", "İlk yanlış"], ["yanlis", "İkinci yanlış"]] }],
     render: function (p) {

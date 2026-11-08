@@ -55,6 +55,8 @@ Ders sayfası sekmelidir, aynı anda tek bölüm görünür. **Öğrencinin** se
 
 Biten bölümün sekmesinde numara yerine ✓ görünür. Tarayıcının geri tuşu önceki sekmeye döner.
 
+Öğrenci menüsündeki **Sınav çalışma soruları** (`#sinav`) her zaman açıktır. Sınıfın hazır derslerindeki mini test sorularını dönemlere göre, her dersi açılır bir kutuda toplar. Çözümler dersteki testten ayrı saklanır (`bd:sinav:<id>`). Yeni soru yazılmaz, sorular derslerin `quiz` alanından gelir.
+
 **Öğretmen** derse ilk sekme olan "Ders planı" ile başlar. Bu sekmede öğrenme çıktısını, 80 dakikalık ders akışını, ölçme aracını, notları, yazdırılacak kâğıdı ve cevap anahtarını görür. Kazanım haritası, Çalışma kâğıtları ve Sınıf ayarları ayrı sayfalardır ve yalnızca öğretmen görünümündedir.
 
 Ana sayfada sınıf seçilir, haftalar temalara bölünmüş listede numarası ve ders adıyla görünür (`7. hafta · Dosya ve Klasör Yönetimi`). Öğrenci tema adı görmez, haftalar 1. dönem (1–18) ve 2. dönem (19–36) altında sırayla listelenir; hazır haftaya basınca "Derse gir" düğmesi açılır. Öğretmen temalara bölünmüş listede satıra basınca kazanım, çalışma kâğıdı ve ders akışı açılır. Listenin üstünde o bilgisayarda son açılan ders "Kaldığın yer" olarak durur. Arama kutusu hafta numarasını da anlar (`7`, `7. hafta`); aramadan seçilen hafta açılır ve ekrana gelir.
