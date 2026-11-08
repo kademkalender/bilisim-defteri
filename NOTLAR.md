@@ -16,6 +16,16 @@ Kayıt şablonu:
 
 ---
 
+## 2026-11-08 · Kadem Kalender + Claude Code (Opus 5.5)
+
+**Ne yapıldı**
+- GitHub'dan güncelleme alındı: efee7946-cmd'nin 44 commit'i (`ab39f28` … `214347b`, 2026-11-06 ve 2026-11-07), `git pull --no-rebase` ile çakışmasız ileri sarıldı. 29 dosya, +2461 / −457 satır.
+- Gelenler: site review düzeltmeleri ve SVG ikonlar (`assets/ikonlar.js`), tasarım sistemi kataloğu (`tasarim-sistemi.html`), yazım rehberi (`YAZIM-REHBERI.md`), sentetik kullanılabilirlik testi (`tools/ux-test/`), hafta şeridi, dönemler ve özel haftalar (`content/plan.js`), telefon ve okul monitörü düzeni, maskot (`assets/maskot.webp`, `assets/maskot-64.png`), yazı/boşluk/köşe tokenları, emojisiz arayüz, oyunda sürükle-bırak, "Sınıf ayarları" adı, aramada eş anlamlılar. CLAUDE.md'ye 7. kural (arayüz katalogdan yapılır).
+- Değişen dosyalar: `assets/app.js`, `assets/style.css`, `assets/sim-ui.js`, `content/plan.js`, 8 ders dosyası ve `_SABLON.js`, `index.html`, `tools/dogrula.js`, README, CLAUDE.md, ICERIK-REHBERI, TASARIM-SISTEMI, NOTLAR, `.gitignore`; yeniler yukarıda.
+- `node tools/dogrula.js`: 0 hata, 0 uyarı. `node --test tools/*.test.js`: 33/33.
+
+---
+
 ## 2026-11-07 · efee7946-cmd + Claude Code (Opus 5.5)
 
 **Ne yapıldı**
