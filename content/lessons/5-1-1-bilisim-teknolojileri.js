@@ -89,7 +89,7 @@ BD.lesson({
         "2. slayta bu alanda eskiden kullanılan bir teknolojiyi ve bugünkü hâlini yaz. Örnek: kara tahta → etkileşimli tahta.",
         "Aynı slayta bir benzerlik ve bir farklılık yaz.",
         "3. slayta \"Hayatımızı nasıl kolaylaştırıyor?\" başlığıyla iki cümle yaz.",
-        "Sununu Dosya → Farklı Kaydet ile Belgeler klasörüne 5A_Ayşe_DunBugun gibi kendi sınıfın ve adınla kaydet.",
+        "Sununu Dosya → Farklı Kaydet ile Belgeler klasörüne 5A_Ayse_DunBugun gibi kendi sınıfın ve adınla kaydet.",
         "Sununu yanındaki arkadaşına göster. Onun sunusundan öğrendiğin bir şeyi defterine yaz."
       ],
       online: "Seçtiğin alandaki bir teknolojinin eski fotoğrafını öğretmeninin önerdiği güvenilir bir siteden bulup slayta ekleyebilirsin. Fotoğrafın nereden alındığını altına yaz."

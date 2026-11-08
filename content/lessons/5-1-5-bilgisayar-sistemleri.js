@@ -77,7 +77,7 @@ BD.lesson({
         hint: "Giriş birimi bilgiyi bilgisayara verir, çıkış birimi sonucu gösterir. Hangi tuşlara bastın, harfleri nerede gördün?",
         success: "Doğru! Klavye giriş, işlemci işlem, ekran çıkış birimidir: Giriş → İşlem → Çıkış." },
       { id: "kaydet", b: "a",
-        text: "Dosyayı masaüstüne SınıfınŞuben_Adın_Bilgisayar adıyla kaydet. Örnek: 5A_Ayşe_Bilgisayar",
+        text: "Dosyayı masaüstüne SınıfınŞuben_Adın_Bilgisayar adıyla kaydet. Örnek: 5A_Ayse_Bilgisayar",
         check: { type: "exists", path: "Masaüstü/*_Bilgisayar.*", kind: "file", format: "ogrenci", as: "dosya" },
         hint: { windows: "Dosya → Farklı kaydet'e bas (Ctrl + Shift + S). Kaydedilecek yer: Masaüstü. Adını yaz ve Kaydet'e bas.", pardus: "Dosya → Farklı Kaydet…'e bas (Ctrl + Shift + S). Klasörde kaydet: Masaüstü. Adını yaz ve Kaydet'e bas." },
         show: "ui:save",
@@ -92,7 +92,7 @@ BD.lesson({
     // Testler ve doğrulayıcı bu adımları oynatır. {ext}: Pardus'ta odt, Windows'ta txt.
     solution: [
       ["menu", true], ["app", "yazi"], ["type", "Ayşe"], ["answer", "gic", 1],
-      ["save", "Masaüstü", "5A_Ayşe_Bilgisayar"], ["close"], ["open", "Masaüstü/5A_Ayşe_Bilgisayar.{ext}"]
+      ["save", "Masaüstü", "5A_Ayse_Bilgisayar"], ["close"], ["open", "Masaüstü/5A_Ayse_Bilgisayar.{ext}"]
     ]
   },
 

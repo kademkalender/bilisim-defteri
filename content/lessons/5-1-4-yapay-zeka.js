@@ -79,7 +79,7 @@ BD.lesson({
         "Bilgi kartlarını oku. Sorularının cevaplarını kendi cümlelerinle yaz.",
         "Her cevabın yanına hangi karttan aldığını yaz. Aynı bilgiyi iki kaynakta da bulduysan yanına (doğrulandı) yaz.",
         "\"Bence yapay zekâ gelecekte ... alanında ... değiştirecek, çünkü ...\" cümlesini tamamla.",
-        "Belgeni Dosya → Farklı Kaydet ile Belgeler klasörüne 5A_Ayşe_YapayZeka gibi kendi sınıfın ve adınla kaydet.",
+        "Belgeni Dosya → Farklı Kaydet ile Belgeler klasörüne 5A_Ayse_YapayZeka gibi kendi sınıfın ve adınla kaydet.",
         "Yanındaki arkadaşının sorularından birini oku ve cevaplamaya çalış."
       ],
       online: "Öğretmeninin izin verdiği, çocuklar için güvenli bir kaynakta sorularından birinin cevabını ara. Bulduğun bilgiyi bilgi kartlarıyla karşılaştır: Aynı mı, farklı mı?"

@@ -70,7 +70,7 @@ Dosya, klasör ya da program açma gibi bilgisayar becerisi öğreten derslerde 
 
 | Tür | Ne zaman tamam? | Örnek |
 |---|---|---|
-| `exists` | Yolda öğe var. `format: "ogrenci"` adı 5A_Ayşe biçiminde ister, `as` adı sonraki görevlere `{ad}` olarak verir | `{ type: "exists", path: "Masaüstü/*", kind: "folder", format: "ogrenci", as: "ana" }` |
+| `exists` | Yolda öğe var. `format: "ogrenci"` adı 5A_Ayse biçiminde ister, `as` adı sonraki görevlere `{ad}` olarak verir | `{ type: "exists", path: "Masaüstü/*", kind: "folder", format: "ogrenci", as: "ana" }` |
 | `allIn` | Bu uzantılı bütün dosyalar o klasörde | `{ type: "allIn", ext: ["png", "jpg"], to: "Masaüstü/{ana}/Resimler" }` |
 | `inTrash` | Dosya çöpte | `{ type: "inTrash", name: "taslak.txt" }` |
 | `ui` | Menü açık (`menu`), program açık (`app: "yazi"`), son açılan (`opened`) | `{ type: "ui", key: "menu", value: true }` |

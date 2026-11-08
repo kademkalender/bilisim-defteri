@@ -73,7 +73,7 @@ BD.lesson({
         "\"Hakkımda\" bölümüne kişisel bilgi vermeden iki cümle yaz: sevdiğin kitap, hobin.",
         "\"Profilimi kimler görebilir?\" sorusuna cevabını ve nedenini yaz.",
         "En alta \"Bu hesapta uyacağım 3 kural\" başlığıyla üç dijital vatandaşlık kuralı yaz. Kuralların farklı alanlardan olsun.",
-        "Kartını Dosya → Farklı Kaydet ile Belgeler klasörüne 5A_Ayşe_DijitalKimlik gibi kendi sınıfın ve adınla kaydet.",
+        "Kartını Dosya → Farklı Kaydet ile Belgeler klasörüne 5A_Ayse_DijitalKimlik gibi kendi sınıfın ve adınla kaydet.",
         "Arkadaşınla kartlarınızı değiştirin. Kartta kişisel bilgi var mı, birlikte kontrol edin."
       ]
     },

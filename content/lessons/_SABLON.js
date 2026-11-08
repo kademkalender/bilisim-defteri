@@ -51,7 +51,7 @@ BD.lesson({
   // sim: {
   //   start: { "siir.txt": 6144, "kedim.png": 839680 },        // sayı: dosya boyutu (bayt), nesne: klasör
   //   tasks: [
-  //     { id: "ana", b: "a", text: "Masaüstünde 5A_Ayşe gibi adını taşıyan bir klasör oluştur.",
+  //     { id: "ana", b: "a", text: "Masaüstünde 5A_Ayse gibi adını taşıyan bir klasör oluştur.",
   //       check: { type: "exists", path: "Masaüstü/*", kind: "folder", format: "ogrenci", as: "ana" },
   //       hint: { windows: "Boş yere sağ tıkla → Yeni → Klasör", pardus: "Boş yere sağ tıkla → Klasör Oluştur…" },
   //       show: "Masaüstü", success: "Klasörün hazır!" },
@@ -59,7 +59,7 @@ BD.lesson({
   //       check: { type: "allIn", ext: ["png"], to: "Masaüstü/{ana}" },
   //       hint: "Dosyayı sürükleyip klasörün üstüne bırak.", show: "Masaüstü/kedim.png" }
   //   ],
-  //   solution: [["mkdir", "Masaüstü", "5A_Ayşe"], ["move", "Masaüstü/kedim.png", "Masaüstü/5A_Ayşe"]]
+  //   solution: [["mkdir", "Masaüstü", "5A_Ayse"], ["move", "Masaüstü/kedim.png", "Masaüstü/5A_Ayse"]]
   // },
 
   // ÜÇ ORTAMIN ÜÇÜ DE ZORUNLU. Hiçbir etkinlik internet gerektirmemeli.

@@ -185,12 +185,12 @@
 
   /* ---------- Görev kontrolü ---------- */
   var FORMATS = {
-    // sınıf + şube + _ + ad: 5A_Ayşe. Sonuna ek gelebilir: 5A_Ayşe_Bilgisayar
+    // sınıf + şube + _ + ad: 5A_Ayse. Sonuna ek gelebilir: 5A_Ayse_Bilgisayar
     ogrenci: /^\d{1,2}[a-zçğıöşü]_[a-zçğıöşü]{2,}/
   };
   function formatMsg(name) {
     if (/\s/.test(name)) return "«" + name + "» adında boşluk var. Boşluk yerine _ kullan. Adını değiştirmek için F2'ye bas ya da sağ tıkla.";
-    return "«" + name + "» istenen biçimde değil. Biçim: sınıf + şube + _ + adın. Örnek: 5A_Ayşe";
+    return "«" + name + "» istenen biçimde değil. Biçim: sınıf + şube + _ + adın. Örnek: 5A_Ayse";
   }
   function fill(s, vars) { return String(s).replace(/\{(\w+)\}/g, function (m, k) { return vars && vars[k] != null ? vars[k] : m; }); }
   function glob(pat, s) {

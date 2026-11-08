@@ -58,7 +58,7 @@ BD.lesson({
     },
     tasks: [
       { id: "ana", b: "a", op: ["mkdir", "rename"],
-        text: "Masaüstünde yeni bir klasör oluştur. Adı sınıfın, şuben ve adın olsun. Örnek: 5A_Ayşe",
+        text: "Masaüstünde yeni bir klasör oluştur. Adı sınıfın, şuben ve adın olsun. Örnek: 5A_Ayse",
         check: { type: "exists", path: "Masaüstü/*", kind: "folder", format: "ogrenci", as: "ana" },
         hint: { windows: "Masaüstünde boş bir yere sağ tıkla → Yeni → Klasör. Adını yaz ve Enter'a bas. Klavyeyle: Shift + F10 → Yeni → Klasör.", pardus: "Masaüstünde boş bir yere sağ tıkla → Klasör Oluştur…. Adını yaz ve Enter'a bas. Klavyeyle: Shift + F10 → Klasör Oluştur…." },
         show: "Masaüstü",
@@ -118,16 +118,16 @@ BD.lesson({
     ],
     // Testler ve doğrulayıcı bu adımları oynatıp bütün görevlerin bittiğini kontrol eder.
     solution: [
-      ["mkdir", "Masaüstü", "5A_Ayşe"],
-      ["mkdir", "Masaüstü/5A_Ayşe", "Yazilar"], ["mkdir", "Masaüstü/5A_Ayşe", "Resimler"], ["mkdir", "Masaüstü/5A_Ayşe", "Sesler"],
-      ["move", "Masaüstü/odev1.odt", "Masaüstü/5A_Ayşe/Yazilar"], ["move", "Masaüstü/siir.txt", "Masaüstü/5A_Ayşe/Yazilar"],
-      ["move", "Masaüstü/notlar.txt", "Masaüstü/5A_Ayşe/Yazilar"], ["move", "Masaüstü/taslak_eski.txt", "Masaüstü/5A_Ayşe/Yazilar"],
-      ["move", "Masaüstü/kedim.png", "Masaüstü/5A_Ayşe/Resimler"], ["move", "Masaüstü/tatil.jpg", "Masaüstü/5A_Ayşe/Resimler"],
-      ["move", "Masaüstü/sarki.mp3", "Masaüstü/5A_Ayşe/Sesler"], ["move", "Masaüstü/kayit.ogg", "Masaüstü/5A_Ayşe/Sesler"],
-      ["rename", "Masaüstü/5A_Ayşe/Resimler/kedim.png", "5A_Ayşe_Resim1.png"],
-      ["copy", "Masaüstü/5A_Ayşe/Yazilar/siir.txt", "Masaüstü"],
-      ["delete", "Masaüstü/5A_Ayşe/Yazilar/taslak_eski.txt"], ["open", "@trash"],
-      ["zip", "Masaüstü/5A_Ayşe"], ["open", "Masaüstü/5A_Ayşe.zip"], ["answer", "kiyas", 1]
+      ["mkdir", "Masaüstü", "5A_Ayse"],
+      ["mkdir", "Masaüstü/5A_Ayse", "Yazilar"], ["mkdir", "Masaüstü/5A_Ayse", "Resimler"], ["mkdir", "Masaüstü/5A_Ayse", "Sesler"],
+      ["move", "Masaüstü/odev1.odt", "Masaüstü/5A_Ayse/Yazilar"], ["move", "Masaüstü/siir.txt", "Masaüstü/5A_Ayse/Yazilar"],
+      ["move", "Masaüstü/notlar.txt", "Masaüstü/5A_Ayse/Yazilar"], ["move", "Masaüstü/taslak_eski.txt", "Masaüstü/5A_Ayse/Yazilar"],
+      ["move", "Masaüstü/kedim.png", "Masaüstü/5A_Ayse/Resimler"], ["move", "Masaüstü/tatil.jpg", "Masaüstü/5A_Ayse/Resimler"],
+      ["move", "Masaüstü/sarki.mp3", "Masaüstü/5A_Ayse/Sesler"], ["move", "Masaüstü/kayit.ogg", "Masaüstü/5A_Ayse/Sesler"],
+      ["rename", "Masaüstü/5A_Ayse/Resimler/kedim.png", "5A_Ayse_Resim1.png"],
+      ["copy", "Masaüstü/5A_Ayse/Yazilar/siir.txt", "Masaüstü"],
+      ["delete", "Masaüstü/5A_Ayse/Yazilar/taslak_eski.txt"], ["open", "@trash"],
+      ["zip", "Masaüstü/5A_Ayse"], ["open", "Masaüstü/5A_Ayse.zip"], ["answer", "kiyas", 1]
     ]
   },
 
@@ -142,7 +142,7 @@ BD.lesson({
         "Bu klasörün içine Resimler, Yazilar ve Sesler adında 3 klasör daha oluştur.",
         { t: "Bir yazı programında \"Bugün dosya ve klasör yönetimini öğrendim.\" yaz ve Yazilar klasörüne kaydet.", pardus: "LibreOffice Writer kullan. Dosyan .odt uzantılı olacak.", windows: "Not Defteri kullan. Dosyan .txt uzantılı olacak." },
         { t: "Bir resim programında basit bir çizim yap ve Resimler klasörüne kaydet.", pardus: "LibreOffice Draw kullan, PNG olarak dışa aktar.", windows: "Paint kullan, PNG olarak kaydet." },
-        "Resminin adını 5A_Adin_Resim1 olarak değiştir. Kısayol: dosyayı seç ve F2'ye bas.",
+        "Resminin adını kendi adınla değiştir. Örnek: 5A_Ayse_Resim1. Kısayol: dosyayı seç ve F2'ye bas.",
         "Yazı dosyanın bir kopyasını oluştur: Dosyayı seç, Ctrl + C, sonra Ctrl + V. Kaç dosya oldu?",
         "Kopyayı Sesler klasörüne taşı. Sonra kopyayı Çöp Kutusu'na gönder.",
         { t: "Ana klasörünü sıkıştır. Sonra iki dosyanın boyutunu karşılaştır: hangisi daha küçük?", pardus: "Klasöre sağ tıkla → Sıkıştır (ya da Arşiv Oluştur) → .zip seç. Boyut için: sağ tık → Özellikler", windows: "Klasöre sağ tıkla → Gönder → Sıkıştırılmış (zip) klasör (Windows 11: ZIP dosyasına sıkıştır). Boyut için: sağ tık → Özellikler" },

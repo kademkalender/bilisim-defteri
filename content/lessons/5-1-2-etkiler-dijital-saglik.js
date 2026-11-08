@@ -72,7 +72,7 @@ BD.lesson({
         "Üç bölüm oluştur: Bedenim, Zihnim, Duygularım. Her bölüme kendi cümlelerinle iki kural yaz.",
         "Bir cihaz seç ve onun için bir fiziksel güvenlik kuralı ekle. Kuralın yanına cihazın adını yaz.",
         "En alta bir teknolojinin bir olumlu ve bir olumsuz yönünü yaz.",
-        "Afişini Dosya → Farklı Kaydet ile Belgeler klasörüne 5A_Ayşe_DijitalSaglik gibi kendi sınıfın ve adınla kaydet.",
+        "Afişini Dosya → Farklı Kaydet ile Belgeler klasörüne 5A_Ayse_DijitalSaglik gibi kendi sınıfın ve adınla kaydet.",
         "20 saniye göz molası ver: Pencereden ya da sınıfın öbür ucuna bak.",
         "Arkadaşının afişini incele. Onun bir kuralını defterine yaz."
       ],
