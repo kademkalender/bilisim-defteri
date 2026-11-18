@@ -32,6 +32,25 @@ Kayıt şablonu:
   - Üst bant tema renginde kaldı (kullanıcı kararı).
   - Bölüm kartı durumları kataloğa yazıldı: Bekliyor, Sıradaki, Bitti; kilit yok; yeniden açınca iş korunur, sıfırlama bölümün kendi düğmesiyle.
   - 1366×768, 1880×900 ve 375 px'te denendi, taşma yok.
+- Sunum bölümü (öğrenci gözüyle inceleme, kullanıcı 2, 4 ve 5'i seçti):
+  - Öğrenci bir bölümü açınca ders bandı görünmez (`.lesson-band.in-sec`, h1 ekran okuyucuya kalır); iki renkli blok üst üste durmasın diye ders adı, hafta ve ilerleme bölüm şeridine geçti (`.bh-ctx`, `.band-prog`). 1366×768'de slayt 687 px'te, alttaki "Sonraki bölüm" 755 px'te biter.
+  - Öğrencide son slaytta "Sonraki" düğmesi mavi dolu "Sonraki bölüm: Deftere yaz →" olur ve sonraki bölümü açar (`.go-sec`); tam ekrandaysa önce çıkar. Telefonda alt satırda tam genişlik. Öğretmende değişmedi.
+  - Bölüm açıklaması yönerge oldu: "Öğretmeninle birlikte ilerle. O slaytı değiştirince sen de Sonraki'ye tıkla."
+  - Bölüm açıkken tek geri yolu "Bölümler" (ana sayfa logoda).
+  - Katalog: Bölüm başlığı tek şerit (ders satırı, ilerleme), Ders bandına gizlenme kuralı, Slayta "Öğrenci, son slayt" çeşidi, Bölüm başlığına geri yolu ve yönerge kuralı.
+- Mini test sıralı oldu (kullanıcı kararları: süre dolunca cevabı göster, "Sonraki soru" düğmesi, öğrenci ve öğretmen, Sınıf ayarlarında aç/kapa):
+  - Sorular tek tek gelir; üstte "Soru 2 / 5" ve 45 saniyelik sayaç, altında süre çubuğu, son 10 saniye kırmızı ve ekran okuyucuya duyuru.
+  - Süre dolunca şıklar kilitlenir, doğru cevap ve neden görünür ("Süre doldu. …"), ilk denemede doğru sayılmaz (`picks` içinde -1).
+  - Bölüm gizliyken ya da sekme arkadayken süre durur. Yenileyince bitmemiş ilk sorudan sürer.
+  - Bitince bütün sorular alt alta, sonuç ve "Testi yeniden çöz" (test bitmeden gizli).
+  - Sınıf ayarlarına "Mini test süresi" kartı (`quizTimer`: on / off, varsayılan on).
+  - Sınav çalışma soruları değişmedi (liste, süresiz).
+  - Katalog (Test sorusu: sıralı düzen, süre doldu, son 10 saniye, süresiz çeşitleri; Ayar kartı), TASARIM-SISTEMI ve README güncel.
+**Yarım kalan işler (Sunum incelemesinden)**
+- [ ] Öğrenci slayt numarasına atlayamıyor (noktalar öğrencide gizli); numara düğmeleri düşünülebilir.
+- [ ] Ders adı ve hafta hem bantta hem kapak slaytında tekrar ediyor.
+- [ ] 5-1-6'nın 2. slaytında geçici görsel; 10. slaytta "Deftere Yaz" büyük harf.
+- [ ] Telefonda ilk slaytta slayt çubuğu 9 px taşıyor (önceden de vardı).
 
 ---
 
