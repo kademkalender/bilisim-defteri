@@ -16,6 +16,25 @@ Kayıt şablonu:
 
 ---
 
+## 2026-11-18 · efee7946-cmd + Claude Code (Opus 5.5) · Ana sayfa bütünleşik görünüm
+
+**Ne yapıldı**
+- Ana sayfada üst bant ile hafta şeridi arasındaki bölüm bütünleşti (kullanıcı üç öneriyi de seçti):
+  - Kartın üstündeki ayrı başlık ("Takvime göre bu hafta", "Tatilden sonraki ilk hafta", "Seçtiğin hafta") kartın içine, ders adının üstüne taşındı (`.wk-label`).
+  - Hafta kartı ve hafta şeridi tek panel (`.wk-panel`): beyaz zemin, ince kenarlık; kart üstte, şerit altındaki beyaz alanda (`.wk-nav`). Seçili haftanın üçgeni karta bakar.
+  - Sınıf seçildikten sonra selam ve sınıf seçici tek beyaz şerit (`.hello-row`); panelle arasındaki boşluk azaldı.
+  - 560 px ve altında şerit kenar boşluğu ve aralığı küçüldü; "takvim" yazısı 375 px'te kutuya sığar.
+- İki rolde 1366×768, 375 px, 1880×900 ve ilk açılış (büyük sınıf kartları) denendi; yatay taşma yok, monitörde panel 827/900 px.
+- Katalog (Bu hafta kartı: panel, etiket, selam şeridi; "Etkinlik haftası" kuralı "Özel hafta" oldu) ve TASARIM-SISTEMI güncel. dogrula 0 hata.
+- Ders girişi bölüm kartları (örnek: 5-1-6):
+  - Kart 260 → 210 px (monitörde 195 px × `--k`, yaklaşık 254 px); ikon ile başlık arası kısaldı, sayfa 1366×768'e boşlukla sığar.
+  - "Sıradaki" kartın siyah 4 px çerçevesi yerine 3 px lacivert dış çizgi (`--action-primary`) ve hafif gölge.
+  - Üst bant tema renginde kaldı (kullanıcı kararı).
+  - Bölüm kartı durumları kataloğa yazıldı: Bekliyor, Sıradaki, Bitti; kilit yok; yeniden açınca iş korunur, sıfırlama bölümün kendi düğmesiyle.
+  - 1366×768, 1880×900 ve 375 px'te denendi, taşma yok.
+
+---
+
 ## 2026-11-18 · efee7946-cmd + Claude Code (Opus 5.5) · GitHub'dan güncelleme alındı
 
 **Ne yapıldı**
