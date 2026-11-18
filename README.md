@@ -50,7 +50,7 @@ Ders sayfası sekmelidir, aynı anda tek bölüm görünür. **Öğrencinin** se
 1. **Sunum:** Öğretmenle birlikte takip edilir.
 2. **Deftere yaz:** Sadece yazılması gereken 3–5 madde.
 3. **Etkinlik:** Adım adım, bilgisayarın işletim sistemine göre. Sınıflandırma oyunu altta açılır bölümde.
-4. **Mini test:** Anında geri bildirim. Cevaplar saklanır, test yeniden çözülebilir.
+4. **Mini test:** Sorular tek tek gelir, her soruda 45 saniye (Sınıf ayarlarından kapatılabilir). Anında geri bildirim; süre dolunca doğru cevap ve nedeni gösterilir. Cevaplar saklanır, test bitince yeniden çözülebilir.
 5. **Bulmaca:** Kelime + ipucu listesinden otomatik oluşan çengel bulmaca.
 
 Biten bölümün sekmesinde numara yerine ✓ görünür. Tarayıcının geri tuşu önceki sekmeye döner.

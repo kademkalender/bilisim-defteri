@@ -430,7 +430,7 @@ body{background:var(--surface-subtle)}
   add({ id: "ayar-karti", group: "Kartlar", name: "Ayar kartı", cls: ".setting.card",
     desc: "Sınıf ayarları'nda bir ayar ve seçenekleri.",
     where: "Sınıf ayarları.",
-    rules: ["Başlıkta 40 px renkli ikon karesi (<code>.sq-sm</code>).", "Seçenekler seçenek düğmesidir (<code>.opt-group</code>).", "Her ayar ayrı kart."],
+    rules: ["Başlıkta 40 px renkli ikon karesi (<code>.sq-sm</code>).", "Seçenekler seçenek düğmesidir (<code>.opt-group</code>).", "Her ayar ayrı kart.", "Ayarlar: sınıf ortamı, işletim sistemi, internet, animasyonlar, Mini test süresi (45 saniye / Süresiz), öğrenci ilerlemesi."],
     props: [{ k: "secili", l: "Seçili", t: "seg", d: "lab", o: Object.keys(BD.envs).map(function (k) { return [k, BD.envs[k].short]; }) }],
     render: function (p) {
       return '<div class="setting card"><h3><span class="sq-sm" style="background:var(--theme-1)">' + ico("okul") + '</span>Sınıf ortamı</h3><div class="opt-group">' +
@@ -494,7 +494,7 @@ body{background:var(--surface-subtle)}
   add({ id: "ders-bandi", group: "Gezinme", name: "Ders bandı", cls: ".lesson-band",
     desc: "Ders sayfasının başı: ders adı, hafta ve geri düğmesi.",
     where: "Ders sayfası.",
-    rules: ["Zemin temanın rengi.", "Öğrencide sağda ilerleme (\"2 / 6 bitti\"), öğretmende kazanım kodu.", "Öğrencide ilerlemenin yanında beyaz Başla düğmesi (<code>.band-cta</code>, <code>.btn.on-color</code>) sıradaki bölümü açar; düğmede o bölümün renkli ikon karesi (<code>.cta-sq</code>) kartla bağ kurar; yalnız Bölümler açıkken görünür, hepsi bitince kalkar. 760 px ve altında alt satırda tam genişlik.", "Öğretmende üst satırda tema ve süre de yazar."],
+    rules: ["Zemin temanın rengi.", "Öğrencide sağda ilerleme (\"2 / 6 bitti\"), öğretmende kazanım kodu.", "Öğrencide ilerlemenin yanında beyaz Başla düğmesi (<code>.band-cta</code>, <code>.btn.on-color</code>) sıradaki bölümü açar; düğmede o bölümün renkli ikon karesi (<code>.cta-sq</code>) kartla bağ kurar; yalnız Bölümler açıkken görünür, hepsi bitince kalkar. 760 px ve altında alt satırda tam genişlik.", "Öğretmende üst satırda tema ve süre de yazar.", "Öğrenci bir bölümü açınca bant görünmez (<code>.lesson-band.in-sec</code>, başlığı ekran okuyucuya kalır): iki renkli blok üst üste durmaz. Ders adı, hafta ve ilerleme bölüm şeridine geçer (bkz. Bölüm başlığı). Bölümün içinde tek geri yolu \"Bölümler\"; ana sayfaya logodan dönülür."],
     props: [{ k: "tema", l: "Tema", t: "select", d: "1", o: themeOpts }, { k: "biten", l: "Biten bölüm", t: "seg", d: "2", o: [["0", "0"], ["2", "2"], ["6", "6"]] }],
     render: function (p) {
       var th = TH[p.tema - 1];
@@ -523,13 +523,13 @@ body{background:var(--surface-subtle)}
   });
 
   add({ id: "bolum-basligi", group: "Gezinme", name: "Bölüm başlığı", cls: ".block-h, .block-hint",
-    desc: "Bölümün içindeki başlık. Öğrencide bölüm renginde dolu şerit ve Bölümler düğmesi, öğretmende tek satır açıklama.",
+    desc: "Bölümün içindeki başlık. Öğrencide bölüm renginde tek şerit: ders bilgisi, bölüm adı, yönerge, ilerleme ve Bölümler. Öğretmende tek satır açıklama.",
     where: "Ders sayfası, her bölüm.",
-    rules: ["Öğrenci: şerit bölümün renginde (<code>section.block</code> üstünde <code>data-sec</code> ve <code>--c</code>), yazı beyaz; defter sarısında koyu. İkon karesi yarı saydam beyaz, sağda beyaz \"Bölümler\". Kartlardaki renk bölümün içinde sürer.", "Öğretmen: başlık ekran okuyucuya kalır (<code>.sr</code>), görünen yalnızca açıklama; sekme adı ve rengi zaten gösterir.", "Görünüm düğmesiyle iki hâli karşılaştırın."],
+    rules: ["Öğrenci: şerit bölümün renginde (<code>section.block</code> üstünde <code>data-sec</code> ve <code>--c</code>), yazı beyaz; defter sarısında koyu. İkon karesi yarı saydam beyaz, sağda ilerleme (<code>.band-prog</code>, banttakinin aynısı; defterde koyu çubuk) ve beyaz \"Bölümler\"; bölümün içindeki tek geri düğmesi budur. Bölüm adının üstünde küçük ders satırı (<code>.bh-ctx</code>: \"5. sınıf · 8. hafta · Ders adı\"): ders bandı bölüm açıkken görünmez, şerit tek başına durur. 760 px ve altında ilerleme ile Bölümler alt satırda yan yana. Kartlardaki renk bölümün içinde sürer.", "Açıklama emir kipinde yönergedir, ne yapacağını söyler: \"Öğretmeninle birlikte ilerle. O slaytı değiştirince sen de Sonraki'ye tıkla.\"", "Öğretmen: başlık ekran okuyucuya kalır (<code>.sr</code>), görünen yalnızca açıklama; sekme adı ve rengi zaten gösterir.", "Görünüm düğmesiyle iki hâli karşılaştırın."],
     props: [{ k: "bolum", l: "Bölüm", t: "select", d: "defter", o: secOpts }, { k: "aciklama", l: "Açıklama", t: "text", d: "Sadece bu maddeleri defterine geçir. Yazdıkça yanındaki kutuyu işaretle." }],
     render: function (p) {
       if (T()) return '<h2 class="sr">' + SEC[p.bolum] + '</h2><p class="hint block-hint">' + esc(p.aciklama) + '</p>';
-      return '<section class="block" data-sec="' + p.bolum + '" style="--c:var(--sec-' + p.bolum + ')"><div class="block-h"><span class="sq sec-' + p.bolum + '">' + ico(p.bolum) + '</span><div><h2>' + SEC[p.bolum] + '</h2><p>' + esc(p.aciklama) + '</p></div><button type="button" class="btn sec-back" data-tab="hub" style="margin-left:auto">' + ico("back") + ' Bölümler</button></div></section>';
+      return '<section class="block" data-sec="' + p.bolum + '" style="--c:var(--sec-' + p.bolum + ')"><div class="block-h"><span class="sq sec-' + p.bolum + '">' + ico(p.bolum) + '</span><div><small class="bh-ctx">5. sınıf · 7. hafta · ' + esc(L.title) + '</small><h2>' + SEC[p.bolum] + '</h2><p>' + esc(p.aciklama) + '</p></div><div class="band-prog" aria-hidden="true"><span>2 / 6 bitti</span><div class="bar"><span style="width:33%"></span></div></div><button type="button" class="btn sec-back" data-tab="hub">' + ico("back") + ' Bölümler</button></div></section>';
     },
     width: "full",
     variants: [["Deftere yaz", {}], ["Mini test", { bolum: "test", aciklama: "4 soru. Ne kadar öğrendiğini kontrol et." }], ["Etkinlik", { bolum: "etkinlik", aciklama: "Görevleri sırayla yap. Bitirdiğin adımda \"Yaptım\"a tıkla." }]]
@@ -545,22 +545,22 @@ body{background:var(--surface-subtle)}
       (s.reveal ? '<button type="button" class="reveal">Cevabı göster</button><p class="reveal-ans"' + (open ? "" : " hidden") + '>' + esc(s.reveal) + '</p>' : "") + num + '</div>';
   };
   var q0 = L.quiz[0];
-  var quizFb = function (q, n) { return n < 2 ? "Az kaldı! " + q.hint + " Bir daha dene." : "Bu sefer olmadı. " + q.why + " Doğru cevap: " + q.o[q.a] + " ✓"; };
+  var quizFb = function (q, n) { return n === -1 ? "Süre doldu. " + q.why + " Doğru cevap: " + q.o[q.a] + " ✓" : n < 2 ? "Az kaldı! " + q.hint + " Bir daha dene." : "Bu sefer olmadı. " + q.why + " Doğru cevap: " + q.o[q.a] + " ✓"; };
   var SLIDES = { baslik: [L.slides[0], 0], metin: [L.slides[2], 2], sutun: [L.slides[4], 4], liste: [L.slides[5], 5], tahmin: [{ h: q0.q, p: q0.o.join(" · "), reveal: q0.o[q0.a] }, 3] };
   add({ id: "slayt", group: "Ders içeriği", name: "Slayt", cls: ".deck, .slide",
     desc: "Tahtaya yansıtılan ders sunumu. Öğrenci aynı sunumu kendi bilgisayarında açar.",
     where: "Sunum bölümü.",
-    rules: ["16:9, koyu lacivert zemin, başlık sarı (<code>--highlight</code>).", "Slayt kaydırmadan ekrana sığacak kadar büyür; yazılar slayt genişliğine göre ölçeklenir.", "Tahmin et slaytında cevap düğmeyle açılır.", "Altta önceki/sonraki, sayaç, noktalar ve Tam ekran."],
-    props: [{ k: "tur", l: "Tür", t: "seg", d: "metin", o: [["baslik", "Başlık"], ["metin", "Metin"], ["liste", "Liste"], ["sutun", "Sütun"], ["tahmin", "Tahmin et"]] }, { k: "cevap", l: "Cevap açık", t: "bool", d: false }],
+    rules: ["16:9, koyu lacivert zemin, başlık sarı (<code>--highlight</code>).", "Slayt kaydırmadan ekrana sığacak kadar büyür; yazılar slayt genişliğine göre ölçeklenir.", "Tahmin et slaytında cevap düğmeyle açılır.", "Altta önceki/sonraki, sayaç, noktalar ve Tam ekran.", "Öğrencide son slaytta \"Sonraki\" düğmesi mavi dolu \"Sonraki bölüm: …\" olur ve sonraki bölümü açar (<code>.go-sec</code>); 1366×768'de alttaki Sonraki bölüm düğmesi ekranın altında kalır. Telefonda bu düğme alt satırda tam genişlik. Öğretmende son slaytta Sonraki pasif kalır."],
+    props: [{ k: "son", l: "Öğrenci, son slayt", t: "bool", d: false }, { k: "tur", l: "Tür", t: "seg", d: "metin", o: [["baslik", "Başlık"], ["metin", "Metin"], ["liste", "Liste"], ["sutun", "Sütun"], ["tahmin", "Tahmin et"]] }, { k: "cevap", l: "Cevap açık", t: "bool", d: false }],
     render: function (p) {
       var s = SLIDES[p.tur], n = L.slides.length;
       return '<div class="deck"><div class="stage" tabindex="0" role="group" aria-label="Ders slaytları">' + slideOf(s[0], s[1], bool(p.cevap)) + '</div>' +
-        '<div class="deck-bar"><button type="button" aria-label="Önceki slayt">← <span class="w">Önceki</span></button><span class="count">' + (s[1] + 1) + ' / ' + n + '</span><button type="button" aria-label="Sonraki slayt"><span class="w">Sonraki</span> →</button>' +
+        '<div class="deck-bar' + (bool(p.son) ? " to-sec" : "") + '"><button type="button" aria-label="Önceki slayt">← <span class="w">Önceki</span></button><span class="count">' + (s[1] + 1) + ' / ' + n + '</span>' + (bool(p.son) ? '<button type="button" class="go-sec" aria-label="Sonraki bölüm: Deftere yaz"><span class="w">Sonraki bölüm: </span>Deftere yaz →</button>' : '<button type="button" aria-label="Sonraki slayt"><span class="w">Sonraki</span> →</button>') +
         '<div class="dots">' + L.slides.map(function (_, i) { return '<button type="button" aria-label="' + (i + 1) + '. slayt" class="' + (i === s[1] ? "on" : "") + '"></button>'; }).join("") + '</div><button type="button">Tam ekran</button></div></div>';
     },
     wrap: function (p, h) { return '<div style="width:760px;max-width:100%">' + h + '</div>'; },
     width: "full",
-    variants: [["Başlık", { tur: "baslik" }], ["Metin", {}], ["Sütunlar", { tur: "sutun" }], ["Tahmin et, cevap açık", { tur: "tahmin", cevap: true }]]
+    variants: [["Başlık", { tur: "baslik" }], ["Metin", {}], ["Sütunlar", { tur: "sutun" }], ["Tahmin et, cevap açık", { tur: "tahmin", cevap: true }], ["Öğrenci, son slayt", { son: true }]]
   });
 
   add({ id: "defter", group: "Ders içeriği", name: "Defter", cls: ".notebook",
@@ -578,20 +578,24 @@ body{background:var(--surface-subtle)}
   });
 
   add({ id: "test", group: "Ders içeriği", name: "Test sorusu", cls: ".q, .opts",
-    desc: "Mini testte bir soru ve şıkları.",
-    where: "Mini test bölümü, Sınav çalışma soruları (aynı işaretleme: <code>quizHtml()</code>, <code>bindQuiz()</code>).",
-    rules: ["Soru <code>--fs-lg</code> ve kalın. Şıklar beyaz, 2 px <code>--border-strong</code> kenarlıklı, normal kalınlıkta (400), en az 50 px; boş kutu gibi değil düğme gibi görünür.", "Şıklar A), B), C) ile başlar.", "İki deneme: ilk yanlış şık kırmızı ✕ ve kilitli, diğerleri açık kalır, altında ipucu. İkinci yanlışta bütün şıklar kilitlenir, doğru şık yeşil ✓.", "Sonuç ilk denemedeki doğruları sayar: \"Testi bitirdin! 5 sorudan 4'ü ilk denemede doğru.\" Hiç doğru yoksa sayı verilmez: \"Testi bitirdin! Doğru cevapları gördün. Bir daha çözmek ister misin?\"", "Klavyeyle seçilen şık kilitlenince odak kaybolmaz: aynı sorunun açık şıkkına, soru bittiyse sıradaki soruya, test bittiyse sonuç kutusuna geçer."],
-    props: [{ k: "durum", l: "Durum", t: "seg", d: "", o: [["", "Cevapsız"], ["dogru", "Doğru"], ["ipucu", "İlk yanlış"], ["yanlis", "İkinci yanlış"]] }],
+    desc: "Mini testte bir soru ve şıkları. Ders sayfasında sorular tek tek gelir, üstte soru sayısı ve sayaç.",
+    where: "Mini test bölümü (sıralı, iki rolde de), Sınav çalışma soruları (liste, süresiz). Aynı işaretleme: <code>quizHtml(qs, sirali)</code>, <code>bindQuiz()</code>.",
+    rules: ["Soru <code>--fs-lg</code> ve kalın. Şıklar beyaz, 2 px <code>--border-strong</code> kenarlıklı, normal kalınlıkta (400), en az 50 px; boş kutu gibi değil düğme gibi görünür.", "Şıklar A), B), C) ile başlar.", "İki deneme: ilk yanlış şık kırmızı ✕ ve kilitli, diğerleri açık kalır, altında ipucu. İkinci yanlışta bütün şıklar kilitlenir, doğru şık yeşil ✓.", "Sonuç ilk denemedeki doğruları sayar: \"Testi bitirdin! 5 sorudan 4'ü ilk denemede doğru.\" Hiç doğru yoksa sayı verilmez: \"Testi bitirdin! Doğru cevapları gördün. Bir daha çözmek ister misin?\"", "Klavyeyle seçilen şık kilitlenince odak kaybolmaz: aynı sorunun açık şıkkına, soru bittiyse sıradaki soruya, test bittiyse sonuç kutusuna geçer.", "Sıralı düzen (Mini test): bir anda tek soru. Üstte \"Soru 2 / 5\" ve sayaç (<code>.q-head</code>, <code>.q-timer</code> <code>role=\"timer\"</code>), altında kalan süre çubuğu (<code>.q-time</code>, Mini test moru); son 10 saniyede ikisi kırmızı ve ekran okuyucuya \"10 saniye kaldı.\" denir.", "Her soruda 45 saniye; iki deneme de bu sürenin içinde. Süre dolunca şıklar kilitlenir, doğru cevap ve nedeni görünür (\"Süre doldu. …\"), soru ilk denemede doğru sayılmaz. Bölüm gizliyken ya da sekme arkadayken süre durur; sayfa yenilenince bitmemiş ilk sorudan yeni 45 saniyeyle sürer.", "Soru bitince süre durur, sağda mavi \"Sonraki soru →\" (<code>.q-next</code>) çıkar; geri bildirimi okuma zamanı öğrencinindir. Klavyeyle seçildiyse odak bu düğmeye geçer.", "Son soru bitince bütün sorular cevaplarıyla alt alta görünür, altında sonuç ve \"Testi yeniden çöz\"; bu düğme test bitmeden görünmez.", "Sınıf ayarlarında \"Mini test süresi: Süresiz\" seçilirse sorular yine tek tek gelir, sayaç ve çubuk görünmez."],
+    props: [{ k: "durum", l: "Durum", t: "seg", d: "", o: [["", "Cevapsız"], ["dogru", "Doğru"], ["ipucu", "İlk yanlış"], ["yanlis", "İkinci yanlış"], ["sure", "Süre doldu"]] }, { k: "sn", l: "Kalan süre", t: "seg", d: "32", o: [["32", "32 sn"], ["8", "8 sn"], ["", "Süresiz"]] }],
     render: function (p) {
       var q = q0, w1 = (q.a + 1) % q.o.length, w2 = (q.a + 2) % q.o.length, d = p.durum;
-      var picks = d === "dogru" ? [q.a] : d === "ipucu" ? [w1] : d === "yanlis" ? [w1, w2] : [], locked = d === "dogru" || d === "yanlis";
-      return '<div class="q"><p>1. ' + esc(q.q) + '</p><div class="opts">' + q.o.map(function (o, i) {
+      var picks = d === "dogru" ? [q.a] : d === "ipucu" ? [w1] : d === "yanlis" ? [w1, w2] : [], locked = d === "dogru" || d === "yanlis" || d === "sure";
+      var sn = d === "sure" ? 0 : +p.sn, low = p.sn && sn <= 10, fin = locked;
+      var head = '<div class="q-head"><span class="q-count">Soru 1 / 5</span>' + (p.sn ? '<span class="q-timer' + (low ? " low" : "") + '" role="timer">' + ico("clock") + ' ' + sn + ' sn</span>' : "") + '</div>' +
+        (p.sn ? '<div class="q-time' + (low ? " low" : "") + '" aria-hidden="true" style="margin-top:8px"><span style="width:' + Math.round(sn / 45 * 100) + '%"></span></div>' : "");
+      return head + '<div class="q" style="margin-top:12px"><p>1. ' + esc(q.q) + '</p><div class="opts">' + q.o.map(function (o, i) {
         var cls = picks.indexOf(i) >= 0 && i !== q.a ? "wrong" : (locked && i === q.a ? "right" : "");
         return '<button type="button"' + (cls ? ' class="' + cls + '"' : "") + (locked || cls ? " disabled" : "") + '>' + String.fromCharCode(65 + i) + ') ' + esc(o) + '</button>';
-      }).join("") + '</div><div class="fb' + (d === "dogru" ? " r" : d === "ipucu" ? " h" : d === "yanlis" ? " w" : "") + '">' + (d === "dogru" ? "✓ Doğru!" : d ? esc(quizFb(q, picks.length)) : "") + '</div></div>';
+      }).join("") + '</div><div class="fb' + (d === "dogru" ? " r" : d === "ipucu" ? " h" : d === "yanlis" || d === "sure" ? " w" : "") + '">' + (d === "dogru" ? "✓ Doğru!" : d === "sure" ? esc(quizFb(q, -1)) : d ? esc(quizFb(q, picks.length)) : "") + '</div></div>' +
+        (fin ? '<div class="row q-nextrow" style="margin-top:12px"><button type="button" class="btn primary q-next">Sonraki soru →</button></div>' : "");
     },
     width: "full",
-    variants: [["Cevapsız", {}], ["Doğru", { durum: "dogru" }], ["İlk yanlış", { durum: "ipucu" }], ["İkinci yanlış", { durum: "yanlis" }]]
+    variants: [["Cevapsız", {}], ["Son 10 saniye", { sn: "8" }], ["Doğru", { durum: "dogru" }], ["İlk yanlış", { durum: "ipucu" }], ["İkinci yanlış", { durum: "yanlis" }], ["Süre doldu", { durum: "sure" }], ["Süresiz", { sn: "" }]]
   });
 
   add({ id: "adimlar", group: "Ders içeriği", name: "Etkinlik adımları", cls: ".act-steps",

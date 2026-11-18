@@ -113,7 +113,8 @@ BD.defaults = {
   env: "lab",       // lab | tahta | kagit
   os: "pardus",     // pardus | windows
   internet: true,
-  motion: "full"    // full | reduced (yavaş tahtalar için)
+  motion: "full",   // full | reduced (yavaş tahtalar için)
+  quizTimer: "on"   // on | off: Mini testte her soruda 45 saniye
 };
 
 BD.envs = {

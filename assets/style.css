@@ -283,6 +283,9 @@ html:not(.role-ogrenci) .grade-card[aria-pressed="true"]:after{width:32px;height
 .lesson-band h1{font-size:var(--fs-2xl);color:inherit}
 /* Başlık kalan yeri alır, ilerleme ve Başla sağda aynı satırda kalır */
 .lesson-band > div:first-of-type{flex:1 1 0;min-width:0}
+/* Öğrenci bir bölümün içindeyken ders bandı görünmez, h1 ekran okuyucuya kalır; ders bilgisi ve ilerleme bölüm şeridinde */
+.lesson-band.in-sec{position:absolute;left:-9999px}
+.lesson-band.in-sec .back{display:none}
 .band-code{margin-left:auto;padding:var(--space-1) var(--space-3);border-radius:var(--radius-sm);background:rgba(255,255,255,.2);font-family:var(--font-mono);font-weight:700}
 .band-prog{margin-left:auto;font-weight:700;text-align:right;padding-left:var(--space-4)}
 .band-prog .bar{width:180px;height:12px;border-radius:var(--radius-pill);background:rgba(255,255,255,.28);margin-top:var(--space-2);overflow:hidden}
@@ -317,7 +320,11 @@ html.role-ogrenci .tabs{display:none}
 .sec-card.next .badge{background:var(--accent-light);color:var(--text-primary)}
 .sec-cta{display:flex;justify-content:center}
 /* Bölümün içinde: geri düğmesi ve renkli kare başlık */
-.sec-back{min-height:48px}
+.sec-back{min-height:48px;margin-left:auto}
+.block-h .band-prog + .sec-back{margin-left:var(--space-5)}
+.bh-ctx{display:block;font-weight:700;font-size:var(--fs-sm);opacity:.95;margin-bottom:2px}
+section.block[data-sec="defter"] .band-prog .bar{background:rgba(31,36,48,.15)}
+section.block[data-sec="defter"] .band-prog .bar span{background:var(--text-primary)}
 .block-h .sq{flex:none;width:52px;height:52px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--action-on-primary)}
 .block-h .sq.sec-defter{color:var(--text-primary)}
 html.role-ogrenci .dots,html.role-ogrenci .deck + .hint{display:none}
@@ -461,6 +468,8 @@ section.block > .block-hint + *{margin-top:var(--space-3)}
 .deck-bar button{min-height:var(--size-control-sm);border:0;background:var(--surface-subtle);color:var(--text-primary);padding:0 var(--space-4);border-radius:var(--radius-md);font-weight:700}
 .deck-bar button:hover{background:var(--border-default)}
 .deck-bar button[aria-disabled="true"]{opacity:.45;cursor:default}
+.deck-bar button.go-sec{background:var(--action-primary);color:var(--action-on-primary)}
+.deck-bar button.go-sec:hover{background:var(--action-primary-hover)}
 .deck-bar .count{font-weight:700;font-size:var(--fs-md);min-width:70px;text-align:center}
 /* Nokta 12 px görünür, dokunma alanı 24 px; dokunmatik tahtada 40 px */
 .dots{display:flex;gap:var(--space-1);flex:1;justify-content:center;flex-wrap:wrap}
@@ -548,6 +557,20 @@ section.block > .block-hint + *{margin-top:var(--space-3)}
 .fb{font-size:var(--fs-sm);font-weight:700;min-height:1.4em;margin-top:var(--space-2)}
 .fb.r{color:var(--feedback-success)}.fb.w{color:var(--feedback-error)}.fb.h{color:var(--action-primary)}
 .score{font-weight:700;font-size:var(--fs-lg)}
+/* Sıralı Mini test: soru sayısı ve sayaç, altında kalan süre çubuğu; son 10 saniye kırmızı */
+.q-head{display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:var(--fs-md)}
+.q[hidden] + .q{margin-top:0}
+.q-timer{display:inline-flex;align-items:center;font-variant-numeric:tabular-nums;min-width:5.5em;justify-content:flex-end}
+.q-timer .ico{margin-right:var(--space-1)}
+.q-timer.low{color:var(--feedback-error)}
+section.block > .q-head + .q-time{margin-top:var(--space-2)}
+section.block > .q-time + .quiz{margin-top:var(--space-3)}
+.q-time{height:10px;border-radius:var(--radius-pill);background:var(--surface-subtle);overflow:hidden}
+.q-time span{display:block;height:100%;background:var(--sec-test)}
+.q-time.low span{background:var(--feedback-error)}
+html.anim .q-time span{transition:width 1s linear}
+.q-nextrow{justify-content:flex-end}
+section.block > .quiz + .q-nextrow{margin-top:var(--space-3)}
 
 /* Bulmaca */
 .cw{background:var(--surface-default);border-radius:var(--radius-xl);border:1px solid var(--border-default);padding:var(--space-5);display:grid;grid-template-columns:auto minmax(240px,1fr);gap:var(--space-6);align-items:start}
@@ -668,6 +691,8 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
   .deck-bar{gap:var(--space-2);flex-wrap:nowrap;justify-content:space-between}
   .deck-bar .w,.dots{display:none}
   .deck-bar .count{min-width:56px}
+  .deck-bar.to-sec{flex-wrap:wrap}
+  .deck-bar.to-sec .go-sec{order:9;flex:1 1 100%}
   #fs{white-space:nowrap}
   summary.week{flex-wrap:wrap}
   .notebook{padding-left:52px}
@@ -703,6 +728,9 @@ select{font:inherit;min-height:var(--size-control-sm);padding:0 var(--space-3);b
   /* Bölüm başlığı: Bölümler düğmesi sığmazsa alt satıra iner, açıklama daralmaz */
   .block-h{flex-wrap:wrap}
   .block-h > div{flex:1 1 180px;min-width:0}
+  /* Öğrenci şeridi: ilerleme ve Bölümler alt satırda yan yana */
+  .block-h .band-prog{flex:1 1 140px;width:auto;margin:0;text-align:left}
+  .block-h .band-prog + .sec-back{margin-left:var(--space-3)}
   .grade-card[aria-pressed="true"]:after{top:var(--space-2);right:var(--space-2);margin-top:0;width:28px;height:28px;font-size:1rem}
   .wk-strip{gap:var(--space-2)}
   .wk-page{width:32px}

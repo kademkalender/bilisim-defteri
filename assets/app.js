@@ -406,8 +406,7 @@
       cta.innerHTML = '<span class="cta-sq sec-' + nk + '">' + icon(nk) + '</span><span></span>';
       cta.lastChild.textContent = "Başla: " + $("b", next).textContent;
     }
-    var bp = $("#bandProg");
-    if (bp) { $("span", bp).textContent = done + " / " + cards.length + " bitti"; $(".bar span", bp).style.width = Math.round(done / cards.length * 100) + "%"; }
+    $$(".band-prog").forEach(function (bp) { $("span", bp).textContent = done + " / " + cards.length + " bitti"; $(".bar span", bp).style.width = Math.round(done / cards.length * 100) + "%"; }); // bantta ve her bölüm şeridinde
   }
 
   // Açık sekme bellekte durur: ortam değişince yerinde kalır, sayfa yenilenince (sonraki sınıf) ilk sekmeye döner.
@@ -428,8 +427,10 @@
       var i = tabs.map(function (t) { return t[0]; }).indexOf(key), nx = key === "hub" ? null : tabs[i + 1];
       var head = key === "hub" ? '<h2 class="label-h hub-h">' + title + '</h2>'
         : T ? '<h2 class="sr">' + title + '</h2>' + (text ? '<p class="hint block-hint">' + text + '</p>' : "")
-        : '<div class="block-h"><span class="sq sec-' + key + '">' + icon(key) + '</span><div><h2>' + title + '</h2><p>' + text + '</p></div>' +
-          '<button type="button" class="btn sec-back" data-tab="hub" style="margin-left:auto">' + icon("back") + ' Bölümler</button></div>';
+        // Öğrenci: ders bandı bölüm açıkken gizlenir, ders bilgisi ve ilerleme bu tek şeritte
+        : '<div class="block-h"><span class="sq sec-' + key + '">' + icon(key) + '</span><div><small class="bh-ctx">' + L.grade + '. sınıf · ' + L.week + '. hafta · ' + esc(L.title) + '</small><h2>' + title + '</h2><p>' + text + '</p></div>' +
+          '<div class="band-prog" aria-hidden="true"><span></span><div class="bar"><span></span></div></div>' +
+          '<button type="button" class="btn sec-back" data-tab="hub">' + icon("back") + ' Bölümler</button></div>';
       return '<section class="block"' + (key === "hub" ? "" : ' data-sec="' + key + '" style="--c:var(--sec-' + key + ')"') + ' id="b-' + key + '" role="tabpanel" aria-labelledby="t-' + key + '"' + (key === active ? "" : " hidden") + '>' +
         head + body +
         (nx ? '<div class="tab-next"><button type="button" class="btn primary" data-tab="' + nx[0] + '">Sonraki bölüm: ' + nx[1] + '</button></div>' : "") +
@@ -437,7 +438,7 @@
     };
 
     return '' +
-      '<div class="lesson-band" style="background:var(--theme-' + L.theme + ')"><a class="back" href="#home" aria-label="Ana sayfa">' + icon("back") + '</a><div><small>' + L.grade + '. sınıf · ' + L.week + '. hafta' + (T ? ' · Tema ' + L.theme + ': ' + esc(Th.name) + ' · ' + esc(L.duration) : "") + '</small><h1>' + esc(L.title) + '</h1></div>' +
+      '<div class="lesson-band' + (!T && active !== "hub" ? " in-sec" : "") + '" style="background:var(--theme-' + L.theme + ')"><a class="back" href="#home" aria-label="Ana sayfa">' + icon("back") + '</a><div><small>' + L.grade + '. sınıf · ' + L.week + '. hafta' + (T ? ' · Tema ' + L.theme + ': ' + esc(Th.name) + ' · ' + esc(L.duration) : "") + '</small><h1>' + esc(L.title) + '</h1></div>' +
         (T ? '<span class="band-code">' + L.outcome + '</span></div>' : '<div class="band-prog" id="bandProg"><span></span><div class="bar"><span></span></div></div>' +
         '<div class="band-cta" id="bandCta"' + (active === "hub" ? "" : " hidden") + '><button type="button" class="btn on-color" id="secNext" data-tab="slayt">Başla: Sunum</button></div></div>' +
         panel("hub", "Bölümler", "", '<div class="sec-cards">' + tabs.slice(1).map(function (t, i) {
@@ -450,7 +451,7 @@
         return '<button type="button" class="tab" role="tab" id="t-' + t[0] + '" data-tab="' + t[0] + '" data-n="' + (i + 1) + '" data-name="' + t[1] + '" aria-controls="b-' + t[0] + '" aria-selected="' + on + '" tabindex="' + (on ? 0 : -1) + '"><span>' + (i + 1) + '</span>' + t[1] + '</button>';
       }).join("") + '</div>' +
 
-      panel("slayt", "Sunum", T ? "Sunumu tahtaya yansıtın. Öğrenciler aynı sunumu kendi bilgisayarında açıp sizi takip edebilir." : "Öğretmenin hangi slaytta olduğunu söyleyecek.",
+      panel("slayt", "Sunum", T ? "Sunumu tahtaya yansıtın. Öğrenciler aynı sunumu kendi bilgisayarında açıp sizi takip edebilir." : "Öğretmeninle birlikte ilerle. O slaytı değiştirince sen de Sonraki'ye tıkla.",
         '<div class="deck" id="deck"><div class="stage" tabindex="0" role="group" aria-label="Ders slaytları">' + L.slides.map(function (s, i) { return slideHtml(id, s, i); }).join("") + '</div>' +
         '<div class="deck-bar"><button type="button" id="prev" aria-label="Önceki slayt">← <span class="w">Önceki</span></button><span class="count" id="count" aria-live="polite">1 / ' + L.slides.length + '</span><button type="button" id="next" aria-label="Sonraki slayt"><span class="w">Sonraki</span> →</button>' +
         '<div class="dots" id="dots">' + L.slides.map(function (_, i) { return '<button type="button" aria-label="' + (i + 1) + '. slayt" class="' + (i === 0 ? "on" : "") + '" data-i="' + i + '"></button>'; }).join("") + '</div>' +
@@ -486,8 +487,9 @@
 
       (hasSort ? panel("oyun", "Sınıflandırma oyunu", T ? "Öğrenciler etkinlikte öğrendiklerini sınıflandırarak pekiştirir. Tahtada sınıfça da oynanabilir." : "Kartları doğru kutulara yerleştir!", sortHtml(L)) : "") +
 
-      panel("test", "Mini test", T ? L.quiz.length + " soru. Yanlış cevapta öğrenci önce ipucu görür, ikinci yanlışta doğru cevabı ve nedenini." : L.quiz.length + " soru. Ne kadar öğrendiğini kontrol et.",
-        quizHtml(L.quiz)) +
+      panel("test", "Mini test", T ? L.quiz.length + " soru, tek tek gelir" + (quizSecs() ? ", her soruda " + quizSecs() + " saniye (Sınıf ayarlarından kapatılabilir)" : "") + ". Yanlış cevapta öğrenci önce ipucu görür, ikinci yanlışta" + (quizSecs() ? " ya da süre dolunca" : "") + " doğru cevabı ve nedenini."
+          : L.quiz.length + " soru" + (quizSecs() ? ", her biri için " + quizSecs() + " saniyen var" : "") + ". Ne kadar öğrendiğini kontrol et.",
+        quizHtml(L.quiz, true)) +
 
       (hasCw ? panel("bulmaca", "Haftanın bulmacası", T ? "Bulmaca dersin anahtar kelimeleriyle kurulur. Boş hâli çalışma kâğıdında da var." : "Bir kutuya tıkla ve yaz. Aynı kutuya tekrar tıklarsan yön değişir. İpucuna tıklayınca o kelimeye gidersin.", '<div class="cw" id="cw"></div>') : "") +
 
@@ -497,23 +499,31 @@
   /* ---------- Test ----------
      Her soruda iki deneme. İlk yanlışta ipucu (hint), ikincide doğru cevap ve neden (why).
      Ders sayfası ve Sınav çalışma soruları aynı kodu kullanır. Bir sayfada birden çok test olabilir, bu yüzden her şey root içinde aranır. */
-  function quizHtml(qs) {
-    return '<div class="quiz">' + qs.map(function (q, qi) {
+  // Ders sayfasındaki Mini test sıralıdır: soru soru gelir, her soruda sayaç (Sınıf ayarlarından kapatılabilir). Sınav çalışma soruları liste ve süresiz kalır.
+  var quizSecs = function () { return S.quizTimer === "off" ? 0 : 45; };
+  function quizHtml(qs, step) {
+    return (step ? '<div class="q-head" hidden><span class="q-count"></span><span class="q-timer" role="timer"></span><span class="sr q-sr" role="status"></span></div><div class="q-time" aria-hidden="true" hidden><span></span></div>' : "") +
+      '<div class="quiz">' + qs.map(function (q, qi) {
       return '<div class="q" data-q="' + qi + '"><p>' + (qi + 1) + '. ' + esc(q.q) + '</p><div class="opts">' +
         q.o.map(function (o, oi) { return '<button type="button" data-o="' + oi + '">' + String.fromCharCode(65 + oi) + ') ' + esc(o) + '</button>'; }).join("") + '</div><div class="fb"></div></div>';
-    }).join("") + '</div><div class="score" aria-live="polite" tabindex="-1"></div><div class="row"><button type="button" class="btn quiz-again" hidden>' + icon("tekrar") + ' Testi yeniden çöz</button></div>';
+    }).join("") + '</div>' + (step ? '<div class="row q-nextrow"><button type="button" class="btn primary q-next" hidden>Sonraki soru →</button></div>' : "") +
+      '<div class="score" aria-live="polite" tabindex="-1"></div><div class="row"><button type="button" class="btn quiz-again" hidden>' + icon("tekrar") + ' Testi yeniden çöz</button></div>';
   }
   // "4'ü", "2'si": sayıdan sonra gelen iyelik eki (yalnızca 0-10, test en fazla 5 soru)
   var ek = function (n) { return n + "'" + ["ı", "i", "si", "ü", "ü", "i", "sı", "si", "i", "u", "u"][n]; };
-  // picks[soru] = seçilen şıklar dizisi; eski kayıtlardaki tek sayı diziye çevrilir. onState(bitti mi) her değişiklikte çağrılır.
-  function bindQuiz(root, qs, key, onState) {
+  // picks[soru] = seçilen şıklar dizisi; eski kayıtlardaki tek sayı diziye çevrilir. -1: süre doldu. onState(bitti mi) her değişiklikte çağrılır.
+  // step varsa ({ secs }) sorular tek tek gelir; secs 0 ise sayaç yok.
+  function bindQuiz(root, qs, key, onState, step) {
     var picks = store.get(key, {}), sc = $(".score", root), again = $(".quiz-again", root);
     Object.keys(picks).forEach(function (k) { if (typeof picks[k] === "number") picks[k] = [picks[k]]; });
-    var finished = function (qi) { var p = picks[qi] || []; return p.length > 0 && (p[p.length - 1] === qs[qi].a || p.length >= 2); };
+    var finished = function (qi) { var p = picks[qi] || [], l = p[p.length - 1]; return p.length > 0 && (l === qs[qi].a || l === -1 || p.length >= 2); };
     var showAnswer = function (qEl, live) {
       var qi = +qEl.getAttribute("data-q"), q = qs[qi], p = picks[qi] || [], btns = $$(".opts button", qEl), fb = $(".fb", qEl), last = p[p.length - 1], b = btns[last];
-      p.forEach(function (o) { if (o !== q.a) { btns[o].classList.add("wrong"); btns[o].disabled = true; } });
-      if (last === q.a) {
+      p.forEach(function (o) { if (o >= 0 && o !== q.a) { btns[o].classList.add("wrong"); btns[o].disabled = true; } });
+      if (last === -1) {
+        btns.forEach(function (x) { x.disabled = true; }); btns[q.a].classList.add("right");
+        fb.textContent = "Süre doldu. " + (q.why ? q.why + " " : "") + "Doğru cevap: " + q.o[q.a] + " ✓"; fb.className = "fb w";
+      } else if (last === q.a) {
         btns.forEach(function (x) { x.disabled = true; }); b.classList.add("right");
         fb.textContent = "✓ Doğru!"; fb.className = "fb r"; if (live) flash(b, "hop");
       } else if (p.length < 2) {
@@ -528,7 +538,7 @@
       var first = qs.filter(function (q, i) { return picks[i] && picks[i][0] === q.a; }).length;
       sc.classList.toggle("end-msg", all);
       sc.innerHTML = !all ? "" : endMsg(first === n ? n + " sorunun " + ek(n) + " de ilk denemede doğru!" : first ? "Testi bitirdin! " + n + " sorudan " + ek(first) + " ilk denemede doğru." : "Testi bitirdin! Doğru cevapları gördün. Bir daha çözmek ister misin?");
-      again.hidden = !Object.keys(picks).length;
+      again.hidden = step ? !all : !Object.keys(picks).length; // sıralı testte yarıda baştan başlatma yok, test bitince çıkar
       if (onState) onState(all);
       if (live && all && first === n) celebrate(sc);
     };
@@ -539,6 +549,7 @@
         var b = e.target.closest("button"); if (!b || b.disabled) return;
         (picks[qi] = picks[qi] || []).push(+b.getAttribute("data-o")); store.set(key, picks);
         showAnswer(qEl, true); quizState(true);
+        if (step) { afterStep(e.detail === 0); return; }
         // Klavyeyle seçildiyse (detail 0) kilitlenen şıkta odak kaybolmasın: aynı sorunun, sonra sıradaki sorunun şıkkına, test bittiyse sonuca
         if (e.detail === 0) {
           var open = $$(".q .opts button", root).filter(function (x) { return !x.disabled; });
@@ -554,8 +565,63 @@
         var fb = $(".fb", qEl); fb.textContent = ""; fb.className = "fb";
       });
       quizState(false);
+      if (step) showStep(0);
       $(".q .opts button", root).focus();
     };
+
+    // Sıralı düzen: bir anda tek soru, sayaç sorunun süresini gösterir. Bölüm gizliyken ya da sekme arkadayken süre durur.
+    var qEls = $$(".q", root), cur = 0, left = 0, tick = null;
+    var allDone = function () { return qs.every(function (q, i) { return finished(i); }); };
+    var stopTimer = function () { if (tick) { clearInterval(tick); tick = null; } };
+    var drawTime = function () {
+      var low = left <= 10;
+      $(".q-timer", root).innerHTML = icon("clock") + " " + left + " sn";
+      $(".q-timer", root).classList.toggle("low", low); $(".q-time", root).classList.toggle("low", low);
+      $(".q-time span", root).style.width = (left / step.secs * 100) + "%";
+      if (left === 10) $(".q-sr", root).textContent = "10 saniye kaldı.";
+    };
+    var timeUp = function () {
+      stopTimer();
+      (picks[cur] = picks[cur] || []).push(-1); store.set(key, picks);
+      showAnswer(qEls[cur], true); quizState(true); afterStep(false);
+    };
+    var startTimer = function () {
+      stopTimer(); if (!step.secs) return;
+      left = step.secs; $(".q-sr", root).textContent = ""; drawTime();
+      tick = setInterval(function () {
+        if (!document.body.contains(root)) return stopTimer(); // başka sayfaya geçildi
+        if (document.hidden || !root.offsetParent) return; // bölüm gizli: süre durur
+        left--; drawTime(); if (left <= 0) timeUp();
+      }, 1000);
+    };
+    var nextOpen = function () {
+      for (var k = 1; k <= qs.length; k++) { var i = (cur + k) % qs.length; if (!finished(i)) return i; }
+      return -1;
+    };
+    var showStep = function (i) {
+      cur = i;
+      qEls.forEach(function (q, k) { q.hidden = k !== i; });
+      $(".q-head", root).hidden = false; $(".q-time", root).hidden = !step.secs; $(".q-timer", root).hidden = !step.secs;
+      $(".q-count", root).textContent = "Soru " + (i + 1) + " / " + qs.length;
+      $(".q-next", root).hidden = true;
+      startTimer();
+    };
+    var review = function () { // hepsi bitti: bütün sorular cevaplarıyla alt alta
+      stopTimer();
+      qEls.forEach(function (q) { q.hidden = false; });
+      $(".q-head", root).hidden = true; $(".q-time", root).hidden = true; $(".q-next", root).hidden = true;
+    };
+    // Soru bittiyse süre durur; sırada soru varsa "Sonraki soru", yoksa bütün test görünür
+    var afterStep = function (kbd) {
+      if (!finished(cur)) { if (kbd) { var o = $$(".opts button", qEls[cur]).filter(function (x) { return !x.disabled; })[0]; if (o) o.focus(); } return; }
+      stopTimer();
+      if (allDone()) { review(); if (kbd || document.activeElement === document.body) sc.focus(); return; }
+      var nb = $(".q-next", root); nb.hidden = false; if (kbd) nb.focus();
+    };
+    if (step) {
+      $(".q-next", root).onclick = function () { var i = nextOpen(); if (i < 0) return review(); showStep(i); $(".opts button", qEls[i]).focus(); };
+      if (allDone()) review(); else showStep(Math.max(0, qs.map(function (q, i) { return finished(i); }).indexOf(false)));
+    }
     quizState(false);
   }
 
@@ -567,6 +633,8 @@
 
     // Slaytlar
     var deck = $("#deck"), stage = $(".stage", deck), slides = $$(".slide", deck), dots = $$("#dots button"), cur = 0;
+    // Öğrencide son slaytta "Sonraki" düğmesi sonraki bölümü açar; alttaki "Sonraki bölüm" düğmesi dizüstünde ekranın altında kalır
+    var nxSec = isStudent() ? $("#b-slayt .tab-next [data-tab]") : null;
     bindSlideImages(deck);
     // Küçük ekranda sahne kareye yakındır (style.css), yazı da oranla büyür.
     var fit = function () { var w = stage.clientWidth; stage.style.fontSize = (window.innerWidth <= 560 ? Math.max(11, w / 30) : Math.max(9, w / 46)) + "px"; };
@@ -580,12 +648,21 @@
       $("#count").textContent = (cur + 1) + " / " + slides.length;
       // disabled değil: uçta düğme odağı kaybetmesin, ok tuşları çalışmaya devam etsin
       $("#prev").setAttribute("aria-disabled", cur === 0);
-      $("#next").setAttribute("aria-disabled", cur === slides.length - 1);
-      if (cur === slides.length - 1) setTabDone("slayt", true);
+      var last = cur === slides.length - 1, nb = $("#next"), toSec = last && !!nxSec;
+      nb.setAttribute("aria-disabled", last && !toSec);
+      nb.classList.toggle("go-sec", toSec); nb.parentNode.classList.toggle("to-sec", toSec); // telefonda düğme alt satıra iner
+      if (toSec) { nb.setAttribute("data-sec-next", nxSec.getAttribute("data-tab")); nb.setAttribute("aria-label", nxSec.textContent); nb.innerHTML = '<span class="w">Sonraki bölüm: </span>' + esc(nxSec.textContent.replace("Sonraki bölüm: ", "")) + ' →'; }
+      else if (nb.hasAttribute("data-sec-next")) { nb.removeAttribute("data-sec-next"); nb.setAttribute("aria-label", "Sonraki slayt"); nb.innerHTML = '<span class="w">Sonraki</span> →'; }
+      if (last) setTabDone("slayt", true);
     };
     go(0);
     $("#prev").onclick = function () { go(cur - 1); };
-    $("#next").onclick = function () { go(cur + 1); };
+    $("#next").onclick = function () {
+      var k = this.getAttribute("data-sec-next"); // data-tab değil: son slayta geçiren tıklama #app'e varınca bölümü de açmasın
+      if (!k) return go(cur + 1);
+      if (deck.classList.contains("fs")) setFs(false);
+      showTab(k, true);
+    };
     dots.forEach(function (d) { d.onclick = function () { go(+d.getAttribute("data-i")); }; });
     stage.addEventListener("click", function (e) {
       var rv = e.target.closest(".reveal");
@@ -621,7 +698,9 @@
       if (focus && isStudent()) { var hd = $("#b-" + key + " h2"); hd.tabIndex = -1; hd.focus({ preventScroll: true }); }
       if (key === "slayt") fit(); // gizliyken genişliği sıfırdı
       var bc = $("#bandCta"); if (bc) bc.hidden = key !== "hub"; // bölümün içinde kendi Sonraki bölüm düğmesi var
-      var bar = $(".top"), top = $(isStudent() ? ".lesson-band" : "#tabs").getBoundingClientRect().top - (getComputedStyle(bar).position === "sticky" ? bar.offsetHeight : 0) - 12;
+      // Öğrenci bölümün içindeyken ders bandı görünmez (başlığı ekran okuyucuya kalır); tek şerit bölüm şeridi, tek geri yolu "Bölümler"
+      if (isStudent()) $(".lesson-band").classList.toggle("in-sec", key !== "hub");
+      var bar = $(".top"), top = $(isStudent() ? (key === "hub" ? ".lesson-band" : "#b-" + key) : "#tabs").getBoundingClientRect().top - (getComputedStyle(bar).position === "sticky" ? bar.offsetHeight : 0) - 12;
       if (top < 0 || (key === "slayt" && !isStudent())) window.scrollBy(0, top);
     };
     lessonTab[id] = $('#tabs .tab[aria-selected="true"]').getAttribute("data-tab");
@@ -650,7 +729,7 @@
 
     bindActivity(L);
 
-    bindQuiz($("#b-test"), L.quiz, "quiz:" + id, function (all) { setTabDone("test", all); });
+    bindQuiz($("#b-test"), L.quiz, "quiz:" + id, function (all) { setTabDone("test", all); }, { secs: quizSecs() });
 
     if (L.crossword && L.crossword.length) bindCrossword(L);
 
@@ -901,6 +980,7 @@
         '<div class="setting card"><h3>' + sq("ekran", "var(--theme-3)") + 'Bilgisayarlardaki işletim sistemi</h3><div class="opt-group">' + optBtn("os", "pardus", "Pardus", "MEB okullarında ve etkileşimli tahtalarda (ETAP) yaygın") + optBtn("os", "windows", "Windows", "Etkinlik yönergeleri Windows menülerine göre yazılır") + '</div></div>' +
         '<div class="setting card"><h3>' + sq("wifi", "var(--theme-2)") + 'İnternet bağlantısı</h3><div class="opt-group">' + optBtn("internet", "true", "İnternet var", "İsteğe bağlı çevrim içi araştırma önerileri gösterilir") + optBtn("internet", "false", "İnternet yok / çok yavaş", "Sadece site içindeki bilgi kartları kullanılır") + '</div></div>' +
         '<div class="setting card"><h3>' + sq("hareket", "var(--theme-5)") + 'Animasyonlar</h3><div class="opt-group">' + optBtn("motion", "full", "Açık", "Sayfa geçişleri, düğme hissi ve kutlamalar") + optBtn("motion", "reduced", "Azaltılmış", "Yavaş tahtalar için: hareket yok, sadece renk değişir") + '</div></div>' +
+        '<div class="setting card"><h3>' + sq("clock", "var(--theme-6)") + 'Mini test süresi</h3><div class="opt-group">' + optBtn("quizTimer", "on", "Her soruda 45 saniye", "Süre dolunca doğru cevap ve nedeni gösterilir") + optBtn("quizTimer", "off", "Süresiz", "Sorular yine tek tek gelir. Yavaş okuyan ya da özel gereksinimli öğrenciler için") + '</div></div>' +
         '<div class="setting card"><h3>' + sq("sil", "var(--theme-4)") + 'Öğrenci ilerlemesi</h3><p class="hint" style="margin:0">Bu bilgisayarda kayıtlı "Yaptım" işaretleri, sanal masaüstü görevleri, defter kutuları, test cevapları, bulmaca harfleri ve son açılan ders. Bilgisayarı başka bir sınıf kullanacaksa silin. Ayarlarınız silinmez.</p>' +
           '<div class="row"><button type="button" class="btn" id="clrAsk">Bu bilgisayardaki öğrenci ilerlemesini sil</button><span class="hint" id="clrMsg" role="status"></span></div>' +
           '<div class="confirm-box" id="clrBox" hidden><p style="margin:0 0 8px"><b>Emin misiniz?</b> Bu bilgisayardaki bütün derslerin öğrenci ilerlemesi silinecek. Bu işlem geri alınamaz.</p>' +
