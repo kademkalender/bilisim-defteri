@@ -16,6 +16,22 @@ Kayıt şablonu:
 
 ---
 
+## 2026-11-18 · efee7946-cmd + Claude Code (Opus 5.5) · GitHub'dan güncelleme alındı
+
+**Ne yapıldı**
+- `git pull --no-rebase` ile 7 commit çekildi (hepsi Kadem Kalender, 2026-11-08), çakışma yok:
+  - `480dcaf` NOTLAR: GitHub'dan güncelleme alındı
+  - `cef98e3` Öğrenciye Sınav çalışma soruları sayfası (#sinav)
+  - `a3581d2` NOTLAR: Sınav çalışma soruları
+  - `ffab9db` Sınav çalışma sorularına Hatırla kartları ve PDF olarak kaydet
+  - `08ef193` Alt ajanlar: üç dış ajan ve projeye özel üç ajan
+  - `c567b3a` 5-1-6: beş cümle kısaldı, (b) için işlem sorusu
+  - `395e09d` Klasör adı örneği her yerde 5A_Ayse
+- Değişen dosyalar (23): `.claude/agents/` altında 6 yeni ajan, CLAUDE.md, ICERIK-REHBERI.md, NOTLAR.md, README.md, YAZIM-REHBERI.md, assets/app.js, assets/sim-core.js, assets/style.css, tasarim-sistemi.html, index.html, content/lessons (5-1-1 … 5-1-6, _SABLON.js).
+- `node tools/dogrula.js`: 0 hata, 0 uyarı.
+
+---
+
 ## 2026-11-08 · Kadem Kalender + Claude Code (Opus 5.5) · Alt ajanlar
 
 **Ne yapıldı**
