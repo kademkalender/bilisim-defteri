@@ -41,7 +41,7 @@
   };
   var norm = function (s) { return String(s).toLocaleLowerCase("tr").replace(/ı/g, "i").normalize("NFD").replace(/[̀-ͯ]/g, ""); };
 
-  // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>, quiz:<id>, sinav:<id>, sim:<id>, sort:<id>, son açılan ders (last). lessonId yoksa tüm dersler.
+  // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>, quiz:<id>, quiz:<id>:t, sinav:<id>, sim:<id>, sort:<id>, son açılan ders (last). lessonId yoksa tüm dersler.
   // Ayarlar (settings, big, printOpts) bu öneklerle başlamadığı için hiç dokunulmaz.
   function clearProgress(lessonId) {
     var keys = [];
@@ -50,7 +50,7 @@
         var k = localStorage.key(i) || "", m = /^bd:(act|nb|cw|quiz|sinav|sim|sort):(.+)$/.exec(k);
         if (k === "bd:last" && (!lessonId || store.get("last") === lessonId)) keys.push(k);
         if (!m) continue;
-        var id = m[1] === "act" ? m[2].replace(/:[^:]*$/, "") : m[2];
+        var id = m[1] === "act" || /:t$/.test(m[2]) ? m[2].replace(/:[^:]*$/, "") : m[2]; // quiz:<id>:t sayacın bitiş anı
         if (!lessonId || id === lessonId) keys.push(k);
       }
       keys.forEach(function (k) { localStorage.removeItem(k); });
@@ -539,6 +539,8 @@
       sc.classList.toggle("end-msg", all);
       sc.innerHTML = !all ? "" : endMsg(first === n ? n + " sorunun " + ek(n) + " de ilk denemede doğru!" : first ? "Testi bitirdin! " + n + " sorudan " + ek(first) + " ilk denemede doğru." : "Testi bitirdin! Doğru cevapları gördün. Bir daha çözmek ister misin?");
       again.hidden = step ? !all : !Object.keys(picks).length; // sıralı testte yarıda baştan başlatma yok, test bitince çıkar
+      // Sıralı testte "Sonraki bölüm" test bitene dek gizli: "Sonraki soru" ile karışıp test yarıda kalmasın
+      if (step) { var tn = $(".tab-next", root); if (tn) tn.hidden = !all; }
       if (onState) onState(all);
       if (live && all && first === n) celebrate(sc);
     };
@@ -559,7 +561,7 @@
       });
     });
     again.onclick = function () {
-      picks = {}; store.set(key, picks);
+      picks = {}; store.set(key, picks); if (step) store.set(tKey, null);
       $$(".q", root).forEach(function (qEl) {
         $$(".opts button", qEl).forEach(function (x) { x.disabled = false; x.classList.remove("right", "wrong", "hop", "shake"); });
         var fb = $(".fb", qEl); fb.textContent = ""; fb.className = "fb";
@@ -569,8 +571,9 @@
       $(".q .opts button", root).focus();
     };
 
-    // Sıralı düzen: bir anda tek soru, sayaç sorunun süresini gösterir. Bölüm gizliyken ya da sekme arkadayken süre durur.
-    var qEls = $$(".q", root), cur = 0, left = 0, tick = null;
+    // Sıralı düzen: bir anda tek soru, sayaç sorunun süresini gösterir.
+    // Süre soru ekranda ilk göründüğünde başlar ve saate bağlıdır (bitiş anı tKey'de): bölümden çıkmak ya da sayfayı yenilemek süreyi durdurmaz, baştan başlatmaz.
+    var qEls = $$(".q", root), cur = 0, left = 0, end = 0, tick = null, tKey = key + ":t";
     var allDone = function () { return qs.every(function (q, i) { return finished(i); }); };
     var stopTimer = function () { if (tick) { clearInterval(tick); tick = null; } };
     var drawTime = function () {
@@ -578,21 +581,29 @@
       $(".q-timer", root).innerHTML = icon("clock") + " " + left + " sn";
       $(".q-timer", root).classList.toggle("low", low); $(".q-time", root).classList.toggle("low", low);
       $(".q-time span", root).style.width = (left / step.secs * 100) + "%";
-      if (left === 10) $(".q-sr", root).textContent = "10 saniye kaldı.";
     };
     var timeUp = function () {
       stopTimer();
       (picks[cur] = picks[cur] || []).push(-1); store.set(key, picks);
-      showAnswer(qEls[cur], true); quizState(true); afterStep(false);
+      showAnswer(qEls[cur], root.offsetParent !== null); quizState(true); afterStep(false);
     };
     var startTimer = function () {
       stopTimer(); if (!step.secs) return;
-      left = step.secs; $(".q-sr", root).textContent = ""; drawTime();
+      var t = store.get(tKey, null);
+      end = t && t.q === cur ? t.end : 0; // yenilenen sayfada aynı sorunun bitiş anı sürer
+      left = end ? Math.max(0, Math.ceil((end - Date.now()) / 1000)) : step.secs;
+      $(".q-sr", root).textContent = ""; drawTime();
       tick = setInterval(function () {
-        if (!document.body.contains(root)) return stopTimer(); // başka sayfaya geçildi
-        if (document.hidden || !root.offsetParent) return; // bölüm gizli: süre durur
-        left--; drawTime(); if (left <= 0) timeUp();
-      }, 1000);
+        if (!document.body.contains(root)) return stopTimer(); // başka sayfaya geçildi; dönünce bitiş anından sürer
+        if (!end) { // süre, soru öğrencinin önüne ilk geldiğinde başlar
+          if (document.hidden || !root.offsetParent) return;
+          end = Date.now() + step.secs * 1000; store.set(tKey, { q: cur, end: end });
+        }
+        var l = Math.max(0, Math.ceil((end - Date.now()) / 1000));
+        if (l === left && l > 0) return;
+        if (left > 10 && l <= 10) $(".q-sr", root).textContent = l + " saniye kaldı.";
+        left = l; drawTime(); if (left <= 0) timeUp();
+      }, 250);
     };
     var nextOpen = function () {
       for (var k = 1; k <= qs.length; k++) { var i = (cur + k) % qs.length; if (!finished(i)) return i; }
@@ -614,9 +625,12 @@
     // Soru bittiyse süre durur; sırada soru varsa "Sonraki soru", yoksa bütün test görünür
     var afterStep = function (kbd) {
       if (!finished(cur)) { if (kbd) { var o = $$(".opts button", qEls[cur]).filter(function (x) { return !x.disabled; })[0]; if (o) o.focus(); } return; }
-      stopTimer();
+      stopTimer(); store.set(tKey, null);
       if (allDone()) { review(); if (kbd || document.activeElement === document.body) sc.focus(); return; }
-      var nb = $(".q-next", root); nb.hidden = false; if (kbd) nb.focus();
+      var nb = $(".q-next", root); nb.hidden = false;
+      // Büyütülmüş ekranda açıklama uzayınca düğme ekranın altında kalmasın
+      if (root.offsetParent) nb.scrollIntoView({ block: "nearest", behavior: motionOn() ? "smooth" : "auto" });
+      if (kbd) nb.focus({ preventScroll: true });
     };
     if (step) {
       $(".q-next", root).onclick = function () { var i = nextOpen(); if (i < 0) return review(); showStep(i); $(".opts button", qEls[i]).focus(); };
