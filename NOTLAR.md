@@ -41,11 +41,22 @@ Kayıt şablonu:
 - Mini test sıralı oldu (kullanıcı kararları: süre dolunca cevabı göster, "Sonraki soru" düğmesi, öğrenci ve öğretmen, Sınıf ayarlarında aç/kapa):
   - Sorular tek tek gelir; üstte "Soru 2 / 5" ve 45 saniyelik sayaç, altında süre çubuğu, son 10 saniye kırmızı ve ekran okuyucuya duyuru.
   - Süre dolunca şıklar kilitlenir, doğru cevap ve neden görünür ("Süre doldu. …"), ilk denemede doğru sayılmaz (`picks` içinde -1).
-  - Bölüm gizliyken ya da sekme arkadayken süre durur. Yenileyince bitmemiş ilk sorudan sürer.
   - Bitince bütün sorular alt alta, sonuç ve "Testi yeniden çöz" (test bitmeden gizli).
   - Sınıf ayarlarına "Mini test süresi" kartı (`quizTimer`: on / off, varsayılan on).
   - Sınav çalışma soruları değişmedi (liste, süresiz).
   - Katalog (Test sorusu: sıralı düzen, süre doldu, son 10 saniye, süresiz çeşitleri; Ayar kartı), TASARIM-SISTEMI ve README güncel.
+- Üç öğrenci personasıyla kullanılabilirlik yürüyüşü (9 bulgu). İlk üçü düzeltildi:
+  - Testte "Sonraki soru" ile "Sonraki bölüm" aynı mavi düğme olarak alt alta duruyordu; "Sonraki bölüm" test bitene dek gizli.
+  - Bölümden çıkınca sayaç duruyor, yenileyince 45 saniyeye dönüyordu (cevaba bakma fırsatı). Sayaç artık saatle işler, bitiş anı `bd:quiz:<id>:t` içinde; dışarıdayken süre dolduysa dönünce "Süre doldu". Öğrenci ilerlemesini silmek bu anahtarı da siler.
+  - %150 yakınlaştırmada açıklama çıkınca "Sonraki soru" ekranın altında kalıyordu (519 / 512 px); düğme artık görünür alana kayar.
+  - Katalog (Test sorusu kuralları) ve TASARIM-SISTEMI güncel.
+**Yarım kalan işler (persona yürüyüşünden)**
+- [ ] İpucu ve açıklama metni 14 px; açıklama kırmızı.
+- [ ] Ana sayfada "Kaldığın yer" yok (`bd:last` saklanıyor ama gösterilmiyor).
+- [ ] Sınıflandırma oyununda kart havuzu yeniden diziliyor, yanlış tıklamaya yol açıyor.
+- [ ] İlk açılışta 5. sınıf önceden seçili.
+- [ ] Sanal masaüstünde ikonların sırası değişiyor; alt görev sayacı yok.
+- [ ] 6. sınıf içeriği az; Sınav sayfası sınıfı söylemiyor.
 **Yarım kalan işler (Sunum incelemesinden)**
 - [ ] Öğrenci slayt numarasına atlayamıyor (noktalar öğrencide gizli); numara düğmeleri düşünülebilir.
 - [ ] Ders adı ve hafta hem bantta hem kapak slaytında tekrar ediyor.
