@@ -16,6 +16,24 @@ Kayıt şablonu:
 
 ---
 
+## 2026-11-21 · efee7946-cmd + Claude Code (Opus 5.5) · Deftere yaz incelemesi
+
+**Ne yapıldı**
+- Deftere yaz bölümü dışarıdan gözle incelendi (Nielsen heuristic'leri, 1366 px, 375 px, büyük yazı; iki rol). Kontrast geçiyor (en düşük 7,77:1). İlk üç bulgu düzeltildi:
+  - Öğretmen ekranında öğrencinin işaret kutuları ve "Yazılan: 2 / 5" görünüyordu, tahtaya yansıyordu ve öğretmen tıklarsa öğrencinin ilerlemesi değişiyordu. Öğretmende artık kutusuz, numaralı liste (`ol.nb-plain`); öğrenci işaretleri (`nb:<id>`) korunur.
+  - İşaretlenen madde üstü çizili ve soluk oluyordu (defterde "sil" anlamı). Artık yalnızca kutu dolar, metin tam koyulukta.
+  - Şeritteki "0 / 6 bitti" ile alttaki "Yazılan: 0 / 5" karışıyordu. Bant ve şerit sayacı "0 / 6 bölüm bitti" oldu (375 px'te tek satır).
+  - Defter sayacına `role="status"`: "Hepsini yazdın" ekran okuyucuya duyurulur.
+- Katalog (Defter: öğretmen görünümü, işaretli madde kuralı; Ders bandı ve Bölüm başlığı sayacı), TASARIM-SISTEMI ve YAZIM-REHBERI güncel.
+- Deneme: Windows'un Türkçe sesi (Tolga) ve canvas ile 15 saniyelik örnek ders videosu üretildi (scratchpad, repoya girmedi). Panel gizliyken tarayıcı animasyonu durduruyor; kayıt panel görünürken yapılmalı.
+**Yarım kalan işler (Deftere yaz incelemesinden)**
+- [ ] Çizgiler 40 px, metin satırı 27,2 px: metin çizgilere oturmuyor (en çok 375 px'te).
+- [ ] Sarı vurgunun (`mark`) ne istediği yazmıyor.
+- [ ] 1. madde iki kavram (Dosya, Klasör) tek kutuda; içerik kararı.
+- [ ] `.claude/launch.json` içinde geçici `video-ornek` girdisi duruyor (dosya repoda değil).
+
+---
+
 ## 2026-11-18 · efee7946-cmd + Claude Code (Opus 5.5) · Ana sayfa bütünleşik görünüm
 
 **Ne yapıldı**
