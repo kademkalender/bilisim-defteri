@@ -16,6 +16,29 @@ Kayıt şablonu:
 
 ---
 
+## 2026-11-21 · efee7946-cmd + Claude Code (Opus 5.5) · Oyun: dört oyun, konuya göre
+
+**Ne yapıldı**
+- Sınıflandırma oyunu kaldırıldı (kullanıcı: öğrencinin ilgisini çekmiyor). Yerine önce "Maskotun yolculuğu" (Hangisi farklı?) yazıldı; kullanıcı onu da "test gibi" buldu, commit edilmeden kaldırıldı.
+- Yerine dört oyun geldi, her derse konusuna uyan atandı (`sort.oyun`):
+  - Balon patlat (5-1-1, 5-1-2, 6-1-1): balonlar aşağıdan yükselir, istenen gruptakiler patlatılır. 3 tur, her tur başka grup.
+  - Maskotla yakala (5-1-4, 5-1-5 işletim sistemi): kartlar 3 şeritte düşer, maskot sepettir; ok tuşları, "Sola / Sağa" düğmeleri ya da alana dokunma. 2 tur, 4'er kart.
+  - Kargo bandı (5-1-6, 5-1-5 bilgisayar sistemleri): paketler bantta akar, tutulan paket durur, doğru kutuya konur; kaçan paket yeniden gelir.
+  - Hikâyeli macera (5-1-3): "Ece'nin dijital günü", 6 sahne (dijital kimlik, sosyal medya, oyun x2, alışveriş, eğitim). 5-1-3'ün `sort` verisi yerine `story` yazıldı.
+- Ortak: "Başla" kapağı, "Durdur / Devam et", bölümden çıkınca ya da sekme arka plana geçince durur. Puan ve süre yok, yanlışın cezası yok; yanlışta kartın grubu söylenir. Hareket azaltılmışsa yavaş akar. Oyun bitene dek "Sonraki bölüm" gizli. Kayıt `oyun:<id>`.
+- Yeni: `assets/oyun-core.js` (`gameKind`, `gameRounds`, `gamePick`), `tools/oyun-core.test.js` (9 test). `shuffle.js`'e `seededRand` eklendi (karıştırma sonucu değişmedi). `dogrula.js` oyun türünü ve hikâyeyi denetler.
+- Kaldırılan: sürükle-bırak kodu, `.chip`/`.sort-*` stilleri, `bd-land` animasyonu, katalogdaki "Sınıflandırma kartı".
+- Katalog: "Oyun" bileşeni (9 çeşit: dört oyun, yanlış, kapak, bitti); maskot kuralına yakala istisnası. `where` alanı düz metin basıldığı için üç bileşendeki `<code>` etiketleri kaldırıldı.
+- README, CLAUDE.md, ICERIK-REHBERI, TASARIM-SISTEMI, `_SABLON.js` güncel. Çalışma kâğıdının cevap anahtarında "Sınıflandırma" satırı "Oyun grupları" oldu.
+**Kararlar**
+- Oyun türü konuya göre seçilir (kullanıcı: "konuya göre belirlenmiş olsun"). Kurallar ICERIK-REHBERI'de.
+- Macera hikâyesinin metnini kullanıcı onayladı.
+- Öğretmen de aynı oyunu görür ve oynar (tahtada sınıfça); ilerleme öğrencinin kaydıyla ortak.
+**Yarım kalan işler**
+- [ ] Hareketli oyunlar ekran okuyucuyla oynanamaz (balonlar düğme ama akıyor). Gerekirse `accessibility-auditor` ile bakılır.
+
+---
+
 ## 2026-11-21 · efee7946-cmd + Claude Code (Opus 5.5) · Deftere yaz incelemesi
 
 **Ne yapıldı**
