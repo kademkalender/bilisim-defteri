@@ -105,4 +105,4 @@ Beyaz yazıyla en düşük kontrast 5,29:1 (bulmaca), defter sarısında koyu ya
   - Slayt kaydırmadan ekrana sığacak kadar büyür (`.deck` genişliği ekran yüksekliğinden hesaplanır, en az 520 px).
   - Sanal masaüstünün yüksekliği `100vh - 320px` (420–620 px): 768 px yükseklikte görev çubuğu ekranda kalır.
   - Bütün dokunma alanları en az 48 px.
-- **Defter (`.notebook`):** Çizgili kâğıt ve kırmızı kenar çizgisi kalır, yazı Mulish'tir. Bölümün kimliği budur, sade karta çevrilmez.
+- **Defter (`.notebook`):** Çizgili kâğıt ve kırmızı kenar çizgisi kalır, yazı Mulish'tir. Bölümün kimliği budur, sade karta çevrilmez. Öğrencide işaretlenen maddede yalnızca kutu dolar, metin çizilmez. Öğretmende kutu ve sayaç yoktur, numaralı liste (`ol.nb-plain`) görünür.

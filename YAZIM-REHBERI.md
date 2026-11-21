@@ -24,7 +24,7 @@ Site iki kişiyle konuşur. İkisi de kısa ve nettir, ama aynı sesle konuşmaz
 
 ### Öğrenci: oyun arkadaşı
 
-Bölümler ve adımlar öğrenciye **görev** olarak anlatılır. Puan, seviye ve rozet yoktur; ilerleme "2 / 6 bitti" gibi sayıyla görünür. Oyun havası kelimelerden ve kutlamadan gelir, abartılı ünlemden değil.
+Bölümler ve adımlar öğrenciye **görev** olarak anlatılır. Puan, seviye ve rozet yoktur; ilerleme "2 / 6 bölüm bitti" gibi sayıyla görünür; sayının neyi saydığı yazılır, aynı ekrandaki başka sayaçla karışmasın. Oyun havası kelimelerden ve kutlamadan gelir, abartılı ünlemden değil.
 
 | Yer | ✗ | ✓ |
 |---|---|---|

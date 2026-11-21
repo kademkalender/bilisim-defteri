@@ -494,12 +494,12 @@ body{background:var(--surface-subtle)}
   add({ id: "ders-bandi", group: "Gezinme", name: "Ders bandı", cls: ".lesson-band",
     desc: "Ders sayfasının başı: ders adı, hafta ve geri düğmesi.",
     where: "Ders sayfası.",
-    rules: ["Zemin temanın rengi.", "Öğrencide sağda ilerleme (\"2 / 6 bitti\"), öğretmende kazanım kodu.", "Öğrencide ilerlemenin yanında beyaz Başla düğmesi (<code>.band-cta</code>, <code>.btn.on-color</code>) sıradaki bölümü açar; düğmede o bölümün renkli ikon karesi (<code>.cta-sq</code>) kartla bağ kurar; yalnız Bölümler açıkken görünür, hepsi bitince kalkar. 760 px ve altında alt satırda tam genişlik.", "Öğretmende üst satırda tema ve süre de yazar.", "Öğrenci bir bölümü açınca bant görünmez (<code>.lesson-band.in-sec</code>, başlığı ekran okuyucuya kalır): iki renkli blok üst üste durmaz. Ders adı, hafta ve ilerleme bölüm şeridine geçer (bkz. Bölüm başlığı). Bölümün içinde tek geri yolu \"Bölümler\"; ana sayfaya logodan dönülür."],
+    rules: ["Zemin temanın rengi.", "Öğrencide sağda ilerleme (\"2 / 6 bölüm bitti\"; bölüm şeridinde de aynı yazı, maddeleri sayan sayaçlarla karışmasın), öğretmende kazanım kodu.", "Öğrencide ilerlemenin yanında beyaz Başla düğmesi (<code>.band-cta</code>, <code>.btn.on-color</code>) sıradaki bölümü açar; düğmede o bölümün renkli ikon karesi (<code>.cta-sq</code>) kartla bağ kurar; yalnız Bölümler açıkken görünür, hepsi bitince kalkar. 760 px ve altında alt satırda tam genişlik.", "Öğretmende üst satırda tema ve süre de yazar.", "Öğrenci bir bölümü açınca bant görünmez (<code>.lesson-band.in-sec</code>, başlığı ekran okuyucuya kalır): iki renkli blok üst üste durmaz. Ders adı, hafta ve ilerleme bölüm şeridine geçer (bkz. Bölüm başlığı). Bölümün içinde tek geri yolu \"Bölümler\"; ana sayfaya logodan dönülür."],
     props: [{ k: "tema", l: "Tema", t: "select", d: "1", o: themeOpts }, { k: "biten", l: "Biten bölüm", t: "seg", d: "2", o: [["0", "0"], ["2", "2"], ["6", "6"]] }],
     render: function (p) {
       var th = TH[p.tema - 1];
       return '<div class="lesson-band" style="background:var(--theme-' + p.tema + ')"><a class="back" href="#home" aria-label="Ana sayfa">' + ico("back") + '</a><div><small>5. sınıf · 7. hafta' + (T() ? ' · Tema ' + p.tema + ': ' + esc(th.name) + ' · ' + esc(L.duration) : "") + '</small><h1>' + esc(L.title) + '</h1></div>' +
-        (T() ? '<span class="band-code">' + L.outcome + '</span></div>' : '<div class="band-prog"><span>' + p.biten + ' / 6 bitti</span><div class="bar"><span style="width:' + Math.round(p.biten / 6 * 100) + '%"></span></div></div>' +
+        (T() ? '<span class="band-code">' + L.outcome + '</span></div>' : '<div class="band-prog"><span>' + p.biten + ' / 6 bölüm bitti</span><div class="bar"><span style="width:' + Math.round(p.biten / 6 * 100) + '%"></span></div></div>' +
         (p.biten === "6" ? "" : '<div class="band-cta"><button type="button" class="btn on-color">' + (p.biten === "0" ? '<span class="cta-sq sec-slayt">' + ico("slayt") + '</span>Başla: Sunum' : '<span class="cta-sq sec-etkinlik">' + ico("etkinlik") + '</span>Başla: Etkinlik') + '</button></div>') + '</div>');
     },
     width: "full",
@@ -529,7 +529,7 @@ body{background:var(--surface-subtle)}
     props: [{ k: "bolum", l: "Bölüm", t: "select", d: "defter", o: secOpts }, { k: "aciklama", l: "Açıklama", t: "text", d: "Sadece bu maddeleri defterine geçir. Yazdıkça yanındaki kutuyu işaretle." }],
     render: function (p) {
       if (T()) return '<h2 class="sr">' + SEC[p.bolum] + '</h2><p class="hint block-hint">' + esc(p.aciklama) + '</p>';
-      return '<section class="block" data-sec="' + p.bolum + '" style="--c:var(--sec-' + p.bolum + ')"><div class="block-h"><span class="sq sec-' + p.bolum + '">' + ico(p.bolum) + '</span><div><small class="bh-ctx">5. sınıf · 7. hafta · ' + esc(L.title) + '</small><h2>' + SEC[p.bolum] + '</h2><p>' + esc(p.aciklama) + '</p></div><div class="band-prog" aria-hidden="true"><span>2 / 6 bitti</span><div class="bar"><span style="width:33%"></span></div></div><button type="button" class="btn sec-back" data-tab="hub">' + ico("back") + ' Bölümler</button></div></section>';
+      return '<section class="block" data-sec="' + p.bolum + '" style="--c:var(--sec-' + p.bolum + ')"><div class="block-h"><span class="sq sec-' + p.bolum + '">' + ico(p.bolum) + '</span><div><small class="bh-ctx">5. sınıf · 7. hafta · ' + esc(L.title) + '</small><h2>' + SEC[p.bolum] + '</h2><p>' + esc(p.aciklama) + '</p></div><div class="band-prog" aria-hidden="true"><span>2 / 6 bölüm bitti</span><div class="bar"><span style="width:33%"></span></div></div><button type="button" class="btn sec-back" data-tab="hub">' + ico("back") + ' Bölümler</button></div></section>';
     },
     width: "full",
     variants: [["Deftere yaz", {}], ["Mini test", { bolum: "test", aciklama: "4 soru. Ne kadar öğrendiğini kontrol et." }], ["Etkinlik", { bolum: "etkinlik", aciklama: "Görevleri sırayla yap. Bitirdiğin adımda \"Yaptım\"a tıkla." }]]
@@ -566,12 +566,13 @@ body{background:var(--surface-subtle)}
   add({ id: "defter", group: "Ders içeriği", name: "Defter", cls: ".notebook",
     desc: "Öğrencinin defterine yazacağı maddeler. Yazdıkça işaretler.",
     where: "Deftere yaz bölümü.",
-    rules: ["Çizgili kâğıt ve kırmızı kenar çizgisi kalır, sade karta çevrilmez.", "Önemli kelime fosforlu kalemle (<code>mark</code>) vurgulanır.", "İşaretlenen madde üstü çizili ve soluk; altta \"Yazılan: 2 / 5\"."],
+    rules: ["Çizgili kâğıt ve kırmızı kenar çizgisi kalır, sade karta çevrilmez.", "Önemli kelime fosforlu kalemle (<code>mark</code>) vurgulanır.", "Öğrenci: işaretlenen maddede yalnızca kutu dolar; metin çizilmez ve soluklaşmaz, çünkü maddeler sınava kadar okunacak bilgidir. Altta \"Yazılan: 2 / 5\" (<code>role=\"status\"</code>), hepsi bitince \"✓ Hepsini yazdın\".", "Öğretmen: kutu ve sayaç yok, numaralı liste (<code>ol.nb-plain</code>). Maddeler tahtaya yansıtılır; aynı bilgisayardaki öğrenci işaretleri (<code>nb:&lt;id&gt;</code>) görünmez ve değişmez."],
     props: [{ k: "biten", l: "Yazılan", t: "seg", d: "2", o: [["0", "0"], ["2", "2"], ["5", "Hepsi"]] }],
     render: function (p) {
       var n = +p.biten, t = L.notebook.length;
+      if (T()) return '<div class="notebook"><h3>' + esc(L.title) + '</h3><ol class="nb-list nb-plain">' + L.notebook.map(function (x) { return '<li>' + x.t + '</li>'; }).join("") + '</ol></div>';
       return '<div class="notebook"><h3>' + esc(L.title) + '</h3><ul class="nb-list">' + L.notebook.map(function (x, i) { var d = i < n; return '<li class="' + (d ? "done" : "") + '"><input type="checkbox" id="ds-nb-' + i + '"' + (d ? " checked" : "") + '><label for="ds-nb-' + i + '">' + x.t + '</label></li>'; }).join("") +
-        '</ul><div class="nb-foot"><span class="progress' + (n === t ? " full" : "") + '">' + (n === t ? "✓ Hepsini yazdın (" + n + "/" + t + ")" : "Yazılan: " + n + " / " + t) + '</span></div></div>';
+        '</ul><div class="nb-foot"><span class="progress' + (n === t ? " full" : "") + '" role="status">' + (n === t ? "✓ Hepsini yazdın (" + n + "/" + t + ")" : "Yazılan: " + n + " / " + t) + '</span></div></div>';
     },
     width: "full",
     variants: [["Başlarken", { biten: "0" }], ["Yarısı", {}], ["Bitti", { biten: "5" }]]

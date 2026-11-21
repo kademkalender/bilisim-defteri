@@ -406,7 +406,7 @@
       cta.innerHTML = '<span class="cta-sq sec-' + nk + '">' + icon(nk) + '</span><span></span>';
       cta.lastChild.textContent = "Başla: " + $("b", next).textContent;
     }
-    $$(".band-prog").forEach(function (bp) { $("span", bp).textContent = done + " / " + cards.length + " bitti"; $(".bar span", bp).style.width = Math.round(done / cards.length * 100) + "%"; }); // bantta ve her bölüm şeridinde
+    $$(".band-prog").forEach(function (bp) { $("span", bp).textContent = done + " / " + cards.length + " bölüm bitti"; $(".bar span", bp).style.width = Math.round(done / cards.length * 100) + "%"; }); // bantta ve her bölüm şeridinde
   }
 
   // Açık sekme bellekte durur: ortam değişince yerinde kalır, sayfa yenilenince (sonraki sınıf) ilk sekmeye döner.
@@ -475,9 +475,11 @@
         '<div class="row"><button type="button" class="btn primary" id="resetYes">Evet, sıfırla</button><button type="button" class="btn" id="resetNo">Vazgeç</button></div></div></div>') : "") +
 
       panel("defter", "Deftere yaz", T ? "Öğrenciler yalnızca bu maddeleri defterine geçirir. Kısa tutulduğu için derste yazmaya zaman kalır." : "Sadece bu maddeleri defterine geçir. Yazdıkça yanındaki kutuyu işaretle.",
-        '<div class="notebook"><h3>' + esc(L.title) + '</h3><ul class="nb-list" id="nb">' +
+        // Öğretmen maddeleri tahtaya yansıtır: kutu ve sayaç yok, numaralı liste. İşaretler öğrencinin (nb:<id>), öğretmen görmez ve değiştirmez.
+        (T ? '<div class="notebook"><h3>' + esc(L.title) + '</h3><ol class="nb-list nb-plain">' + L.notebook.map(function (n) { return '<li>' + n.t + '</li>'; }).join("") + '</ol></div>'
+          : '<div class="notebook"><h3>' + esc(L.title) + '</h3><ul class="nb-list" id="nb">' +
         L.notebook.map(function (n, i) { var d = nbDone.indexOf(i) >= 0; return '<li class="' + (d ? "done" : "") + '"><input type="checkbox" id="nb-' + i + '" data-i="' + i + '"' + (d ? " checked" : "") + '><label for="nb-' + i + '">' + n.t + '</label></li>'; }).join("") +
-        '</ul><div class="nb-foot"><span class="progress" id="nbProg"></span></div></div>') +
+        '</ul><div class="nb-foot"><span class="progress" id="nbProg" role="status"></span></div></div>')) +
 
       panel("etkinlik", "Etkinlik", T ? (L.sim && envNow() === "lab" ? "Öğrenciler görevleri önce sanal masaüstünde yapar, site her adımı kontrol eder. Ardından aynı adımları gerçek bilgisayarda dener." : "Yönergeler seçtiğiniz sınıf ortamına göre değişir. Ortamı Sınıf ayarları'ndan değiştirebilirsiniz.") : L.sim && envNow() === "lab" ? "Sanal masaüstünde görevleri sırayla yap, site her adımı kontrol eder. Sonra gerçek bilgisayarında dene." : 'Görevleri sırayla yap. Bitirdiğin adımda "Yaptım"a tıkla.',
         (T ? '<div class="env-switch"><span class="lbl">Sınıf ortamı:</span>' + envBtns + '<span class="hint">Seçime göre etkinlik değişir.</span></div>' +
@@ -733,13 +735,13 @@
     // Defter
     var nbKey = "nb:" + id;
     var nbProg = function () { var n = store.get(nbKey, []).length, t = L.notebook.length, el = $("#nbProg"); el.textContent = n === t ? "✓ Hepsini yazdın (" + n + "/" + t + ")" : "Yazılan: " + n + " / " + t; el.classList.toggle("full", n === t); setTabDone("defter", n === t); };
-    $("#nb").addEventListener("change", function (e) {
+    if ($("#nb")) $("#nb").addEventListener("change", function (e) {
       var i = +e.target.getAttribute("data-i"), arr = store.get(nbKey, []).filter(function (x) { return x !== i; });
       if (e.target.checked) arr.push(i);
       store.set(nbKey, arr); e.target.parentNode.classList.toggle("done", e.target.checked); nbProg();
       if (e.target.checked) { flash(e.target, "pop"); if (arr.length === L.notebook.length) flash($("#nbProg"), "pop"); }
     });
-    nbProg();
+    if ($("#nbProg")) nbProg();
 
     bindActivity(L);
 

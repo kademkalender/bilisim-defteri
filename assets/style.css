@@ -494,7 +494,9 @@ section.block > .block-hint + *{margin-top:var(--space-3)}
 .nb-list li{display:flex;gap:var(--space-3);align-items:flex-start;min-height:40px}
 .nb-list input{margin-top:var(--space-3);width:18px;height:18px;flex:none}
 .nb-list label{cursor:pointer;line-height:1.6;padding:var(--space-2) 0}
-.nb-list li.done label{color:var(--text-secondary);text-decoration:line-through;text-decoration-color:rgba(91,98,112,.5)}
+/* Numaralı liste (öğretmen): kutu yerine numara, aynı satır düzeni */
+.nb-plain{list-style:decimal;padding-left:var(--space-5)}
+.nb-plain li{display:list-item;line-height:1.6;padding:var(--space-2) 0 var(--space-2) var(--space-2)}
 .nb-foot{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap;line-height:40px}
 .progress{font-weight:700}
 .progress.full{color:var(--feedback-success)}
