@@ -143,7 +143,12 @@ body{background:var(--surface-subtle)}
 <script src="content/program.js"></script>
 <script src="content/plan.js"></script>
 <script src="content/lessons/5-1-6-dosya-klasor.js"></script>
+<script src="content/lessons/5-1-1-bilisim-teknolojileri.js"></script>
+<script src="content/lessons/5-1-3-dijital-vatandaslik.js"></script>
+<script src="content/lessons/5-1-4-yapay-zeka.js"></script>
 <script src="assets/ikonlar.js"></script>
+<script src="assets/shuffle.js"></script>
+<script src="assets/oyun-core.js"></script>
 <script>
 /* Bilişim Defteri tasarım sistemi kataloğu.
    Bileşenler sitenin kendi sınıflarıyla (assets/style.css) ve gerçek ders verisiyle (5-1-6) çizilir.
@@ -165,7 +170,7 @@ body{background:var(--surface-subtle)}
   var T = function () { return role === "ogretmen"; };
 
   var SEC = { slayt: "Sunum", defter: "Deftere yaz", etkinlik: "Etkinlik", oyun: "Oyun", test: "Mini test", bulmaca: "Bulmaca" };
-  var SEC_N = { slayt: L.slides.length + " slayt", defter: L.notebook.length + " madde", etkinlik: "8 görev", oyun: L.sort.items.length + " kart", test: L.quiz.length + " soru", bulmaca: L.crossword.length + " kelime" };
+  var SEC_N = { slayt: L.slides.length + " slayt", defter: L.notebook.length + " madde", etkinlik: "8 görev", oyun: L.sort.items.length + " paket", test: L.quiz.length + " soru", bulmaca: L.crossword.length + " kelime" };
   var outcomeTitle = function (code) { var o = null; TH.forEach(function (t) { (t.outcomes || []).forEach(function (x) { if (x.code === code) o = x; }); }); return o ? o.title : ""; };
   var themeOpts = TH.map(function (t) { return [String(t.no), t.no + ". " + t.name]; });
   var secOpts = Object.keys(SEC).map(function (k) { return [k, SEC[k]]; });
@@ -338,7 +343,7 @@ body{background:var(--surface-subtle)}
   add({ id: "maskot", group: "Geri bildirim", name: "Maskot", cls: ".mascot, .logo-img",
     desc: "Logodaki defter karakteri. Sitenin yüzü: logoda, sekme simgesinde ve öğrenciyle konuştuğu anlarda görünür.",
     where: "Üst banttaki logo, Bu hafta kartı, ders bitti mesajı, bitiş mesajları (etkinlik, test sonucu, oyun, bulmaca, sanal masaüstü), boş durumlar, sayfa bulunamadı.",
-    rules: ["Dosya <code>assets/maskot.webp</code> (420 px, saydam); sekme simgesi <code>assets/maskot-64.png</code>.", "Süstür: <code>alt=\"\"</code>, yanındaki metin anlamı taşır.", "Boyutlar: logo 46 px, bitiş mesajı 64 px (<code>.end-msg</code>), boş durum ve ders bitti 110 px, hafta kartı 150 px (monitörde <code>--k</code> ile büyür).", "Logo dışında her ekranda en fazla bir maskot. Ders içinde yalnızca sonda çıkar (etkinlik bitti, test sonucu, oyun ve bulmaca tamam, sanal masaüstü tebrik); çalışırken (slayt, soru, kart) görünmez, dikkati dağıtmasın.", "Tek poz var. Başka poz (sevinen, düşünen) için görselin çizeri yeni çizim verir; görsel bilgisayarda değiştirilmez.", "Biçimi değiştirilmez: döndürme, kırpma, renk değişimi yok."],
+    rules: ["Dosya <code>assets/maskot.webp</code> (420 px, saydam); sekme simgesi <code>assets/maskot-64.png</code>.", "Süstür: <code>alt=\"\"</code>, yanındaki metin anlamı taşır.", "Boyutlar: logo 46 px, bitiş mesajı 64 px (<code>.end-msg</code>), boş durum ve ders bitti 110 px, hafta kartı 150 px (monitörde <code>--k</code> ile büyür).", "Logo dışında her ekranda en fazla bir maskot. Ders içinde yalnızca sonda çıkar (etkinlik bitti, test sonucu, oyun ve bulmaca tamam, sanal masaüstü tebrik); çalışırken (slayt, soru, kart) görünmez, dikkati dağıtmasın. Tek istisna Maskotla yakala oyunu: orada maskot oyunun parçasıdır (sepet).", "Tek poz var. Başka poz (sevinen, düşünen) için görselin çizeri yeni çizim verir; görsel bilgisayarda değiştirilmez.", "Biçimi değiştirilmez: döndürme, kırpma, renk değişimi yok."],
     props: [{ k: "yer", l: "Yer", t: "seg", d: "kutlama", o: [["kutlama", "Kutlama"], ["son", "Bitiş mesajı"], ["bos", "Boş durum"]] }],
     render: function (p) {
       if (p.yer === "son") return '<div class="score end-msg"><img class="mascot" src="assets/maskot.webp" alt=""><span>5 sorunun 5\'i de ilk denemede doğru!</span></div>';
@@ -472,7 +477,7 @@ body{background:var(--surface-subtle)}
 
   add({ id: "hafta-listesi", group: "Gezinme", name: "Hafta listesi", cls: ".unit, .week",
     desc: "Temalara bölünmüş 36 hafta. Özel hafta bir önceki haftanın temasında, açılmayan gri satır olarak durur. Öğretmen dersi hafta numarasıyla bulur.",
-    where: "Öğretmen ana sayfası, Çalışma kâğıtları. Öğrencide yalnızca Sınav çalışma soruları: her ders bir <code>details.unit</code>, numara karesinde hafta, sağda soru sayısı, açılınca gri zeminde (<code>.exam-body</code>) dersin soruları; üstünde dönem başlığı (<code>.label-h.exam-term</code>).",
+    where: "Öğretmen ana sayfası, Çalışma kâğıtları. Öğrencide yalnızca Sınav çalışma soruları: her ders bir details.unit, numara karesinde hafta, sağda soru sayısı, açılınca gri zeminde (.exam-body) dersin soruları; üstünde dönem başlığı (.label-h.exam-term).",
     rules: ["Tema başlığında temanın renginde numara karesi (<code>.tn-sq</code>, <code>aria-hidden</code>); ekran okuyucu için başlığın başında gizli \"Tema 1: \" yazar.", "Satırda \"7. hafta · Ders adı\", sağda kodlar ve sabit genişlikte durum etiketi.", "Özel hafta (Code Week, dönem sonu) açılmayan gri satır: kod yok, etiketi \"Özel hafta\". Bir önceki haftanın temasında durur, temanın hafta aralığına girmez.", "Öğretmende her satır açılır: kazanım, Derse git ve Çalışma kâğıdı. Çalışma kâğıtları sayfasında satır doğrudan kâğıdı açan bağlantıdır.", "Hafta satırları yalnızca öğretmende; öğrenci bu kutuyu yalnızca Sınav çalışma soruları sayfasında görür."],
     props: [{ k: "tur", l: "Tür", t: "seg", d: "liste", o: [["liste", "Ana sayfa"], ["kagit", "Çalışma kâğıtları"]] }, { k: "acik", l: "Hazır satır açık", t: "bool", d: true }],
     render: function (p) {
@@ -580,7 +585,7 @@ body{background:var(--surface-subtle)}
 
   add({ id: "test", group: "Ders içeriği", name: "Test sorusu", cls: ".q, .opts",
     desc: "Mini testte bir soru ve şıkları. Ders sayfasında sorular tek tek gelir, üstte soru sayısı ve sayaç.",
-    where: "Mini test bölümü (sıralı, iki rolde de), Sınav çalışma soruları (liste, süresiz). Aynı işaretleme: <code>quizHtml(qs, sirali)</code>, <code>bindQuiz()</code>.",
+    where: "Mini test bölümü (sıralı, iki rolde de), Sınav çalışma soruları (liste, süresiz). Aynı işaretleme: quizHtml(qs, sirali), bindQuiz().",
     rules: ["Soru <code>--fs-lg</code> ve kalın. Şıklar beyaz, 2 px <code>--border-strong</code> kenarlıklı, normal kalınlıkta (400), en az 50 px; boş kutu gibi değil düğme gibi görünür.", "Şıklar A), B), C) ile başlar.", "İki deneme: ilk yanlış şık kırmızı ✕ ve kilitli, diğerleri açık kalır, altında ipucu. İkinci yanlışta bütün şıklar kilitlenir, doğru şık yeşil ✓.", "Sonuç ilk denemedeki doğruları sayar: \"Testi bitirdin! 5 sorudan 4'ü ilk denemede doğru.\" Hiç doğru yoksa sayı verilmez: \"Testi bitirdin! Doğru cevapları gördün. Bir daha çözmek ister misin?\"", "Klavyeyle seçilen şık kilitlenince odak kaybolmaz: aynı sorunun açık şıkkına, soru bittiyse sıradaki soruya, test bittiyse sonuç kutusuna geçer.", "Sıralı düzen (Mini test): bir anda tek soru. Üstte \"Soru 2 / 5\" ve sayaç (<code>.q-head</code>, <code>.q-timer</code> <code>role=\"timer\"</code>), altında kalan süre çubuğu (<code>.q-time</code>, Mini test moru); son 10 saniyede ikisi kırmızı ve ekran okuyucuya \"10 saniye kaldı.\" denir.", "Her soruda 45 saniye; iki deneme de bu sürenin içinde. Süre dolunca şıklar kilitlenir, doğru cevap ve nedeni görünür (\"Süre doldu. …\"), soru ilk denemede doğru sayılmaz. Süre soru ilk kez göründüğünde başlar ve saatle işler: bölümden çıkmak, sekme değiştirmek ya da sayfayı yenilemek onu durdurmaz, baştan da başlatmaz (bitiş anı <code>bd:quiz:&lt;id&gt;:t</code>). Öğrenci dışarıdayken süre dolduysa dönünce soru \"Süre doldu\" ile açılır.", "Soru bitince süre durur, sağda mavi \"Sonraki soru →\" (<code>.q-next</code>) çıkar ve ekranda değilse görünür alana kayar (büyük yazı, küçük ekran); geri bildirimi okuma zamanı öğrencinindir. Klavyeyle seçildiyse odak bu düğmeye geçer.", "Test bitene dek bölümün altındaki \"Sonraki bölüm\" gizlidir: iki mavi düğme alt alta durup öğrenci testi yarıda bırakmasın.", "Son soru bitince bütün sorular cevaplarıyla alt alta görünür, altında sonuç ve \"Testi yeniden çöz\"; bu düğme test bitmeden görünmez.", "Sınıf ayarlarında \"Mini test süresi: Süresiz\" seçilirse sorular yine tek tek gelir, sayaç ve çubuk görünmez."],
     props: [{ k: "durum", l: "Durum", t: "seg", d: "", o: [["", "Cevapsız"], ["dogru", "Doğru"], ["ipucu", "İlk yanlış"], ["yanlis", "İkinci yanlış"], ["sure", "Süre doldu"]] }, { k: "sn", l: "Kalan süre", t: "seg", d: "32", o: [["32", "32 sn"], ["8", "8 sn"], ["", "Süresiz"]] }],
     render: function (p) {
@@ -616,18 +621,45 @@ body{background:var(--surface-subtle)}
     variants: [["Pardus", {}], ["Windows", { os: "windows", biten: "0" }]]
   });
 
-  add({ id: "siniflandirma", group: "Ders içeriği", name: "Sınıflandırma kartı", cls: ".chip, .sort-cat",
-    desc: "Oyunda doğru kutuya yerleştirilen kart.",
-    where: "Oyun bölümü.",
-    rules: ["Kart iki yolla taşınır: sürükle-bırak (fare ve dokunma) ya da önce karta, sonra kutuya dokunma. Yönerge ikisini de söyler.", "Seçilen kart sarı zeminli, gidebileceği kutular laciverte döner; kart alanı da hedeftir, kart oraya geri konabilir.", "Sürüklerken kart gölgeli, altındaki kutu 2 px lacivert kenarlıklı.", "Kart taşınınca önceki \"Kontrol et\" mesajı silinir.", "Kontrol sonrası doğru yeşil ✓, yanlış kırmızı ✕.", "Kartların sırası ders id'sine göre hep aynı karışıklıkta (<code>shuffleOrder</code>)."],
-    props: [{ k: "durum", l: "Durum", t: "seg", d: "sel", o: [["", "Havuzda"], ["sel", "Seçili"], ["ok", "Doğru"], ["bad", "Yanlış"]] }],
+  add({ id: "oyun", group: "Ders içeriği", name: "Oyun", cls: ".game",
+    desc: "Oyun bölümü. Dersin konusuna göre dört oyundan biri: balon patlat, maskotla yakala, kargo bandı ya da hikâyeli macera. Puan ve süre yok, yanlışın cezası yok.",
+    where: "Oyun bölümü (iki rolde de, kâğıt ortamında yok). Türü dersin verisinden gelir: gameKind() (assets/oyun-core.js). Balon, yakala ve bant sort verisini, macera story verisini kullanır. gameHtml(), bindGame().",
+    rules: ["Hangi derse hangi oyun: gruplar yerleştirilecek şeylerse (dosya, donanım) kargo bandı; iki karşıt grup varsa (doğal zekâ ve yapay zekâ) yakala; çok sayıda grup ve kısa örnekler varsa balon; davranış ve karar konularında (dijital vatandaşlık) macera.", "Hareketli üç oyun aynı iskeleti kullanır: üstte hedef (<code>.g-goal</code>: tur etiketi, aranan grup kalın, sayaç Oyun kırmızısında), sağda \"Durdur\"; altta oyun alanı (<code>.g-field</code>, 380 px, açık mavi geçişli).", "Oyun kapakla başlar (<code>.g-cover</code>): ne yapılacağını söyleyen cümle ve \"Başla\". Tur bitince kapak \"Tur tamam!\" ve \"Sonraki tur\" ile döner. Durdurunca, bölümden çıkınca ya da sekme arka plana geçince oyun durur, kapakta \"Oyun durdu.\" ve \"Devam et\" görünür.", "Kartlar JS ile <code>top</code>/<code>left</code> değiştirerek akar; <code>transform</code> sallanma ve patlamaya kalır. Hareket azaltılmışsa hepsi daha yavaş akar.", "Balon (<code>.g-balloon</code>): 4 şeritte (520 px altında 2) aşağıdan yükselir, düğmedir. Doğru balon büyüyüp kaybolur; yanlış balon sallanır, kenarı kesik çizgiye döner ve uçmaya devam eder.", "Yakala (<code>.g-drop</code>, <code>.g-catcher</code>): kartlar 3 şeritte düşer, maskot altta sepettir. Alan odaklanınca sol ve sağ ok tuşu, altta \"← Sola\" ve \"Sağa →\", alana dokunmak maskotu o şeride götürür. Maskot burada oyunun parçasıdır.", "Kargo bandı (<code>.g-pack</code>, <code>.g-bins</code>): paketler soldan sağa akar. Paket tutulunca mavi çerçeve alır ve bantta durur; kutuya basınca yerleşir, kutunun altındaki sayı artar. Bandın sonuna kaçan paket kuyruğun sonuna döner.", "Yanlışta açıklama lacivert (<code>.fb.h</code>): kartın grubu ve aranan grup. Doğruda yeşil ✓ ve kartın grubu.", "Macera (<code>.g-macera</code>): \"Sahne 2 / 6\" ve sahnenin alanı (<code>.mac-yer</code>), gri kutuda durum, altında Mini testin şıkları (kalın). Uygun seçim yeşil ✓, sonucu ve \"Devam et →\"; öteki seçimin kenarı kesik çizgi, sonucu lacivert ve \"Başka bir yol seç.\"", "Oyun bitene dek bölümün altındaki \"Sonraki bölüm\" gizlidir. Bitince maskotlu yeşil sonuç (<code>.end-msg</code>) ve \"Baştan oyna\". Kayıt <code>bd:oyun:&lt;id&gt;</code>."],
+    props: [{ k: "tur", l: "Oyun", t: "seg", d: "balon", o: [["balon", "Balon"], ["yakala", "Yakala"], ["bant", "Kargo bandı"], ["macera", "Macera"]] }, { k: "durum", l: "Durum", t: "seg", d: "oyun", o: [["kapak", "Kapak"], ["oyun", "Oynarken"], ["yanlis", "Yanlış"], ["bitti", "Bitti"]] }],
     render: function (p) {
-      var it = L.sort.items;
-      return '<div class="sort-pool"><button type="button" class="chip' + (p.durum ? " " + p.durum : "") + '">' + esc(it[0].t) + '</button><button type="button" class="chip">' + esc(it[3].t) + '</button></div>' +
-        '<div class="sort-cats" style="margin-top:12px">' + L.sort.cats.map(function (c) { return '<div class="sort-cat' + (p.durum === "sel" ? " target" : "") + '"><h4>' + esc(c) + '</h4></div>'; }).join("") + '</div>';
+      var t = p.tur, d = p.durum, A = BD.lessons["5-1-1-bilisim-teknolojileri"].sort, Y = BD.lessons["5-1-4-yapay-zeka"].sort, M = BD.lessons["5-1-3-dijital-vatandaslik"].story;
+      var again = '<div class="row"><button type="button" class="btn">' + ico("tekrar") + ' Baştan oyna</button></div>';
+      var end = function (m) { return '<div class="card game"><div class="game-end"><div class="fb r end-msg"><img class="mascot" src="assets/maskot.webp" alt=""><span>' + m + '</span></div>' + again + '</div></div>'; };
+      if (t === "macera") {
+        if (d === "bitti") return end(esc(M.end));
+        var sc = M.scenes[0], ok = sc.choices.filter(function (c) { return c.ok; })[0], no = sc.choices.filter(function (c) { return !c.ok; })[0];
+        return '<div class="card game g-macera"><div class="q-head"><span class="q-count">Sahne 1 / ' + M.scenes.length + '</span><span class="mac-yer">' + esc(sc.yer) + '</span></div><p class="mac-text">' + esc(sc.text) + '</p><div class="opts mac-opts">' + sc.choices.map(function (c) {
+          var cls = d === "yanlis" && c === no ? "tried" : d === "oyun" && c === ok ? "right" : "";
+          return '<button type="button"' + (cls ? ' class="' + cls + '" disabled' : d === "oyun" ? " disabled" : "") + '>' + esc(c.t) + '</button>';
+        }).join("") + '</div><div class="fb' + (d === "oyun" ? " r" : d === "yanlis" ? " h" : "") + '">' + (d === "oyun" ? "✓ " + esc(ok.res) : d === "yanlis" ? esc(no.res) + " Başka bir yol seç." : "") + '</div>' +
+          (d === "oyun" ? '<div class="row q-nextrow"><button type="button" class="btn primary">Devam et →</button></div>' : "") + '</div>';
+      }
+      if (d === "bitti") return end(t === "balon" ? "Bütün balonlar tamam! 3 turda 6 doğru balonu patlattın." : t === "yakala" ? "Bütün turlar tamam! Maskot 8 doğru kartı yakaladı." : "Kargo tamam! " + L.sort.items.length + " paketin hepsi doğru kutuda.");
+      var S = t === "balon" ? A : t === "yakala" ? Y : L.sort, tg = t === "bant" ? -1 : 1, field = "";
+      var goal = t === "bant" ? '<span>Paketleri doğru kutuya koy.</span> <span class="g-n">2 / ' + S.items.length + '</span>'
+        : '<span class="tag">Tur 1 / ' + (t === "balon" ? 3 : 2) + '</span> <span><b>' + esc(S.cats[tg]) + '</b> ' + (t === "balon" ? "olanları patlat" : "olanları yakala") + '</span> <span class="g-n">1 / ' + (t === "balon" ? 2 : 4) + '</span>';
+      var msg = d === "yanlis" ? (t === "bant" ? "<b>" + esc(S.items[3].t) + "</b> bu kutuya girmez. O, <b>" + esc(S.cats[1]) + "</b>." : "<b>" + esc(S.items[0].t) + "</b>: " + esc(S.cats[0]) + (t === "yakala" ? ". Bundan kaç, sen <b>" : ". Sen <b>") + esc(S.cats[tg]) + "</b> arıyorsun.")
+        : d === "oyun" ? (t === "bant" ? "<b>" + esc(S.items[3].t) + "</b> elinde. Şimdi doğru kutuya bas." : "✓ <b>" + esc(S.items.filter(function (x) { return x.c === tg; })[0].t) + "</b>: " + esc(S.cats[tg]) + ".") : "";
+      if (d === "kapak") field = '<div class="g-cover"><p><b>1. tur:</b> ' + (t === "bant" ? "Paketler banttan gelecek. Birine bas, sonra doğru kutuya koy." : esc(S.cats[tg]) + (t === "balon" ? " olan balonları patlat." : " olan kartları yakala, ötekilerden kaç.")) + '</p><button type="button" class="btn primary">Başla</button></div>';
+      else if (t === "balon") field = [[0, 3, 60], [2, 1, 190], [4, 0, 120], [1, 2, 250]].map(function (b, k) {
+          var wrong = d === "yanlis" && k === 0;
+          return '<button type="button" class="g-balloon c' + b[1] + (wrong ? " wrong" : "") + '" style="left:calc(' + b[1] * 25 + '% + 8px);width:calc(25% - 16px);top:' + b[2] + 'px"' + (wrong ? " disabled" : "") + '>' + esc(S.items[b[0]].t) + '</button>';
+        }).join("");
+      else if (t === "yakala") field = [[4, 0, 40], [1, 2, 150]].map(function (c) { return '<div class="g-drop c' + c[0] % 4 + '" aria-hidden="true" style="left:calc(' + c[1] * 33.333 + '% + 8px);top:' + c[2] + 'px">' + esc(S.items[c[0]].t) + '</div>'; }).join("") +
+          '<div class="g-catcher" style="left:50%"><img class="mascot" src="assets/maskot.webp" alt=""></div>';
+      else field = [[0, 30], [3, 260], [6, 470]].map(function (c, k) { return '<button type="button" class="g-pack' + (k === 1 && d !== "kapak" ? " sel" : "") + '" aria-pressed="' + (k === 1) + '" style="left:' + c[1] + 'px">' + esc(S.items[c[0]].t) + '</button>'; }).join("");
+      var bins = t === "bant" ? '<div class="g-bins">' + S.cats.map(function (c, i) { return '<button type="button" class="g-bin">' + '<b>' + esc(c) + '</b><small>' + (i === 0 ? 2 : 0) + '</small></button>'; }).join("") + '</div>' : "";
+      return '<div class="card game g-' + t + '"><div class="g-head"><p class="g-goal">' + goal + '</p>' + (d === "kapak" ? "" : '<button type="button" class="btn g-pause">Durdur</button>') + '</div>' +
+        '<div class="g-field">' + field + '</div>' + bins + (t === "yakala" ? '<div class="row g-ctrl"><button type="button" class="btn">← Sola</button><button type="button" class="btn">Sağa →</button></div>' : "") +
+        '<div class="fb' + (d === "yanlis" ? " h" : d === "oyun" && t !== "bant" ? " r" : "") + '">' + msg + '</div></div>';
     },
     width: "full",
-    variants: [["Seçili", {}], ["Doğru", { durum: "ok" }], ["Yanlış", { durum: "bad" }]]
+    variants: [["Balon", { tur: "balon" }], ["Balon, yanlış", { tur: "balon", durum: "yanlis" }], ["Yakala", { tur: "yakala" }], ["Kargo bandı", { tur: "bant" }], ["Kargo bandı, yanlış kutu", { tur: "bant", durum: "yanlis" }], ["Macera", { tur: "macera" }], ["Macera, öteki seçim", { tur: "macera", durum: "yanlis" }], ["Kapak", { tur: "balon", durum: "kapak" }], ["Bitti", { tur: "bant", durum: "bitti" }]]
   });
 
   add({ id: "bulmaca", group: "Ders içeriği", name: "Bulmaca kutusu", cls: ".cw-cell",

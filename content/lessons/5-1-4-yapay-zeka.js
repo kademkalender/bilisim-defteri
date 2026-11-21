@@ -56,6 +56,7 @@ BD.lesson({
   sort: {
     title: "Doğal zekâ mı, yapay zekâ mı?",
     intro: "Her örneği doğru zekâ türüne yerleştir.",
+    oyun: "yakala",
     b: "a",
     cats: ["Doğal zekâ", "Yapay zekâ"],
     items: [

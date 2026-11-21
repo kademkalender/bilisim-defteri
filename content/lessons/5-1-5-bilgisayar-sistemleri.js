@@ -40,6 +40,7 @@ BD.lesson({
   sort: {
     title: "Giriş mi, çıkış mı, depolama mı?",
     intro: "Her parçayı doğru gruba yerleştir.",
+    oyun: "bant",
     b: "a",
     cats: ["Giriş birimi", "Çıkış birimi", "Depolama birimi"],
     items: [

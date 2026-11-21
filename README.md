@@ -49,9 +49,10 @@ Ders sayfası sekmelidir, aynı anda tek bölüm görünür. **Öğrencinin** se
 
 1. **Sunum:** Öğretmenle birlikte takip edilir.
 2. **Deftere yaz:** Sadece yazılması gereken 3–5 madde.
-3. **Etkinlik:** Adım adım, bilgisayarın işletim sistemine göre. Sınıflandırma oyunu altta açılır bölümde.
-4. **Mini test:** Sorular tek tek gelir, her soruda 45 saniye (Sınıf ayarlarından kapatılabilir). Anında geri bildirim; süre dolunca doğru cevap ve nedeni gösterilir. Cevaplar saklanır, test bitince yeniden çözülebilir.
-5. **Bulmaca:** Kelime + ipucu listesinden otomatik oluşan çengel bulmaca.
+3. **Etkinlik:** Adım adım, bilgisayarın işletim sistemine göre.
+4. **Oyun:** Dersin konusuna göre dört oyundan biri. Balon patlat (istenen gruptaki balonları patlat), Maskotla yakala (düşen kartlardan istenenleri yakala, ötekilerden kaç), Kargo bandı (banttaki paketi doğru kutuya koy) ya da Hikâyeli macera (bir günün durumlarında doğru yolu seç). Puan ve süre yok.
+5. **Mini test:** Sorular tek tek gelir, her soruda 45 saniye (Sınıf ayarlarından kapatılabilir). Anında geri bildirim; süre dolunca doğru cevap ve nedeni gösterilir. Cevaplar saklanır, test bitince yeniden çözülebilir.
+6. **Bulmaca:** Kelime + ipucu listesinden otomatik oluşan çengel bulmaca.
 
 Biten bölümün sekmesinde numara yerine ✓ görünür. Tarayıcının geri tuşu önceki sekmeye döner.
 
@@ -75,7 +76,8 @@ bilisim-defteri/
 │  ├─ app.js                   Sayfalar, oyunlar, test, yazdırma
 │  ├─ ikonlar.js               Arayüzün SVG ikonları (BD.icons)
 │  ├─ crossword.js             Bulmaca oluşturucu ve harf temizleme (cwClean)
-│  ├─ shuffle.js               Sınıflandırma kartları için tekrarlanabilir karıştırma
+│  ├─ shuffle.js               Ders id'sine göre tekrarlanabilir karıştırma
+│  ├─ oyun-core.js             Oyunun türü, turları ve sıradaki kart (gameKind, gameRounds, gamePick)
 │  └─ hafta.js                 Okul takviminden bugünün kaçıncı öğretim haftası olduğu
 ├─ content/
 │  ├─ program.js               Resmi öğrenme çıktıları (MEB'den birebir)

@@ -41,13 +41,13 @@
   };
   var norm = function (s) { return String(s).toLocaleLowerCase("tr").replace(/ı/g, "i").normalize("NFD").replace(/[̀-ͯ]/g, ""); };
 
-  // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>, quiz:<id>, quiz:<id>:t, sinav:<id>, sim:<id>, sort:<id>, son açılan ders (last). lessonId yoksa tüm dersler.
+  // Öğrenci ilerlemesini siler: act:<id>:<ortam>, nb:<id>, cw:<id>, quiz:<id>, quiz:<id>:t, sinav:<id>, sim:<id>, oyun:<id>, sort:<id> (eski sınıflandırma oyunu), son açılan ders (last). lessonId yoksa tüm dersler.
   // Ayarlar (settings, big, printOpts) bu öneklerle başlamadığı için hiç dokunulmaz.
   function clearProgress(lessonId) {
     var keys = [];
     try {
       for (var i = 0; i < localStorage.length; i++) {
-        var k = localStorage.key(i) || "", m = /^bd:(act|nb|cw|quiz|sinav|sim|sort):(.+)$/.exec(k);
+        var k = localStorage.key(i) || "", m = /^bd:(act|nb|cw|quiz|sinav|sim|oyun|sort):(.+)$/.exec(k);
         if (k === "bd:last" && (!lessonId || store.get("last") === lessonId)) keys.push(k);
         if (!m) continue;
         var id = m[1] === "act" || /:t$/.test(m[2]) ? m[2].replace(/:[^:]*$/, "") : m[2]; // quiz:<id>:t sayacın bitiş anı
@@ -363,13 +363,36 @@
     return html;
   }
 
-  function sortHtml(L) {
-    var s = L.sort;
-    return '<div class="card" id="sort">' + (s.b ? '<span class="tag code t-only">' + L.outcome + '.' + s.b + '</span>' : "") +
-      '<h3 style="margin:8px 0 4px;font-size:var(--fs-lg)">' + esc(s.title) + '</h3><p class="hint" style="margin:0 0 10px">' + esc(s.intro) + ' Kartı doğru kutuya sürükle ya da önce karta, sonra kutuya dokun.</p>' +
-      '<div class="sort-pool" id="sortPool" role="button" tabindex="0" aria-label="Kart alanı"></div><div class="sort-cats" style="margin-top:10px">' +
-      s.cats.map(function (c, i) { return '<div class="sort-cat" data-c="' + i + '" role="button" tabindex="0" aria-label="' + esc(c) + ' kutusu"><h4>' + esc(c) + '</h4><div class="in"></div></div>'; }).join("") +
-      '</div><div class="row" style="margin-top:10px"><button type="button" class="btn primary" id="sortCheck">Kontrol et</button><button type="button" class="btn" id="sortReset">Baştan başla</button><span class="fb" id="sortMsg"></span></div></div>';
+  // Oyun bölümü. Türü dersin verisinden gelir (gameKind, assets/oyun-core.js): balon, yakala, bant ya da macera.
+  // [başlık, öğretmene açıklama, öğrenciye açıklama]
+  var GAME_INFO = {
+    balon: ["Balon patlat", "Balonlar aşağıdan yükselir; öğrenci yalnızca istenen gruptakileri patlatır, ötekiler uçup gider.", "İstenen balonları patlat, ötekiler uçup gitsin!"],
+    yakala: ["Maskotla yakala", "Kartlar yukarıdan düşer; öğrenci maskotu ok tuşlarıyla ya da düğmelerle yürütür, istenen gruptakileri yakalar, ötekilerden kaçar.", "Maskotu yürüt, istenen kartları yakala, ötekilerden kaç!"],
+    bant: ["Kargo bandı", "Paketler bantta akar; öğrenci paketi tutar, sonra doğru kutuya koyar. Bandın sonuna kaçan paket birazdan yeniden gelir.", "Banttan bir paket tut, doğru kutuya koy!"]
+  };
+  function gameInfo(L) {
+    var k = window.gameKind(L);
+    if (k === "macera") return [L.story.title, "Öğrenci bir günün " + L.story.scenes.length + " durumunda seçim yapar. Uygun olmayan seçimin sonucunu okur ve başka yolu dener. Tahtada sınıfça oylayarak da oynanabilir.", L.story.intro, L.story.scenes.length + " sahne"];
+    var g = GAME_INFO[k], n = k === "bant" ? L.sort.items.length + " paket" : window.gameRounds(L.sort, L.id).length + " tur";
+    return [g[0], g[1] + " " + n + ". Tahtada sınıfça da oynanabilir.", g[2], n];
+  }
+  function gameHtml(L) {
+    var k = window.gameKind(L), s = L.sort;
+    var tag = '<span class="tag code t-only">' + L.outcome + (s && s.b ? "." + s.b : "") + '</span>';
+    var end = '<div class="game-end" hidden><div class="fb r end-msg" role="status"></div><div class="row"><button type="button" class="btn g-again">' + icon("tekrar") + ' Baştan oyna</button></div></div>';
+    if (k === "macera") return '<div class="card game g-macera" id="game">' + tag +
+      '<div class="g-play"><div class="q-head"><span class="q-count"></span><span class="mac-yer"></span></div>' +
+      '<p class="mac-text"></p>' +
+      '<div class="opts mac-opts"></div><div class="fb" id="gMsg" role="status"></div>' +
+      '<div class="row q-nextrow"><button type="button" class="btn primary mac-next" hidden>Devam et →</button></div></div>' + end + '</div>';
+    var bins = k === "bant" ? '<div class="g-bins">' + s.cats.map(function (c, i) { return '<button type="button" class="g-bin" data-c="' + i + '"><b>' + esc(c) + '</b><small>0</small></button>'; }).join("") + '</div>' : "";
+    var ctrl = k === "yakala" ? '<div class="row g-ctrl"><button type="button" class="btn" data-mv="-1">← Sola</button><button type="button" class="btn" data-mv="1">Sağa →</button></div>' : "";
+    return '<div class="card game g-' + k + '" id="game">' + tag +
+      '<div class="g-play"><div class="g-head"><p class="g-goal"></p><button type="button" class="btn g-pause" hidden>Durdur</button></div>' +
+      '<div class="g-field"' + (k === "yakala" ? ' tabindex="0" aria-label="Oyun alanı. Maskotu sol ve sağ ok tuşlarıyla yürüt."' : "") + '>' +
+      (k === "yakala" ? '<div class="g-catcher">' + mascot() + '</div>' : "") +
+      '<div class="g-cover"><p></p><button type="button" class="btn primary g-go">Başla</button></div></div>' + bins + ctrl +
+      '<div class="fb" id="gMsg" role="status"></div></div>' + end + '</div>';
   }
 
   function flowHtml(L) {
@@ -419,7 +442,7 @@
     var nbDone = store.get("nb:" + id, []), T = !isStudent();
     var envBtns = Object.keys(BD.envs).map(function (k) { return '<button type="button" class="chip-btn" data-env="' + k + '" aria-pressed="' + (S.env === k) + '">' + icon(BD.envs[k].icon) + ' ' + BD.envs[k].short + '</button>'; }).join("");
     var hasCw = L.crossword && L.crossword.length;
-    var hasSort = !!L.sort && envNow() !== "kagit"; // oyun etkinlikten sonra kendi bölümünde, altta gözden kaçmasın
+    var hasSort = !!window.gameKind(L) && envNow() !== "kagit", GI = hasSort ? gameInfo(L) : null; // oyun etkinlikten sonra kendi bölümünde, altta gözden kaçmasın
 
     var tabs = (T ? [["akis", "Ders planı"]] : [["hub", "Bölümler"]]).concat([["slayt", "Sunum"], ["defter", "Deftere yaz"], ["etkinlik", "Etkinlik"]], hasSort ? [["oyun", "Oyun"]] : [], [["test", "Mini test"]], hasCw ? [["bulmaca", "Bulmaca"]] : []);
     var active = tabs.some(function (t) { return t[0] === lessonTab[id]; }) ? lessonTab[id] : firstTab();
@@ -442,7 +465,7 @@
         (T ? '<span class="band-code">' + L.outcome + '</span></div>' : '<div class="band-prog" id="bandProg"><span></span><div class="bar"><span></span></div></div>' +
         '<div class="band-cta" id="bandCta"' + (active === "hub" ? "" : " hidden") + '><button type="button" class="btn on-color" id="secNext" data-tab="slayt">Başla: Sunum</button></div></div>' +
         panel("hub", "Bölümler", "", '<div class="sec-cards">' + tabs.slice(1).map(function (t, i) {
-          var n = { slayt: L.slides.length + " slayt", defter: L.notebook.length + " madde", etkinlik: L.sim ? L.sim.tasks.length + " görev" : L.activities.lab.steps.length + " görev", oyun: hasSort ? L.sort.items.length + " kart" : "", test: L.quiz.length + " soru", bulmaca: hasCw ? L.crossword.length + " kelime" : "" }[t[0]];
+          var n = { slayt: L.slides.length + " slayt", defter: L.notebook.length + " madde", etkinlik: L.sim ? L.sim.tasks.length + " görev" : L.activities.lab.steps.length + " görev", oyun: hasSort ? GI[3] : "", test: L.quiz.length + " soru", bulmaca: hasCw ? L.crossword.length + " kelime" : "" }[t[0]];
           return '<button type="button" class="sec-card sec-' + t[0] + '" data-tab="' + t[0] + '"><span class="sq">' + icon(t[0]) + '</span><span class="badge" aria-hidden="true" data-n="' + (i + 1) + '">' + (i + 1) + '</span><b>' + t[1] + '</b><small>' + n + '</small></button>';
         }).join("") + '</div>' + (L.hook ? '<div class="hook"><b>Düşün</b>' + esc(L.hook) + '</div>' : "") + '<div class="sec-cta"><div id="secDone" class="sec-done" hidden>' + mascot() + '<p class="progress full">Bu dersin bütün görevlerini bitirdin! İstediğin bölüme tekrar bakabilirsin.</p></div></div>')) +
 
@@ -487,7 +510,7 @@
         (L.infoCards ? '<h3 style="font-size:var(--fs-lg)">Bilgi kartları <span class="hint" style="font-weight:400">internet olmadan araştırma için</span></h3><div class="info-cards">' + L.infoCards.map(function (c) { return '<div class="info-card"><h3>' + esc(c.h) + '</h3><p>' + esc(c.p) + '</p></div>'; }).join("") + '</div>' : "") +
         '<div id="actWrap">' + activityHtml(L) + '</div>') +
 
-      (hasSort ? panel("oyun", "Sınıflandırma oyunu", T ? "Öğrenciler etkinlikte öğrendiklerini sınıflandırarak pekiştirir. Tahtada sınıfça da oynanabilir." : "Kartları doğru kutulara yerleştir!", sortHtml(L)) : "") +
+      (hasSort ? panel("oyun", GI[0], T ? GI[1] : GI[2], gameHtml(L)) : "") +
 
       panel("test", "Mini test", T ? L.quiz.length + " soru, tek tek gelir" + (quizSecs() ? ", her soruda " + quizSecs() + " saniye (Sınıf ayarlarından kapatılabilir)" : "") + ". Yanlış cevapta öğrenci önce ipucu görür, ikinci yanlışta" + (quizSecs() ? " ya da süre dolunca" : "") + " doğru cevabı ve nedenini."
           : L.quiz.length + " soru" + (quizSecs() ? ", her biri için " + quizSecs() + " saniyen var" : "") + ". Ne kadar öğrendiğini kontrol et.",
@@ -777,76 +800,255 @@
       if (on && all) celebrate($(".finish"));
     });
     if (ol) setTabDone("etkinlik", store.get(ol.getAttribute("data-key"), []).length === +ol.getAttribute("data-total"));
-    if (L.sort && $("#sort")) bindSort(L);
+    if ($("#game")) bindGame(L);
   }
 
-  function bindSort(L) {
-    var s = L.sort, pool = $("#sortPool"), sel = null;
-    var shuffled = window.shuffleOrder(s.items.length, L.id);
-    var reset = function () {
-      pool.innerHTML = shuffled.map(function (i) { return '<button type="button" class="chip" data-i="' + i + '">' + esc(s.items[i].t) + '</button>'; }).join("");
-      $$(".sort-cat .in").forEach(function (x) { x.innerHTML = ""; });
-      $("#sortMsg").textContent = ""; sel = null; mark();
+  // Ekrandaki oyunu durdurur: sekme ya da pencere arka plana geçince (tek dinleyici, her derste yenilenir)
+  var gamePause = null;
+  document.addEventListener("visibilitychange", function () { if (document.hidden && gamePause) gamePause(); });
+
+  // Balon, yakala ve kargo bandı aynı iskeleti kullanır: kapak (Başla / Devam et), saat, yanlışta açıklama, bitiş.
+  // Puan ve süre yok; yanlış seçimin cezası yok, kart ya da balon yoluna devam eder.
+  // Kayıt oyun:<id>. Balon ve yakalada biten tur sayısı, bantta doğru kutuya giren paketler.
+  function bindGame(L) {
+    var root = $("#game"), k = window.gameKind(L), key = "oyun:" + L.id;
+    var msg = $("#gMsg"), play = $(".g-play", root), endEl = $(".game-end", root);
+    var tn = function (on) { var t = $("#b-oyun .tab-next"); if (t) t.hidden = !on; }; // "Sonraki bölüm" oyun bitene dek gizli
+    var say = function (h, cls) { msg.innerHTML = h; msg.className = "fb" + (cls ? " " + cls : ""); };
+    var finish = function (text, live) {
+      play.hidden = true; endEl.hidden = false;
+      var m = $(".fb", endEl); m.innerHTML = endMsg(text);
+      if (live) { celebrate(m); $(".g-again", root).focus({ preventScroll: true }); }
+      setTabDone("oyun", true); tn(true);
     };
-    // Hedefler: kutular ve kartın geri konabildiği kart alanı. Seçili kartın zaten durduğu yer hedef sayılmaz.
-    var spots = function () { return $$(".sort-cat").concat([pool]); };
-    var home = function (chip) { return chip.parentNode === pool ? pool : chip.parentNode.parentNode; };
-    var mark = function () { spots().forEach(function (c) { c.classList.toggle("target", !!sel && home(sel) !== c); }); };
-    var moveTo = function (chip, dest) {
-      chip.classList.remove("sel", "ok", "bad");
-      if (dest !== home(chip)) { (dest === pool ? pool : $(".in", dest)).appendChild(chip); flash(chip, "land"); }
-      $("#sortMsg").textContent = ""; $("#sortMsg").className = "fb"; // eski "Kontrol et" sonucu artık geçerli değil
+    var again = function (reset, start) {
+      $(".g-again", root).onclick = function () {
+        reset(); setTabDone("oyun", false); tn(false);
+        play.hidden = false; endEl.hidden = true; say("");
+        start();
+      };
     };
-    var dragged = false;
-    $("#sort").addEventListener("click", function (e) {
-      if (dragged) { dragged = false; return; }
-      var chip = e.target.closest(".chip"), dest = e.target.closest(".sort-cat") || e.target.closest(".sort-pool");
-      if (chip) { $$(".chip", $("#sort")).forEach(function (c) { c.classList.remove("sel", "land"); }); if (sel === chip) { sel = null; } else { sel = chip; chip.classList.add("sel"); } chip.classList.remove("ok", "bad"); mark(); e.stopPropagation(); return; }
-      if (dest && sel) { moveTo(sel, dest); sel = null; mark(); }
-    });
-    spots().forEach(function (c) { c.addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === " ") && sel && e.target === c) { e.preventDefault(); c.click(); } }); });
-    // Sürükle-bırak: fare ve dokunma (pointer olayları). 6 px'ten az kayma tıklama sayılır.
-    var drag = null;
-    var under = function (x, y) { return spots().filter(function (c) { var r = c.getBoundingClientRect(); return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom; })[0] || null; };
-    var over = function (t) { spots().forEach(function (c) { c.classList.toggle("over", c === t); }); };
-    $("#sort").addEventListener("pointerdown", function (e) {
-      var chip = e.target.closest(".chip"); if (!chip || e.button !== 0) return;
-      drag = { chip: chip, x: e.clientX, y: e.clientY, on: false };
-      chip.setPointerCapture(e.pointerId);
-    });
-    $("#sort").addEventListener("pointermove", function (e) {
-      if (!drag) return;
-      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-      if (!drag.on && Math.abs(dx) + Math.abs(dy) < 6) return;
-      if (!drag.on) { drag.on = true; drag.chip.classList.add("drag"); $("#sort").classList.add("dragging"); if (sel) sel.classList.remove("sel"); sel = null; mark(); }
-      drag.chip.style.transform = "translate(" + dx + "px," + dy + "px)";
-      var t = under(e.clientX, e.clientY); over(t && t !== home(drag.chip) ? t : null);
-    });
-    var drop = function (e, cancel) {
-      if (!drag) return;
-      var d = drag; drag = null; over(null); $("#sort").classList.remove("dragging");
-      if (!d.on) return;
-      dragged = true; setTimeout(function () { dragged = false; }, 0);
-      d.chip.classList.remove("drag"); d.chip.style.transform = "";
-      var t = cancel ? null : under(e.clientX, e.clientY);
-      if (t) moveTo(d.chip, t);
+    if (k === "macera") return bindStory(L, root, key, say, finish, again, tn);
+
+    var s = L.sort, field = $(".g-field", root), cover = $(".g-cover", root), goal = $(".g-goal", root), pauseB = $(".g-pause", root);
+    var cat = function (c) { return esc(s.cats[c]); };
+    var slow = !motionOn(); // hareket azaltılmışsa her şey daha yavaş akar
+    var objs = [], run = false, raf = 0, last = 0, spawnIn = 0, G;
+    var clearObjs = function () { objs.forEach(function (o) { if (o.el.parentNode) o.el.parentNode.removeChild(o.el); }); objs = []; };
+    var drop = function (o) { objs.splice(objs.indexOf(o), 1); };
+    var showCover = function (h, btn) { $("p", cover).innerHTML = h; $(".g-go", cover).textContent = btn; cover.hidden = false; pauseB.hidden = true; };
+    var go = function () {
+      cover.hidden = true; pauseB.hidden = false; run = true; last = 0;
+      if (k === "yakala") field.focus({ preventScroll: true });
+      if (!raf) raf = requestAnimationFrame(frame);
     };
-    $("#sort").addEventListener("pointerup", function (e) { drop(e, false); });
-    $("#sort").addEventListener("pointercancel", function (e) { drop(e, true); });
-    $("#sortCheck").onclick = function () {
-      var placed = 0, ok = 0;
-      $$(".sort-cat").forEach(function (cat) {
-        var ci = +cat.getAttribute("data-c");
-        $$(".chip", cat).forEach(function (ch) { placed++; var good = s.items[+ch.getAttribute("data-i")].c === ci; ch.classList.toggle("ok", good); ch.classList.toggle("bad", !good); if (good) ok++; });
+    var pause = function () { if (!run) return; run = false; showCover("Oyun durdu.", "Devam et"); };
+    var stop = function () { run = false; clearObjs(); };
+    gamePause = pause;
+    var frame = function (t) {
+      raf = 0;
+      if (!run || !document.body.contains(root)) return;
+      if (!root.offsetParent || document.hidden) return pause(); // bölümden çıkıldı
+      var dt = last ? Math.min(0.1, (t - last) / 1000) : 0; last = t;
+      G.step(dt);
+      if (run) raf = requestAnimationFrame(frame);
+    };
+    $(".g-go", cover).onclick = function () { go(); };
+    pauseB.onclick = function () { pause(); $(".g-go", cover).focus(); };
+
+    // Balon ve yakala: turlar. Her turda bir grubun kartları aranır.
+    var R = window.gameRounds(s, L.id), r = 0, caught = [];
+    var lanesFree = function (n, test) { var f = []; for (var i = 0; i < n; i++) if (!objs.some(function (o) { return o.lane === i && test(o); })) f.push(i); return f; };
+    var drawGoal = function () {
+      var q = R[r];
+      goal.innerHTML = '<span class="tag">Tur ' + (r + 1) + ' / ' + R.length + '</span> <span><b>' + cat(q.cat) + '</b> ' + (k === "balon" ? "olanları patlat" : "olanları yakala") + '</span> <span class="g-n">' + caught.length + ' / ' + q.need + '</span>';
+    };
+    var roundStart = function (first) {
+      caught = []; clearObjs(); drawGoal(); spawnIn = 0;
+      showCover((first ? "" : "Tur tamam! ") + "<b>" + (r + 1) + ". tur:</b> " + cat(R[r].cat) + (k === "balon" ? " olan balonları patlat." : " olan kartları yakala, ötekilerden kaç."), first ? "Başla" : "Sonraki tur");
+    };
+    var good = function (o) {
+      caught.push(o.i); drawGoal();
+      say("✓ <b>" + esc(s.items[o.i].t) + "</b>: " + cat(s.items[o.i].c) + ".", "r");
+      if (caught.length < R[r].need) return;
+      stop(); r++; store.set(key, r);
+      if (r === R.length) finish(G.end(), true); else { roundStart(false); $(".g-go", cover).focus({ preventScroll: true }); }
+    };
+    var bad = function (o) { say("<b>" + esc(s.items[o.i].t) + "</b>: " + cat(s.items[o.i].c) + (k === "yakala" ? ". Bundan kaç, sen <b>" : ". Sen <b>") + cat(R[r].cat) + "</b> arıyorsun.", "h"); };
+    var next = function () { return window.gamePick(s.items, R[r].cat, caught, objs.map(function (o) { return o.i; }), Math.random); };
+    var total = function () { return R.reduce(function (t, q) { return t + q.need; }, 0); };
+
+    if (k === "balon") G = {
+      end: function () { return "Bütün balonlar tamam! " + R.length + " turda " + total() + " doğru balonu patlattın."; },
+      step: function (dt) {
+        var H = field.clientHeight, n = field.clientWidth < 520 ? 2 : 4, v = H / (slow ? 11 : 7.5);
+        objs.slice().forEach(function (o) {
+          o.y -= v * dt; o.el.style.top = o.y + "px";
+          if (o.y < -o.el.offsetHeight) { drop(o); o.el.parentNode.removeChild(o.el); } // uçup gitti
+        });
+        spawnIn -= dt;
+        var free = lanesFree(n, function (o) { return o.y > H - o.el.offsetHeight * 1.6; });
+        if (spawnIn > 0 || !free.length) return;
+        var i = next(); if (i < 0) return;
+        var lane = free[Math.floor(Math.random() * free.length)], b = document.createElement("button");
+        b.type = "button"; b.className = "g-balloon c" + (i % 4); b.textContent = s.items[i].t;
+        b.style.left = "calc(" + (lane / n * 100) + "% + 8px)"; b.style.width = "calc(" + (100 / n) + "% - 16px)"; b.style.top = H + "px";
+        field.insertBefore(b, cover); objs.push({ i: i, el: b, y: H, lane: lane });
+        spawnIn = slow ? 1.8 : 1.2;
+      }
+    };
+    if (k === "balon") field.addEventListener("click", function (e) {
+      var b = e.target.closest(".g-balloon"); if (!b || b.disabled || !run) return;
+      var o = objs.filter(function (x) { return x.el === b; })[0]; if (!o) return;
+      b.disabled = true;
+      if (s.items[o.i].c === R[r].cat) {
+        drop(o); b.classList.add("pop"); setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 250);
+        good(o);
+      } else { b.classList.add("wrong"); flash(b, "shake"); bad(o); }
+    });
+
+    if (k === "yakala") {
+      var lane = 1, catcher = $(".g-catcher", root);
+      var move = function (d) { lane = Math.max(0, Math.min(2, lane + d)); catcher.style.left = (lane + 0.5) / 3 * 100 + "%"; };
+      move(0);
+      G = {
+        end: function () { return "Bütün turlar tamam! Maskot " + total() + " doğru kartı yakaladı."; },
+        step: function (dt) {
+          var H = field.clientHeight, v = H / (slow ? 8 : 5.5), line = H - catcher.offsetHeight;
+          objs.slice().forEach(function (o) {
+            if (!run) return; // tur bu karede bitti, kartlar silindi
+            o.y += v * dt; o.el.style.top = o.y + "px";
+            var h = o.el.offsetHeight;
+            if (!o.done && o.y + h >= line + h / 2) {
+              o.done = true;
+              if (o.lane === lane) { // sepete düştü
+                drop(o); o.el.parentNode.removeChild(o.el);
+                if (s.items[o.i].c === R[r].cat) { flash(catcher, "hop"); good(o); } else { flash(catcher, "shake"); bad(o); }
+                return;
+              }
+            }
+            if (o.y > H) { drop(o); o.el.parentNode.removeChild(o.el); }
+          });
+          if (!run) return;
+          spawnIn -= dt;
+          var free = lanesFree(3, function (o) { return o.y < o.el.offsetHeight * 1.3; });
+          if (spawnIn > 0 || !free.length) return;
+          var i = next(); if (i < 0) return;
+          var ln = free[Math.floor(Math.random() * free.length)], d = document.createElement("div");
+          d.className = "g-drop c" + (i % 4); d.textContent = s.items[i].t; d.setAttribute("aria-hidden", "true");
+          d.style.left = "calc(" + (ln / 3 * 100) + "% + 8px)"; field.insertBefore(d, catcher);
+          var o = { i: i, el: d, y: 0, lane: ln }; o.y = -d.offsetHeight; d.style.top = o.y + "px"; objs.push(o);
+          spawnIn = slow ? 2.4 : 1.6;
+        }
+      };
+      field.addEventListener("keydown", function (e) {
+        var d = e.key === "ArrowLeft" ? -1 : e.key === "ArrowRight" ? 1 : 0;
+        if (d && run) { e.preventDefault(); move(d); }
       });
-      var m = $("#sortMsg");
-      if (!placed) { m.textContent = "Önce kartları kutulara yerleştir."; m.className = "fb w"; }
-      else if (ok === s.items.length) { m.innerHTML = endMsg("Hepsi doğru!"); m.className = "fb r end-msg"; celebrate(m); store.set("sort:" + L.id, true); setTabDone("oyun", true); }
-      else { m.textContent = ok + " / " + s.items.length + " doğru. " + (placed < s.items.length ? "Yerleştirilmemiş kartlar var. " : "") + "✕ işaretli kartları başka kutuya taşı."; m.className = "fb w"; }
+      field.addEventListener("click", function (e) {
+        if (!run || e.target.closest(".g-cover")) return;
+        var x = e.clientX - field.getBoundingClientRect().left; move(Math.floor(x / field.clientWidth * 3) - lane);
+      });
+      $$(".g-ctrl button", root).forEach(function (b) { b.onclick = function () { if (run) move(+b.getAttribute("data-mv")); }; });
+    }
+
+    if (k === "balon" || k === "yakala") {
+      r = Math.min(store.get(key, 0), R.length);
+      again(function () { r = 0; store.set(key, 0); }, function () { roundStart(true); });
+      if (r === R.length) { finish(G.end(), false); return; }
+      tn(false); roundStart(true);
+      return;
+    }
+
+    // Kargo bandı: tek tur, her paket bir kez doğru kutuya girer. Tutulan paket bantta durur.
+    var sorted = store.get(key, []), queue = [], sel = null;
+    var bins = $$(".g-bin", root);
+    var drawBant = function () {
+      goal.innerHTML = '<span>Paketleri doğru kutuya koy.</span> <span class="g-n">' + sorted.length + ' / ' + s.items.length + '</span>';
+      bins.forEach(function (b, c) { $("small", b).textContent = sorted.filter(function (i) { return s.items[i].c === c; }).length; });
     };
-    $("#sortReset").onclick = reset;
-    reset();
-    setTabDone("oyun", store.get("sort:" + L.id, false));
+    var fillQueue = function () { queue = window.shuffleOrder(s.items.length, L.id).filter(function (i) { return sorted.indexOf(i) < 0; }); };
+    var hold = function (o) {
+      if (sel) { sel.el.classList.remove("sel"); sel.el.setAttribute("aria-pressed", "false"); }
+      sel = o === sel ? null : o;
+      if (sel) { sel.el.classList.add("sel"); sel.el.setAttribute("aria-pressed", "true"); say("<b>" + esc(s.items[sel.i].t) + "</b> elinde. Şimdi doğru kutuya bas."); }
+    };
+    G = {
+      end: function () { return "Kargo tamam! " + s.items.length + " paketin hepsi doğru kutuda."; },
+      step: function (dt) {
+        var W = field.clientWidth, v = W / (slow ? 16 : 11);
+        objs.slice().forEach(function (o) {
+          if (o === sel) return;
+          o.x += v * dt; o.el.style.left = o.x + "px";
+          if (o.x > W) { drop(o); o.el.parentNode.removeChild(o.el); queue.push(o.i); say("<b>" + esc(s.items[o.i].t) + "</b> bandın sonuna kaçtı, birazdan yine gelecek."); }
+        });
+        spawnIn -= dt;
+        var lastO = objs[objs.length - 1];
+        if (spawnIn > 0 || !queue.length || objs.length >= 4 || (lastO && lastO.x < 16)) return;
+        var i = queue.shift(), b = document.createElement("button");
+        b.type = "button"; b.className = "g-pack"; b.textContent = s.items[i].t; b.setAttribute("aria-pressed", "false");
+        field.insertBefore(b, cover);
+        var o = { i: i, el: b, x: -b.offsetWidth }; b.style.left = o.x + "px"; objs.push(o);
+        spawnIn = slow ? 3.2 : 2.3;
+      }
+    };
+    field.addEventListener("click", function (e) {
+      var b = e.target.closest(".g-pack"); if (!b || !run) return;
+      hold(objs.filter(function (x) { return x.el === b; })[0]);
+      if (sel && e.detail === 0) bins[0].focus();
+    });
+    bins.forEach(function (b, c) {
+      b.onclick = function () {
+        if (!run) return;
+        if (!sel) { say("Önce banttan bir paket tut."); return; }
+        var it = s.items[sel.i];
+        if (it.c !== c) { flash(b, "shake"); say("<b>" + esc(it.t) + "</b> bu kutuya girmez. O, <b>" + cat(it.c) + "</b>.", "h"); return; }
+        var o = sel; hold(o); drop(o); o.el.parentNode.removeChild(o.el);
+        sorted.push(o.i); store.set(key, sorted); drawBant(); flash(b, "hop");
+        say("✓ <b>" + esc(it.t) + "</b> kutusunda: " + cat(c) + ".", "r");
+        if (sorted.length === s.items.length) { stop(); finish(G.end(), true); }
+      };
+    });
+    var bantStart = function () { sel = null; clearObjs(); fillQueue(); drawBant(); spawnIn = 0; showCover("Paketler banttan gelecek. Birine bas, sonra doğru kutuya koy.", "Başla"); };
+    again(function () { sorted = []; store.set(key, sorted); }, bantStart);
+    if (sorted.length === s.items.length) { drawBant(); finish(G.end(), false); return; }
+    tn(false); bantStart();
+  }
+
+  // Hikâyeli macera: her sahnede bir durum ve seçenekler. Uygun seçim hikâyeyi sürdürür;
+  // öteki seçimde sonucu okunur, seçenek kapanır ve öğrenci başka yolu dener. Kayıt oyun:<id> = biten sahne sayısı.
+  function bindStory(L, root, key, say, finish, again, tn) {
+    var st = L.story, n = st.scenes.length, cur = 0, opts = $(".mac-opts", root), next = $(".mac-next", root);
+    var show = function (i) {
+      cur = i; var sc = st.scenes[i];
+      $(".q-count", root).textContent = "Sahne " + (i + 1) + " / " + n;
+      $(".mac-yer", root).textContent = sc.yer;
+      $(".mac-text", root).textContent = sc.text;
+      opts.innerHTML = sc.choices.map(function (c, j) { return '<button type="button" data-j="' + j + '">' + esc(c.t) + '</button>'; }).join("");
+      say(""); next.hidden = true;
+    };
+    opts.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b || b.disabled) return;
+      var c = st.scenes[cur].choices[+b.getAttribute("data-j")], kbd = e.detail === 0;
+      if (c.ok) {
+        b.classList.add("right"); $$("button", opts).forEach(function (x) { x.disabled = true; });
+        say("✓ " + esc(c.res), "r"); flash(b, "hop"); next.hidden = false;
+        if (root.offsetParent) next.scrollIntoView({ block: "nearest", behavior: motionOn() ? "smooth" : "auto" });
+        if (kbd) next.focus({ preventScroll: true });
+      } else {
+        b.classList.add("tried"); b.disabled = true;
+        say(esc(c.res) + " Başka bir yol seç.", "h");
+        if (kbd) { var o = $$("button", opts).filter(function (x) { return !x.disabled; })[0]; if (o) o.focus(); }
+      }
+    });
+    next.onclick = function () {
+      store.set(key, cur + 1);
+      if (cur + 1 === n) return finish(esc(st.end), true);
+      show(cur + 1); $("button", opts).focus();
+    };
+    again(function () { store.set(key, 0); }, function () { show(0); $("button", opts).focus(); });
+    var at = Math.min(store.get(key, 0), n);
+    if (at === n) { show(n - 1); finish(esc(st.end), false); } else { tn(false); show(at); }
   }
 
   /* ---------- Bulmaca ---------- */
@@ -1068,7 +1270,7 @@
     if (printOpts.cevap) {
       h += '<h2>Cevap anahtarı (öğretmen için)</h2><p style="margin:0">' + L.quiz.map(function (q, i) { return (i + 1) + ") " + String.fromCharCode(65 + q.a); }).join(" · ") + '</p>';
       if (X) { h += '<p style="margin:6px 0 0">Bulmaca: ' + X.words.slice().sort(function (a, b) { return a.n - b.n || (a.dir > b.dir ? 1 : -1); }).map(function (w) { return w.n + (w.dir === "a" ? "→" : "↓") + " " + w.a; }).join(", ") + '</p>'; }
-      if (L.sort) h += '<p style="margin:6px 0 0">Sınıflandırma: ' + L.sort.cats.map(function (c, ci) { return '<b>' + esc(c) + ':</b> ' + L.sort.items.filter(function (x) { return x.c === ci; }).map(function (x) { return esc(x.t); }).join(", "); }).join(" · ") + '</p>';
+      if (L.sort) h += '<p style="margin:6px 0 0">Oyun grupları: ' + L.sort.cats.map(function (c, ci) { return '<b>' + esc(c) + ':</b> ' + L.sort.items.filter(function (x) { return x.c === ci; }).map(function (x) { return esc(x.t); }).join(", "); }).join(" · ") + '</p>';
     }
     if (printOpts.gozlem && L.sim) {
       var LS = L.activities.lab.steps, rows = "";

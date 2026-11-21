@@ -49,6 +49,7 @@ BD.lesson({
   sort: {
     title: "Bu önlem hangi cihaz için?",
     intro: "Her güvenlik önlemini ait olduğu cihazın altına yerleştir.",
+    oyun: "balon",
     b: "b",
     cats: ["Bilgisayar", "Telefon ve tablet", "Kulaklık", "Priz ve kablolar"],
     items: [

@@ -65,6 +65,7 @@ BD.lesson({
   sort: {
     title: "Teknoloji hangi alanda?",
     intro: "Her teknolojiyi en çok kullanıldığı alana yerleştir.",
+    oyun: "balon",
     b: "c",
     cats: ["Eğitim", "Sağlık", "Ulaşım", "İletişim", "Sinema ve televizyon"],
     items: [

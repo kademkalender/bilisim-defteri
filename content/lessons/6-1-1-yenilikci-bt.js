@@ -51,6 +51,7 @@ BD.lesson({
   sort: {
     title: "Teknoloji fuarı: Hangi alana ait?",
     intro: "Her teknolojiyi en çok kullanıldığı alana yerleştir.",
+    oyun: "balon",
     b: "c",
     cats: ["Sağlık", "Eğitim", "Sanayi", "Eğlence", "İletişim"],
     items: [

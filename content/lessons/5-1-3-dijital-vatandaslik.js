@@ -46,17 +46,45 @@ BD.lesson({
     { t: "Sorun yaşarsam cevap vermem, <mark>aileme, öğretmenime ya da rehberlik servisine</mark> söylerim.", b: "c" }
   ],
 
-  sort: {
-    title: "Bu kural hangi alanda?",
-    intro: "Her dijital vatandaşlık uygulamasını ait olduğu alana yerleştir.",
-    b: "c",
-    cats: ["Eğitim", "Sosyal medya", "Oyun", "Alışveriş ve bankacılık"],
-    items: [
-      { t: "Öğretmene ödev mesajını kibar yazmak", c: 0 }, { t: "Ödevi kopyalamadan kendin yapmak", c: 0 },
-      { t: "İzin almadan arkadaşının fotoğrafını paylaşmamak", c: 1 }, { t: "Yaş sınırına uymak", c: 1 },
-      { t: "Kaybedince kaba mesaj yazmamak", c: 2 }, { t: "Oyun şifreni kimseye vermemek", c: 2 },
-      { t: "Kart bilgisini paylaşmamak", c: 3 }, { t: "Alışverişi ailenle birlikte yapmak", c: 3 }
-    ]
+  // Oyun: hikâyeli macera. Her sahnede tam bir uygun seçim (ok: true) olur; res seçimin sonucudur.
+  story: {
+    title: "Ece'nin dijital günü",
+    intro: "Ece'nin bir gününde doğru yolu sen seç. Her seçim onun dijital ayak izine eklenir.",
+    scenes: [
+      { yer: "Dijital kimlik", text: "Ece yeni bir kelime oyununa üye oluyor. Oyun ondan bir kullanıcı adı istiyor. Hangisini yazsın?",
+        choices: [
+          { t: "EceYildiz2015", res: "Bu adda Ece'nin gerçek adı ve doğum yılı var. Onu tanımayan biri kim olduğunu ve kaç yaşında olduğunu öğrenir." },
+          { t: "KelimeAvcisi42", ok: true, res: "Güzel seçim! Bu ad Ece'yi anlatıyor ama kim olduğunu ele vermiyor. Dijital kimliği güvende." },
+          { t: "Ece_Cumhuriyet_Ortaokulu", res: "Okulun adı, Ece'nin nerede olduğunu söyler. Kullanıcı adına okul ve adres yazılmaz." }
+        ] },
+      { yer: "Sosyal medya", text: "Sınıf gezisinde Ece, arkadaşı Mert'in çok komik bir fotoğrafını çekti. Fotoğrafı paylaşmak istiyor.",
+        choices: [
+          { t: "Önce Mert'e sorarım. İzin verirse paylaşırım.", ok: true, res: "Doğru! Başkasının fotoğrafı ancak onun izniyle paylaşılır." },
+          { t: "Hemen paylaşırım, herkes gülsün.", res: "Paylaşılan fotoğraf internette iz bırakır; silinse bile biri kaydetmiş olabilir. Mert bunu istemeyebilir." }
+        ] },
+      { yer: "Oyun", text: "Ece oyunda bir maçı kaybetti. Rakibi sohbete \"Çok kötü oynuyorsun!\" yazdı.",
+        choices: [
+          { t: "Ben de ona kaba bir şey yazarım.", res: "Kaba mesaj kavgayı büyütür ve Ece'nin dijital ayak izine eklenir. Silse bile ekran görüntüsü alınmış olabilir." },
+          { t: "Oyunu bırakıp bir gün küserim.", res: "Küsmek Ece'yi üzer ama sorunu çözmez. Kaba mesaj sürerse bir büyüğün bilmesi gerekir." },
+          { t: "Cevap vermem. Sürerse ekran görüntüsünü alıp bir büyüğüme söylerim.", ok: true, res: "Harika! Kaba mesaja cevap verilmez; sürerse ekran görüntüsü alınır ve güvenilen bir büyüğe hemen söylenir." }
+        ] },
+      { yer: "Oyun", text: "Tanımadığı biri Ece'ye mesaj attı: \"Şifreni ver, hesabına bedava altın yükleyeyim.\"",
+        choices: [
+          { t: "Bedava altın! Şifremi veririm.", res: "Şifreyi alan kişi hesaba girip her şeyi alabilir. Şifre kimseyle paylaşılmaz, en yakın arkadaşla bile." },
+          { t: "Şifremi vermem, mesajı aileme gösteririm.", ok: true, res: "Doğru! Şifre, dijital kimliğin anahtarıdır. Şüpheli mesajı bir büyüğe göstermek Ece'yi korur." }
+        ] },
+      { yer: "Alışveriş ve bankacılık", text: "Ece internette çok beğendiği bir kalem kutusu gördü. Site kart bilgisi istiyor.",
+        choices: [
+          { t: "Ailemle birlikte bakarız, alışverişi onlar yapar.", ok: true, res: "Çok iyi! İnternetten alışveriş ailenle birlikte yapılır, kart bilgisi paylaşılmaz." },
+          { t: "Annemin kartını alıp numarayı kendim yazarım.", res: "Kart bilgisi yalnızca aile büyüğü tarafından yazılır. İzinsiz alışveriş aileyi zor durumda bırakabilir." }
+        ] },
+      { yer: "Eğitim", text: "Ödev teslimine az kaldı. Bir arkadaşı \"Benimkini kopyala, kimse anlamaz\" dedi.",
+        choices: [
+          { t: "Kopyalarım, nasılsa zaman yok.", res: "Başkasının ödevini kendi adıyla göndermek dürüst değildir. Ece öğrenme fırsatını da kaçırır." },
+          { t: "Kendim yaparım. Takıldığım yeri öğretmenime kibar bir mesajla sorarım.", ok: true, res: "Süper! Ödevi kendin yapmak ve öğretmene kibarca yazmak, eğitimde dijital vatandaşlıktır." }
+        ] }
+    ],
+    end: "Ece'nin günü bitti! Kullanıcı adı güvende, paylaşımları izinli, mesajları kibar. Dijital ayak izi tertemiz."
   },
 
   activities: {

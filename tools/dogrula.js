@@ -2,7 +2,7 @@
 /* =====================================================================
    Bilişim Defteri — içerik doğrulama betiği
    Sitenin parçası değildir, npm paketi kullanmaz. Node'un yerleşik
-   vm modülüyle program.js, plan.js, crossword.js, shuffle.js ve content/lessons/
+   vm modülüyle program.js, plan.js, crossword.js, shuffle.js, oyun-core.js ve content/lessons/
    altındaki ders dosyalarını tarayıcıdaki gibi sırayla yükler ve
    ICERIK-REHBERI.md kurallarına göre kontrol eder.
 
@@ -36,6 +36,7 @@ loadFile("content/program.js");
 loadFile("content/plan.js");
 loadFile("assets/crossword.js");
 loadFile("assets/shuffle.js");
+loadFile("assets/oyun-core.js");
 loadFile("assets/sim-core.js");
 
 var lessonsDir = path.join(ROOT, "content/lessons");
@@ -182,12 +183,25 @@ function checkLesson(f, L) {
     if (!q.why) warn(f, "quiz sorusu " + (i + 1) + ": neden (why) yok");
   });
 
-  // HATA: sınıflandırma kartları karışmıyorsa oyun cevabı kendisi gösterir
-  if (L.sort && L.sort.items && L.sort.items.length) {
-    var order = sandbox.shuffleOrder(L.sort.items.length, L.id);
-    if (order.every(function (v, i) { return v === i; })) {
-      err(f, "sınıflandırma kartları karıştırılınca orijinal sırada kalıyor (kart sayısını ya da sırasını değiştirin)");
-    }
+  // HATA: oyun kurulamıyor (assets/oyun-core.js, kurallar ICERIK-REHBERI.md)
+  if (L.sort && L.story) err(f, "sort ve story birlikte olamaz: dersin tek oyunu olur");
+  if (L.sort && !L.story) {
+    var kind = L.sort.oyun || "balon";
+    if (sandbox.GAME_KINDS.indexOf(kind) < 0) err(f, "sort.oyun bilinmiyor: " + kind + " (balon, yakala ya da bant)");
+    L.sort.items.forEach(function (x, i) { if (!L.sort.cats[x.c]) err(f, "sort kartı " + (i + 1) + ": c grubu yok (" + x.c + ")"); });
+    if (kind !== "bant" && sandbox.gameRounds(L.sort, L.id).length === 0) err(f, "oyun turu kurulamıyor: en az iki grupta 2'şer kart olmalı");
+  }
+  if (L.story) {
+    var sc = L.story.scenes || [];
+    if (!L.story.title || !L.story.intro || !L.story.end) err(f, "story: title, intro ve end dolu olmalı");
+    if (sc.length < 3) err(f, "story: en az 3 sahne olmalı");
+    sc.forEach(function (s, i) {
+      var ch = s.choices || [], ok = ch.filter(function (c) { return c.ok; }).length;
+      if (!s.text || !s.yer) err(f, "story sahne " + (i + 1) + ": text ve yer dolu olmalı");
+      if (ch.length < 2 || ok !== 1) err(f, "story sahne " + (i + 1) + ": en az 2 seçenek ve tam 1 uygun seçim (ok: true) olmalı");
+      ch.forEach(function (c, j) { if (!c.t || !c.res) err(f, "story sahne " + (i + 1) + " seçenek " + (j + 1) + ": t ve res dolu olmalı"); });
+      if (ch.length && ch[0].ok && i > 0 && sc[i - 1].choices && sc[i - 1].choices[0].ok) warn(f, "story sahne " + (i + 1) + ": uygun seçim üst üste ilk sırada, yerini değiştir");
+    });
   }
 
   if (L.crossword && L.crossword.length) {

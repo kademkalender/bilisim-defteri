@@ -39,12 +39,21 @@ BD.lesson({
     { t: "<mark>Kavram</mark>: Tanım.", b: "a" }
   ],
 
-  // İsteğe bağlı sınıflandırma oyunu (laboratuvar ve etkileşimli tahtada görünür). c: cats dizisindeki sıra no.
+  // İsteğe bağlı oyun (laboratuvar ve etkileşimli tahtada görünür). Konuya göre oyun: kurallar ICERIK-REHBERI.md "Oyun".
+  // oyun: "balon" (istenen grubun balonlarını patlat), "yakala" (düşen kartlardan istenenleri yakala), "bant" (paketi doğru kutuya koy).
+  // c: cats dizisindeki sıra no. En az iki grupta 2'şer kart. title ve intro ekranda görünmez, grupları anlatan not olarak kalır.
   sort: {
-    title: "Oyunun adı", intro: "Kısa yönerge.", b: "b",
+    title: "Oyunun adı", intro: "Kısa yönerge.", oyun: "balon", b: "b",
     cats: ["Grup 1", "Grup 2"],
-    items: [{ t: "Kart 1", c: 0 }, { t: "Kart 2", c: 1 }]
+    items: [{ t: "Kart 1", c: 0 }, { t: "Kart 2", c: 0 }, { t: "Kart 3", c: 1 }, { t: "Kart 4", c: 1 }]
   },
+  // Davranış ve karar konularında sort yerine hikâyeli macera (ikisi birden olmaz):
+  // story: {
+  //   title: "Ece'nin dijital günü", intro: "Doğru yolu sen seç.", end: "Günün sonunda gösterilen cümle.",
+  //   scenes: [
+  //     { yer: "Oyun", text: "Durum", choices: [{ t: "Seçenek", ok: true, res: "Sonucu" }, { t: "Seçenek", res: "Sonucu" }] }
+  //   ]
+  // },
 
   // İsteğe bağlı sanal masaüstü (lab'da ana etkinlik, tahtada tam genişlik). 5-8 görev, her görev tek işlem,
   // ipucu (hint) zorunlu, solution zorunlu. Kontrol türleri ve kurallar: ICERIK-REHBERI.md "Sanal masaüstü".

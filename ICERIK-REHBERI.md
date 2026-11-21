@@ -39,7 +39,7 @@ Dersteki ve arayüzdeki metnin tonu (öğrenciye görev dili, geri bildirim kal�
 | Slayt | 7–11 slayt. Bir slaytta en fazla 4 madde. İlk slayt başlık, son slayt "Sıra sende!" (`end: true`) |
 | Deftere yaz | 3–5 madde |
 | Etkinlik | 5–9 adım. Her adım tek bir iş |
-| Sınıflandırma oyunu | 2–5 grup, 6–12 kart |
+| Oyun (`sort` ya da `story`) | Konuya göre seçilir. `sort.oyun`: `"bant"` (yerleştirilecek şeyler: dosya, donanım), `"yakala"` (iki karşıt grup, 4'er kart), `"balon"` (3–5 grup, kısa örnekler). Her türde 2–5 grup, 6–12 kart, en az iki grupta 2'şer kart; kart metni en çok 6 kelime (balonda ve düşen kartta 3 satıra sığsın). Gruplar net olmalı: bir kart iki gruba da uyuyorsa yanlış sayılır. Davranış ve karar konularında `story` (hikâyeli macera): 4–6 sahne, her sahnede `yer` (alan), `text`, 2–3 seçenek, tam bir uygun seçim (`ok: true`); her seçeneğin `res` cümlesi sonucunu anlatır, öğrenciyi suçlamaz. Bir derste `sort` ya da `story` olur, ikisi birden olmaz |
 | Test | 3–5 soru, 3 seçenek. Yanıltıcı seçenekler mantıklı olmalı. Her soruda `hint` (ilk yanlışta görünür, cevabı söylemez, nereye bakacağını söyler) ve `why` (ikinci yanlışta doğru cevapla görünür, tek cümle) |
 | Bulmaca | 6–8 kelime, kelimeler derste geçmiş olmalı. Boşluklu kelime yok |
 | Ders akışı | Toplam 80 dakika (40+40) |

@@ -41,6 +41,7 @@ BD.lesson({
   sort: {
     title: "Masaüstünü toparla!",
     intro: "Dosyaları uzantılarına bakarak doğru klasöre yerleştir.",
+    oyun: "bant",
     b: "b",
     cats: ["📁 Yazilar", "📁 Resimler", "📁 Sesler"],
     items: [

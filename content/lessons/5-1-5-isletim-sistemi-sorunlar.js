@@ -44,6 +44,7 @@ BD.lesson({
   sort: {
     title: "Donanım sorunu mu, yazılım sorunu mu?",
     intro: "Her sorunu doğru gruba yerleştir.",
+    oyun: "yakala",
     b: "b",
     cats: ["Donanım sorunu", "Yazılım sorunu"],
     items: [
